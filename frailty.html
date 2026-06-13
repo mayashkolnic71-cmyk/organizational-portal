@@ -40,7 +40,12 @@
 
     <nav class="bg-blue-600 text-white sticky top-0 z-50 shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="font-bold text-xl tracking-tight">משרד הבריאות 📊 מדיניות 2026</div>
+            <button onclick="window.location.href='index.html'" class="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg transition-colors font-bold text-sm text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+                </svg>
+                חזרה לפורטל
+            </button>
             <div class="text-sm font-medium">אומדן שבריריות וסרקופניה</div>
         </div>
     </nav>
@@ -52,9 +57,9 @@
                 עדכון הנחיות לאומיות לאומדן שבריריות (Frailty) וסרקופניה. מיפוי קליני מדויק ואסטרטגיית הטמעה מבוססת נתונים (eFI) לקראת שנת 2026.
             </p>
             <div class="flex flex-wrap justify-center gap-4 text-sm font-semibold">
-                <span class="bg-blue-600 px-4 py-2 rounded-full">מניעה מוקדמת</span>
-                <span class="bg-green-600 px-4 py-2 rounded-full">אבחון אובייקטיבי</span>
-                <span class="bg-purple-600 px-4 py-2 rounded-full">רשומות ממוחשבות</span>
+                <a href="#early-prevention" class="bg-blue-600 px-4 py-2 rounded-full hover:bg-blue-700 transition">מניעה מוקדמת</a>
+                <a href="#objective-diagnosis" class="bg-green-600 px-4 py-2 rounded-full hover:bg-green-700 transition">אבחון אובייקטיבי</a>
+                <a href="#electronic-records" class="bg-purple-600 px-4 py-2 rounded-full hover:bg-purple-700 transition">רשומות ממוחשבות</a>
             </div>
         </div>
     </header>
@@ -93,7 +98,7 @@
         </section>
 
         <!-- New Section 1: Fried -->
-        <section class="mb-16">
+        <section id="objective-diagnosis" class="mb-16">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-800 mb-4">הפנוטיפ של Fried: דיוק שלבי האבחון</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">
@@ -155,7 +160,7 @@
         </section>
 
         <!-- Old Section 2: CGA -->
-        <section class="mb-16 glass-card rounded-2xl p-6 md:p-8">
+        <section id="early-prevention" class="mb-16 glass-card rounded-2xl p-6 md:p-8">
             <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4 border-b-2 border-blue-200 pb-2">כלים קליניים: זיהוי מוקדם ו-CGA</h2>
             <p class="text-lg leading-relaxed text-gray-700 mb-6">
                 יישום המדיניות נשען על שני צירי פעולה מקבילים: זיהוי אוכלוסייתי מוקדם (למשל באמצעות ה-Electronic Frailty Index) המאפשר הקצאת משאבים חכמה, וביצוע "הערכה גריאטרית כוללנית" (CGA) המהווה את הסטנדרט המוזהב לניהול המורכבות הקלינית. ה-CGA מפרק את צרכי המטופל לממדים הניתנים למדידה וטיפול.
@@ -211,7 +216,7 @@
                     </div>
                 </div>
 
-                <div class="glass-card p-8 border-r-4 border-green-500">
+                <div id="electronic-records" class="glass-card p-8 border-r-4 border-green-500">
                     <h2 class="text-3xl font-bold text-gray-800 mb-4">Electronic Frailty Index (eFI)</h2>
                     <p class="text-lg text-gray-600 mb-6">
                         שינוי התפיסה המערכתי: מודל Rockwood אינו רק כלי מחקרי. הגרסה האלקטרונית (eFI) היא כיום הכלי הקל והיעיל ביותר ליישום ברמת הקהילה (קופות החולים).
