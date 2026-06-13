@@ -39,9 +39,13 @@ function initProtocolsDb() {
         if (!protocolsDb.find(p => p.link === 'aspiration.html')) {
             protocolsDb.unshift({ id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' });
         }
+        if (!protocolsDb.find(p => p.link === 'aspiration_training.html')) {
+            protocolsDb.unshift({ id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' });
+        }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
+            { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' },
             { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' },
             { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' }
         ];
