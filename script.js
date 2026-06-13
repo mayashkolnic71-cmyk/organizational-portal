@@ -42,9 +42,17 @@ function initProtocolsDb() {
         if (!protocolsDb.find(p => p.link === 'aspiration_training.html')) {
             protocolsDb.unshift({ id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' });
         }
+        if (!protocolsDb.find(p => p.link === 'aspiration-infographic.png')) {
+            protocolsDb.unshift({ id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' });
+        }
+        if (!protocolsDb.find(p => p.link === 'Claymation Explainer-saved.mp4')) {
+            protocolsDb.unshift({ id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' });
+        }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
+            { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' },
+            { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' },
             { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' },
             { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' },
             { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' }
@@ -1206,7 +1214,7 @@ function renderProtocols() {
                 ${protocolsDb.map(p => `
                     <div class="card" style="margin-bottom: 15px;">
                         <h3 style="margin-bottom: 10px;">${p.title}</h3>
-                        ${p.link.startsWith('http') || p.link.endsWith('.html') ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / פרוטוקול ↗</a>` : `<p>${p.link}</p>`}
+                        ${p.link.startsWith('http') || p.link.match(/\.(html|png|jpg|jpeg|mp4)$/i) ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / תמונה / סרטון ↗</a>` : `<p>${p.link}</p>`}
                     </div>
                 `).join('')}
                 ${protocolsDb.length === 0 ? '<p>לא הוגדרו פרוטוקולים במערכת.</p>' : ''}
