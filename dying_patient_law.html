@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מארז הדרכה: יישום חוק החולה הנוטה למות</title>
+    <!-- שימוש ב-Tailwind CSS דרך CDN לעיצוב מהיר ונקי -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- הוספת פונט ממשפחת קריאה רשמית (Rubik) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Rubik', sans-serif;
+            background-color: #f9fafb;
+        }
+        .step-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .step-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* עיצוב לאייקונים (SVGs) */
+        .icon {
+            width: 32px;
+            height: 32px;
+            color: #2563eb; /* text-blue-600 */
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- כותרת הדף -->
+    <div class="w-full max-w-5xl text-center mb-10">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight mb-3">
+            מארז הדרכה לצוות המטפל: יישום חוק החולה הנוטה למות
+        </h1>
+        <p class="text-xl text-slate-600 font-medium">
+            העדפות טיפוליות לסוף החיים 2026 - משרד הבריאות
+        </p>
+    </div>
+
+    <!-- מיכל הלומדה המרכזי -->
+    <div class="w-full max-w-5xl bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 flex flex-col min-h-[500px]">
+        
+        <!-- סרגל התקדמות עליון -->
+        <div class="bg-gray-100 flex justify-between items-center border-b border-gray-200 overflow-x-auto" id="progress-bar">
+            <!-- כפתורי השלבים ייווצרו דינמית על ידי JavaScript -->
+        </div>
+
+        <!-- תוכן השלבים -->
+        <div class="flex-1 p-6 sm:p-10 flex flex-col" id="content-container">
+            <!-- התוכן יתחלף כאן על ידי JavaScript -->
+        </div>
+
+        <!-- סרגל ניווט תחתון -->
+        <div class="bg-gray-50 p-4 sm:p-6 border-t border-gray-200 flex justify-between items-center mt-auto">
+            <button id="btn-prev" class="flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                לשלב הקודם
+            </button>
+            
+            <div id="step-counter" class="text-gray-500 font-medium text-sm">
+                1 / 4
+            </div>
+
+            <button id="btn-next" class="flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg">
+                הבא
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+        </div>
+    </div>
+    
+    <!-- חתימה אישית בתחתית -->
+    <div class="mt-8 text-center text-sm text-gray-500 max-w-2xl">
+        <p>
+            הלומדה פותחה ככלי עזר לצוותים המטפלים. קבלת החלטות קליניות בפועל תיעשה אך ורק בהתאם 
+            לחוזר מנכ"ל משרד הבריאות המעודכן, להנחיות המוסדיות ולשיקול דעת קליני פרטני.
+        </p>
+    </div>
+
+    <!-- לוגיקת האפליקציה (JavaScript) -->
+    <script>
+        const googleFormLink = "https://forms.gle/7D847V52GTd9tFn6A";
+
+        // נתוני הלומדה
+        const stepsData = [
+            {
+                id: 1,
+                title: "חוק החולה הנוטה למות",
+                subtitle: "רקע, עקרונות ואתיקה (עדכוני 2026)",
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/></svg>`,
+                htmlContent: `
+                    <div class="space-y-4 text-gray-700">
+                        <p class="text-lg font-medium">ברוכים הבאים למארז ההדרכה המקצועי בנושא העדפות טיפוליות לסוף החיים.</p>
+                        <p>
+                            חוק החולה הנוטה למות נועד להסדיר את הטיפול הרפואי באדם שתוחלת חייו קצרה, תוך יצירת איזון עדין בין <strong>קדושת החיים</strong>, <strong>מניעת סבל</strong>, ו<strong>כיבוד האוטונומיה</strong> של המטופל ורצונו.
+                        </p>
+                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100 mt-4">
+                            <h4 class="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                                עקרונות יסוד שעלינו לזכור:
+                            </h4>
+                            <ul class="list-disc list-inside space-y-1 text-sm text-blue-900">
+                                <li><strong>אוטונומיה:</strong> זכותו של אדם בגיר וכשיר להורות מראש על הימנעות מטיפול רפואי מאריך חיים.</li>
+                                <li><strong>טיפול פליאטיבי:</strong> הזכות לקבלת טיפול מקל (כאב, תסמינים, תמיכה נפשית) עומדת בעינה תמיד, גם כשנמנעים מטיפול מאריך חיים.</li>
+                                <li><strong>איסור מוחלט:</strong> החוק בישראל אוסר באופן מוחלט על עשיית פעולה אקטיבית שנועדה להמית את המטופל (המתת חסד/סיוע להתאבדות).</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 2,
+                title: "הגדרות קליניות וסטטוס",
+                subtitle: "זיהוי נכון של המצב הרפואי",
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v8"/><path d="M16 10a4 4 0 0 0 8 0v-1a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2Z"/><path d="M20 18v5"/><path d="M16 13h8"/></svg>`, // Stethoscope close approximation
+                htmlContent: `
+                    <div class="space-y-4 text-gray-700">
+                        <p>
+                            יישום החוק מחייב קביעה רפואית מדויקת על ידי הרופא האחראי, במידת הצורך בהתייעצות עם מומחים או ועדה מוסדית. יש להבחין בין שני מצבים עיקריים:
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-red-700 mb-1">חולה נוטה למות</h5>
+                                <p class="text-sm text-gray-600">
+                                    מטופל הסובל מבעיה רפואית חשוכת מרפא, ושאף אם יינתן לו טיפול רפואי, <strong>תוחלת חייו אינה עולה על 6 חודשים</strong>. במצב זה ניתן להימנע מטיפולים מסוימים (כגון החייאה או הנשמה) בהתאם לרצונו המוכח של המטופל.
+                                </p>
+                            </div>
+                            <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                                <h5 class="font-bold text-red-900 mb-1">חולה בשלב סופי</h5>
+                                <p class="text-sm text-gray-600">
+                                    חולה נוטה למות שהמערכות החיוניות בגופו קורסות, ו<strong>תוחלת חייו אינה עולה על שבועיים</strong>. בשלב זה, סמכויות ההימנעות רחבות יותר, ולעיתים ניתן גם להימנע מטיפולים נלווים (נוזלים, הזנה מלאכותית) אם הם גורמים סבל למטופל.
+                                </p>
+                            </div>
+                            <div class="bg-white border border-gray-200 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow md:col-span-2">
+                                <h5 class="font-bold text-gray-800 mb-1">תפקיד האחות המוסמכת והצוות המטפל</h5>
+                                <p class="text-sm text-gray-600">
+                                    זיהוי מוקדם של מטופלים המתקרבים לסוף חייהם מחייב אותנו כצוות ליזום שיח רגיש ומקצועי (Advance Care Planning), לתעד שינויים קליניים באופן קפדני, ולהוות חוליה מקשרת בין המשפחה לרופא האחראי.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                id: 3,
+                title: "הנחיות רפואיות ומיופה כוח",
+                subtitle: "הפרקטיקה של כיבוד רצון המטופל",
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+                htmlContent: `
+                    <div class="space-y-4 text-gray-700">
+                        <p>
+                            כדי לפעול בהתאם לחוק במצב שבו המטופל אינו כשיר להחליט (למשל, דמנציה מתקדמת או חוסר הכרה), עלינו להסתמך על תיעוד רשמי שנעשה מראש או על מיופה כוח.
+                        </p>
+                        <ul class="space-y-3 mt-4">
+                            <li class="flex gap-3 items-start">
+                                <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                <div>
+                                    <strong>הנחיות רפואיות מקדימות:</strong> 
+                                    <span class="block text-sm text-gray-600">טופס רשמי של משרד הבריאות בו המטופל פירט באילו מצבים ירצה או לא ירצה טיפול מאריך חיים. <strong>חובה:</strong> לוודא שהטופס בתוקף (תקף ל-5 שנים אלא אם חודש).</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                <div>
+                                    <strong>ייפוי כוח רפואי (לפי חוק החולה הנוטה למות):</strong> 
+                                    <span class="block text-sm text-gray-600">מינוי אדם ספציפי (לא בהכרח בן משפחה) המוסמך לקבל החלטות על טיפול מאריך חיים במקום המטופל. יש להבדיל זאת מייפוי כוח רפואי רגיל.</span>
+                                </div>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                                <div>
+                                    <strong>בירור במאגר הארצי:</strong> 
+                                    <span class="block text-sm text-gray-600">בעת קבלה למוסד או שינוי משמעותי במצב הקליני, חובה על הצוות הרפואי לבדוק האם המטופל מופיע במאגר ההנחיות המקדימות של משרד הבריאות.</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                id: 4,
+                title: "תרגול מעשי",
+                subtitle: "תיאור מקרה קליני אינטראקטיבי",
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-9 5 18 2-9h5"/><path d="M22 12h-4"/></svg>`,
+                htmlContent: `
+                    <div id="case-study-root" class="space-y-4">
+                        <!-- תוכן המקרה יוזרק לכאן דינמית -->
+                    </div>
+                `
+            },
+            {
+                id: 5,
+                title: "מבחן ידע ומשוב",
+                subtitle: "הערכת הטמעת נהלי 2026",
+                iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>`,
+                htmlContent: `
+                    <div class="flex flex-col items-center justify-center text-center space-y-6 py-8">
+                        <div class="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mb-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800">הגעת לסיום מודול ההדרכה!</h3>
+                        <p class="text-gray-600 max-w-md mx-auto text-lg">
+                            כעת, על מנת להשלים את הלומדה ולוודא הבנה מלאה של ההנחיות ליישום חוק החולה הנוטה למות, אנא עברו למבחן הידע.
+                        </p>
+                        
+                        <a 
+                            href="${googleFormLink}" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            class="mt-6 flex items-center justify-center gap-2 bg-blue-700 hover:bg-blue-800 text-white text-lg font-semibold py-4 px-8 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+                            מעבר לשאלון המעשי (Google Forms)
+                        </a>
+                        
+                        <p class="text-sm text-gray-400 mt-4">
+                            הטופס ייפתח בחלון חדש. הנתונים ישמשו למטרות בקרה ושיפור איכות הטיפול במחלקה.
+                        </p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentStep = 0;
+        
+        // --- לוגיקת תיאור המקרה (Case Study) ---
+        const caseQuestions = [
+            {
+                scenario: "גברת ל', בת 88, מאובחנת עם דמנציה בשלב מתקדם מאוד, מאושפזת במחלקתך עקב אירוע מוחי נרחב (CVA) המלווה בהפרעת בליעה קשה. בתיקה הרפואי ישנן 'הנחיות רפואיות מקדימות' בתוקף, בהן היא מסרבת מפורשות להזנה מלאכותית (PEG/זונדה) ולכל פעולת החייאה. משפחתה המודאגת דורשת להכניס זונדה באופן מיידי.",
+                q: "כיצד על הצוות הרפואי והסיעודי לנהוג לאור דרישת המשפחה?",
+                options: [
+                    "יש להישמע למשפחה, שכן במצבים של סכנת חיים רצון המשפחה גובר על הנחיות מקדימות.",
+                    "ההנחיות הרפואיות המקדימות התקפות של המטופלת מחייבות את הצוות וגוברות על רצון המשפחה.",
+                    "יש להמתין לפסיקת בית משפט או פנייה לוועדה מוסדית לפני קבלת החלטה כלשהי."
+                ],
+                correctIndex: 1,
+                explanation: "נכון מאוד! חוק החולה הנוטה למות קובע כי אוטונומיית המטופל (כפי שבאה לידי ביטוי בהנחיות מקדימות תקינות ובתוקף) היא העיקרון המנחה, וגוברת על רצון המשפחה במקרים של הימנעות מטיפול מאריך חיים."
+            },
+            {
+                scenario: "המשך מקרה: לאור החלטת הצוות, המטופלת אינה מקבלת הזנה מלאכותית ומצבה הולך ומידרדר. היא מתחילה להראות סימני כאב ואי שקט ניכרים.",
+                q: "האם מותר מתן טיפול תרופתי פליאטיבי (כגון מורפין) להקלת הסבל, גם אם ישנו חשש עקיף שטיפול זה עלול לזרז את מותה?",
+                options: [
+                    "כן. החוק מחייב הקלת סבל פליאטיבית בכל מקרה, גם אם קיים סיכון עקיף לקיצור החיים, כל עוד המטרה אינה המתה (עקרון 'האפקט הכפול').",
+                    "לא. אסור לתת כל טיפול שעלול לזרז את המוות, זה נחשב לעבירה פלילית של המתת חסד.",
+                    "רק אם בני המשפחה חותמים על טופס הסכמה מיוחד מול עורך דין."
+                ],
+                correctIndex: 0,
+                explanation: "מדויק. עקרון 'האפקט הכפול' (Double Effect) מעוגן היטב מקצועית ואתית בחוק ובפסיקה. מותר (ואף חובה מוסרית) לתת טיפול פליאטיבי (מורפין, תרופות הרגעה) כדי למנוע סבל מחולה נוטה למות, כל עוד הכוונה הבלעדית היא הקלת הסבל ולא ביצוע המתה אקטיבית."
+            }
+        ];
+        
+        let currentCaseQ = 0;
+
+        function renderCaseStudy() {
+            const container = document.getElementById('case-study-root');
+            if (!container) return;
+            
+            if (currentCaseQ >= caseQuestions.length) {
+                container.innerHTML = `
+                    <div class="bg-green-50 border border-green-200 rounded-lg p-6 text-center animate-fadeIn">
+                        <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-green-800 mb-2">מצוין! סיימת את ניתוח המקרה הקליני.</h3>
+                        <p class="text-green-700">הפגנת ידע מצוין ביישום החוק במצבי אמת במחלקה.</p>
+                        <button onclick="document.getElementById('btn-next').click()" class="mt-4 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors shadow-md">המשך למבחן המסכם</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const qData = caseQuestions[currentCaseQ];
+            
+            let optionsHtml = '';
+            qData.options.forEach((opt, idx) => {
+                optionsHtml += `
+                    <button onclick="handleCaseAnswer(${idx})" class="w-full text-right p-4 border border-gray-200 rounded-lg hover:bg-blue-50 hover:border-blue-300 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 mb-3 text-gray-700 font-medium">
+                        ${idx + 1}. ${opt}
+                    </button>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-5 mb-6 text-yellow-900 shadow-sm">
+                    <h4 class="font-bold flex items-center gap-2 mb-2">
+                        <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        נתוני המקרה הקליני:
+                    </h4>
+                    <p class="text-sm leading-relaxed">${qData.scenario}</p>
+                </div>
+                
+                <div class="mb-4">
+                    <h4 class="text-lg font-bold text-slate-800 mb-4">${qData.q}</h4>
+                    <div id="case-options">
+                        ${optionsHtml}
+                    </div>
+                </div>
+                <div id="case-feedback" class="hidden rounded-lg p-4 mt-4 animate-fadeIn"></div>
+            `;
+        }
+
+        function handleCaseAnswer(selectedIndex) {
+            const qData = caseQuestions[currentCaseQ];
+            const feedbackEl = document.getElementById('case-feedback');
+            const optionsContainer = document.getElementById('case-options');
+            
+            // השבתת הכפתורים לאחר בחירה
+            const buttons = optionsContainer.querySelectorAll('button');
+            buttons.forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === qData.correctIndex) {
+                    btn.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                    btn.classList.remove('hover:bg-blue-50', 'hover:border-blue-300');
+                } else if (idx === selectedIndex) {
+                    btn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                    btn.classList.remove('hover:bg-blue-50', 'hover:border-blue-300');
+                } else {
+                    btn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            });
+
+            feedbackEl.classList.remove('hidden', 'bg-green-50', 'text-green-800', 'bg-red-50', 'text-red-800');
+            
+            if (selectedIndex === qData.correctIndex) {
+                feedbackEl.classList.add('bg-green-50', 'border', 'border-green-200', 'text-green-800');
+                feedbackEl.innerHTML = `
+                    <div class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                        תשובה נכונה!
+                    </div>
+                    <p class="text-sm">${qData.explanation}</p>
+                    <button onclick="nextCaseQuestion()" class="mt-3 text-sm font-bold text-green-900 underline hover:text-green-700">המשך לשאלה הבאה</button>
+                `;
+            } else {
+                feedbackEl.classList.add('bg-red-50', 'border', 'border-red-200', 'text-red-800');
+                feedbackEl.innerHTML = `
+                    <div class="font-bold mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        תשובה שגויה.
+                    </div>
+                    <p class="text-sm">${qData.explanation}</p>
+                    <button onclick="nextCaseQuestion()" class="mt-3 text-sm font-bold text-red-900 underline hover:text-red-700">הבנתי, המשך הלאה</button>
+                `;
+            }
+        }
+
+        function nextCaseQuestion() {
+            currentCaseQ++;
+            renderCaseStudy();
+        }
+        // ---------------------------------------------
+
+        // רכיבי DOM
+        const progressBarContainer = document.getElementById('progress-bar');
+        const contentContainer = document.getElementById('content-container');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const stepCounter = document.getElementById('step-counter');
+
+        // פונקציה לאתחול סרגל ההתקדמות
+        function initProgressBar() {
+            progressBarContainer.innerHTML = '';
+            stepsData.forEach((step, index) => {
+                const stepElement = document.createElement('div');
+                stepElement.className = `flex-1 min-w-[120px] flex flex-col items-center py-3 px-2 border-b-4 transition-colors duration-300 cursor-pointer sm:cursor-default`;
+                stepElement.onclick = () => goToStep(index);
+                
+                stepElement.innerHTML = `
+                    <div class="step-title-text text-sm md:text-base font-bold">
+                        שלב ${step.id}
+                    </div>
+                    <div class="hidden md:block text-xs text-gray-500 truncate w-full text-center px-1">
+                        ${step.title}
+                    </div>
+                `;
+                progressBarContainer.appendChild(stepElement);
+            });
+        }
+
+        // פונקציה לעדכון התצוגה לפי השלב הנוכחי
+        function renderStep() {
+            const step = stepsData[currentStep];
+            
+            // עדכון סרגל התקדמות
+            const progressTabs = progressBarContainer.children;
+            for (let i = 0; i < progressTabs.length; i++) {
+                const tab = progressTabs[i];
+                const titleText = tab.querySelector('.step-title-text');
+                
+                // איפוס מחלקות
+                tab.className = `flex-1 min-w-[120px] flex flex-col items-center py-3 px-2 border-b-4 transition-colors duration-300 cursor-pointer sm:cursor-default`;
+                
+                if (i === currentStep) {
+                    tab.classList.add('border-blue-600', 'bg-blue-50');
+                    titleText.className = 'step-title-text text-sm md:text-base font-bold text-blue-800';
+                } else if (i < currentStep) {
+                    tab.classList.add('border-green-400', 'opacity-70');
+                    titleText.className = 'step-title-text text-sm md:text-base font-bold text-gray-500';
+                } else {
+                    tab.classList.add('border-transparent', 'opacity-40', 'hover:bg-gray-50');
+                    titleText.className = 'step-title-text text-sm md:text-base font-bold text-gray-500';
+                }
+            }
+
+            // יצירת תוכן השלב עם אנימציה
+            contentContainer.innerHTML = `
+                <div class="step-content active">
+                    <div class="flex items-center gap-4 mb-6 pb-4 border-b border-gray-100">
+                        <div class="p-3 bg-blue-50 rounded-xl">
+                            ${step.iconSvg}
+                        </div>
+                        <div>
+                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">
+                                ${step.title}
+                            </h2>
+                            <h3 class="text-lg text-gray-500 font-medium mt-1">
+                                ${step.subtitle}
+                            </h3>
+                        </div>
+                    </div>
+                    <div>
+                        ${step.htmlContent}
+                    </div>
+                </div>
+            `;
+            
+            // אתחול רכיב תיאור המקרה במידה ואנחנו בשלב 4 (אינדקס 3)
+            if (currentStep === 3) {
+                currentCaseQ = 0; 
+                renderCaseStudy();
+            }
+
+            // עדכון מונה שלבים
+            stepCounter.textContent = `${currentStep + 1} / ${stepsData.length}`;
+
+            // עדכון מצב כפתורים
+            if (currentStep === 0) {
+                btnPrev.disabled = true;
+                btnPrev.className = "flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200 bg-gray-200 text-gray-400 cursor-not-allowed";
+            } else {
+                btnPrev.disabled = false;
+                btnPrev.className = "flex items-center gap-2 px-5 py-2.5 rounded-lg font-medium transition-all duration-200 bg-white text-gray-700 border border-gray-300 hover:bg-gray-100 hover:text-blue-600";
+            }
+
+            if (currentStep === stepsData.length - 1) {
+                btnNext.disabled = true;
+                btnNext.className = "flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all duration-200 bg-gray-200 text-gray-400 cursor-not-allowed hidden sm:flex";
+            } else {
+                btnNext.disabled = false;
+                btnNext.className = "flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium transition-all duration-200 bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg";
+            }
+        }
+
+        // פונקציות ניווט
+        function goToStep(index) {
+            if (index >= 0 && index < stepsData.length) {
+                currentStep = index;
+                renderStep();
+            }
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (currentStep < stepsData.length - 1) {
+                goToStep(currentStep + 1);
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 0) {
+                goToStep(currentStep - 1);
+            }
+        });
+
+        // אתחול האפליקציה
+        initProgressBar();
+        renderStep();
+        
+    </script>
+</body>
+</html>

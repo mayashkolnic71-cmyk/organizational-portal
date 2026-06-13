@@ -10,8 +10,13 @@ function initTrainingsDb() {
     const stored = localStorage.getItem('clinic_trainings');
     if (stored) {
         trainingsDb = JSON.parse(stored);
+        if (!trainingsDb.find(t => t.url === 'dying_patient_law.html')) {
+            trainingsDb.unshift({ id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true });
+            localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
+        }
     } else {
         trainingsDb = [
+            { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true },
             { id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false },
             { id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false }
         ];
