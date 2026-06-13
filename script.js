@@ -1197,7 +1197,7 @@ function renderProtocols() {
                 ${protocolsDb.map(p => `
                     <div class="card" style="margin-bottom: 15px;">
                         <h3 style="margin-bottom: 10px;">${p.title}</h3>
-                        ${p.link.startsWith('http') ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / פרוטוקול ↗</a>` : `<p>${p.link}</p>`}
+                        ${p.link.startsWith('http') || p.link.endsWith('.html') ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / פרוטוקול ↗</a>` : `<p>${p.link}</p>`}
                     </div>
                 `).join('')}
                 ${protocolsDb.length === 0 ? '<p>לא הוגדרו פרוטוקולים במערכת.</p>' : ''}
