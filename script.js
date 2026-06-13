@@ -26,8 +26,22 @@ let trainingsAnswersDb = [];
 
 function initProtocolsDb() {
     const stored = localStorage.getItem('clinic_protocols');
-    if (stored) protocolsDb = JSON.parse(stored);
-    else { protocolsDb = []; localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb)); }
+    if (stored) {
+        protocolsDb = JSON.parse(stored);
+        if (!protocolsDb.find(p => p.link === 'frailty.html')) {
+            protocolsDb.unshift({ id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' });
+        }
+        if (!protocolsDb.find(p => p.link === 'aspiration.html')) {
+            protocolsDb.unshift({ id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' });
+        }
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
+    } else {
+        protocolsDb = [
+            { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' },
+            { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' }
+        ];
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
+    }
 }
 initProtocolsDb();
 

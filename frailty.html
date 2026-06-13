@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<!--
+Palette: Vibrant Clinical (Blue/Emerald/Amber/Red).
+Plan: 
+1. Header & Introduction to the Frailty paradigm shift.
+2. Section 1: The Trajectory of Aging (Preventability) - Line Chart (Inform/Change).
+3. Section 2: System Transformation (Single-disease vs. Frailty-Attuned) - Radar Chart (Compare).
+4. Section 3: The CGA Approach (Holistic dimensions) - Doughnut Chart (Organize/Composition).
+5. Section 4: "Less is More" & Resource Allocation - Stacked Bar Chart (Relationships).
+6. Section 5: Key Enablers (Workforce, Tech, Partnerships) - Tailwind CSS Grid/Cards (Organize).
+SVG & Mermaid Usage Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output. Visualizations rely purely on Canvas (Chart.js), standard HTML/CSS, and Unicode characters.
+Chart Justifications:
+- Trajectory Chart -> Goal: Change -> Line Chart -> Shows decline vs intervention over time. No SVG.
+- System Shift Chart -> Goal: Compare -> Radar Chart -> Compares multiple dimensions of care models. No SVG.
+- CGA Domains -> Goal: Organize -> Doughnut Chart -> Shows parts of a whole assessment. No SVG.
+- Less is More -> Goal: Relationships -> Stacked Bar -> Shows inverse relationship between aggressive care and supportive care across frailty severity. No SVG.
+-->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדיניות שבריריות (Frailty): עקרונות BGS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-gradient-to-l from-blue-900 to-blue-700 text-white py-12 px-6 shadow-lg mb-10">
+        <div class="max-w-6xl mx-auto text-center">
+            <span class="inline-block py-1 px-3 rounded-full bg-blue-800 text-blue-200 text-sm font-semibold mb-4 tracking-wide border border-blue-600">מסמך מדיניות אופרטיבי</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">מעבר למערכת "מכוונת שבריריות"</h1>
+            <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto opacity-90">תובנות ומסרי מפתח ליישום קליני ומערכתי מבוססי ארגון הגריאטריה הבריטי (BGS)</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+
+        <section class="mb-12 glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4 border-b-2 border-blue-200 pb-2">מבוא ושינוי פרדיגמה</h2>
+            <p class="text-lg leading-relaxed text-gray-700 mb-6">
+                שבריריות (Frailty) אינה גזירת גורל טבעית של ההזדקנות, אלא תסמונת קלינית דינמית המאופיינת בירידה ברזרבות הפיזיולוגיות. הבנה זו מחייבת מעבר ארגוני ממודל המתמקד ב"מחלה יחידה" (Single-disease) למערכת "מכוונת שבריריות" (Frailty-attuned). זיהוי מוקדם והתערבות פרואקטיבית יכולים למתן, ואף להפוך, את מסלול ההידרדרות.
+            </p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mt-8">
+                
+                <div class="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <h3 class="text-xl font-semibold text-center text-emerald-700 mb-2">מסלול ההזדקנות והפוטנציאל למניעה</h3>
+                    <p class="text-sm text-gray-600 text-center mb-4">השפעת התערבות מוקדמת (תזונה, פעילות גופנית) על שימור הרזרבה הפיזיולוגית לאורך זמן, בניגוד לתפיסה הפטליסטית.</p>
+                    <div class="flex-grow flex items-center justify-center">
+                        <div class="chart-container">
+                            <canvas id="trajectoryChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <h3 class="text-xl font-semibold text-center text-amber-600 mb-2">השינוי המערכתי הנדרש</h3>
+                    <p class="text-sm text-gray-600 text-center mb-4">השוואה בין ממדי הטיפול במודל המסורתי (שירות תגובתי ומפוצל) אל מול מודל מכוון שבריריות.</p>
+                    <div class="flex-grow flex items-center justify-center">
+                        <div class="chart-container">
+                            <canvas id="systemShiftChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4 border-b-2 border-blue-200 pb-2">כלים קליניים: זיהוי מוקדם ו-CGA</h2>
+            <p class="text-lg leading-relaxed text-gray-700 mb-6">
+                יישום המדיניות נשען על שני צירי פעולה מקבילים: זיהוי אוכלוסייתי מוקדם (למשל באמצעות ה-Electronic Frailty Index) המאפשר הקצאת משאבים חכמה, וביצוע "הערכה גריאטרית כוללנית" (CGA) המהווה את הסטנדרט המוזהב לניהול המורכבות הקלינית. ה-CGA מפרק את צרכי המטופל לממדים הניתנים למדידה וטיפול.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
+                <div class="flex flex-col h-full bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+                    <h3 class="text-xl font-semibold text-center text-blue-600 mb-2">מרכיבי ה-CGA (הערכה גריאטרית כוללנית)</h3>
+                    <p class="text-sm text-gray-600 text-center mb-4">גישה רב-תחומית המבטיחה טיפול הוליסטי מותאם אישית למניעת התדרדרות מיותרת.</p>
+                    <div class="flex-grow flex items-center justify-center">
+                        <div class="chart-container">
+                            <canvas id="cgaDoughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col justify-center gap-6">
+                    <div class="bg-blue-50 rounded-lg p-5 border-r-4 border-blue-500 shadow-sm">
+                        <h4 class="font-bold text-lg text-blue-900 mb-1">🔍 זיהוי מוקדם (Early Identification)</h4>
+                        <p class="text-gray-700">העברת המוקד מטיפול במשברים (Crisis management) בסביבת המיון, לאיתור פרואקטיבי בקהילה. מונע בדיקות מיותרות ואשפוזים פולי-פארמצבטיים.</p>
+                    </div>
+                    <div class="bg-emerald-50 rounded-lg p-5 border-r-4 border-emerald-500 shadow-sm">
+                        <h4 class="font-bold text-lg text-emerald-900 mb-1">👥 שותפויות פנים וחוץ מערכתיות</h4>
+                        <p class="text-gray-700">ה-CGA דורש עבודה הרמונית בין רופאים, אחיות, עובדים סוציאליים ומרפאים בעיסוק. שיתוף פעולה הדוק עם שירותי הרווחה הוא קריטי לרצף הטיפול.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="mb-12 glass-card rounded-2xl p-6 md:p-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-4 border-b-2 border-blue-200 pb-2">קיימות המערכת ופרדיגמת "פחות זה יותר"</h2>
+            <p class="text-lg leading-relaxed text-gray-700 mb-6">
+                ככל שחומרת השבריריות עולה, ישנה סכנה שהתערבויות רפואיות אגרסיביות (כגון פרוצדורות פולשניות או ריבוי תרופות) יגרמו יותר נזק מתועלת. מערכת מקיימת ("Sustainable NHS/Healthcare") יודעת מתי להסיט משאבים מטיפולים פולשניים לעבר תמיכה תפקודית, ניהול סימפטומים ותמיכה פליאטיבית בקהילה. גישה זו שומרת על איכות חיי המטופל ומפחיתה עומס כלכלי מיותר ממוסדות האשפוז האקוטיים.
+            </p>
+
+            <div class="w-full bg-white rounded-xl shadow-sm border border-gray-100 p-6 mt-6">
+                 <h3 class="text-xl font-semibold text-center text-red-600 mb-2">גישת "פחות זה יותר" (Less is More) וניהול סיכונים</h3>
+                 <p class="text-sm text-gray-600 text-center mb-6">יחס הפוך: ככל שהשבריריות מחמירה, יש להגביר את התמיכה ההוליסטית/פליאטיבית ולשקול צמצום של התערבויות אקוטיות העלולות להזיק.</p>
+                 <div class="chart-container" style="max-width: 800px;">
+                    <canvas id="lessIsMoreChart"></canvas>
+                 </div>
+            </div>
+        </section>
+
+        <section class="mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <div class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl shadow-md border border-indigo-100 text-center transform transition duration-300 hover:scale-105">
+                    <div class="text-4xl mb-3">🎓</div>
+                    <h3 class="font-bold text-indigo-900 text-lg mb-2">הכשרת כוח אדם</h3>
+                    <p class="text-sm text-gray-600">ידע, מיומנויות וגישה נכונה למתן טיפול איכותי בקרב כלל צוותי הבריאות, ולא רק בקרב מומחים לגריאטריה.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-teal-50 to-white p-6 rounded-2xl shadow-md border border-teal-100 text-center transform transition duration-300 hover:scale-105">
+                    <div class="text-4xl mb-3">📱</div>
+                    <h3 class="font-bold text-teal-900 text-lg mb-2">חדשנות דיגיטלית</h3>
+                    <p class="text-sm text-gray-600">הכללה של אוכלוסיית הקשישים בפיתוח כלים דיגיטליים למעקב (Remote monitoring) וממשקי רשומות רפואיות.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-amber-50 to-white p-6 rounded-2xl shadow-md border border-amber-100 text-center transform transition duration-300 hover:scale-105">
+                    <div class="text-4xl mb-3">🤝</div>
+                    <h3 class="font-bold text-amber-900 text-lg mb-2">הבנה חברתית רחבה</h3>
+                    <p class="text-sm text-gray-600">העלאת מודעות ציבורית והפחתת סטיגמות, מתוך הבנה שזהו מצב קליני ארוך טווח המשפיע על משפחות וקהילות שלמות.</p>
+                </div>
+
+                <div class="bg-gradient-to-br from-rose-50 to-white p-6 rounded-2xl shadow-md border border-rose-100 text-center transform transition duration-300 hover:scale-105">
+                    <div class="text-4xl mb-3">⚖️</div>
+                    <h3 class="font-bold text-rose-900 text-lg mb-2">מחקר מכליל</h3>
+                    <p class="text-sm text-gray-600">שילוב הוגן של מבוגרים חיים עם שבריריות בניסויים קליניים כדי להבטיח רפואה מבוססת ראיות מדויקת ורלוונטית להם.</p>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            const wrapLabel = (label) => {
+                if (typeof label !== 'string' || label.length <= 16) return label;
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + word).length > 16) {
+                        if (currentLine) lines.push(currentLine.trim());
+                        currentLine = word + ' ';
+                    } else {
+                        currentLine += word + ' ';
+                    }
+                });
+                if (currentLine) lines.push(currentLine.trim());
+                return lines;
+            };
+
+            const commonTooltipConfig = {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    },
+                    textDirection: 'rtl'
+                }
+            };
+
+            Chart.defaults.font.family = "'Heebo', sans-serif";
+            Chart.defaults.color = '#475569';
+
+            const ctxTrajectory = document.getElementById('trajectoryChart').getContext('2d');
+            new Chart(ctxTrajectory, {
+                type: 'line',
+                data: {
+                    labels: ['גיל 65', 'גיל 70', 'גיל 75', 'גיל 80', 'גיל 85', 'גיל 90'].map(wrapLabel),
+                    datasets: [
+                        {
+                            label: 'הזדקנות ללא התערבות (הידרדרות טבעית)',
+                            data: [100, 90, 75, 55, 35, 20],
+                            borderColor: '#ef4444', 
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'הזדקנות עם התערבות (מניעה/שיקום)',
+                            data: [100, 95, 88, 78, 65, 55],
+                            borderColor: '#10b981', 
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { ...commonTooltipConfig, legend: { position: 'bottom', rtl: true } },
+                    scales: {
+                        y: { beginAtZero: true, max: 110, title: { display: true, text: 'רזרבה פיזיולוגית (%)' } },
+                        x: { reverse: true }
+                    }
+                }
+            });
+
+            const ctxSystemShift = document.getElementById('systemShiftChart').getContext('2d');
+            new Chart(ctxSystemShift, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        'איתור מוקדם ופרואקטיבי',
+                        'טיפול הוליסטי ורב-תחומי',
+                        'רצף טיפולי (קהילה-רווחה)',
+                        'מיקוד בשימור תפקודי',
+                        'הפחתת התערבויות פולשניות'
+                    ].map(wrapLabel),
+                    datasets: [
+                        {
+                            label: 'מודל מסורתי (Single-Disease)',
+                            data: [20, 30, 25, 40, 20],
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            borderColor: '#ef4444',
+                            pointBackgroundColor: '#ef4444',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'מערכת מכוונת שבריריות (Frailty-Attuned)',
+                            data: [90, 95, 85, 90, 80],
+                            backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                            borderColor: '#3b82f6',
+                            pointBackgroundColor: '#3b82f6',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { ...commonTooltipConfig, legend: { position: 'bottom', rtl: true } },
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: { display: false }
+                        }
+                    }
+                }
+            });
+
+            const ctxCGA = document.getElementById('cgaDoughnutChart').getContext('2d');
+            new Chart(ctxCGA, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                        'רפואי (מחלות, ריבוי תרופות)',
+                        'תפקודי (ניידות, פעולות יומיום, נפילות)',
+                        'פסיכולוגי (קוגניציה, דמנציה, מצב רוח)',
+                        'חברתי וסביבתי (בדידות, רווחה, רשת תמיכה)'
+                    ].map(wrapLabel),
+                    datasets: [{
+                        data: [25, 25, 25, 25],
+                        backgroundColor: [
+                            '#ef4444', 
+                            '#f59e0b', 
+                            '#10b981', 
+                            '#3b82f6'  
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        ...commonTooltipConfig,
+                        legend: { position: 'right', rtl: true }
+                    }
+                }
+            });
+
+            const ctxLessIsMore = document.getElementById('lessIsMoreChart').getContext('2d');
+            new Chart(ctxLessIsMore, {
+                type: 'bar',
+                data: {
+                    labels: ['שבריריות קלה', 'שבריריות מתונה', 'שבריריות קשה'].map(wrapLabel),
+                    datasets: [
+                        {
+                            label: 'התערבויות רפואיות פולשניות ומורכבות',
+                            data: [80, 50, 20],
+                            backgroundColor: '#ef4444',
+                            stack: 'Stack 0',
+                        },
+                        {
+                            label: 'תמיכה הוליסטית, שימור תפקודי ופליאציה',
+                            data: [20, 50, 80],
+                            backgroundColor: '#10b981',
+                            stack: 'Stack 0',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y', 
+                    plugins: {
+                        ...commonTooltipConfig,
+                        legend: { position: 'bottom', rtl: true }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            max: 100,
+                            title: { display: true, text: 'משקל המאמץ הטיפולי המומלץ (%)' },
+                            reverse: true
+                        },
+                        y: {
+                            stacked: true,
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

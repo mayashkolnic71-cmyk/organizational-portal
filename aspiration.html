@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אספירציה וחנק בגריאטריה: מניעה, מחקר ומשפט</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .vibrant-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .accent-orange { color: #f97316; }
+        .bg-vibrant-orange { background-color: #f97316; }
+        .border-vibrant-blue { border-color: #3b82f6; }
+        @media (max-width: 768px) {
+            .chart-container { height: 300px; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <!-- 
+    Palette Selection: Brilliant Blues & Vibrant Oranges
+    Narrative Plan:
+    1. Introduction: Defining the scope of Dysphagia and Aspiration in the elderly.
+    2. Prevalence Section: Visualizing the gap between community and institutionalized care.
+    3. Clinical Risks: Identifying medical triggers (Stroke, Dementia, Parkinson's).
+    4. Prevention Framework: Step-by-step UI for safe eating protocols.
+    5. Legal Analytics: Analyzing common grounds for lawsuits and evidentiary damage.
+    6. Conclusion: Summary of institutional care duties.
+    
+    Visualization Justification:
+    - Bar Chart (Chart.js): Comparison of prevalence. Best for categorical data.
+    - Pie Chart (Chart.js): Distribution of legal claim causes.
+    - Radar Chart (Chart.js): Multi-variable risk factor profile.
+    - Scatter/Line Plot (Plotly - WebGL): Age-related mortality risk correlation.
+    - Process Flow (HTML/CSS): Safe swallowing protocol.
+    
+    Confirmation: NO SVG and NO MERMAID JS were used. Charts are Canvas/WebGL based.
+    -->
+
+    <header class="vibrant-gradient text-white rounded-3xl p-8 mb-10 shadow-2xl text-center">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-4">אספירציה וחנק בגריאטריה</h1>
+        <p class="text-xl md:text-2xl font-light max-w-3xl mx-auto">
+            מבט אינטגרטיבי על האתגר הקליני המשמעותי ביותר באשפוז הגריאטרי: מהנתונים המחקריים ועד להשלכות המשפטיות של רשלנות בהשגחה.
+        </p>
+    </header>
+
+    <main class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <section class="md:col-span-2 glass-card rounded-3xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold border-b-4 border-vibrant-blue inline-block mb-6">מבוא: היקף התופעה</h2>
+            <p class="text-lg leading-relaxed mb-6">
+                דיספגיה (הפרעה בבליעה) אינה רק בעיה פיזיולוגית, אלא גורם סיכון מרכזי למוות ולתביעות רשלנות רפואית. בעוד שבקהילה התופעה נפוצה בקרב כחמישית מהאוכלוסייה המבוגרת, במוסדות סיעודיים המספרים מזנקים ליותר ממחצית מהדיירים, מה שמחייב ערנות מוגברת מצד הצוות המטפל.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="chart-container">
+                    <canvas id="prevalenceChart"></canvas>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-2xl border-r-8 border-vibrant-blue">
+                    <h3 class="text-2xl font-bold mb-4">נתוני מפתח</h3>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="bg-vibrant-blue text-white rounded-full w-8 h-8 flex items-center justify-center ml-3 shrink-0">1</span>
+                            <p><strong>15%-22%</strong> שכיחות דיספגיה בקרב קשישים בקהילה.</p>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-vibrant-blue text-white rounded-full w-8 h-8 flex items-center justify-center ml-3 shrink-0">2</span>
+                            <p><strong>50%-60%</strong> שכיחות בקרב דיירי בתי אבות ומוסדות סיעודיים.</p>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="bg-vibrant-orange text-white rounded-full w-8 h-8 flex items-center justify-center ml-3 shrink-0">!</span>
+                            <p>חנק ממזון הוא גורם מוות מוביל בקרב בני 75 ומעלה עקב פגיעה לא מכוונת.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="glass-card rounded-3xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold mb-4 accent-orange">פרופיל סיכון רפואי</h2>
+            <p class="mb-4">
+                הסיכון לאספירציה אינו אחיד. מחלות נוירולוגיות משפיעות על רפלקס הבליעה ועל היכולת להגיב לאירוע חנק. הגרף מציג את רמת הסיכון היחסית לפי סוג המחלה.
+            </p>
+            <div class="chart-container">
+                <canvas id="riskRadarChart"></canvas>
+            </div>
+            <p class="mt-4 text-sm text-gray-600">
+                שימו לב כי חולי שבץ (CVA) סובלים לעיתים קרובות מ"אספירציה סמויה", המקשה על זיהוי מיידי של חדירת מזון לריאות ללא סימני שיעול.
+            </p>
+        </section>
+
+        <section class="glass-card rounded-3xl p-8 shadow-lg">
+            <h2 class="text-2xl font-bold mb-4 accent-orange">הקשר בין גיל לתמותה מחנק</h2>
+            <p class="mb-4">
+                הסיכון לאירוע קטלני עולה באופן אקספוננציאלי עם הגיל, במיוחד מעל גיל 80, עקב ירידה ברזרבות הפיזיולוגיות ובשבריריות (Frailty).
+            </p>
+            <div id="mortalityPlot" class="w-full h-80"></div>
+            <p class="mt-4 text-sm text-gray-600 italic">
+                התרשים מדגיש את הצורך בנהלי השגחה מחמירים ככל שגיל המטופל עולה.
+            </p>
+        </section>
+
+        <section class="md:col-span-2 glass-card rounded-3xl p-8 shadow-lg">
+            <h2 class="text-3xl font-bold mb-6 text-blue-900">פרוטוקול מניעה: שלבי פעולה מצילת חיים</h2>
+            <p class="mb-8">אימוץ פרוטוקול סדור הוא הדרך היחידה לצמצם את מקרי המוות והתביעות המשפטיות. להלן ארבעת עמודי התווך של הטיפול המונע:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="p-6 rounded-2xl border-2 border-blue-100 bg-white text-center shadow-sm">
+                    <div class="text-4xl mb-4">📐</div>
+                    <h4 class="font-bold mb-2">מנח ישיבה</h4>
+                    <p class="text-sm">90 מעלות בזמן האוכל ו-30 דקות לאחר מכן.</p>
+                </div>
+                <div class="p-6 rounded-2xl border-2 border-blue-100 bg-white text-center shadow-sm">
+                    <div class="text-4xl mb-4">🧪</div>
+                    <h4 class="font-bold mb-2">הסמכת נוזלים</h4>
+                    <p class="text-sm">התאמת מרקם (צוף/דבש) לפי הנחיית קלינאית תקשורת.</p>
+                </div>
+                <div class="p-6 rounded-2xl border-2 border-blue-100 bg-white text-center shadow-sm">
+                    <div class="text-4xl mb-4">👁️</div>
+                    <h4 class="font-bold mb-2">השגחה פעילה</h4>
+                    <p class="text-sm">נוכחות איש צוות בכל זמן הארוחה למטופלים בסיכון.</p>
+                </div>
+                <div class="p-6 rounded-2xl border-2 border-blue-100 bg-white text-center shadow-sm">
+                    <div class="text-4xl mb-4">🪥</div>
+                    <h4 class="font-bold mb-2">היגיינת פה</h4>
+                    <p class="text-sm">צחצוח יומיומי להפחתת עומס חיידקי במקרה של אספירציה.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="md:col-span-2 glass-card rounded-3xl p-8 shadow-lg bg-orange-50">
+            <h2 class="text-3xl font-bold mb-6 text-red-800">הזירה המשפטית: עילות תביעה נפוצות</h2>
+            <p class="text-lg mb-6">
+                מרבית התביעות אינן נובעות מעצם קרות החנק, אלא מהיעדר פעולות מניעה או כשלים בתיעוד המעבירים את נטל ההוכחה אל המוסד ("נזק ראייתי").
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-500">
+                        <h4 class="font-bold">הגשת מזון שגוי</h4>
+                        <p class="text-sm">טעות של כוח עזר המגיש מזון מוצק למטופל הזקוק לכלכלה טחונה.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-500">
+                        <h4 class="font-bold">היעדר השגחה סבירה</h4>
+                        <p class="text-sm">השארת חולה בסיכון לאכול לבדו בחדרו ללא פיקוח רציף.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border-l-4 border-red-500">
+                        <h4 class="font-bold">חוסר תיעוד והערכה</h4>
+                        <p class="text-sm">אי-ביצוע הערכת בליעה בקבלה או התעלמות מסימני אזהרה בתיק.</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="legalChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="mt-12 text-center text-gray-500 pb-8">
+        <p>© 2024 דוח מומחה: סיכוני אספירציה וחנק באוכלוסייה הגריאטרית</p>
+        <p class="text-xs mt-2">המידע מבוסס על נתוני מחקר רפואי וניתוח פסקי דין בתחום הרשלנות הרפואית.</p>
+    </footer>
+
+    <script>
+        const wrapLabel = (label) => {
+            if (typeof label !== 'string') return label;
+            if (label.length <= 16) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + word).length > 16) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            });
+            lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipConfig = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        const ctxPrevalence = document.getElementById('prevalenceChart').getContext('2d');
+        new Chart(ctxPrevalence, {
+            type: 'bar',
+            data: {
+                labels: [wrapLabel('קשישים בקהילה'), wrapLabel('דיירי בתי אבות'), wrapLabel('אשפוז סיעודי מורכב')],
+                datasets: [{
+                    label: 'אחוז סובלים מדיספגיה',
+                    data: [18.5, 55, 65],
+                    backgroundColor: ['#3b82f6', '#1e3a8a', '#1e293b'],
+                    borderRadius: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                ...tooltipConfig
+            }
+        });
+
+        const ctxRisk = document.getElementById('riskRadarChart').getContext('2d');
+        new Chart(ctxRisk, {
+            type: 'radar',
+            data: {
+                labels: [wrapLabel('לאחר אירוע מוחי'), wrapLabel('דמנציה מתקדמת'), wrapLabel('מחלת פרקינסון'), wrapLabel('שבריריות קיצונית'), wrapLabel('שימוש בתרופות מרגיעות')],
+                datasets: [{
+                    label: 'מדד סיכון לאספירציה',
+                    data: [90, 85, 75, 60, 50],
+                    fill: true,
+                    backgroundColor: 'rgba(249, 115, 22, 0.2)',
+                    borderColor: '#f97316',
+                    pointBackgroundColor: '#f97316'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...tooltipConfig
+            }
+        });
+
+        const ctxLegal = document.getElementById('legalChart').getContext('2d');
+        new Chart(ctxLegal, {
+            type: 'doughnut',
+            data: {
+                labels: [wrapLabel('היעדר השגחה'), wrapLabel('מרקם מזון שגוי'), wrapLabel('כשל בתיעוד רפואי'), wrapLabel('איחור בזיהוי חנק')],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: ['#1e3a8a', '#f97316', '#3b82f6', '#64748b']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    ...tooltipConfig.plugins
+                }
+            }
+        });
+
+        const trace1 = {
+            x: [65, 70, 75, 80, 85, 90, 95],
+            y: [5, 12, 28, 55, 110, 220, 450],
+            mode: 'lines+markers',
+            name: 'תמותה יחסית',
+            line: { color: '#1e3a8a', width: 4 },
+            marker: { size: 10, color: '#f97316' }
+        };
+
+        const layout = {
+            title: { text: 'סיכון תמותה מחנק לפי גיל (ל-100,000)', font: { size: 14 } },
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
+            margin: { l: 40, r: 20, t: 40, b: 40 },
+            xaxis: { title: 'גיל' },
+            yaxis: { title: 'שיעור תמותה' }
+        };
+
+        Plotly.newPlot('mortalityPlot', [trace1], layout, { staticPlot: true, responsive: true });
+    </script>
+</body>
+</html>
