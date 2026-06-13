@@ -1,0 +1,2 @@
+This is a dummy file to test the workspace connection on the D drive.
+זהו קובץ סתם לבדיקת הקישור לתיקייה בכונן D.
