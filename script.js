@@ -524,6 +524,7 @@ function navigate(viewName) {
     
     const contentArea = document.getElementById('content-area');
     if (viewName === 'intro') contentArea.innerHTML = renderIntro();
+    else if (viewName === 'tip') contentArea.innerHTML = renderTip();
     else if (viewName === 'dashboard') contentArea.innerHTML = renderDashboard();
     else if (viewName === 'forms') contentArea.innerHTML = renderForms();
     else if (viewName === 'trainings') contentArea.innerHTML = renderTrainings();
@@ -533,6 +534,60 @@ function navigate(viewName) {
     else if (viewName === 'settings') contentArea.innerHTML = renderSettings();
     else contentArea.innerHTML = `<h2>${viewName}</h2>`;
 }
+
+function renderTip() {
+    setTimeout(() => {
+        fetch('weekly_content.json?t=' + Date.now())
+            .then(res => {
+                if(!res.ok) throw new Error("File not found");
+                return res.json();
+            })
+            .then(data => {
+                document.getElementById('tip-container').innerHTML = `
+                    <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
+                        <h3 style="color: var(--primary-color);">📅 תאריך: ${data.date}</h3>
+                    </div>
+                    <div class="card" style="margin-bottom: 20px; border-right: 4px solid #10b981;">
+                        <h3>📋 נהלי משרד הבריאות</h3>
+                        <p style="white-space: pre-wrap;">${data.protocols}</p>
+                    </div>
+                    <div class="card" style="margin-bottom: 20px; border-right: 4px solid #f59e0b;">
+                        <h3>🎯 שאלת טריוויה</h3>
+                        <p style="white-space: pre-wrap;">${data.trivia}</p>
+                    </div>
+                    <div class="card" style="margin-bottom: 20px; border-right: 4px solid #3b82f6;">
+                        <h3>💡 טיפ שבועי (בטיחות הטיפול)</h3>
+                        <p style="white-space: pre-wrap;">${data.tip}</p>
+                    </div>
+                    <div class="card" style="margin-bottom: 20px; border-right: 4px solid #8b5cf6;">
+                        <h3>📚 מאמר מחקרי חדש</h3>
+                        <p style="white-space: pre-wrap;">${data.research}</p>
+                    </div>
+                `;
+            })
+            .catch(err => {
+                document.getElementById('tip-container').innerHTML = `
+                    <div class="card" style="text-align: center; color: var(--text-secondary);">
+                        <p>הסוכן החכם עדיין לא העלה תוכן שבועי חדש. נסה שוב מאוחר יותר.</p>
+                        <p style="font-size: 12px; margin-top:10px;">שגיאה: ${err.message}</p>
+                    </div>
+                `;
+            });
+    }, 50);
+
+    return `
+        <div class="fade-in">
+            <h2 style="margin-bottom: 20px;">✨ טיפ השבוע מהסוכן החכם</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">התוכן בעמוד זה מיוצר אחת לשבוע באופן אוטומטי על ידי סוכן בינה מלאכותית (Gemini) שסורק ומסכם נתונים.</p>
+            <div id="tip-container">
+                <div style="text-align: center; padding: 40px; font-size: 18px; color: var(--primary-color);">
+                    מטעין נתונים... ⏳
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 
 function renderTrainings() {
 
