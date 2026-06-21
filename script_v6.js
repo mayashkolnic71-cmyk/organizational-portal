@@ -248,8 +248,8 @@ function register() {
 }
 
 function login() {
-    const user = document.getElementById('login-user').value;
-    const pass = document.getElementById('login-pass').value;
+    const user = document.getElementById('login-user').value.trim();
+    const pass = document.getElementById('login-pass').value.trim();
 
     let matchedUser = usersDb.find(u => u.username === user && u.password === pass);
     if (!matchedUser && user === 'admin' && pass === 'admin') {
