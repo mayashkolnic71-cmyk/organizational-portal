@@ -1,4 +1,4 @@
-let currentUser = null;
+﻿let currentUser = null;
 let formsSchema = null;
 let usersDb = [];
 let filledFormsDb = [];
@@ -71,15 +71,17 @@ initProtocolsDb();
     if (t) {
         let arr = JSON.parse(t);
         arr = arr.filter(item => item && item.title);
-        arr.forEach(x => {
-            if (x.title === 'מארז מניעת זיהומים') { x.url = 'internal_quiz_1'; x.icon = '🦠'; x.external = false; }
-            if (x.title === 'מארז לטיפול תומך') { x.url = 'internal_quiz_2'; x.icon = '🫂'; x.external = false; }
-        });
         if (!arr.find(x => x.title === 'מארז מניעת זיהומים')) {
             arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false });
+        } else {
+            let tItem = arr.find(x => x.title === 'מארז מניעת זיהומים');
+            { tItem.url = 'internal_quiz_1'; tItem.icon = '🦠'; tItem.external = false; }
         }
         if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
             arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false });
+        } else {
+            let tItem = arr.find(x => x.title === 'מארז לטיפול תומך');
+            { tItem.url = 'internal_quiz_2'; tItem.icon = '🫂'; tItem.external = false; }
         }
         localStorage.setItem('clinic_trainings', JSON.stringify(arr));
         trainingsDb = arr;
@@ -248,7 +250,7 @@ function login() {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
     }
 
-    if (currentUser.isAdmin || currentUser.role === 'אחות אחראית' || currentUser.role === 'הנהלה') {
+    if (currentUser.isAdmin || currentUser.role === 'אחות אחראית' || currentUser.role === 'הנהלה' || currentUser.username === 'הנהלה' || currentUser.username === 'אחות אחראית') {
         document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'flex');
     } else {
         document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'none');
@@ -1417,4 +1419,7 @@ function removeProtocol(id) {
         navigate('settings');
     }
 }
+
+
+
 
