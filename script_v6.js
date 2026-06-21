@@ -248,11 +248,13 @@ function register() {
 }
 
 function login() {
-    const user = document.getElementById('login-user').value.trim();
+    const rawUser = document.getElementById('login-user').value.trim();
+    const user = rawUser.toLowerCase();
     const pass = document.getElementById('login-pass').value.trim();
 
-    let matchedUser = usersDb.find(u => u.username === user && u.password === pass);
-    if (!matchedUser && user === 'admin' && pass === 'admin') {
+    if (!Array.isArray(usersDb)) usersDb = [];
+    let matchedUser = usersDb.find(u => u && (u.username || '').toLowerCase() === user && u.password === pass);
+    if (!matchedUser && user === 'admin' && pass.toLowerCase() === 'admin') {
         matchedUser = { username: 'admin', password: 'admin', name: 'ד"ר ישראלי', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
     }
 
