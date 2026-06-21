@@ -17,7 +17,7 @@ function initTrainingsDb() {
     } else {
         trainingsDb = [
             { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true },
-            { id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false },
+            { id: 1, title: 'מארז מניעת זיהומים', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: '🦠', external: true },
             { id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false }
         ];
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
@@ -72,10 +72,10 @@ initProtocolsDb();
         let arr = JSON.parse(t);
         arr = arr.filter(item => item && item.title);
         if (!arr.find(x => x.title === 'מארז מניעת זיהומים')) {
-            arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false });
+            arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: '🦠', external: true });
         } else {
             let tItem = arr.find(x => x.title === 'מארז מניעת זיהומים');
-            { tItem.url = 'internal_quiz_1'; tItem.icon = '🦠'; tItem.external = false; }
+            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url'; tItem.icon = '🦠'; tItem.external = true; }
         }
         if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
             arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false });
@@ -1419,6 +1419,7 @@ function removeProtocol(id) {
         navigate('settings');
     }
 }
+
 
 
 
