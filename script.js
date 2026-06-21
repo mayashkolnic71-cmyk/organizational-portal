@@ -48,9 +48,13 @@ function initProtocolsDb() {
         if (!protocolsDb.find(p => p.link === 'Claymation Explainer-saved.mp4')) {
             protocolsDb.unshift({ id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' });
         }
+        if (!protocolsDb.find(p => p.link === 'pharmacological_risk.html')) {
+            protocolsDb.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+        }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
+            { id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' },
             { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' },
             { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' },
             { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' },
@@ -61,6 +65,37 @@ function initProtocolsDb() {
     }
 }
 initProtocolsDb();
+
+(function() {
+    let t = localStorage.getItem('clinic_trainings');
+    if (t) {
+        let arr = JSON.parse(t);
+        arr = arr.filter(item => item && item.title);
+        if (!arr.find(x => x.title === 'מארז מניעת זיהומים')) {
+            arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false });
+        } else {
+            let tItem = arr.find(x => x.title === 'מארז מניעת זיהומים');
+            if (!tItem.url) { tItem.url = 'internal_quiz_1'; tItem.icon = '🦠'; tItem.external = false; }
+        }
+        if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
+            arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false });
+        } else {
+            let tItem = arr.find(x => x.title === 'מארז לטיפול תומך');
+            if (!tItem.url) { tItem.url = 'internal_quiz_2'; tItem.icon = '🫂'; tItem.external = false; }
+        }
+        localStorage.setItem('clinic_trainings', JSON.stringify(arr));
+        trainingsDb = arr;
+    }
+    let p = localStorage.getItem('clinic_protocols');
+    if (p) {
+        let pArr = JSON.parse(p);
+        if (!pArr.find(x => x.link === 'pharmacological_risk.html')) {
+            pArr.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+            localStorage.setItem('clinic_protocols', JSON.stringify(pArr));
+            protocolsDb = pArr;
+        }
+    }
+})();
 
 function initIntroFeedbackDb() {
     const stored = localStorage.getItem('clinic_intro_feedback');
@@ -169,12 +204,17 @@ function register() {
         return;
     }
 
+    let roleName = 'איש צוות';
+    if (roleType === 'admin') roleName = 'מנהל איכות ראשי';
+    else if (roleType === 'charge_nurse') roleName = 'אחות אחראית';
+    else if (roleType === 'management') roleName = 'הנהלה';
+
     const newUser = {
         username: user,
         password: pass,
         name: name,
-        role: roleType === 'admin' ? 'מנהל ראשי' : 'איש צוות',
-        team: roleType === 'admin' ? 'all' : 'internal', // Defaulting to internal for demo
+        role: roleName,
+        team: roleType === 'admin' || roleType === 'management' ? 'all' : 'internal', // Defaulting to internal for demo
         isAdmin: roleType === 'admin'
     };
 
@@ -208,6 +248,12 @@ function login() {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
     } else {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+    }
+
+    if (currentUser.isAdmin || currentUser.role === 'אחות אחראית' || currentUser.role === 'הנהלה') {
+        document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'flex');
+    } else {
+        document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'none');
     }
 
     loadForms().then(() => {
@@ -532,6 +578,13 @@ function navigate(viewName) {
     else if (viewName === 'protocols') contentArea.innerHTML = renderProtocols();
     else if (viewName === 'agent') contentArea.innerHTML = renderAgent();
     else if (viewName === 'settings') contentArea.innerHTML = renderSettings();
+    else if (viewName === 'nurse_management') {
+        contentArea.innerHTML = `
+            <div style="width: 100%; height: 100%; min-height: 800px; border: none; background: white; overflow: hidden; border-radius: 8px;">
+                <iframe src="nurse_management/index.html" width="100%" height="100%" frameborder="0" style="min-height: 800px;"></iframe>
+            </div>
+        `;
+    }
     else contentArea.innerHTML = `<h2>${viewName}</h2>`;
 }
 

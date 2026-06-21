@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ניהול סיכונים פרמקולוגיים באשפוז גריאטרי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body {
+    font-family: 'Assistant', sans-serif;
+    background-color: #f0f9ff;
+    color: #0f172a;
+}
+h1, h2, h3, h4, .heebo-font {
+    font-family: 'Heebo', sans-serif;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 350px;
+    max-height: 400px;
+}
+@media (min-width: 768px) {
+    .chart-container {
+        height: 380px;
+    }
+}
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 25px -5px rgba(12, 74, 110, 0.1), 0 8px 10px -6px rgba(12, 74, 110, 0.1);
+}
+.process-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #0ea5e9;
+    margin: 1rem 0;
+}
+@media (min-width: 768px) {
+    .process-arrow {
+        transform: rotate(-90deg);
+        margin: 0 1rem;
+    }
+}
+/* סגנון למיכל הלוגו */
+.logo-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    border-radius: 50%;
+    padding: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border: 3px solid #0ea5e9;
+    margin-bottom: 20px;
+    width: 120px;
+    height: 120px;
+}
+.logo-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+}
+</style>
+</head>
+<body class="antialiased pb-20">
+
+<header class="bg-[#0c4a6e] text-white py-12 px-6 shadow-xl relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #ffffff 0, #ffffff 2px, transparent 2px, transparent 10px);"></div>
+    <div class="max-w-6xl mx-auto relative z-10 text-center">
+        
+        <!-- מיקום הלוגו -->
+        <div class="logo-container">
+            <!-- יש להחליף את ה-src בנתיב האמיתי של הלוגו -->
+            <img src="https://placehold.co/200x200/ffffff/0c4a6e?text=לוגו+העמותה&font=heebo" alt="">
+        </div>
+
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-[#e0f2fe]">ניהול סיכונים פרמקולוגיים</h1>
+        <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-[#bae6fd]">באשפוז גריאטרי ממושך: מעבר מתיאוריה לפרקטיקה</h2>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto font-medium text-[#f0f9ff] bg-[#075985] p-4 rounded-xl border border-[#0284c7]">
+            מוגש ע"י: העמותה לקידום הסיעוד בגריאטריה בישראל 🩺<br>
+            <span class="text-sm font-normal opacity-90">מבוסס על תובנות מהסימפוזיון האירופי לאיכות ובטיחות ברפואה גריאטרית (EuGMS)</span>
+        </p>
+    </div>
+</header>
+
+<main class="max-w-6xl mx-auto px-6 mt-12 space-y-16">
+
+    <section class="text-center max-w-4xl mx-auto">
+        <p class="text-2xl text-[#334155] leading-relaxed font-medium">
+            טיפול תרופתי מורכב בגיל השלישי מציב אתגרים בטיחותיים משמעותיים. מחקרים עדכניים מצביעים על כך שמעברי טיפול (למשל, קבלה מאשפוז אקוטי) וריבוי תרופות (Polypharmacy) הם מגורמי הסיכון המובילים לאירועים חריגים, הידרדרות קוגניטיבית ונפילות באשפוז הממושך.
+        </p>
+    </section>
+
+    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#f59e0b]">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div>
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-[#fffbeb] text-[#f59e0b] p-4 rounded-2xl text-4xl shadow-inner"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h3 class="text-4xl font-bold text-[#0f172a]">ניהול "עייפות התרעות"</h3>
+                </div>
+                <p class="text-xl text-[#475569] mb-6 leading-relaxed">
+                    מערכות המידע מתריעות לעיתים קרובות על אינטראקציות תרופתיות, אך ריבוי ההתרעות מוביל להתעלמות מאזהרות קריטיות (Alert Fatigue). הפתרון המערכתי הוא להתמקד ב-<strong class="text-[#b45309]">Hard Stops</strong> המחייבים חשיבה מחדש.
+                </p>
+                <div class="bg-[#f8fafc] rounded-2xl p-6 border border-[#e2e8f0]">
+                    <h4 class="text-xl font-bold text-[#334155] mb-4">🛑 שילובים מסוכנים נפוצים:</h4>
+                    <ul class="space-y-4 text-[#475569] text-lg font-medium">
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#ef4444] text-xl mt-1"><i class="fa-solid fa-xmark"></i></span>
+                            <span><strong>נוגדי דיכאון (SSRI/SNRI)</strong> בשילוב עם תרופות <strong>אנטי-פסיכוטיות</strong>.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <span class="text-[#ef4444] text-xl mt-1"><i class="fa-solid fa-xmark"></i></span>
+                            <span><strong>בנזודיאזפינים</strong> בשילוב עם תרופות מדכאות מערכת העצבים המרכזית (כמו אופיואידים).</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-6 bg-[#ecfdf5] p-5 rounded-2xl border border-[#34d399] text-[#065f46]">
+                    <strong>המלצה לצוות הסיעודי:</strong> בעת הופעת התרעה על שילובים אלו, יש לעצור, לבחון את המצב הקליני (טשטוש, בלבול, ירידת ל"ד), ולדווח לרופא בטרם מתן הטיפול.
+                </div>
+            </div>
+            <div>
+                <div class="chart-container">
+                    <canvas id="alertFatigueChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#0ea5e9]">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="order-2 md:order-1">
+                <div class="chart-container">
+                    <canvas id="anticholinergicChart"></canvas>
+                </div>
+            </div>
+            <div class="order-1 md:order-2">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="bg-[#f0f9ff] text-[#0ea5e9] p-4 rounded-2xl text-4xl shadow-inner"><i class="fa-solid fa-brain"></i></div>
+                    <h3 class="text-4xl font-bold text-[#0f172a]">עומס אנטי-כולינרגי</h3>
+                </div>
+                <p class="text-xl text-[#475569] mb-6 leading-relaxed">
+                    תרופות אלו חוסמות את פעילות האצטילכולין. בגיל המבוגר, רגישות זו עולה משמעותית ומהווה גורם סיכון מוביל לנפילות ולהידרדרות קוגניטיבית.
+                </p>
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
+                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-droplet-slash"></i></div>
+                        <div class="font-bold text-[#334155]">תרופות שלפוחית שתן</div>
+                    </div>
+                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
+                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-head-side-cough"></i></div>
+                        <div class="font-bold text-[#334155]">אנטי-היסטמינים ישנים</div>
+                    </div>
+                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
+                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-face-frown"></i></div>
+                        <div class="font-bold text-[#334155]">נוגדי דיכאון טריציקליים</div>
+                    </div>
+                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
+                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-arrows-spin"></i></div>
+                        <div class="font-bold text-[#334155]">תרופות נגד סחרחורת</div>
+                    </div>
+                </div>
+                <div class="bg-[#eff6ff] p-5 rounded-2xl border border-[#60a5fa] text-[#1e3a8a]">
+                    <strong>פעולת מנע:</strong> שימוש במחשבוני ACB Score, ערנות להחמרת בלבול או יובש, ועידוד Deprescribing (הפסקת טיפול הדרגתית) בצוות הרב-מקצועי.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#10b981]">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <div class="inline-block bg-[#ecfdf5] text-[#10b981] p-4 rounded-full text-5xl mb-4 shadow-inner"><i class="fa-solid fa-clipboard-list"></i></div>
+            <h3 class="text-4xl font-bold text-[#0f172a] mb-4">"התאמת תרופות" במעברי טיפול</h3>
+            <p class="text-xl text-[#475569]">
+                נקודת התורפה המשמעותית ביותר הגורמת לשגיאות הרות גורל, היא רגע הקבלה של המטופל למחלקה – במיוחד קבלה מאשפוז אקוטי.
+            </p>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-stretch justify-between gap-4">
+            
+            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
+                <div class="text-4xl mb-3 text-[#f59e0b]"><i class="fa-regular fa-clock"></i></div>
+                <h4 class="text-xl font-bold text-[#0f172a] mb-2">1. חלון זמן קריטי</h4>
+                <p class="text-[#475569]">ביצוע השוואה מדוקדקת (Reconciliation) של כלל התרופות בתוך <strong>24 השעות הראשונות</strong> לקבלת המטופל.</p>
+            </div>
+
+            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
+                <div class="text-4xl mb-3 text-[#3b82f6]"><i class="fa-solid fa-file-medical"></i></div>
+                <h4 class="text-xl font-bold text-[#0f172a] mb-2">2. השוואת מקורות</h4>
+                <p class="text-[#475569]">הצוות הסיעודי חייב להשוות בין מכתב השחרור מבית החולים הכללי לבין הגיליון הכרוני הקודם.</p>
+            </div>
+
+            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
+                <div class="text-4xl mb-3 text-[#ef4444]"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                <h4 class="text-xl font-bold text-[#0f172a] mb-2">3. איתור פערים</h4>
+                <p class="text-[#475569]">חיפוש פעיל של תרופות שהוספו או הופסקו ללא הסבר ברור (למשל תרופת שינה מאשפוז קצר).</p>
+            </div>
+
+            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+
+            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
+                <div class="text-4xl mb-3 text-[#10b981]"><i class="fa-solid fa-check-double"></i></div>
+                <h4 class="text-xl font-bold text-[#0f172a] mb-2">4. בקרה כפולה</h4>
+                <p class="text-[#475569]">על הצוות האחראי לוודא ולאמת את רשימת התרופות מול הרופא המקבל לפני מתן המנה הראשונה במחלקה.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="bg-[#0c4a6e] rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl relative overflow-hidden">
+        <div class="absolute -right-20 -top-20 text-[200px] opacity-10"><i class="fa-solid fa-shield-heart"></i></div>
+        <div class="relative z-10 max-w-4xl mx-auto">
+            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-[#e0f2fe]">סיכום לצוות הסיעודי</h3>
+            <p class="text-xl md:text-2xl leading-relaxed mb-8 text-[#bae6fd]">
+                הבטחת בטיחות תרופתית אינה מסתכמת רק ב"חמשת הכללים". היא דורשת <strong class="text-white">חשיבה ביקורתית</strong> של הצוות הסיעודי, הבנת מנגנוני התרופות בגיל המבוגר, ויכולת לעצור ולהטיל ספק בעת איתור "דגלים אדומים".
+            </p>
+            <div class="inline-block bg-white text-[#0c4a6e] font-bold text-xl py-4 px-8 rounded-full shadow-lg">
+                העמותה לקידום הסיעוד בגריאטריה פועלת להעמקת הידע והכשירות כקו ההגנה העיקרי!
+            </div>
+        </div>
+    </section>
+
+    <!-- תוספת: קישור לאתר העמותה -->
+    <footer class="text-center mt-12 text-[#64748b] font-medium">
+        <p>למידע נוסף ולהדרכות מקצועיות, בקרו באתר העמותה:</p>
+        <a href="https://www.iang.co.il" target="_blank" class="text-[#0ea5e9] hover:text-[#0284c7] transition-colors text-lg font-bold flex items-center justify-center gap-2 mt-2">
+            <i class="fa-solid fa-globe"></i> www.iang.co.il
+        </a>
+    </footer>
+
+</main>
+
+<script>
+function wrapLabel(label) {
+    if (label.length <= 16) return label;
+    const words = label.split(' ');
+    const lines = [];
+    let currentLine = '';
+    words.forEach(word => {
+        if ((currentLine + word).length > 16) {
+            if(currentLine) lines.push(currentLine.trim());
+            currentLine = word + ' ';
+        } else {
+            currentLine += word + ' ';
+        }
+    });
+    if (currentLine) lines.push(currentLine.trim());
+    return lines;
+}
+
+const tooltipConfig = {
+    tooltip: {
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            }
+        },
+        bodyFont: { family: 'Assistant', size: 14, weight: 'bold' },
+        titleFont: { family: 'Assistant', size: 16 }
+    }
+};
+
+Chart.defaults.font.family = "'Assistant', sans-serif";
+
+const rawAlertLabels = ['התרעות שגרתיות המעמיסות על המערכת', 'שילובים קריטיים הדורשים התערבות (Hard Stops)'];
+const wrappedAlertLabels = rawAlertLabels.map(wrapLabel);
+
+const alertCtx = document.getElementById('alertFatigueChart').getContext('2d');
+new Chart(alertCtx, {
+    type: 'doughnut',
+    data: {
+        labels: wrappedAlertLabels,
+        datasets: [{
+            data: [85, 15],
+            backgroundColor: ['#cbd5e1', '#ef4444'],
+            borderWidth: 0,
+            hoverOffset: 10
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+            ...tooltipConfig,
+            title: {
+                display: true,
+                text: 'התפלגות התרעות מערכת',
+                font: { family: 'Heebo', size: 20, weight: 'bold' },
+                padding: { bottom: 20 }
+            },
+            legend: {
+                labels: { font: { family: 'Assistant', size: 14, weight: 'bold' } }
+            }
+        }
+    }
+});
+
+const rawSymptomsLabels = ['דליריום ובלבול חריף', 'יובש קיצוני בפה', 'עצירות קשה', 'אצירת שתן ממושכת', 'נפילות וחבלות'];
+const wrappedSymptomsLabels = rawSymptomsLabels.map(wrapLabel);
+
+const symptomsCtx = document.getElementById('anticholinergicChart').getContext('2d');
+new Chart(symptomsCtx, {
+    type: 'polarArea',
+    data: {
+        labels: wrappedSymptomsLabels,
+        datasets: [{
+            data: [90, 65, 80, 70, 85],
+            backgroundColor: [
+                'rgba(14, 165, 233, 0.7)',
+                'rgba(245, 158, 11, 0.7)',
+                'rgba(16, 185, 129, 0.7)',
+                'rgba(139, 92, 246, 0.7)',
+                'rgba(239, 68, 68, 0.7)'
+            ],
+            borderColor: '#ffffff',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            r: {
+                ticks: { display: false },
+                grid: { color: 'rgba(0,0,0,0.05)' }
+            }
+        },
+        plugins: {
+            ...tooltipConfig,
+            title: {
+                display: true,
+                text: 'חומרת תסמיני עומס אנטי-כולינרגי',
+                font: { family: 'Heebo', size: 20, weight: 'bold' },
+                padding: { bottom: 20 }
+            },
+            legend: {
+                labels: { font: { family: 'Assistant', size: 14, weight: 'bold' } },
+                position: 'right'
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>

@@ -84,6 +84,8 @@
                     <label>סוג משתמש</label>
                     <select id="reg-role">
                         <option value="viewer">איש צוות (מחלקה פנימית)</option>
+                        <option value="charge_nurse">אחות אחראית</option>
+                        <option value="management">הנהלה</option>
                         <option value="admin">מנהל איכות ראשי</option>
                     </select>
                 </div>
@@ -139,6 +141,9 @@
                     <li id="nav-settings" onclick="navigate('settings')" class="admin-only">
                         <span class="nav-icon">⚙️</span> הגדרות
                     </li>
+                    <li id="nav-nurse-management" onclick="navigate('nurse_management')" class="manage-only" style="display:none; color: var(--primary-color); font-weight: bold;">
+                        <span class="nav-icon">👩‍⚕️</span> פרויקט ניהול סיעודי
+                    </li>
                 </ul>
             </nav>
             <div class="theme-toggle" onclick="toggleTheme()" style="margin-bottom: 20px;">
@@ -172,7 +177,7 @@
             <div id="content-area" class="content-area"></div>
         </main>
     </div>
-    <script src="forms.js"></script>
-    <script src="script.js"></script>
+    <script src="forms.js?v=2"></script>
+    <script src="script.js?v=2"></script>
 </body>
 </html>
