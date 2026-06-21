@@ -17,16 +17,28 @@ function initTrainingsDb() {
             { id: 2, title: 'מארז לטיפול תומך', url: 'native_supportive_care', icon: '🤝', external: false }
         ];
     }
-    // Force migration
     let changed = false;
     trainingsDb.forEach(t => {
-        if (t.url.includes('1FAIpQLS') || t.url.includes('native_infections')) {
-            t.url = 'native_infections'; t.external = false; changed = true;
-        }
-        if (t.url.includes('1FAIpQLS') || t.url.includes('1FAIpQLSebx') || t.url.includes('native_supportive_care') || t.title.includes('טיפול תומך')) {
-            if (t.title.includes('טיפול תומך') || t.url.includes('1FAIpQLSebx')) {
-                t.url = 'native_supportive_care'; t.external = false; changed = true;
+        if (t.url && (t.url.includes('docs.google.com') || t.url.includes('forms/d/e/'))) {
+            changed = true;
+            if (t.title.includes('טיפול תומך') || t.url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q')) {
+                t.url = 'native_supportive_care'; 
+                t.external = false;
+            } else if (t.title.includes('מניעת זיהומים') || t.url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A')) {
+                t.url = 'native_infections'; 
+                t.external = false;
+            } else {
+                t.url = 'native_infections';
+                t.external = false;
             }
+        } else if (t.url === '1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q' || t.url === 'native_supportive_care') {
+             t.url = 'native_supportive_care';
+             t.external = false;
+             changed = true;
+        } else if (t.url === '1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A' || t.url === 'native_infections') {
+             t.url = 'native_infections';
+             t.external = false;
+             changed = true;
         }
     });
     if (changed || !stored) {
