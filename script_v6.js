@@ -1,4 +1,4 @@
-﻿let currentUser = null;
+let currentUser = null;
 let formsSchema = null;
 let usersDb = [];
 let filledFormsDb = [];
@@ -700,9 +700,27 @@ function openTraining(url, title, isExternal = false) {
     if (url.startsWith('native_')) {
         let quizId = url.replace('native_', '');
         if (window.renderNativeQuiz) {
-            window.renderNativeQuiz(quizId, 'content-area');
+            window.closeTraining = function() {
+                navigate('trainings');
+            };
+            contentArea.innerHTML = `
+                <div class="fade-in">
+                    <div style="text-align: center; margin-bottom: 20px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <h3 style="margin-bottom: 15px;">בחר שפה / Choose Language / اختر اللغة / Выберите язык</h3>
+                        <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'he', 'quizContainer')" style="min-width: 100px;">עברית</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'en', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">English</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ar', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">العربية</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ru', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">Русский</button>
+                        </div>
+                    </div>
+                    <div id="quizContainer"></div>
+                </div>
+            `;
+            // Default load hebrew
+            window.renderNativeQuiz(quizId, 'he', 'quizContainer');
         } else {
-            contentArea.innerHTML = '<div class="card">שגיאה בטעינת לומדה</div>';
+            contentArea.innerHTML = '<div class="card">שגיאה בטעינת לומדה (quizzes.js לא נטען)</div>';
         }
         return;
     }
