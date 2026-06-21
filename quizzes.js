@@ -118,65 +118,65 @@ window.renderNativeQuiz = function(quizId, containerId, lang = 'he') {
     const quiz = quizzesData[quizId];
     if (!quiz) return;
     
-    let html = \
-        <div class="card fade-in native-quiz-container" dir="\">
+    let html = `
+        <div class="card fade-in native-quiz-container" dir="${lang === 'he' || lang === 'ar' ? 'rtl' : 'ltr'}">
             <div style="display:flex; justify-content: space-between; margin-bottom: 20px;">
-                <h2 style="margin:0;">\</h2>
-                <select id="quizLangSelector" onchange="window.renderNativeQuiz('\', '\', this.value)" style="padding: 5px; border-radius: 4px;">
-                    <option value="he" \>עברית</option>
-                    <option value="en" \>English</option>
-                    <option value="ar" \>العربية</option>
-                    <option value="ru" \>Русский</option>
+                <h2 style="margin:0;">${quiz.title[lang]}</h2>
+                <select id="quizLangSelector" onchange="window.renderNativeQuiz('${quizId}', '${containerId}', this.value)" style="padding: 5px; border-radius: 4px;">
+                    <option value="he" ${lang === 'he' ? 'selected' : ''}>עברית</option>
+                    <option value="en" ${lang === 'en' ? 'selected' : ''}>English</option>
+                    <option value="ar" ${lang === 'ar' ? 'selected' : ''}>العربية</option>
+                    <option value="ru" ${lang === 'ru' ? 'selected' : ''}>Русский</option>
                 </select>
             </div>
-    \;
+    `;
 
     // Render Videos
     if (quiz.videos && quiz.videos.length > 0) {
-        html += \<div class="quiz-videos" style="margin-bottom: 25px; display: grid; gap: 15px;">\;
+        html += `<div class="quiz-videos" style="margin-bottom: 25px; display: grid; gap: 15px;">`;
         quiz.videos.forEach(v => {
-            html += \
+            html += `
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px;">
-                    <iframe src="\" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen></iframe>
+                    <iframe src="${v}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen></iframe>
                 </div>
-            \;
+            `;
         });
-        html += \</div>\;
+        html += `</div>`;
     }
 
     // Render Links
     if (quiz.links && quiz.links.length > 0) {
-        html += \<div class="quiz-links" style="margin-bottom: 25px;">\;
+        html += `<div class="quiz-links" style="margin-bottom: 25px;">`;
         quiz.links.forEach(l => {
-            html += \
-                <a href="\" target="_blank" style="display: block; padding: 15px; background: #e3f2fd; color: #1976d2; text-decoration: none; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 10px;">
-                    \
+            html += `
+                <a href="${l.url}" target="_blank" style="display: block; padding: 15px; background: #e3f2fd; color: #1976d2; text-decoration: none; border-radius: 8px; text-align: center; font-weight: bold; margin-bottom: 10px;">
+                    ${l.text[lang]}
                 </a>
-            \;
+            `;
         });
-        html += \</div>\;
+        html += `</div>`;
     }
 
-    html += \
-            <form id="nativeQuizForm" onsubmit="window.submitNativeQuiz(event, '\', '\')">
-    \;
+    html += `
+            <form id="nativeQuizForm" onsubmit="window.submitNativeQuiz(event, '${quizId}', '${quiz.title.he}')">
+    `;
     
     quiz.questions.forEach((q, idx) => {
-        html += \
+        html += `
             <div class="form-group" style="margin-bottom: 25px; padding: 15px; border: 1px solid #eee; border-radius: 8px; background: #fff;">
-                <label style="font-weight: bold; margin-bottom: 10px; display: block; font-size: 1.1em;">\. \</label>
-        \;
+                <label style="font-weight: bold; margin-bottom: 10px; display: block; font-size: 1.1em;">${idx + 1}. ${q.q[lang]}</label>
+        `;
         q.options.forEach((opt, optIdx) => {
-            html += \
+            html += `
                 <div style="margin-bottom: 10px;">
                     <label style="display: flex; align-items: center; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;">
-                        <input type="radio" name="q\" value="\" required style="margin: 0 10px;">
-                        <span>\</span>
+                        <input type="radio" name="q${idx}" value="${opt.correct}" required style="margin: 0 10px;">
+                        <span>${opt.text[lang]}</span>
                     </label>
                 </div>
-            \;
+            `;
         });
-        html += \</div>\;
+        html += `</div>`;
     });
 
     const submitBtnText = {
@@ -186,14 +186,14 @@ window.renderNativeQuiz = function(quizId, containerId, lang = 'he') {
         ru: 'Отправить'
     };
 
-    html += \
+    html += `
                 <button type="submit" class="btn" style="width: 100%; padding: 15px; font-size: 1.1em; background: var(--primary-color, #2a9d8f); color: white; border: none; border-radius: 8px; cursor: pointer; transition: background 0.3s;">
-                    \
+                    ${submitBtnText[lang]}
                 </button>
             </form>
             <div id="quizError" style="color: #d32f2f; background: #ffebee; padding: 15px; border-radius: 8px; margin-top: 15px; display: none; font-weight: bold; text-align: center;"></div>
         </div>
-    \;
+    `;
     
     document.getElementById(containerId).innerHTML = html;
 };
@@ -205,7 +205,7 @@ window.submitNativeQuiz = function(e, quizId, titleHe) {
     
     const quiz = quizzesData[quizId];
     quiz.questions.forEach((q, idx) => {
-        const selected = form.querySelector(\input[name="q\"]:checked\);
+        const selected = form.querySelector(`input[name="q${idx}"]:checked`);
         if (!selected || selected.value !== 'true') {
             allCorrect = false;
         }
