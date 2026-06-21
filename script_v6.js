@@ -253,13 +253,13 @@ function login() {
 
     let matchedUser = usersDb.find(u => u.username === user && u.password === pass);
     if (!matchedUser && user === 'admin' && pass === 'admin') {
-        matchedUser = { username: 'admin', password: 'admin', name: '?"? ??????', role: '???? ????', team: 'all', isAdmin: true };
+        matchedUser = { username: 'admin', password: 'admin', name: 'ד"ר ישראלי', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
     }
 
     if (matchedUser) {
         currentUser = matchedUser;
     } else {
-        showToast('?? ????? ?? ????? ??????', 'warning');
+        showToast('שם משתמש או סיסמה שגויים', 'warning');
         return;
     }
 
