@@ -71,17 +71,15 @@ initProtocolsDb();
     if (t) {
         let arr = JSON.parse(t);
         arr = arr.filter(item => item && item.title);
+        arr.forEach(x => {
+            if (x.title === 'מארז מניעת זיהומים') { x.url = 'internal_quiz_1'; x.icon = '🦠'; x.external = false; }
+            if (x.title === 'מארז לטיפול תומך') { x.url = 'internal_quiz_2'; x.icon = '🫂'; x.external = false; }
+        });
         if (!arr.find(x => x.title === 'מארז מניעת זיהומים')) {
             arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'internal_quiz_1', icon: '🦠', external: false });
-        } else {
-            let tItem = arr.find(x => x.title === 'מארז מניעת זיהומים');
-            if (!tItem.url) { tItem.url = 'internal_quiz_1'; tItem.icon = '🦠'; tItem.external = false; }
         }
         if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
             arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false });
-        } else {
-            let tItem = arr.find(x => x.title === 'מארז לטיפול תומך');
-            if (!tItem.url) { tItem.url = 'internal_quiz_2'; tItem.icon = '🫂'; tItem.external = false; }
         }
         localStorage.setItem('clinic_trainings', JSON.stringify(arr));
         trainingsDb = arr;
