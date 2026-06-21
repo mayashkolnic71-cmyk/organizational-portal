@@ -18,7 +18,7 @@ function initTrainingsDb() {
         trainingsDb = [
             { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true },
             { id: 1, title: 'מארז מניעת זיהומים', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: '🦠', external: true },
-            { id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false }
+            { id: 2, title: 'מארז לטיפול תומך', url: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url', icon: '🫂', external: true }
         ];
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
     }
@@ -78,10 +78,10 @@ initProtocolsDb();
             { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url'; tItem.icon = '🦠'; tItem.external = true; }
         }
         if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
-            arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'internal_quiz_2', icon: '🫂', external: false });
+            arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url', icon: '🫂', external: true });
         } else {
             let tItem = arr.find(x => x.title === 'מארז לטיפול תומך');
-            { tItem.url = 'internal_quiz_2'; tItem.icon = '🫂'; tItem.external = false; }
+            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url'; tItem.icon = '🫂'; tItem.external = true; }
         }
         localStorage.setItem('clinic_trainings', JSON.stringify(arr));
         trainingsDb = arr;
@@ -1419,6 +1419,7 @@ function removeProtocol(id) {
         navigate('settings');
     }
 }
+
 
 
 
