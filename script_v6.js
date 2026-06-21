@@ -7,19 +7,29 @@ let proceduresDb = [];
 let trainingsDb = [];
 
 function initTrainingsDb() {
-    const stored = localStorage.getItem('clinic_trainings');
+    let stored = localStorage.getItem('clinic_trainings');
     if (stored) {
         trainingsDb = JSON.parse(stored);
-        if (!trainingsDb.find(t => t.url === 'dying_patient_law.html')) {
-            trainingsDb.unshift({ id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true });
-            localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
-        }
     } else {
         trainingsDb = [
-            { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '⚖️', external: true },
-            { id: 1, title: 'מארז מניעת זיהומים', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: '🦠', external: true },
-            { id: 2, title: 'מארז לטיפול תומך', url: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url', icon: '🫂', external: true }
+            { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '📜', external: true },
+            { id: 1, title: 'מארז מניעת זיהומים', url: 'native_infections', icon: '🦠', external: false },
+            { id: 2, title: 'מארז לטיפול תומך', url: 'native_supportive_care', icon: '🤝', external: false }
         ];
+    }
+    // Force migration
+    let changed = false;
+    trainingsDb.forEach(t => {
+        if (t.url.includes('1FAIpQLS') || t.url.includes('native_infections')) {
+            t.url = 'native_infections'; t.external = false; changed = true;
+        }
+        if (t.url.includes('1FAIpQLS') || t.url.includes('1FAIpQLSebx') || t.url.includes('native_supportive_care') || t.title.includes('טיפול תומך')) {
+            if (t.title.includes('טיפול תומך') || t.url.includes('1FAIpQLSebx')) {
+                t.url = 'native_supportive_care'; t.external = false; changed = true;
+            }
+        }
+    });
+    if (changed || !stored) {
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
     }
 }
@@ -670,14 +680,14 @@ function renderTrainings() {
 }
 
 function openTraining(url, title, isExternal = false) {
-    if (!url.startsWith('internal_quiz')) {
+    if (!url.startsWith('internal_quiz') && !url.startsWith('native_')) {
         trainingsAnswersDb.push({
             title: title,
             user: currentUser.name,
             date: new Date().toLocaleString('he-IL')
         });
         localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
-        showToast('כניסתך ללומדה נרשמה במערכת בהצלחה.', 'info');
+        showToast('הלומדה סומנה כהושלמה ונרשמה במערכת.', 'info');
     }
 
     if (isExternal) {
@@ -687,6 +697,16 @@ function openTraining(url, title, isExternal = false) {
 
     const contentArea = document.getElementById('content-area');
     
+    if (url.startsWith('native_')) {
+        let quizId = url.replace('native_', '');
+        if (window.renderNativeQuiz) {
+            window.renderNativeQuiz(quizId, 'content-area');
+        } else {
+            contentArea.innerHTML = '<div class="card">שגיאה בטעינת לומדה</div>';
+        }
+        return;
+    }
+
     if (url.startsWith('internal_quiz')) {
         contentArea.innerHTML = `
             <div class="fade-in">
@@ -1419,6 +1439,8 @@ function removeProtocol(id) {
         navigate('settings');
     }
 }
+
+
 
 
 
