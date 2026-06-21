@@ -578,13 +578,6 @@ function navigate(viewName) {
     else if (viewName === 'protocols') contentArea.innerHTML = renderProtocols();
     else if (viewName === 'agent') contentArea.innerHTML = renderAgent();
     else if (viewName === 'settings') contentArea.innerHTML = renderSettings();
-    else if (viewName === 'nurse_management') {
-        contentArea.innerHTML = `
-            <div style="width: 100%; height: 100%; min-height: 800px; border: none; background: white; overflow: hidden; border-radius: 8px;">
-                <iframe src="nurse_management/index.html" width="100%" height="100%" frameborder="0" style="min-height: 800px;"></iframe>
-            </div>
-        `;
-    }
     else contentArea.innerHTML = `<h2>${viewName}</h2>`;
 }
 
