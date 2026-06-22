@@ -1494,3 +1494,24 @@ function removeProtocol(id) {
 / /   F o r c e   u p d a t e   f o r   d e p l o y m e n t 
  
  
+
+// --- AUTO BYPASS LOGIN ---
+document.addEventListener('DOMContentLoaded', () => {
+    currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+    if(loginScreen) loginScreen.style.display = 'none';
+    if(appContainer) appContainer.style.display = 'flex';
+    
+    const userNameEl = document.getElementById('user-name');
+    const userRoleEl = document.getElementById('user-role');
+    if(userNameEl) userNameEl.innerText = currentUser.name;
+    if(userRoleEl) userRoleEl.innerText = currentUser.role;
+
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+    document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'flex');
+
+    if(typeof navigate === 'function') {
+        navigate('dashboard');
+    }
+});
