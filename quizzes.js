@@ -223,6 +223,31 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
     let html = `<div class="native-quiz-wrapper" style="direction: ${dir}; ${align}">`;
     html += `<h2 style="margin-bottom: 20px; font-size: 24px; color: #333;">${quiz.title[lang]}</h2>`;
 
+    if (quiz.contentItems && quiz.contentItems.length > 0) {
+        html += `<div class="quiz-content-items">`;
+        quiz.contentItems.forEach(item => {
+            html += `<div class="content-item" style="margin-bottom: 25px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 8px; background: #fafafa; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">`;
+            
+            let itemTitle = item.title ? (item.title[lang] || item.title['he']) : '';
+            if (itemTitle) html += `<h3 style="margin-bottom:10px; color: var(--primary-color);">${itemTitle}</h3>`;
+            
+            let itemDesc = item.desc ? (item.desc[lang] || item.desc['he']) : '';
+            if (itemDesc) html += `<p style="margin-bottom: 15px; font-size: 15px; line-height: 1.5; color: #555;">${itemDesc}</p>`;
+            
+            if (item.type === 'video') {
+                html += `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${item.id}" frameborder="0" allowfullscreen style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>`;
+                html += `<div style="margin-top: 5px; font-size: 14px; text-align: center;">
+                    <a href="https://www.youtube.com/watch?v=${item.id}" target="_blank" style="color: var(--primary-color);">אם הסרטון לא מופעל, לחץ/י כאן לצפייה ביוטיוב</a>
+                </div>`;
+            } else if (item.type === 'link') {
+                let linkText = item.linkText ? (item.linkText[lang] || item.linkText['he']) : '🔗 כניסה לקישור';
+                html += `<a href="${item.url}" target="_blank" class="quiz-external-link" style="display:inline-block; padding:12px 20px; background:#e3f2fd; border-radius:5px; text-decoration:none; font-weight:bold; color: #0277bd; transition: all 0.2s;">${linkText}</a>`;
+            }
+            html += `</div>`;
+        });
+        html += `</div>`;
+    }
+
     if (quiz.videos && quiz.videos.length > 0) {
         html += `<div class="quiz-videos">`;
         quiz.videos.forEach(v => {
