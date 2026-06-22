@@ -4,8 +4,8 @@ const quizzesData = {
     'infections': {
         formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/formResponse',
         title: {
-            he: '(ינואר 2026) מארז הדרכה למניעת זיהומים<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
-            en: '(January 2026) Infection Prevention Training<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
+            he: '(ינואר 2026) מארז הדרכה למניעת זיהומים<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">עובד יקר, ברכות להצטרפות לצוות העובדים , בהצלחה !<br>להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
+            en: '(January 2026) Infection Prevention Training<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Dear employee, welcome to the staff, good luck!<br>Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
             ar: '(يناير 2026) حزمة مكافحة العدوى',
             ru: '(Январь 2026) Пакет по профилактике инфекций'
         },
@@ -166,10 +166,10 @@ const quizzesData = {
     'supportive_care': {
         formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/formResponse',
         title: {
-            he: 'מארז טיפול תומך',
-            en: 'Supportive Care',
-            ar: 'الرعاية الداعمة',
-            ru: 'Поддерживающая терапия'
+            he: 'מארז הדרכה לצוות המטפל ליישום חוק החולה הנוטה למות והעדפות טיפוליות לסוף החיים 2026.<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">עובד יקר, ברכות להצטרפות לצוות העובדים , בהצלחה !<br>להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
+            en: 'Training package for the treatment team on the dying patient law and end-of-life care preferences 2026.<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Dear employee, welcome to the staff, good luck!<br>Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
+            ar: 'حزمة تدريب لفريق العلاج لتطبيق قانون المريض المحتضر وتفضيلات الرعاية في نهاية الحياة 2026.',
+            ru: 'Обучающий пакет для лечащего персонала по применению закона об умирающих пациентах 2026.'
         },
         contentItems: [
             {
