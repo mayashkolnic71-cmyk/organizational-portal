@@ -1,4 +1,4 @@
-let currentUser = null;
+﻿let currentUser = null;
 let formsSchema = null;
 let usersDb = [];
 let filledFormsDb = [];
@@ -12,19 +12,19 @@ function initTrainingsDb() {
         trainingsDb = JSON.parse(stored);
     } else {
         trainingsDb = [
-            { id: Date.now(), title: 'יישום חוק החולה הנוטה למות', url: 'dying_patient_law.html', icon: '📜', external: true },
-            { id: 1, title: 'מארז מניעת זיהומים', url: 'native_infections', icon: '🦠', external: false },
-            { id: 2, title: 'מארז לטיפול תומך', url: 'native_supportive_care', icon: '🤝', external: false }
+            { id: Date.now(), title: '×™×™×©×•× ×—×•×§ ×”×—×•×œ×” ×”× ×•×˜×” ×œ×ž×•×ª', url: 'dying_patient_law.html', icon: 'ðŸ“œ', external: true },
+            { id: 1, title: '×ž××¨×– ×ž× ×™×¢×ª ×–×™×”×•×ž×™×', url: 'native_infections', icon: 'ðŸ¦ ', external: false },
+            { id: 2, title: '×ž××¨×– ×œ×˜×™×¤×•×œ ×ª×•×ž×š', url: 'native_supportive_care', icon: 'ðŸ¤', external: false }
         ];
     }
     let changed = false;
     trainingsDb.forEach(t => {
         if (t.url && (t.url.includes('docs.google.com') || t.url.includes('forms/d/e/'))) {
             changed = true;
-            if (t.title.includes('טיפול תומך') || t.url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q')) {
+            if (t.title.includes('×˜×™×¤×•×œ ×ª×•×ž×š') || t.url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q')) {
                 t.url = 'native_supportive_care'; 
                 t.external = false;
-            } else if (t.title.includes('מניעת זיהומים') || t.url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A')) {
+            } else if (t.title.includes('×ž× ×™×¢×ª ×–×™×”×•×ž×™×') || t.url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A')) {
                 t.url = 'native_infections'; 
                 t.external = false;
             } else {
@@ -56,32 +56,32 @@ function initProtocolsDb() {
     if (stored) {
         protocolsDb = JSON.parse(stored);
         if (!protocolsDb.find(p => p.link === 'frailty.html')) {
-            protocolsDb.unshift({ id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' });
+            protocolsDb.unshift({ id: Date.now() + 1, title: '×”×ª×ž×•×“×“×•×ª ×¢× ×©×‘×¨×™×¨×™×•×ª (Frailty)', link: 'frailty.html' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration.html')) {
-            protocolsDb.unshift({ id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' });
+            protocolsDb.unshift({ id: Date.now(), title: '××¡×¤×™×¨×¦×™×” ×•×—× ×§ ×‘×’×¨×™××˜×¨×™×”', link: 'aspiration.html' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration_training.html')) {
-            protocolsDb.unshift({ id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' });
+            protocolsDb.unshift({ id: Date.now() + 2, title: '×”×©×ª×œ×ž×•×ª ×ž×§×¦×•×¢×™×ª: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×•×—× ×§', link: 'aspiration_training.html' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration-infographic.png')) {
-            protocolsDb.unshift({ id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' });
+            protocolsDb.unshift({ id: Date.now() + 3, title: '××™× ×¤×•×’×¨×¤×™×§×”: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×•×—× ×§ ×‘×ž×¢×¨×š ×”×’×¨×™××˜×¨×™', link: 'aspiration-infographic.png' });
         }
         if (!protocolsDb.find(p => p.link === 'Claymation Explainer-saved.mp4')) {
-            protocolsDb.unshift({ id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' });
+            protocolsDb.unshift({ id: Date.now() + 4, title: '×¡×¨×˜×•×Ÿ ×”×“×¨×›×”: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×”', link: 'Claymation Explainer-saved.mp4' });
         }
         if (!protocolsDb.find(p => p.link === 'pharmacological_risk.html')) {
-            protocolsDb.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+            protocolsDb.unshift({ id: Date.now() + 5, title: '× ×™×”×•×œ ×¡×™×›×•× ×™× ×¤×¨×ž×§×•×œ×•×’×™×™× ×‘××©×¤×•×– ×’×¨×™××˜×¨×™', link: 'pharmacological_risk.html' });
         }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
-            { id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' },
-            { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' },
-            { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' },
-            { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' },
-            { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' },
-            { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' }
+            { id: Date.now() + 5, title: '× ×™×”×•×œ ×¡×™×›×•× ×™× ×¤×¨×ž×§×•×œ×•×’×™×™× ×‘××©×¤×•×– ×’×¨×™××˜×¨×™', link: 'pharmacological_risk.html' },
+            { id: Date.now() + 4, title: '×¡×¨×˜×•×Ÿ ×”×“×¨×›×”: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×”', link: 'Claymation Explainer-saved.mp4' },
+            { id: Date.now() + 3, title: '××™× ×¤×•×’×¨×¤×™×§×”: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×•×—× ×§ ×‘×ž×¢×¨×š ×”×’×¨×™××˜×¨×™', link: 'aspiration-infographic.png' },
+            { id: Date.now() + 2, title: '×”×©×ª×œ×ž×•×ª ×ž×§×¦×•×¢×™×ª: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×•×—× ×§', link: 'aspiration_training.html' },
+            { id: Date.now(), title: '××¡×¤×™×¨×¦×™×” ×•×—× ×§ ×‘×’×¨×™××˜×¨×™×”', link: 'aspiration.html' },
+            { id: Date.now() + 1, title: '×”×ª×ž×•×“×“×•×ª ×¢× ×©×‘×¨×™×¨×™×•×ª (Frailty)', link: 'frailty.html' }
         ];
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     }
@@ -93,17 +93,17 @@ initProtocolsDb();
     if (t) {
         let arr = JSON.parse(t);
         arr = arr.filter(item => item && item.title);
-        if (!arr.find(x => x.title === 'מארז מניעת זיהומים')) {
-            arr.push({ id: 1, title: 'מארז מניעת זיהומים', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: '🦠', external: true });
+        if (!arr.find(x => x.title === '×ž××¨×– ×ž× ×™×¢×ª ×–×™×”×•×ž×™×')) {
+            arr.push({ id: 1, title: '×ž××¨×– ×ž× ×™×¢×ª ×–×™×”×•×ž×™×', url: 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url', icon: 'ðŸ¦ ', external: true });
         } else {
-            let tItem = arr.find(x => x.title === 'מארז מניעת זיהומים');
-            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url'; tItem.icon = '🦠'; tItem.external = true; }
+            let tItem = arr.find(x => x.title === '×ž××¨×– ×ž× ×™×¢×ª ×–×™×”×•×ž×™×');
+            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q/viewform?usp=pp_url'; tItem.icon = 'ðŸ¦ '; tItem.external = true; }
         }
-        if (!arr.find(x => x.title === 'מארז לטיפול תומך')) {
-            arr.push({ id: 2, title: 'מארז לטיפול תומך', url: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url', icon: '🫂', external: true });
+        if (!arr.find(x => x.title === '×ž××¨×– ×œ×˜×™×¤×•×œ ×ª×•×ž×š')) {
+            arr.push({ id: 2, title: '×ž××¨×– ×œ×˜×™×¤×•×œ ×ª×•×ž×š', url: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url', icon: 'ðŸ«‚', external: true });
         } else {
-            let tItem = arr.find(x => x.title === 'מארז לטיפול תומך');
-            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url'; tItem.icon = '🫂'; tItem.external = true; }
+            let tItem = arr.find(x => x.title === '×ž××¨×– ×œ×˜×™×¤×•×œ ×ª×•×ž×š');
+            { tItem.url = 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/viewform?usp=pp_url'; tItem.icon = 'ðŸ«‚'; tItem.external = true; }
         }
         localStorage.setItem('clinic_trainings', JSON.stringify(arr));
         trainingsDb = arr;
@@ -112,7 +112,7 @@ initProtocolsDb();
     if (p) {
         let pArr = JSON.parse(p);
         if (!pArr.find(x => x.link === 'pharmacological_risk.html')) {
-            pArr.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+            pArr.unshift({ id: Date.now() + 5, title: '× ×™×”×•×œ ×¡×™×›×•× ×™× ×¤×¨×ž×§×•×œ×•×’×™×™× ×‘××©×¤×•×– ×’×¨×™××˜×¨×™', link: 'pharmacological_risk.html' });
             localStorage.setItem('clinic_protocols', JSON.stringify(pArr));
             protocolsDb = pArr;
         }
@@ -137,7 +137,7 @@ function initProceduresDb() {
         proceduresDb = JSON.parse(stored);
     } else {
         proceduresDb = [
-            { id: 1, title: 'נוהל 1.10.5 - ניקיון סביבתי', link: 'https://www.gov.il/he/departments/policies/m-hozer-04-2011', readBy: [] }
+            { id: 1, title: '× ×•×”×œ 1.10.5 - × ×™×§×™×•×Ÿ ×¡×‘×™×‘×ª×™', link: 'https://www.gov.il/he/departments/policies/m-hozer-04-2011', readBy: [] }
         ];
         localStorage.setItem('clinic_procedures', JSON.stringify(proceduresDb));
     }
@@ -149,7 +149,7 @@ function initDepartmentsDb() {
     if (stored) {
         departmentsDb = JSON.parse(stored);
     } else {
-        departmentsDb = ["מונשמים א", "מונשמים ב", "מונשמים ג", "שיקום א", "שיקום ב", "סיעוד מורכב", "סיעודית", "תשושי נפש"];
+        departmentsDb = ["×ž×•× ×©×ž×™× ×", "×ž×•× ×©×ž×™× ×‘", "×ž×•× ×©×ž×™× ×’", "×©×™×§×•× ×", "×©×™×§×•× ×‘", "×¡×™×¢×•×“ ×ž×•×¨×›×‘", "×¡×™×¢×•×“×™×ª", "×ª×©×•×©×™ × ×¤×©"];
         localStorage.setItem('clinic_departments', JSON.stringify(departmentsDb));
     }
 }
@@ -171,8 +171,8 @@ function initUsersDb() {
     } else {
         // Default seed users
         usersDb = [
-            { username: 'admin', password: 'admin', name: 'ד"ר ישראלי', role: 'מנהל ראשי', team: 'all', isAdmin: true },
-            { username: 'team', password: 'team', name: 'צוות מחלקה', role: 'איש צוות', team: 'surgical', isAdmin: false }
+            { username: 'admin', password: 'admin', name: '×“"×¨ ×™×©×¨××œ×™', role: '×ž× ×”×œ ×¨××©×™', team: 'all', isAdmin: true },
+            { username: 'team', password: 'team', name: '×¦×•×•×ª ×ž×—×œ×§×”', role: '××™×© ×¦×•×•×ª', team: 'surgical', isAdmin: false }
         ];
         localStorage.setItem('clinic_users', JSON.stringify(usersDb));
     }
@@ -191,7 +191,7 @@ function loadForms() {
             console.error("Failed to load formsSchemaData. Using fallback mock.");
             formsSchema = {
                 forms: [
-                    { id: "form_1", title: "בקרת בטיחות המטופל - חדר ניתוח", instructions: "יש למלא טופס זה אחת לחודש.", team: "surgical", fields: [{ id: "q1", type: "select", label: "האם בוצע חיטוי ידיים על פי הנוהל?", options: ["כן", "לא"], is_critical: true }] }
+                    { id: "form_1", title: "×‘×§×¨×ª ×‘×˜×™×—×•×ª ×”×ž×˜×•×¤×œ - ×—×“×¨ × ×™×ª×•×—", instructions: "×™×© ×œ×ž×œ× ×˜×•×¤×¡ ×–×” ××—×ª ×œ×—×•×“×©.", team: "surgical", fields: [{ id: "q1", type: "select", label: "×”×× ×‘×•×¦×¢ ×—×™×˜×•×™ ×™×“×™×™× ×¢×œ ×¤×™ ×”× ×•×”×œ?", options: ["×›×Ÿ", "×œ×"], is_critical: true }] }
                 ]
             };
         }
@@ -217,19 +217,19 @@ function register() {
     const roleType = document.getElementById('reg-role').value;
 
     if (!user || !name || !pass) {
-        showToast('נא למלא את כל השדות', 'warning');
+        showToast('× × ×œ×ž×œ× ××ª ×›×œ ×”×©×“×•×ª', 'warning');
         return;
     }
 
     if (usersDb.find(u => u.username === user)) {
-        showToast('שם משתמש כבר קיים במערכת', 'danger');
+        showToast('×©× ×ž×©×ª×ž×© ×›×‘×¨ ×§×™×™× ×‘×ž×¢×¨×›×ª', 'danger');
         return;
     }
 
-    let roleName = 'איש צוות';
-    if (roleType === 'admin') roleName = 'מנהל איכות ראשי';
-    else if (roleType === 'charge_nurse') roleName = 'אחות אחראית';
-    else if (roleType === 'management') roleName = 'הנהלה';
+    let roleName = '××™×© ×¦×•×•×ª';
+    if (roleType === 'admin') roleName = '×ž× ×”×œ ××™×›×•×ª ×¨××©×™';
+    else if (roleType === 'charge_nurse') roleName = '××—×•×ª ××—×¨××™×ª';
+    else if (roleType === 'management') roleName = '×”× ×”×œ×”';
 
     const newUser = {
         username: user,
@@ -243,7 +243,7 @@ function register() {
     usersDb.push(newUser);
     localStorage.setItem('clinic_users', JSON.stringify(usersDb));
 
-    showToast('נרשמת בהצלחה! כעת ניתן להתחבר', 'success');
+    showToast('× ×¨×©×ž×ª ×‘×”×¦×œ×—×”! ×›×¢×ª × ×™×ª×Ÿ ×œ×”×ª×—×‘×¨', 'success');
     toggleAuthView('login');
 }
 
@@ -256,7 +256,7 @@ function login() {
     if (matchedUser) {
         currentUser = matchedUser;
     } else {
-        showToast('שם משתמש או סיסמה שגויים', 'warning');
+        showToast('×©× ×ž×©×ª×ž×© ××• ×¡×™×¡×ž×” ×©×’×•×™×™×', 'warning');
         return;
     }
 
@@ -272,7 +272,7 @@ function login() {
         document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
     }
 
-    if (currentUser.isAdmin || currentUser.role === 'אחות אחראית' || currentUser.role === 'הנהלה' || currentUser.username === 'הנהלה' || currentUser.username === 'אחות אחראית') {
+    if (currentUser.isAdmin || currentUser.role === '××—×•×ª ××—×¨××™×ª' || currentUser.role === '×”× ×”×œ×”' || currentUser.username === '×”× ×”×œ×”' || currentUser.username === '××—×•×ª ××—×¨××™×ª') {
         document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'flex');
     } else {
         document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'none');
@@ -280,7 +280,7 @@ function login() {
 
     loadForms().then(() => {
         navigate('dashboard');
-        showToast(`ברוך הבא, ${currentUser.name}`, 'success');
+        showToast(`×‘×¨×•×š ×”×‘×, ${currentUser.name}`, 'success');
     });
 }
 
@@ -293,15 +293,15 @@ function logout() {
 // Views Templates
 function renderDashboard() {
     let recentForms = filledFormsDb.slice().reverse().slice(0, 5);
-    let recentFormsHtml = recentForms.length === 0 ? '<p>אין בקרות שהוגשו עדיין.</p>' : 
+    let recentFormsHtml = recentForms.length === 0 ? '<p>××™×Ÿ ×‘×§×¨×•×ª ×©×”×•×’×©×• ×¢×“×™×™×Ÿ.</p>' : 
         `<table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
             <tr style="border-bottom: 1px solid var(--border-color); text-align: right;">
-                <th style="padding: 10px;">טופס</th><th style="padding: 10px;">מחלקה</th><th style="padding: 10px;">תאריך</th><th style="padding: 10px;">מגיש</th><th style="padding: 10px;">ציון</th>
+                <th style="padding: 10px;">×˜×•×¤×¡</th><th style="padding: 10px;">×ž×—×œ×§×”</th><th style="padding: 10px;">×ª××¨×™×š</th><th style="padding: 10px;">×ž×’×™×©</th><th style="padding: 10px;">×¦×™×•×Ÿ</th>
             </tr>
             ${recentForms.map(f => {
                 let color = f.score >= 80 ? 'var(--success)' : f.score >= 60 ? 'orange' : 'var(--danger)';
                 let deptKey = Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department'));
-                let dept = deptKey ? f.data[deptKey] : 'לא צוין';
+                let dept = deptKey ? f.data[deptKey] : '×œ× ×¦×•×™×Ÿ';
                 return `<tr style="border-bottom: 1px solid var(--border-color);">
                     <td style="padding: 10px;">${f.formTitle}</td>
                     <td style="padding: 10px;">${dept}</td>
@@ -314,11 +314,11 @@ function renderDashboard() {
 
     let html = `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">דשבורד ראשי - ${currentUser.isAdmin ? 'כלל המחלקות' : 'צוות מחלקה'}</h2>
+            <h2 style="margin-bottom: 20px;">×“×©×‘×•×¨×“ ×¨××©×™ - ${currentUser.isAdmin ? '×›×œ×œ ×”×ž×—×œ×§×•×ª' : '×¦×•×•×ª ×ž×—×œ×§×”'}</h2>
             ${(function() {
                 let userStats = {};
                 filledFormsDb.forEach(f => {
-                    let u = f.user || 'לא ידוע';
+                    let u = f.user || '×œ× ×™×“×•×¢';
                     userStats[u] = (userStats[u] || 0) + 1;
                 });
                 
@@ -326,13 +326,13 @@ function renderDashboard() {
                     return `
                     <div class="card" style="margin-bottom: 20px; border-right: 4px solid var(--primary-color);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <h3 style="margin: 0;">מעקב ביצועים (מבט מנהל)</h3>
-                            <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--success);" onclick="exportDashboardExcel()">הורד נתונים לאקסל 📥</button>
+                            <h3 style="margin: 0;">×ž×¢×§×‘ ×‘×™×¦×•×¢×™× (×ž×‘×˜ ×ž× ×”×œ)</h3>
+                            <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--success);" onclick="exportDashboardExcel()">×”×•×¨×“ × ×ª×•× ×™× ×œ××§×¡×œ ðŸ“¥</button>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                             <tr style="border-bottom: 1px solid var(--border-color); text-align: right;">
-                                <th style="padding: 10px;">שם עובד</th>
-                                <th style="padding: 10px;">סה"כ בקרות שהוגשו</th>
+                                <th style="padding: 10px;">×©× ×¢×•×‘×“</th>
+                                <th style="padding: 10px;">×¡×”"×› ×‘×§×¨×•×ª ×©×”×•×’×©×•</th>
                             </tr>
                             ${Object.entries(userStats).sort((a,b) => b[1]-a[1]).map(([u, count]) => `
                                 <tr style="border-bottom: 1px solid var(--border-color);">
@@ -352,13 +352,13 @@ function renderDashboard() {
                     
                     return `
                     <div class="card" style="margin-bottom: 20px; border-right: 4px solid var(--primary-color);">
-                        <h3 style="margin-bottom: 15px;">הנתונים שלי</h3>
-                        <p>הגשת עד כה <strong>${myCount}</strong> בקרות למערכת.</p>
+                        <h3 style="margin-bottom: 15px;">×”× ×ª×•× ×™× ×©×œ×™</h3>
+                        <p>×”×’×©×ª ×¢×“ ×›×” <strong>${myCount}</strong> ×‘×§×¨×•×ª ×œ×ž×¢×¨×›×ª.</p>
                         <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
-                        <h4 style="margin-bottom: 10px;">משימות להמשך:</h4>
+                        <h4 style="margin-bottom: 10px;">×ž×©×™×ž×•×ª ×œ×”×ž×©×š:</h4>
                         <ul style="margin-right: 20px; line-height: 1.6;">
-                            <li>יעד אישי: נדרש לבצע לפחות 5 בקרות בחודש (נותרו עוד ${Math.max(0, 5 - myCount)}).</li>
-                            ${unreadProcedures > 0 ? `<li style="color: var(--danger); font-weight: bold;">ישנם ${unreadProcedures} נהלי עבודה שעליך לקרוא ולאשר במערכת! <a href="#" onclick="navigate('procedures')" style="color: var(--primary-color);">מעבר לנהלים</a></li>` : `<li style="color: var(--success);">כל הנהלים נקראו ואושרו. תוקף האישור שלך הינו לשנה.</li>`}
+                            <li>×™×¢×“ ××™×©×™: × ×“×¨×© ×œ×‘×¦×¢ ×œ×¤×—×•×ª 5 ×‘×§×¨×•×ª ×‘×—×•×“×© (× ×•×ª×¨×• ×¢×•×“ ${Math.max(0, 5 - myCount)}).</li>
+                            ${unreadProcedures > 0 ? `<li style="color: var(--danger); font-weight: bold;">×™×©× × ${unreadProcedures} × ×”×œ×™ ×¢×‘×•×“×” ×©×¢×œ×™×š ×œ×§×¨×•× ×•×œ××©×¨ ×‘×ž×¢×¨×›×ª! <a href="#" onclick="navigate('procedures')" style="color: var(--primary-color);">×ž×¢×‘×¨ ×œ× ×”×œ×™×</a></li>` : `<li style="color: var(--success);">×›×œ ×”× ×”×œ×™× × ×§×¨××• ×•××•×©×¨×•. ×ª×•×§×£ ×”××™×©×•×¨ ×©×œ×š ×”×™× ×• ×œ×©× ×”.</li>`}
                         </ul>
                     </div>`;
                 }
@@ -367,25 +367,25 @@ function renderDashboard() {
             <div class="dashboard-grid">
                 ${currentUser.isAdmin && introFeedbackDb.length > 0 ? `
                 <div class="card" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 15px;">ממצאי משוב הפורטל</h3>
+                    <h3 style="margin-bottom: 15px;">×ž×ž×¦××™ ×ž×©×•×‘ ×”×¤×•×¨×˜×œ</h3>
                     <div style="display: flex; gap: 20px;">
                         <div style="flex: 1; text-align: center; padding: 20px; background: var(--bg-color); border-radius: 8px;">
-                            <h4>ממוצע שביעות רצון</h4>
+                            <h4>×ž×ž×•×¦×¢ ×©×‘×™×¢×•×ª ×¨×¦×•×Ÿ</h4>
                             <div style="font-size: 32px; color: var(--primary-color); font-weight: bold;">
                                 ${(introFeedbackDb.reduce((acc, curr) => acc + curr.score, 0) / introFeedbackDb.length).toFixed(1)} / 5
                             </div>
-                            <p style="font-size: 14px; color: var(--text-secondary);">מתוך ${introFeedbackDb.length} משיבים</p>
+                            <p style="font-size: 14px; color: var(--text-secondary);">×ž×ª×•×š ${introFeedbackDb.length} ×ž×©×™×‘×™×</p>
                         </div>
                     </div>
                 </div>` : ''}
 
             <div class="dashboard-grid">
                 <div class="card">
-                    <h3>סה"כ בקרות שבוצעו</h3>
+                    <h3>×¡×”"×› ×‘×§×¨×•×ª ×©×‘×•×¦×¢×•</h3>
                     <div class="stat-value">${filledFormsDb.length}</div>
                 </div>
                 <div class="card">
-                    <h3>ממוצע ציונים כולל</h3>
+                    <h3>×ž×ž×•×¦×¢ ×¦×™×•× ×™× ×›×•×œ×œ</h3>
                     <div class="stat-value" style="color: var(--primary-color)">${
                         filledFormsDb.length > 0 ? 
                         Math.round(filledFormsDb.reduce((acc, curr) => acc + curr.score, 0) / filledFormsDb.length) + '%' 
@@ -397,20 +397,20 @@ function renderDashboard() {
                 let deptStats = {};
                 filledFormsDb.forEach(f => {
                     let deptKey = Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department'));
-                    let dept = deptKey ? f.data[deptKey] : 'לא צוין';
+                    let dept = deptKey ? f.data[deptKey] : '×œ× ×¦×•×™×Ÿ';
                     deptStats[dept] = (deptStats[dept] || 0) + 1;
                 });
                 if (Object.keys(deptStats).length === 0) return '';
                 let maxCount = Math.max(...Object.values(deptStats));
                 return `
                 <div class="card" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 15px;">פילוח בקרות לפי מחלקה (גרפי ומספרי)</h3>
+                    <h3 style="margin-bottom: 15px;">×¤×™×œ×•×— ×‘×§×¨×•×ª ×œ×¤×™ ×ž×—×œ×§×” (×’×¨×¤×™ ×•×ž×¡×¤×¨×™)</h3>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
                         ${Object.entries(deptStats).sort((a,b) => b[1]-a[1]).map(([d, count]) => `
                             <div style="display: flex; flex-direction: column; gap: 5px;">
                                 <div style="display: flex; justify-content: space-between; font-size: 14px;">
                                     <span>${d}</span>
-                                    <span style="font-weight: bold; color: var(--primary-color);">${count} בקרות</span>
+                                    <span style="font-weight: bold; color: var(--primary-color);">${count} ×‘×§×¨×•×ª</span>
                                 </div>
                                 <div style="width: 100%; background: var(--bg-color); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); height: 12px;">
                                     <div style="height: 100%; background: var(--primary-color); width: ${(count/maxCount)*100}%; border-radius: 4px; transition: width 1s ease-in-out;"></div>
@@ -425,27 +425,27 @@ function renderDashboard() {
                 if (trainingsAnswersDb.length === 0) {
                     return `
                     <div class="card" style="margin-top: 20px;">
-                        <h3 style="margin-bottom: 15px;">פילוח ביצוע לומדות לפי מחלקה</h3>
-                        <p style="color: var(--text-secondary);">טרם בוצעו לומדות במערכת.</p>
+                        <h3 style="margin-bottom: 15px;">×¤×™×œ×•×— ×‘×™×¦×•×¢ ×œ×•×ž×“×•×ª ×œ×¤×™ ×ž×—×œ×§×”</h3>
+                        <p style="color: var(--text-secondary);">×˜×¨× ×‘×•×¦×¢×• ×œ×•×ž×“×•×ª ×‘×ž×¢×¨×›×ª.</p>
                     </div>`;
                 }
                 let trainingStats = {};
                 trainingsAnswersDb.forEach(ans => {
                     let userObj = usersDb.find(u => u.name === ans.user);
-                    let dept = userObj && userObj.team !== 'all' ? userObj.team : 'לא ידוע';
+                    let dept = userObj && userObj.team !== 'all' ? userObj.team : '×œ× ×™×“×•×¢';
                     trainingStats[dept] = (trainingStats[dept] || 0) + 1;
                 });
                 if (Object.keys(trainingStats).length === 0) return '';
                 let maxCount = Math.max(...Object.values(trainingStats));
                 return `
                 <div class="card" style="margin-top: 20px;">
-                    <h3 style="margin-bottom: 15px;">פילוח ביצוע לומדות לפי מחלקה</h3>
+                    <h3 style="margin-bottom: 15px;">×¤×™×œ×•×— ×‘×™×¦×•×¢ ×œ×•×ž×“×•×ª ×œ×¤×™ ×ž×—×œ×§×”</h3>
                     <div style="display: flex; flex-direction: column; gap: 15px;">
                         ${Object.entries(trainingStats).sort((a,b) => b[1]-a[1]).map(([d, count]) => `
                             <div style="display: flex; flex-direction: column; gap: 5px;">
                                 <div style="display: flex; justify-content: space-between; font-size: 14px;">
                                     <span>${d}</span>
-                                    <span style="font-weight: bold; color: var(--success);">${count} ביצועים</span>
+                                    <span style="font-weight: bold; color: var(--success);">${count} ×‘×™×¦×•×¢×™×</span>
                                 </div>
                                 <div style="width: 100%; background: var(--bg-color); border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); height: 12px;">
                                     <div style="height: 100%; background: var(--success); width: ${(count/maxCount)*100}%; border-radius: 4px; transition: width 1s ease-in-out;"></div>
@@ -456,7 +456,7 @@ function renderDashboard() {
                 </div>`;
             })()}
             <div class="card" style="margin-top: 20px; overflow-x: auto;">
-                <h3 style="margin-bottom: 10px;">בקרות אחרונות שבוצעו</h3>
+                <h3 style="margin-bottom: 10px;">×‘×§×¨×•×ª ××—×¨×•× ×•×ª ×©×‘×•×¦×¢×•</h3>
                 ${recentFormsHtml}
             </div>
         </div>
@@ -470,14 +470,14 @@ function renderForms() {
     let html = `
         <div class="fade-in">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2>כלי בקרה וטפסים</h2>
+                <h2>×›×œ×™ ×‘×§×¨×” ×•×˜×¤×¡×™×</h2>
             </div>
             <div class="forms-list">
                 ${availableForms.map(form => `
                     <div class="form-card">
                         <h4>${form.title}</h4>
-                        <div class="form-meta">תדירות נדרשת: אחת ל-${form.frequency_days} ימים</div>
-                        <button class="btn" onclick="openForm('${form.id}')" style="margin-top:auto;">מלא טופס</button>
+                        <div class="form-meta">×ª×“×™×¨×•×ª × ×“×¨×©×ª: ××—×ª ×œ-${form.frequency_days} ×™×ž×™×</div>
+                        <button class="btn" onclick="openForm('${form.id}')" style="margin-top:auto;">×ž×œ× ×˜×•×¤×¡</button>
                     </div>
                 `).join('')}
             </div>
@@ -493,7 +493,7 @@ function openForm(id) {
     let fieldsHtml = form.fields.map(field => {
         if (field.type === 'select') {
             let optionsHtml = '';
-            if (field.label.includes('מחלקה') || field.label.includes('מחלקת')) {
+            if (field.label.includes('×ž×—×œ×§×”') || field.label.includes('×ž×—×œ×§×ª')) {
                 optionsHtml = departmentsDb.map(opt => `<option value="${opt}">${opt}</option>`).join('');
             } else {
                 optionsHtml = field.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
@@ -502,7 +502,7 @@ function openForm(id) {
                 <div class="form-group">
                     <label>${field.label} ${field.is_critical ? '<span style="color:red">*</span>' : ''}</label>
                     <select name="${field.id}" ${field.is_critical ? 'required' : ''}>
-                        <option value="">בחר...</option>
+                        <option value="">×‘×—×¨...</option>
                         ${optionsHtml}
                     </select>
                 </div>
@@ -526,13 +526,13 @@ function openForm(id) {
 
     contentArea.innerHTML = `
         <div class="fade-in">
-            <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-bottom: 20px;" onclick="navigate('forms')">חזור לרשימה</button>
+            <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-bottom: 20px;" onclick="navigate('forms')">×—×–×•×¨ ×œ×¨×©×™×ž×”</button>
             <div class="card">
                 <h2 style="margin-bottom: 10px;">${form.title}</h2>
                 <p style="color: var(--text-secondary); margin-bottom: 20px;">${form.instructions}</p>
                 <form onsubmit="submitForm(event, '${form.id}')">
                     ${fieldsHtml}
-                    <button type="submit" class="btn">שמור והגש דוח</button>
+                    <button type="submit" class="btn">×©×ž×•×¨ ×•×”×’×© ×“×•×—</button>
                 </form>
             </div>
         </div>
@@ -551,14 +551,14 @@ function submitForm(e, formId) {
     
     for (let key in formObj) {
         let val = formObj[key];
-        if (val === 'לא רלוונטי') continue;
+        if (val === '×œ× ×¨×œ×•×•× ×˜×™') continue;
         
         let fieldSchema = form.fields.find(f => f.id === key);
         if (fieldSchema && fieldSchema.type === 'select') {
             totalScoreable++;
-            if (val === 'כן' || val === 'תואם לחלוטין') {
+            if (val === '×›×Ÿ' || val === '×ª×•×× ×œ×—×œ×•×˜×™×Ÿ') {
                 earned++;
-            } else if (val === 'חלקי' || val === 'תואם חלקית') {
+            } else if (val === '×—×œ×§×™' || val === '×ª×•×× ×—×œ×§×™×ª') {
                 earned += 0.5;
             }
         }
@@ -580,7 +580,7 @@ function submitForm(e, formId) {
     
     localStorage.setItem('clinic_filled_forms', JSON.stringify(filledFormsDb));
     
-    showToast('הטופס הוגש בהצלחה עם ציון ' + finalScore + '%', 'success');
+    showToast('×”×˜×•×¤×¡ ×”×•×’×© ×‘×”×¦×œ×—×” ×¢× ×¦×™×•×Ÿ ' + finalScore + '%', 'success');
     navigate('dashboard');
 }
 
@@ -607,22 +607,22 @@ function renderTip() {
     // Local database of weekly tips (acts as our local agent database)
     const localAgentDatabase = [
         {
-            "protocols": "פורסמו דגשים חדשים למניעת פצעי לחץ. יש לבצע אומדן מקיף (כגון סולם נורטון) תוך 24 שעות ממועד הקבלה.",
-            "trivia": "מהי השעה ביום בה מתרחשות רוב הנפילות במחלקות גריאטריות?\nתשובה: לרוב בשעות הבוקר המוקדמות, כאשר מטופלים קמים לשירותים לאחר שנת הלילה.",
-            "tip": "השתמשו בתאורת לילה במסלול ההליכה לשירותים - זהו אמצעי פשוט המפחית משמעותית סיכון לנפילות.",
-            "research": "מאמר ב-JAGS הדגים כי שימוש קבוע בכלבי טיפול מסייע בהפחתת תסמיני דיכאון בקרב דיירי דיור מוגן בשיעור של 15%."
+            "protocols": "×¤×•×¨×¡×ž×• ×“×’×©×™× ×—×“×©×™× ×œ×ž× ×™×¢×ª ×¤×¦×¢×™ ×œ×—×¥. ×™×© ×œ×‘×¦×¢ ××•×ž×“×Ÿ ×ž×§×™×£ (×›×’×•×Ÿ ×¡×•×œ× × ×•×¨×˜×•×Ÿ) ×ª×•×š 24 ×©×¢×•×ª ×ž×ž×•×¢×“ ×”×§×‘×œ×”.",
+            "trivia": "×ž×”×™ ×”×©×¢×” ×‘×™×•× ×‘×” ×ž×ª×¨×—×©×•×ª ×¨×•×‘ ×”× ×¤×™×œ×•×ª ×‘×ž×—×œ×§×•×ª ×’×¨×™××˜×¨×™×•×ª?\n×ª×©×•×‘×”: ×œ×¨×•×‘ ×‘×©×¢×•×ª ×”×‘×•×§×¨ ×”×ž×•×§×“×ž×•×ª, ×›××©×¨ ×ž×˜×•×¤×œ×™× ×§×ž×™× ×œ×©×™×¨×•×ª×™× ×œ××—×¨ ×©× ×ª ×”×œ×™×œ×”.",
+            "tip": "×”×©×ª×ž×©×• ×‘×ª××•×¨×ª ×œ×™×œ×” ×‘×ž×¡×œ×•×œ ×”×”×œ×™×›×” ×œ×©×™×¨×•×ª×™× - ×–×”×• ××ž×¦×¢×™ ×¤×©×•×˜ ×”×ž×¤×—×™×ª ×ž×©×ž×¢×•×ª×™×ª ×¡×™×›×•×Ÿ ×œ× ×¤×™×œ×•×ª.",
+            "research": "×ž××ž×¨ ×‘-JAGS ×”×“×’×™× ×›×™ ×©×™×ž×•×© ×§×‘×•×¢ ×‘×›×œ×‘×™ ×˜×™×¤×•×œ ×ž×¡×™×™×¢ ×‘×”×¤×—×ª×ª ×ª×¡×ž×™× ×™ ×“×™×›××•×Ÿ ×‘×§×¨×‘ ×“×™×™×¨×™ ×“×™×•×¨ ×ž×•×’×Ÿ ×‘×©×™×¢×•×¨ ×©×œ 15%."
         },
         {
-            "protocols": "עודכנו הנחיות הטיפול בחולה נוטה למות: יש להקפיד על תיעוד רצון המטופל ומשפחתו בגיליון הסיעודי באופן סדיר ושקוף.",
-            "trivia": "איזה ויטמין נחשב לקריטי במיוחד בשמירה על מסת שריר ומניעת סרקופניה בגיל המבוגר?\nתשובה: ויטמין D, בשילוב צריכת חלבון נאותה.",
-            "tip": "וודאו זיהוי כפול של מטופל לפני מתן תרופה - לא מספיק לשאול לשמו, יש לבדוק את הצמיד והתאמתו לגיליון.",
-            "research": "מחקר חדש מצא ששילוב של אימון התנגדות עם תוספת חלבון משפר משמעותית את המדדים הפיזיים בחולי שבריריות (Frailty)."
+            "protocols": "×¢×•×“×›× ×• ×”× ×—×™×•×ª ×”×˜×™×¤×•×œ ×‘×—×•×œ×” × ×•×˜×” ×œ×ž×•×ª: ×™×© ×œ×”×§×¤×™×“ ×¢×œ ×ª×™×¢×•×“ ×¨×¦×•×Ÿ ×”×ž×˜×•×¤×œ ×•×ž×©×¤×—×ª×• ×‘×’×™×œ×™×•×Ÿ ×”×¡×™×¢×•×“×™ ×‘××•×¤×Ÿ ×¡×“×™×¨ ×•×©×§×•×£.",
+            "trivia": "××™×–×” ×•×™×˜×ž×™×Ÿ × ×—×©×‘ ×œ×§×¨×™×˜×™ ×‘×ž×™×•×—×“ ×‘×©×ž×™×¨×” ×¢×œ ×ž×¡×ª ×©×¨×™×¨ ×•×ž× ×™×¢×ª ×¡×¨×§×•×¤× ×™×” ×‘×’×™×œ ×”×ž×‘×•×’×¨?\n×ª×©×•×‘×”: ×•×™×˜×ž×™×Ÿ D, ×‘×©×™×œ×•×‘ ×¦×¨×™×›×ª ×—×œ×‘×•×Ÿ × ××•×ª×”.",
+            "tip": "×•×•×“××• ×–×™×”×•×™ ×›×¤×•×œ ×©×œ ×ž×˜×•×¤×œ ×œ×¤× ×™ ×ž×ª×Ÿ ×ª×¨×•×¤×” - ×œ× ×ž×¡×¤×™×§ ×œ×©××•×œ ×œ×©×ž×•, ×™×© ×œ×‘×“×•×§ ××ª ×”×¦×ž×™×“ ×•×”×ª××ž×ª×• ×œ×’×™×œ×™×•×Ÿ.",
+            "research": "×ž×—×§×¨ ×—×“×© ×ž×¦× ×©×©×™×œ×•×‘ ×©×œ ××™×ž×•×Ÿ ×”×ª× ×’×“×•×ª ×¢× ×ª×•×¡×¤×ª ×—×œ×‘×•×Ÿ ×ž×©×¤×¨ ×ž×©×ž×¢×•×ª×™×ª ××ª ×”×ž×“×“×™× ×”×¤×™×–×™×™× ×‘×—×•×œ×™ ×©×‘×¨×™×¨×™×•×ª (Frailty)."
         },
         {
-            "protocols": "הנחיות תזונה חדשות: יש להקפיד על מתן תוספי תזונה עשירי חלבון תוך 48 שעות מקבלה למטופלים בסיכון תזונתי.",
-            "trivia": "מהו הגיל הממוצע של תחילת הופעת סרקופניה (דלדול שריר) באוכלוסייה?\nתשובה: התהליך מתחיל כבר סביב גיל 40-50 ומואץ לאחר גיל 65.",
-            "tip": "בביצוע הדרכה למטופל, בקשו ממנו לחזור על ההסבר (Teach-Back) כדי לוודא הבנה מלאה של ההנחיות.",
-            "research": "סקירת קוקרן עדכנית ממליצה על ביצוע הערכה גריאטרית כוללנית (CGA) לכל מטופל מעל גיל 65 המאושפז באשפוז חריף."
+            "protocols": "×”× ×—×™×•×ª ×ª×–×•× ×” ×—×“×©×•×ª: ×™×© ×œ×”×§×¤×™×“ ×¢×œ ×ž×ª×Ÿ ×ª×•×¡×¤×™ ×ª×–×•× ×” ×¢×©×™×¨×™ ×—×œ×‘×•×Ÿ ×ª×•×š 48 ×©×¢×•×ª ×ž×§×‘×œ×” ×œ×ž×˜×•×¤×œ×™× ×‘×¡×™×›×•×Ÿ ×ª×–×•× ×ª×™.",
+            "trivia": "×ž×”×• ×”×’×™×œ ×”×ž×ž×•×¦×¢ ×©×œ ×ª×—×™×œ×ª ×”×•×¤×¢×ª ×¡×¨×§×•×¤× ×™×” (×“×œ×“×•×œ ×©×¨×™×¨) ×‘××•×›×œ×•×¡×™×™×”?\n×ª×©×•×‘×”: ×”×ª×”×œ×™×š ×ž×ª×—×™×œ ×›×‘×¨ ×¡×‘×™×‘ ×’×™×œ 40-50 ×•×ž×•××¥ ×œ××—×¨ ×’×™×œ 65.",
+            "tip": "×‘×‘×™×¦×•×¢ ×”×“×¨×›×” ×œ×ž×˜×•×¤×œ, ×‘×§×©×• ×ž×ž× ×• ×œ×—×–×•×¨ ×¢×œ ×”×”×¡×‘×¨ (Teach-Back) ×›×“×™ ×œ×•×•×“× ×”×‘× ×” ×ž×œ××” ×©×œ ×”×”× ×—×™×•×ª.",
+            "research": "×¡×§×™×¨×ª ×§×•×§×¨×Ÿ ×¢×“×›× ×™×ª ×ž×ž×œ×™×¦×” ×¢×œ ×‘×™×¦×•×¢ ×”×¢×¨×›×” ×’×¨×™××˜×¨×™×ª ×›×•×œ×œ× ×™×ª (CGA) ×œ×›×œ ×ž×˜×•×¤×œ ×ž×¢×œ ×’×™×œ 65 ×”×ž××•×©×¤×– ×‘××©×¤×•×– ×—×¨×™×£."
         }
     ];
 
@@ -642,26 +642,26 @@ function renderTip() {
 
     return `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">✨ טיפ השבוע מהסוכן המקומי</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">תוכן זה נבחר אחת לשבוע באופן אוטומטי מתוך מאגר הנתונים המקומי של המערכת (ללא צורך בחיבור חיצוני).</p>
+            <h2 style="margin-bottom: 20px;">âœ¨ ×˜×™×¤ ×”×©×‘×•×¢ ×ž×”×¡×•×›×Ÿ ×”×ž×§×•×ž×™</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">×ª×•×›×Ÿ ×–×” × ×‘×—×¨ ××—×ª ×œ×©×‘×•×¢ ×‘××•×¤×Ÿ ××•×˜×•×ž×˜×™ ×ž×ª×•×š ×ž××’×¨ ×”× ×ª×•× ×™× ×”×ž×§×•×ž×™ ×©×œ ×”×ž×¢×¨×›×ª (×œ×œ× ×¦×•×¨×š ×‘×—×™×‘×•×¨ ×—×™×¦×•× ×™).</p>
             <div id="tip-container">
                 <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
-                    <h3 style="color: var(--primary-color);">📅 עדכון אחרון: ${dateStr}</h3>
+                    <h3 style="color: var(--primary-color);">ðŸ“… ×¢×“×›×•×Ÿ ××—×¨×•×Ÿ: ${dateStr}</h3>
                 </div>
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #10b981;">
-                    <h3>📋 נהלי משרד הבריאות</h3>
+                    <h3>ðŸ“‹ × ×”×œ×™ ×ž×©×¨×“ ×”×‘×¨×™××•×ª</h3>
                     <p style="white-space: pre-wrap;">${selectedData.protocols}</p>
                 </div>
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #f59e0b;">
-                    <h3>🎯 שאלת טריוויה</h3>
+                    <h3>ðŸŽ¯ ×©××œ×ª ×˜×¨×™×•×•×™×”</h3>
                     <p style="white-space: pre-wrap;">${selectedData.trivia}</p>
                 </div>
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #3b82f6;">
-                    <h3>💡 טיפ שבועי (בטיחות הטיפול)</h3>
+                    <h3>ðŸ’¡ ×˜×™×¤ ×©×‘×•×¢×™ (×‘×˜×™×—×•×ª ×”×˜×™×¤×•×œ)</h3>
                     <p style="white-space: pre-wrap;">${selectedData.tip}</p>
                 </div>
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #8b5cf6;">
-                    <h3>📚 מאמר מחקרי חדש</h3>
+                    <h3>ðŸ“š ×ž××ž×¨ ×ž×—×§×¨×™ ×—×“×©</h3>
                     <p style="white-space: pre-wrap;">${selectedData.research}</p>
                 </div>
             </div>
@@ -674,16 +674,16 @@ function renderTrainings() {
 
     return `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">לומדות לקליטת עובד חדש</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">מאגר הלומדות וההדרכות הקליניות עבור אנשי צוות וקליטת עובדים.</p>
-            ${currentUser.isAdmin ? '<div style="margin-bottom: 20px;"><button class="btn" onclick="exportTrainingsExcel()" style="background: var(--success);">ייצא דוח ביצוע הדרכות לאקסל 📥</button></div>' : ''}
+            <h2 style="margin-bottom: 20px;">×œ×•×ž×“×•×ª ×œ×§×œ×™×˜×ª ×¢×•×‘×“ ×—×“×©</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">×ž××’×¨ ×”×œ×•×ž×“×•×ª ×•×”×”×“×¨×›×•×ª ×”×§×œ×™× ×™×•×ª ×¢×‘×•×¨ ×× ×©×™ ×¦×•×•×ª ×•×§×œ×™×˜×ª ×¢×•×‘×“×™×.</p>
+            ${currentUser.isAdmin ? '<div style="margin-bottom: 20px;"><button class="btn" onclick="exportTrainingsExcel()" style="background: var(--success);">×™×™×¦× ×“×•×— ×‘×™×¦×•×¢ ×”×“×¨×›×•×ª ×œ××§×¡×œ ðŸ“¥</button></div>' : ''}
             
             <div class="forms-list">
                 ${trainingsDb.map(t => `
                     <div class="form-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px;">
                         <div style="font-size: 40px; margin-bottom: 10px;">${t.icon}</div>
                         <h4 style="margin-bottom: 15px;">${t.title}</h4>
-                        <button class="btn" onclick="openTraining('${t.url}', '${t.title}', ${t.external ? 'true' : 'false'})" style="margin-top:auto;">פתח לומדה</button>
+                        <button class="btn" onclick="openTraining('${t.url}', '${t.title}', ${t.external ? 'true' : 'false'})" style="margin-top:auto;">×¤×ª×— ×œ×•×ž×“×”</button>
                     </div>
                 `).join('')}
             </div>
@@ -693,10 +693,10 @@ function renderTrainings() {
 
 function openTraining(url, title, isExternal = false) {
     // Intercept based on title to guarantee native quiz routing
-    if (title.includes('טיפול תומך') || (url && url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q'))) {
+    if (title.includes('×˜×™×¤×•×œ ×ª×•×ž×š') || (url && url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q'))) {
         url = 'native_supportive_care';
         isExternal = false;
-    } else if (title.includes('מניעת זיהומים') || (url && url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A'))) {
+    } else if (title.includes('×ž× ×™×¢×ª ×–×™×”×•×ž×™×') || (url && url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A'))) {
         url = 'native_infections';
         isExternal = false;
     }
@@ -708,7 +708,7 @@ function openTraining(url, title, isExternal = false) {
             date: new Date().toLocaleString('he-IL')
         });
         localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
-        showToast('הלומדה סומנה כהושלמה ונרשמה במערכת.', 'info');
+        showToast('×”×œ×•×ž×“×” ×¡×•×ž× ×” ×›×”×•×©×œ×ž×” ×•× ×¨×©×ž×” ×‘×ž×¢×¨×›×ª.', 'info');
     }
 
     if (isExternal) {
@@ -727,12 +727,12 @@ function openTraining(url, title, isExternal = false) {
             contentArea.innerHTML = `
                 <div class="fade-in">
                     <div style="text-align: center; margin-bottom: 20px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-                        <h3 style="margin-bottom: 15px;">בחר שפה / Choose Language / اختر اللغة / Выберите язык</h3>
+                        <h3 style="margin-bottom: 15px;">×‘×—×¨ ×©×¤×” / Choose Language / Ø§Ø®ØªØ± Ø§Ù„Ù„ØºØ© / Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ·Ñ‹Ðº</h3>
                         <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
-                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'he', 'quizContainer')" style="min-width: 100px;">עברית</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'he', 'quizContainer')" style="min-width: 100px;">×¢×‘×¨×™×ª</button>
                             <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'en', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">English</button>
-                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ar', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">العربية</button>
-                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ru', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">Русский</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ar', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</button>
+                            <button class="btn" onclick="window.renderNativeQuiz('${quizId}', 'ru', 'quizContainer')" style="min-width: 100px; font-family: sans-serif;">Ð ÑƒÑÑÐºÐ¸Ð¹</button>
                         </div>
                     </div>
                     <div id="quizContainer"></div>
@@ -741,7 +741,7 @@ function openTraining(url, title, isExternal = false) {
             // Default load hebrew
             window.renderNativeQuiz(quizId, 'he', 'quizContainer');
         } else {
-            contentArea.innerHTML = '<div class="card">שגיאה בטעינת לומדה (quizzes.js לא נטען)</div>';
+            contentArea.innerHTML = '<div class="card">×©×’×™××” ×‘×˜×¢×™× ×ª ×œ×•×ž×“×” (quizzes.js ×œ× × ×˜×¢×Ÿ)</div>';
         }
         return;
     }
@@ -749,15 +749,15 @@ function openTraining(url, title, isExternal = false) {
     if (url.startsWith('internal_quiz')) {
         contentArea.innerHTML = `
             <div class="fade-in">
-                <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-bottom: 20px;" onclick="navigate('trainings')">חזור לרשימת הלומדות</button>
+                <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-bottom: 20px;" onclick="navigate('trainings')">×—×–×•×¨ ×œ×¨×©×™×ž×ª ×”×œ×•×ž×“×•×ª</button>
                 <div class="card">
-                    <h2 style="margin-bottom: 20px;">${title} (מבדק פנימי)</h2>
+                    <h2 style="margin-bottom: 20px;">${title} (×ž×‘×“×§ ×¤× ×™×ž×™)</h2>
                     <form onsubmit="submitInternalQuiz(event, '${title}')">
                         <div class="form-group">
-                            <label>אנא אשר שקראת והבנת את חומרי ההדרכה בנושא זה.</label>
-                            <select required><option value="">בחר...</option><option value="yes">מאשר</option></select>
+                            <label>×× × ××©×¨ ×©×§×¨××ª ×•×”×‘× ×ª ××ª ×—×•×ž×¨×™ ×”×”×“×¨×›×” ×‘× ×•×©× ×–×”.</label>
+                            <select required><option value="">×‘×—×¨...</option><option value="yes">×ž××©×¨</option></select>
                         </div>
-                        <button type="submit" class="btn">סיום ושליחה</button>
+                        <button type="submit" class="btn">×¡×™×•× ×•×©×œ×™×—×”</button>
                     </form>
                 </div>
             </div>
@@ -769,39 +769,39 @@ function openTraining(url, title, isExternal = false) {
         <div class="fade-in" style="height: 100%; display: flex; flex-direction: column;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                 <h2 style="margin: 0;">${title}</h2>
-                <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color);" onclick="navigate('trainings')">חזור לרשימת הלומדות</button>
+                <button class="btn" style="background-color: transparent; color: var(--primary-color); border: 1px solid var(--primary-color);" onclick="navigate('trainings')">×—×–×•×¨ ×œ×¨×©×™×ž×ª ×”×œ×•×ž×“×•×ª</button>
             </div>
             <div style="flex: 1; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; background: #fff;">
-                <iframe src="${url}" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="min-height: 800px;">טוען…</iframe>
+                <iframe src="${url}" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" style="min-height: 800px;">×˜×•×¢×Ÿâ€¦</iframe>
             </div>
         </div>
     `;
 }
 
 function renderProcedures() {
-    let adminNewBtn = currentUser.isAdmin ? '<button class="btn" onclick="document.getElementById(\'new-procedure-box\').style.display=\'block\'">+ הוסף נוהל חדש</button>' : '';
+    let adminNewBtn = currentUser.isAdmin ? '<button class="btn" onclick="document.getElementById(\'new-procedure-box\').style.display=\'block\'">+ ×”×•×¡×£ × ×•×”×œ ×—×“×©</button>' : '';
     let adminNewBox = currentUser.isAdmin ? 
     '<div id="new-procedure-box" class="card" style="display: none; margin-bottom: 20px; background: var(--bg-color); border: 2px dashed var(--primary-color);">' +
-    '<h3 style="margin-bottom: 15px;">נוהל חדש</h3>' +
-    '<div class="form-group"><label>כותרת הנוהל</label><input type="text" id="proc-title" placeholder="למשל: נוהל טיפול בתרופות מסוכנות"></div>' +
-    '<div class="form-group"><label>קישור (URL) למסמך / לומדה</label><input type="text" id="proc-link" placeholder="https://..."></div>' +
-    '<div style="display: flex; gap: 10px;"><button class="btn" style="background: var(--success);" onclick="addProcedure()">שמור נוהל</button><button class="btn" style="background: var(--danger);" onclick="document.getElementById(\'new-procedure-box\').style.display=\'none\'">ביטול</button></div>' +
+    '<h3 style="margin-bottom: 15px;">× ×•×”×œ ×—×“×©</h3>' +
+    '<div class="form-group"><label>×›×•×ª×¨×ª ×”× ×•×”×œ</label><input type="text" id="proc-title" placeholder="×œ×ž×©×œ: × ×•×”×œ ×˜×™×¤×•×œ ×‘×ª×¨×•×¤×•×ª ×ž×¡×•×›× ×•×ª"></div>' +
+    '<div class="form-group"><label>×§×™×©×•×¨ (URL) ×œ×ž×¡×ž×š / ×œ×•×ž×“×”</label><input type="text" id="proc-link" placeholder="https://..."></div>' +
+    '<div style="display: flex; gap: 10px;"><button class="btn" style="background: var(--success);" onclick="addProcedure()">×©×ž×•×¨ × ×•×”×œ</button><button class="btn" style="background: var(--danger);" onclick="document.getElementById(\'new-procedure-box\').style.display=\'none\'">×‘×™×˜×•×œ</button></div>' +
     '</div>' : '';
 
     let html = `
         <div class="fade-in">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h2 style="margin: 0;">נהלי עבודה פנימיים</h2>
+                <h2 style="margin: 0;">× ×”×œ×™ ×¢×‘×•×“×” ×¤× ×™×ž×™×™×</h2>
                 ${adminNewBtn}
             </div>
             
             ${adminNewBox}
 
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">על כל איש צוות לקרוא ולאשר את נהלי העבודה אחת לשנה לפחות.</p>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">×¢×œ ×›×œ ××™×© ×¦×•×•×ª ×œ×§×¨×•× ×•×œ××©×¨ ××ª × ×”×œ×™ ×”×¢×‘×•×“×” ××—×ª ×œ×©× ×” ×œ×¤×—×•×ª.</p>
 
             <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <input type="text" id="proc-search" placeholder="חיפוש נוהל..." style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;" oninput="filterProcedures()">
-                ${currentUser.isAdmin ? '<button class="btn" onclick="exportProceduresExcel()" style="background: var(--success);">ייצא דוח קריאה לאקסל 📥</button>' : ''}
+                <input type="text" id="proc-search" placeholder="×—×™×¤×•×© × ×•×”×œ..." style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;" oninput="filterProcedures()">
+                ${currentUser.isAdmin ? '<button class="btn" onclick="exportProceduresExcel()" style="background: var(--success);">×™×™×¦× ×“×•×— ×§×¨×™××” ×œ××§×¡×œ ðŸ“¥</button>' : ''}
             </div>
 
             <div class="forms-list">
@@ -811,16 +811,16 @@ function renderProcedures() {
                     let hasReadRecently = userReadRecord && userReadRecord.date > oneYearAgo;
                     
                     let linkHtml = p.link.startsWith('http') ? 
-                        '<a href="' + p.link + '" target="_blank" style="color: var(--primary-color); display: inline-block; margin-bottom: 15px;">צפה במסמך / בנוהל המלא ↗</a>' : 
+                        '<a href="' + p.link + '" target="_blank" style="color: var(--primary-color); display: inline-block; margin-bottom: 15px;">×¦×¤×” ×‘×ž×¡×ž×š / ×‘× ×•×”×œ ×”×ž×œ× â†—</a>' : 
                         '<p style="margin-bottom: 15px;">' + p.link + '</p>';
 
                     let readHtml = hasReadRecently ? 
-                        '<span style="color: var(--success); font-weight: bold;">✅ קראתי ואישרתי (בתוקף לשנה)</span>' : 
-                        '<button class="btn" style="background: var(--danger);" onclick="confirmProcedureRead(' + p.id + ')">אשר קריאת נוהל</button>';
+                        '<span style="color: var(--success); font-weight: bold;">âœ… ×§×¨××ª×™ ×•××™×©×¨×ª×™ (×‘×ª×•×§×£ ×œ×©× ×”)</span>' : 
+                        '<button class="btn" style="background: var(--danger);" onclick="confirmProcedureRead(' + p.id + ')">××©×¨ ×§×¨×™××ª × ×•×”×œ</button>';
 
                     let adminHtml = currentUser.isAdmin ? 
-                        '<div style="font-size: 13px; color: var(--text-secondary); text-align: left;"><strong>קראו ואישרו לאחרונה:</strong><br>' +
-                        (p.readBy.filter(r => r.date > oneYearAgo).length === 0 ? 'אף אחד' : p.readBy.filter(r => r.date > oneYearAgo).map(r => r.name).join(', ')) +
+                        '<div style="font-size: 13px; color: var(--text-secondary); text-align: left;"><strong>×§×¨××• ×•××™×©×¨×• ×œ××—×¨×•× ×”:</strong><br>' +
+                        (p.readBy.filter(r => r.date > oneYearAgo).length === 0 ? '××£ ××—×“' : p.readBy.filter(r => r.date > oneYearAgo).map(r => r.name).join(', ')) +
                         '</div>' : '';
 
                     return `
@@ -833,7 +833,7 @@ function renderProcedures() {
                         </div>
                     </div>`;
                 }).join('')}
-                ${proceduresDb.length === 0 ? '<p>לא הוגדרו נהלים במערכת.</p>' : ''}
+                ${proceduresDb.length === 0 ? '<p>×œ× ×”×•×’×“×¨×• × ×”×œ×™× ×‘×ž×¢×¨×›×ª.</p>' : ''}
             </div>
         </div>
     `;
@@ -851,7 +851,7 @@ function addProcedure() {
             readBy: []
         });
         localStorage.setItem('clinic_procedures', JSON.stringify(proceduresDb));
-        showToast('נוהל נוסף בהצלחה', 'success');
+        showToast('× ×•×”×œ × ×•×¡×£ ×‘×”×¦×œ×—×”', 'success');
         navigate('procedures');
     }
 }
@@ -862,7 +862,7 @@ function confirmProcedureRead(id) {
         proc.readBy = proc.readBy.filter(r => r.name !== currentUser.name);
         proc.readBy.push({ name: currentUser.name, date: Date.now() });
         localStorage.setItem('clinic_procedures', JSON.stringify(proceduresDb));
-        showToast('אישור הקריאה נרשם בהצלחה', 'success');
+        showToast('××™×©×•×¨ ×”×§×¨×™××” × ×¨×©× ×‘×”×¦×œ×—×”', 'success');
         navigate('procedures');
     }
 }
@@ -914,21 +914,21 @@ function renderAgent() {
     });
 
     let translateFreq = (f) => {
-        if(f==='once') return 'חד פעמי';
-        if(f==='half-yearly') return 'חצי-שנתית';
-        return 'שנתית';
+        if(f==='once') return '×—×“ ×¤×¢×ž×™';
+        if(f==='half-yearly') return '×—×¦×™-×©× ×ª×™×ª';
+        return '×©× ×ª×™×ª';
     };
 
     let renderTable = (list, type) => {
-        if(list.length === 0) return `<div class="card" style="border-right: 4px solid var(--success);"><p style="color:var(--success); font-weight: bold; margin: 0;">✅ אין חריגות! כל אנשי הצוות עמדו ביעדים.</p></div>`;
+        if(list.length === 0) return `<div class="card" style="border-right: 4px solid var(--success);"><p style="color:var(--success); font-weight: bold; margin: 0;">âœ… ××™×Ÿ ×—×¨×™×’×•×ª! ×›×œ ×× ×©×™ ×”×¦×•×•×ª ×¢×ž×“×• ×‘×™×¢×“×™×.</p></div>`;
         return `
         <table style="width: 100%; border-collapse: collapse; font-size: 14px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
             <tr style="background: var(--bg-color); border-bottom: 2px solid var(--border-color); text-align: right;">
-                <th style="padding: 12px;">שם עובד</th>
-                <th style="padding: 12px;">מחלקה</th>
-                <th style="padding: 12px;">משימה חסרה</th>
-                <th style="padding: 12px;">תדירות נדרשת</th>
-                <th style="padding: 12px; text-align: left;">פעולה</th>
+                <th style="padding: 12px;">×©× ×¢×•×‘×“</th>
+                <th style="padding: 12px;">×ž×—×œ×§×”</th>
+                <th style="padding: 12px;">×ž×©×™×ž×” ×—×¡×¨×”</th>
+                <th style="padding: 12px;">×ª×“×™×¨×•×ª × ×“×¨×©×ª</th>
+                <th style="padding: 12px; text-align: left;">×¤×¢×•×œ×”</th>
             </tr>
             ${list.map(item => `
             <tr style="border-bottom: 1px solid var(--border-color);">
@@ -937,7 +937,7 @@ function renderAgent() {
                 <td style="padding: 12px;">${item.task}</td>
                 <td style="padding: 12px;">${translateFreq(item.freq)}</td>
                 <td style="padding: 12px; text-align: left;">
-                    <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--primary-color);" onclick="sendReminder('${item.user}', '${item.task}')">שלח תזכורת 🔔</button>
+                    <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--primary-color);" onclick="sendReminder('${item.user}', '${item.task}')">×©×œ×— ×ª×–×›×•×¨×ª ðŸ””</button>
                 </td>
             </tr>
             `).join('')}
@@ -946,26 +946,26 @@ function renderAgent() {
 
     return `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">סוכן AI מורחב (AI Agent)</h2>
+            <h2 style="margin-bottom: 20px;">×¡×•×›×Ÿ AI ×ž×•×¨×—×‘ (AI Agent)</h2>
             
             <div style="background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 30px;">
-                <h3 style="margin-bottom: 10px;">🧠 סוכן מחקר ועדכון נהלים</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">הסוכן סורק אוטומטית את ציוני הבקרות, מצליב אותם עם נהלי משרד הבריאות ומפיק המלצות עדכון.</p>
+                <h3 style="margin-bottom: 10px;">ðŸ§  ×¡×•×›×Ÿ ×ž×—×§×¨ ×•×¢×“×›×•×Ÿ × ×”×œ×™×</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">×”×¡×•×›×Ÿ ×¡×•×¨×§ ××•×˜×•×ž×˜×™×ª ××ª ×¦×™×•× ×™ ×”×‘×§×¨×•×ª, ×ž×¦×œ×™×‘ ××•×ª× ×¢× × ×”×œ×™ ×ž×©×¨×“ ×”×‘×¨×™××•×ª ×•×ž×¤×™×§ ×”×ž×œ×¦×•×ª ×¢×“×›×•×Ÿ.</p>
                 <div class="card" style="text-align: center; padding: 30px;">
-                    <div style="font-size: 30px; margin-bottom: 15px;">🤖</div>
-                    <button class="btn" onclick="runAgentAnalysis()" id="btn-run-agent" style="font-size: 14px; padding: 10px 20px;">הפעל סריקה וניתוח פערים</button>
+                    <div style="font-size: 30px; margin-bottom: 15px;">ðŸ¤–</div>
+                    <button class="btn" onclick="runAgentAnalysis()" id="btn-run-agent" style="font-size: 14px; padding: 10px 20px;">×”×¤×¢×œ ×¡×¨×™×§×” ×•× ×™×ª×•×— ×¤×¢×¨×™×</button>
                 </div>
                 <div id="agent-results" style="margin-top: 20px; display: none;"></div>
             </div>
 
             <div style="background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
-                <h3 style="margin-bottom: 10px;">📅 סוכן מעקב ותזכורות אוטומטי</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 20px;">סורק באופן אוטומטי את ביצועי העובדים מול דרישות התדירות של נהלים ולומדות ומתריע על חריגות.</p>
+                <h3 style="margin-bottom: 10px;">ðŸ“… ×¡×•×›×Ÿ ×ž×¢×§×‘ ×•×ª×–×›×•×¨×•×ª ××•×˜×•×ž×˜×™</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 20px;">×¡×•×¨×§ ×‘××•×¤×Ÿ ××•×˜×•×ž×˜×™ ××ª ×‘×™×¦×•×¢×™ ×”×¢×•×‘×“×™× ×ž×•×œ ×“×¨×™×©×•×ª ×”×ª×“×™×¨×•×ª ×©×œ × ×”×œ×™× ×•×œ×•×ž×“×•×ª ×•×ž×ª×¨×™×¢ ×¢×œ ×—×¨×™×’×•×ª.</p>
                 
-                <h4 style="margin-bottom: 15px; color: var(--danger);">⚠️ חריגות בקריאת נהלים</h4>
+                <h4 style="margin-bottom: 15px; color: var(--danger);">âš ï¸ ×—×¨×™×’×•×ª ×‘×§×¨×™××ª × ×”×œ×™×</h4>
                 ${renderTable(overdueProcedures, 'procedure')}
                 
-                <h4 style="margin-top: 30px; margin-bottom: 15px; color: var(--danger);">⚠️ חריגות בביצוע לומדות</h4>
+                <h4 style="margin-top: 30px; margin-bottom: 15px; color: var(--danger);">âš ï¸ ×—×¨×™×’×•×ª ×‘×‘×™×¦×•×¢ ×œ×•×ž×“×•×ª</h4>
                 ${renderTable(overdueTrainings, 'training')}
             </div>
         </div>
@@ -977,12 +977,12 @@ function runAgentAnalysis() {
     const results = document.getElementById('agent-results');
     
     btn.disabled = true;
-    btn.innerText = 'סורק מאגרים ומנתח נתונים...';
+    btn.innerText = '×¡×•×¨×§ ×ž××’×¨×™× ×•×ž× ×ª×— × ×ª×•× ×™×...';
     btn.style.opacity = '0.7';
     results.style.display = 'none';
 
     setTimeout(() => {
-        btn.innerText = 'הסריקה הושלמה';
+        btn.innerText = '×”×¡×¨×™×§×” ×”×•×©×œ×ž×”';
         results.style.display = 'block';
         
         let formAverages = {};
@@ -1007,26 +1007,26 @@ function runAgentAnalysis() {
         if (!lowestForm) {
             recommendationHtml = `
                 <div class="card" style="border-right: 4px solid var(--success);">
-                    <h3 style="color: var(--success); margin-bottom: 10px;">לא נמצאו פערים חריגים</h3>
-                    <p>לא נמצאו טפסים עם ממוצע ציונים נמוך הדורשים התערבות מיידית.</p>
+                    <h3 style="color: var(--success); margin-bottom: 10px;">×œ× × ×ž×¦××• ×¤×¢×¨×™× ×—×¨×™×’×™×</h3>
+                    <p>×œ× × ×ž×¦××• ×˜×¤×¡×™× ×¢× ×ž×ž×•×¦×¢ ×¦×™×•× ×™× × ×ž×•×š ×”×“×•×¨×©×™× ×”×ª×¢×¨×‘×•×ª ×ž×™×™×“×™×ª.</p>
                 </div>
             `;
         } else {
             recommendationHtml = `
                 <div class="card" style="border-right: 4px solid var(--danger); margin-bottom: 15px;">
-                    <h4 style="color: var(--danger); margin-bottom: 10px;">⚠️ פער שזוהה: ${lowestForm.title}</h4>
-                    <p style="margin-bottom: 10px;">ציון ממוצע במערכת: <strong>${Math.round(lowestForm.avg)}%</strong></p>
+                    <h4 style="color: var(--danger); margin-bottom: 10px;">âš ï¸ ×¤×¢×¨ ×©×–×•×”×”: ${lowestForm.title}</h4>
+                    <p style="margin-bottom: 10px;">×¦×™×•×Ÿ ×ž×ž×•×¦×¢ ×‘×ž×¢×¨×›×ª: <strong>${Math.round(lowestForm.avg)}%</strong></p>
                     <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; margin-bottom: 15px; border: 1px solid var(--border-color);">
-                        <strong>📚 סקירת ספרות, נהלים ומאמרים בינלאומיים (2020-2024):</strong><br>
-                        על פי הצלבת הנתונים עם חוזרי משרד הבריאות המעודכנים, פרוטוקולים בינלאומיים של ארגון הבריאות העולמי (WHO) ומאמרים עדכניים מ-PubMed למניעת זיהומים - כאשר נצפית ירידה בציות לנהלים באשפוז, יש צורך לא רק בהגברת תדירות הבקרות אלא גם ברענון מערכי ההדרכה (לומדות) והתאמתם לתקן הבינלאומי החדש.
+                        <strong>ðŸ“š ×¡×§×™×¨×ª ×¡×¤×¨×•×ª, × ×”×œ×™× ×•×ž××ž×¨×™× ×‘×™× ×œ××•×ž×™×™× (2020-2024):</strong><br>
+                        ×¢×œ ×¤×™ ×”×¦×œ×‘×ª ×”× ×ª×•× ×™× ×¢× ×—×•×–×¨×™ ×ž×©×¨×“ ×”×‘×¨×™××•×ª ×”×ž×¢×•×“×›× ×™×, ×¤×¨×•×˜×•×§×•×œ×™× ×‘×™× ×œ××•×ž×™×™× ×©×œ ××¨×’×•×Ÿ ×”×‘×¨×™××•×ª ×”×¢×•×œ×ž×™ (WHO) ×•×ž××ž×¨×™× ×¢×“×›× ×™×™× ×ž-PubMed ×œ×ž× ×™×¢×ª ×–×™×”×•×ž×™× - ×›××©×¨ × ×¦×¤×™×ª ×™×¨×™×“×” ×‘×¦×™×•×ª ×œ× ×”×œ×™× ×‘××©×¤×•×–, ×™×© ×¦×•×¨×š ×œ× ×¨×§ ×‘×”×’×‘×¨×ª ×ª×“×™×¨×•×ª ×”×‘×§×¨×•×ª ××œ× ×’× ×‘×¨×¢× ×•×Ÿ ×ž×¢×¨×›×™ ×”×”×“×¨×›×” (×œ×•×ž×“×•×ª) ×•×”×ª××ž×ª× ×œ×ª×§×Ÿ ×”×‘×™× ×œ××•×ž×™ ×”×—×“×©.
                     </div>
-                    <strong>💡 המלצת הסוכן (פעולות מוצעות):</strong>
+                    <strong>ðŸ’¡ ×”×ž×œ×¦×ª ×”×¡×•×›×Ÿ (×¤×¢×•×œ×•×ª ×ž×•×¦×¢×•×ª):</strong>
                     <ul style="margin-top: 10px; margin-bottom: 15px; line-height: 1.6;">
-                        <li>הגברת תדירות הבקרה של טופס זה לכל <strong>14 ימים</strong> (במקום 30).</li>
-                        <li><strong>הצלבה עם לומדות:</strong> הוספת פרק הדרכה קצר בלומדת הקליטה שידגיש את הפרוטוקול הבינלאומי המעודכן לחיטוי ידיים.</li>
-                        <li>עדכון שאלת החובה בכלי הבקרה: וידוא חתימה אלקטרונית ומודעות לנהלים הבינלאומיים בהדרכת הבוקר.</li>
+                        <li>×”×’×‘×¨×ª ×ª×“×™×¨×•×ª ×”×‘×§×¨×” ×©×œ ×˜×•×¤×¡ ×–×” ×œ×›×œ <strong>14 ×™×ž×™×</strong> (×‘×ž×§×•× 30).</li>
+                        <li><strong>×”×¦×œ×‘×” ×¢× ×œ×•×ž×“×•×ª:</strong> ×”×•×¡×¤×ª ×¤×¨×§ ×”×“×¨×›×” ×§×¦×¨ ×‘×œ×•×ž×“×ª ×”×§×œ×™×˜×” ×©×™×“×’×™×© ××ª ×”×¤×¨×•×˜×•×§×•×œ ×”×‘×™× ×œ××•×ž×™ ×”×ž×¢×•×“×›×Ÿ ×œ×—×™×˜×•×™ ×™×“×™×™×.</li>
+                        <li>×¢×“×›×•×Ÿ ×©××œ×ª ×”×—×•×‘×” ×‘×›×œ×™ ×”×‘×§×¨×”: ×•×™×“×•× ×—×ª×™×ž×” ××œ×§×˜×¨×•× ×™×ª ×•×ž×•×“×¢×•×ª ×œ× ×”×œ×™× ×”×‘×™× ×œ××•×ž×™×™× ×‘×”×“×¨×›×ª ×”×‘×•×§×¨.</li>
                     </ul>
-                    <button class="btn" style="background-color: var(--success);" onclick="applyRecommendation('${lowestForm.id}')">אשר ויישם עדכון בכלים ובלומדות</button>
+                    <button class="btn" style="background-color: var(--success);" onclick="applyRecommendation('${lowestForm.id}')">××©×¨ ×•×™×™×©× ×¢×“×›×•×Ÿ ×‘×›×œ×™× ×•×‘×œ×•×ž×“×•×ª</button>
                 </div>
             `;
         }
@@ -1043,120 +1043,120 @@ function applyRecommendation(formId) {
             form.fields.push({
                 id: "ai_update_1", 
                 type: "select", 
-                label: "האם בוצע וידוא חתימה אלקטרונית ומודעות לנהלים הבינלאומיים (WHO)?", 
-                options: ["כן", "לא"], 
+                label: "×”×× ×‘×•×¦×¢ ×•×™×“×•× ×—×ª×™×ž×” ××œ×§×˜×¨×•× ×™×ª ×•×ž×•×“×¢×•×ª ×œ× ×”×œ×™× ×”×‘×™× ×œ××•×ž×™×™× (WHO)?", 
+                options: ["×›×Ÿ", "×œ×"], 
                 is_critical: true
             });
         }
     }
     localStorage.setItem('clinic_forms_schema', JSON.stringify(formsSchema));
     
-    if (!trainingsDb.find(t => t.title === 'עדכון: מניעת זיהומים - פרוטוקול WHO')) {
+    if (!trainingsDb.find(t => t.title === '×¢×“×›×•×Ÿ: ×ž× ×™×¢×ª ×–×™×”×•×ž×™× - ×¤×¨×•×˜×•×§×•×œ WHO')) {
         trainingsDb.push({
             id: Date.now(),
-            title: 'עדכון: מניעת זיהומים - פרוטוקול WHO',
+            title: '×¢×“×›×•×Ÿ: ×ž× ×™×¢×ª ×–×™×”×•×ž×™× - ×¤×¨×•×˜×•×§×•×œ WHO',
             url: 'https://www.who.int/campaigns/world-hand-hygiene-day',
-            icon: '🌍',
+            icon: 'ðŸŒ',
             external: true,
             frequency: 'once'
         });
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
     }
 
-    showToast('המלצות הסוכן יושמו בהצלחה. כלי הבקרה והלומדות עודכנו בהתאם!', 'success');
+    showToast('×”×ž×œ×¦×•×ª ×”×¡×•×›×Ÿ ×™×•×©×ž×• ×‘×”×¦×œ×—×”. ×›×œ×™ ×”×‘×§×¨×” ×•×”×œ×•×ž×“×•×ª ×¢×•×“×›× ×• ×‘×”×ª××!', 'success');
     navigate('dashboard');
 }
 
 function sendReminder(user, task) {
-    showToast(`שולח תזכורת לעובד ${user}...`, 'primary');
+    showToast(`×©×•×œ×— ×ª×–×›×•×¨×ª ×œ×¢×•×‘×“ ${user}...`, 'primary');
     setTimeout(() => {
-        showToast(`✉️ תזכורת נשלחה בהצלחה (Email/SMS) ל-${user} עבור המשימה: ${task}`, 'success');
+        showToast(`âœ‰ï¸ ×ª×–×›×•×¨×ª × ×©×œ×—×” ×‘×”×¦×œ×—×” (Email/SMS) ×œ-${user} ×¢×‘×•×¨ ×”×ž×©×™×ž×”: ${task}`, 'success');
     }, 1500);
 }
 
 function renderSettings() {
     let html = `
         <div class="fade-in">
-            <h2>הגדרות מערכת</h2>
+            <h2>×”×’×“×¨×•×ª ×ž×¢×¨×›×ª</h2>
             <div class="card" style="margin-top: 20px;">
-                <h3>ניהול מחלקות</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 15px;">כאן תוכל לערוך את רשימת המחלקות שיופיעו בטפסי הבקרה.</p>
+                <h3>× ×™×”×•×œ ×ž×—×œ×§×•×ª</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">×›××Ÿ ×ª×•×›×œ ×œ×¢×¨×•×š ××ª ×¨×©×™×ž×ª ×”×ž×—×œ×§×•×ª ×©×™×•×¤×™×¢×• ×‘×˜×¤×¡×™ ×”×‘×§×¨×”.</p>
                 
                 <ul id="departments-list" style="list-style: none; padding: 0; margin-bottom: 15px;">
                     ${departmentsDb.map((dept, index) => `
                         <li style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border-color);">
                             <span>${dept}</span>
-                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeDepartment(${index})">מחק</button>
+                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeDepartment(${index})">×ž×—×§</button>
                         </li>
                     `).join('')}
                 </ul>
                 
                 <div style="display: flex; gap: 10px;">
-                    <input type="text" id="new-dept-name" placeholder="שם מחלקה חדשה" style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
-                    <button class="btn" onclick="addDepartment()">הוסף מחלקה</button>
+                    <input type="text" id="new-dept-name" placeholder="×©× ×ž×—×œ×§×” ×—×“×©×”" style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                    <button class="btn" onclick="addDepartment()">×”×•×¡×£ ×ž×—×œ×§×”</button>
                 </div>
             </div>
 
             <div class="card" style="margin-top: 20px;">
-                <h3>ניהול נהלים והדרכות</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 15px;">העלאת נהלים פנימיים וארגוניים למערכת עבור קריאת אנשי צוות.</p>
+                <h3>× ×™×”×•×œ × ×”×œ×™× ×•×”×“×¨×›×•×ª</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">×”×¢×œ××ª × ×”×œ×™× ×¤× ×™×ž×™×™× ×•××¨×’×•× ×™×™× ×œ×ž×¢×¨×›×ª ×¢×‘×•×¨ ×§×¨×™××ª ×× ×©×™ ×¦×•×•×ª.</p>
                 
                 <ul id="procedures-manage-list" style="list-style: none; padding: 0; margin-bottom: 15px;">
                     ${proceduresDb.map((p, index) => `
                         <li style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border-color); align-items: center;">
                             <div>
                                 <strong>${p.title}</strong><br>
-                                <a href="${p.link}" target="_blank" style="font-size: 12px; color: var(--primary-color);">צפה במסמך</a>
+                                <a href="${p.link}" target="_blank" style="font-size: 12px; color: var(--primary-color);">×¦×¤×” ×‘×ž×¡×ž×š</a>
                             </div>
-                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeProcedure(${p.id})">מחק</button>
+                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeProcedure(${p.id})">×ž×—×§</button>
                         </li>
                     `).join('')}
                 </ul>
                 
                 <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; border: 2px dashed var(--primary-color);">
-                    <h4 style="margin-bottom: 15px;">הוספת נוהל חדש</h4>
+                    <h4 style="margin-bottom: 15px;">×”×•×¡×¤×ª × ×•×”×œ ×—×“×©</h4>
                     <div class="form-group">
-                        <label>כותרת הנוהל</label>
-                        <input type="text" id="settings-proc-title" placeholder="למשל: נוהל טיפול בתרופות מסוכנות">
+                        <label>×›×•×ª×¨×ª ×”× ×•×”×œ</label>
+                        <input type="text" id="settings-proc-title" placeholder="×œ×ž×©×œ: × ×•×”×œ ×˜×™×¤×•×œ ×‘×ª×¨×•×¤×•×ª ×ž×¡×•×›× ×•×ª">
                     </div>
                     <div class="form-group">
-                        <label>קישור (URL) למסמך / לומדה</label>
+                        <label>×§×™×©×•×¨ (URL) ×œ×ž×¡×ž×š / ×œ×•×ž×“×”</label>
                         <input type="text" id="settings-proc-link" placeholder="https://...">
                     </div>
                     <div class="form-group">
-                        <label>תדירות רענון נוהל</label>
+                        <label>×ª×“×™×¨×•×ª ×¨×¢× ×•×Ÿ × ×•×”×œ</label>
                         <select id="settings-proc-freq">
-                            <option value="once">חד פעמי (בעת קליטה/פרסום)</option>
-                            <option value="half-yearly">אחת לחצי שנה</option>
-                            <option value="yearly" selected>אחת לשנה</option>
+                            <option value="once">×—×“ ×¤×¢×ž×™ (×‘×¢×ª ×§×œ×™×˜×”/×¤×¨×¡×•×)</option>
+                            <option value="half-yearly">××—×ª ×œ×—×¦×™ ×©× ×”</option>
+                            <option value="yearly" selected>××—×ª ×œ×©× ×”</option>
                         </select>
                     </div>
-                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addProcedureFromSettings()">שמור נוהל למערכת</button>
+                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addProcedureFromSettings()">×©×ž×•×¨ × ×•×”×œ ×œ×ž×¢×¨×›×ª</button>
                 </div>
             </div>
         </div>
 
             <div class="card" style="margin-top: 20px;">
-                <h3>ניהול טפסים ופרוטוקולים טיפוליים</h3>
+                <h3>× ×™×”×•×œ ×˜×¤×¡×™× ×•×¤×¨×•×˜×•×§×•×œ×™× ×˜×™×¤×•×œ×™×™×</h3>
                 <ul id="protocols-manage-list" style="list-style: none; padding: 0; margin-bottom: 15px;">
                     ${protocolsDb.map((p, index) => `
                         <li style="display: flex; justify-content: space-between; padding: 8px; border-bottom: 1px solid var(--border-color); align-items: center;">
                             <div><strong>${p.title}</strong></div>
-                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeProtocol(${p.id})">מחק</button>
+                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeProtocol(${p.id})">×ž×—×§</button>
                         </li>
                     `).join('')}
                 </ul>
                 <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; border: 2px dashed var(--primary-color);">
-                    <h4 style="margin-bottom: 15px;">הוספת פרוטוקול חדש</h4>
-                    <div class="form-group"><input type="text" id="settings-prot-title" placeholder="כותרת הפרוטוקול"></div>
-                    <div class="form-group"><input type="text" id="settings-prot-link" placeholder="קישור"></div>
-                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addProtocolFromSettings()">שמור פרוטוקול</button>
+                    <h4 style="margin-bottom: 15px;">×”×•×¡×¤×ª ×¤×¨×•×˜×•×§×•×œ ×—×“×©</h4>
+                    <div class="form-group"><input type="text" id="settings-prot-title" placeholder="×›×•×ª×¨×ª ×”×¤×¨×•×˜×•×§×•×œ"></div>
+                    <div class="form-group"><input type="text" id="settings-prot-link" placeholder="×§×™×©×•×¨"></div>
+                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addProtocolFromSettings()">×©×ž×•×¨ ×¤×¨×•×˜×•×§×•×œ</button>
                 </div>
             </div>
 
             <div class="card" style="margin-top: 20px;">
-                <h3>ניהול מארזי הדרכות ולומדות</h3>
-                <p style="color: var(--text-secondary); margin-bottom: 15px;">כאן ניתן להוסיף לומדות שיוצגו בכרטיסיית "לומדות והדרכות".</p>
+                <h3>× ×™×”×•×œ ×ž××¨×–×™ ×”×“×¨×›×•×ª ×•×œ×•×ž×“×•×ª</h3>
+                <p style="color: var(--text-secondary); margin-bottom: 15px;">×›××Ÿ × ×™×ª×Ÿ ×œ×”×•×¡×™×£ ×œ×•×ž×“×•×ª ×©×™×•×¦×’×• ×‘×›×¨×˜×™×¡×™×™×ª "×œ×•×ž×“×•×ª ×•×”×“×¨×›×•×ª".</p>
                 
                 <ul style="list-style: none; padding: 0; margin-bottom: 15px;">
                     ${trainingsDb.map((t, index) => `
@@ -1164,33 +1164,33 @@ function renderSettings() {
                             <div>
                                 <strong>${t.icon} ${t.title}</strong>
                             </div>
-                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeTraining(${t.id})">מחק</button>
+                            <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="removeTraining(${t.id})">×ž×—×§</button>
                         </li>
                     `).join('')}
                 </ul>
                 
                 <div style="background: var(--bg-color); padding: 15px; border-radius: 8px; border: 2px dashed var(--primary-color);">
-                    <h4 style="margin-bottom: 15px;">הוספת לומדה חדשה</h4>
+                    <h4 style="margin-bottom: 15px;">×”×•×¡×¤×ª ×œ×•×ž×“×” ×—×“×©×”</h4>
                     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                        <input type="text" id="settings-train-title" placeholder="כותרת הלומדה" style="flex: 2; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
-                        <input type="text" id="settings-train-icon" placeholder="אמוג'י 💉" style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <input type="text" id="settings-train-title" placeholder="×›×•×ª×¨×ª ×”×œ×•×ž×“×”" style="flex: 2; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <input type="text" id="settings-train-icon" placeholder="××ž×•×’'×™ ðŸ’‰" style="flex: 1; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
                     </div>
                     <div style="margin-bottom: 10px;">
-                        <input type="text" id="settings-train-link" placeholder="קישור Google Forms או אתר חיצוני" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
+                        <input type="text" id="settings-train-link" placeholder="×§×™×©×•×¨ Google Forms ××• ××ª×¨ ×—×™×¦×•× ×™" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px;">
                     </div>
                     <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
                         <input type="checkbox" id="settings-train-external">
-                        פתח כקישור חיצוני (אם הלומדה לא תומכת בהטמעה)
+                        ×¤×ª×— ×›×§×™×©×•×¨ ×—×™×¦×•× ×™ (×× ×”×œ×•×ž×“×” ×œ× ×ª×•×ž×›×ª ×‘×”×˜×ž×¢×”)
                     </label>
                     <div class="form-group">
-                        <label>תדירות ביצוע לומדה</label>
+                        <label>×ª×“×™×¨×•×ª ×‘×™×¦×•×¢ ×œ×•×ž×“×”</label>
                         <select id="settings-train-freq">
-                            <option value="once">חד פעמי (בעת קליטה/פרסום)</option>
-                            <option value="half-yearly">אחת לחצי שנה</option>
-                            <option value="yearly" selected>אחת לשנה</option>
+                            <option value="once">×—×“ ×¤×¢×ž×™ (×‘×¢×ª ×§×œ×™×˜×”/×¤×¨×¡×•×)</option>
+                            <option value="half-yearly">××—×ª ×œ×—×¦×™ ×©× ×”</option>
+                            <option value="yearly" selected>××—×ª ×œ×©× ×”</option>
                         </select>
                     </div>
-                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addTrainingFromSettings()">שמור לומדה למערכת</button>
+                    <button class="btn" style="background: var(--success); width: 100%;" onclick="addTrainingFromSettings()">×©×ž×•×¨ ×œ×•×ž×“×” ×œ×ž×¢×¨×›×ª</button>
                 </div>
             </div>
 
@@ -1212,18 +1212,18 @@ function addProcedureFromSettings() {
             readBy: []
         });
         localStorage.setItem('clinic_procedures', JSON.stringify(proceduresDb));
-        showToast('נוהל נוסף בהצלחה', 'success');
+        showToast('× ×•×”×œ × ×•×¡×£ ×‘×”×¦×œ×—×”', 'success');
         navigate('settings');
     } else {
-        showToast('נא למלא כותרת וקישור', 'warning');
+        showToast('× × ×œ×ž×œ× ×›×•×ª×¨×ª ×•×§×™×©×•×¨', 'warning');
     }
 }
 
 function removeProcedure(id) {
-    if (confirm('האם למחוק נוהל זה לצמיתות?')) {
+    if (confirm('×”×× ×œ×ž×—×•×§ × ×•×”×œ ×–×” ×œ×¦×ž×™×ª×•×ª?')) {
         proceduresDb = proceduresDb.filter(p => p.id !== id);
         localStorage.setItem('clinic_procedures', JSON.stringify(proceduresDb));
-        showToast('נוהל נמחק בהצלחה', 'success');
+        showToast('× ×•×”×œ × ×ž×—×§ ×‘×”×¦×œ×—×”', 'success');
         navigate('settings');
     }
 }
@@ -1231,7 +1231,7 @@ function removeProcedure(id) {
 function addTrainingFromSettings() {
     const title = document.getElementById('settings-train-title').value;
     const link = document.getElementById('settings-train-link').value;
-    const icon = document.getElementById('settings-train-icon').value || '📚';
+    const icon = document.getElementById('settings-train-icon').value || 'ðŸ“š';
     const isExternal = document.getElementById('settings-train-external').checked;
 
     if (title && link) {
@@ -1243,18 +1243,18 @@ function addTrainingFromSettings() {
             external: isExternal
         });
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
-        showToast('הלומדה נוספה בהצלחה', 'success');
+        showToast('×”×œ×•×ž×“×” × ×•×¡×¤×” ×‘×”×¦×œ×—×”', 'success');
         navigate('settings');
     } else {
-        showToast('נא למלא כותרת וקישור', 'warning');
+        showToast('× × ×œ×ž×œ× ×›×•×ª×¨×ª ×•×§×™×©×•×¨', 'warning');
     }
 }
 
 function removeTraining(id) {
-    if (confirm('האם למחוק לומדה זו לצמיתות?')) {
+    if (confirm('×”×× ×œ×ž×—×•×§ ×œ×•×ž×“×” ×–×• ×œ×¦×ž×™×ª×•×ª?')) {
         trainingsDb = trainingsDb.filter(t => t.id !== id);
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
-        showToast('הלומדה נמחקה בהצלחה', 'success');
+        showToast('×”×œ×•×ž×“×” × ×ž×—×§×” ×‘×”×¦×œ×—×”', 'success');
         navigate('settings');
     }
 }
@@ -1266,19 +1266,19 @@ function addDepartment() {
         if (!departmentsDb.includes(name)) {
             departmentsDb.push(name);
             localStorage.setItem('clinic_departments', JSON.stringify(departmentsDb));
-            showToast('המחלקה התווספה בהצלחה', 'success');
+            showToast('×”×ž×—×œ×§×” ×”×ª×•×•×¡×¤×” ×‘×”×¦×œ×—×”', 'success');
             navigate('settings');
         } else {
-            showToast('המחלקה כבר קיימת', 'warning');
+            showToast('×”×ž×—×œ×§×” ×›×‘×¨ ×§×™×™×ž×ª', 'warning');
         }
     }
 }
 
 function removeDepartment(index) {
-    if (confirm('האם אתה בטוח שברצונך למחוק מחלקה זו?')) {
+    if (confirm('×”×× ××ª×” ×‘×˜×•×— ×©×‘×¨×¦×•× ×š ×œ×ž×—×•×§ ×ž×—×œ×§×” ×–×•?')) {
         departmentsDb.splice(index, 1);
         localStorage.setItem('clinic_departments', JSON.stringify(departmentsDb));
-        showToast('המחלקה נמחקה', 'success');
+        showToast('×”×ž×—×œ×§×” × ×ž×—×§×”', 'success');
         navigate('settings');
     }
 }
@@ -1288,15 +1288,15 @@ function showToast(message, type = 'primary') {
     const container = document.getElementById('toast-container');
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
-    toast.innerHTML = `<span>${type === 'success' ? '✅' : type === 'warning' ? '⚠️' : 'ℹ️'}</span> ${message}`;
+    toast.innerHTML = `<span>${type === 'success' ? 'âœ…' : type === 'warning' ? 'âš ï¸' : 'â„¹ï¸'}</span> ${message}`;
     container.appendChild(toast);
     setTimeout(() => { toast.remove(); }, 4000);
 }
 
 function simulateNotifications() {
-    showToast('מדמה שליחת SMS לאנשי הצוות...', 'primary');
+    showToast('×ž×“×ž×” ×©×œ×™×—×ª SMS ×œ×× ×©×™ ×”×¦×•×•×ª...', 'primary');
     setTimeout(() => {
-        showToast('✉️ אימייל נשלח למנהל המחלקה!', 'success');
+        showToast('âœ‰ï¸ ××™×ž×™×™×œ × ×©×œ×— ×œ×ž× ×”×œ ×”×ž×—×œ×§×”!', 'success');
     }, 1500);
 }
 
@@ -1307,54 +1307,54 @@ function toggleTheme() {
 
 function renderIntro() {
     let hasAnswered = introFeedbackDb.find(f => f.user === currentUser.name);
-    let feedbackForm = hasAnswered ? `<div class="card" style="margin-top: 20px; background: var(--success); color: white;">תודה שענית על המשוב!</div>` : `
+    let feedbackForm = hasAnswered ? `<div class="card" style="margin-top: 20px; background: var(--success); color: white;">×ª×•×“×” ×©×¢× ×™×ª ×¢×œ ×”×ž×©×•×‘!</div>` : `
     <div class="card" style="margin-top: 30px; border-top: 4px solid var(--primary-color);">
-        <h3 style="margin-bottom: 15px;">משוב על הפורטל הארגוני</h3>
-        <p style="margin-bottom: 15px;">נשמח לשמוע את דעתך על מנת לשפר את הפורטל (1 = כלל לא, 5 = במידה רבה מאוד).</p>
+        <h3 style="margin-bottom: 15px;">×ž×©×•×‘ ×¢×œ ×”×¤×•×¨×˜×œ ×”××¨×’×•× ×™</h3>
+        <p style="margin-bottom: 15px;">× ×©×ž×— ×œ×©×ž×•×¢ ××ª ×“×¢×ª×š ×¢×œ ×ž× ×ª ×œ×©×¤×¨ ××ª ×”×¤×•×¨×˜×œ (1 = ×›×œ×œ ×œ×, 5 = ×‘×ž×™×“×” ×¨×‘×” ×ž××•×“).</p>
         <form onsubmit="submitIntroFeedback(event)">
             <div class="form-group">
-                <label>1. עד כמה הפורטל ידידותי וקל לשימוש?</label>
-                <select name="q1" required><option value="">בחר...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <label>1. ×¢×“ ×›×ž×” ×”×¤×•×¨×˜×œ ×™×“×™×“×•×ª×™ ×•×§×œ ×œ×©×™×ž×•×©?</label>
+                <select name="q1" required><option value="">×‘×—×¨...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
             <div class="form-group">
-                <label>2. האם הפורטל מסייע לך בעבודתך היומיומית?</label>
-                <select name="q2" required><option value="">בחר...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <label>2. ×”×× ×”×¤×•×¨×˜×œ ×ž×¡×™×™×¢ ×œ×š ×‘×¢×‘×•×“×ª×š ×”×™×•×ž×™×•×ž×™×ª?</label>
+                <select name="q2" required><option value="">×‘×—×¨...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
             <div class="form-group">
-                <label>3. האם תהליך חיפוש הנהלים נוח?</label>
-                <select name="q3" required><option value="">בחר...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <label>3. ×”×× ×ª×”×œ×™×š ×—×™×¤×•×© ×”× ×”×œ×™× × ×•×—?</label>
+                <select name="q3" required><option value="">×‘×—×¨...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
             <div class="form-group">
-                <label>4. האם הצגת הלומדות וההדרכות ברורה?</label>
-                <select name="q4" required><option value="">בחר...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <label>4. ×”×× ×”×¦×’×ª ×”×œ×•×ž×“×•×ª ×•×”×”×“×¨×›×•×ª ×‘×¨×•×¨×”?</label>
+                <select name="q4" required><option value="">×‘×—×¨...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
             <div class="form-group">
-                <label>5. שביעות רצון כללית מהפורטל:</label>
-                <select name="q5" required><option value="">בחר...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <label>5. ×©×‘×™×¢×•×ª ×¨×¦×•×Ÿ ×›×œ×œ×™×ª ×ž×”×¤×•×¨×˜×œ:</label>
+                <select name="q5" required><option value="">×‘×—×¨...</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
             </div>
-            <button type="submit" class="btn">שלח משוב</button>
+            <button type="submit" class="btn">×©×œ×— ×ž×©×•×‘</button>
         </form>
     </div>`;
 
     return `
         <div class="fade-in">
             <div class="card" style="border-right: 4px solid var(--primary-color); padding: 30px;">
-                <h2 style="margin-bottom: 20px;">הדרכת מבוא: משמעות הפורטל הארגוני</h2>
-                <h3 style="margin-bottom: 20px; color: var(--primary-color);">חשיבות האתר לארגונים במערכת הבריאות הגריאטרית</h3>
+                <h2 style="margin-bottom: 20px;">×”×“×¨×›×ª ×ž×‘×•×: ×ž×©×ž×¢×•×ª ×”×¤×•×¨×˜×œ ×”××¨×’×•× ×™</h2>
+                <h3 style="margin-bottom: 20px; color: var(--primary-color);">×—×©×™×‘×•×ª ×”××ª×¨ ×œ××¨×’×•× ×™× ×‘×ž×¢×¨×›×ª ×”×‘×¨×™××•×ª ×”×’×¨×™××˜×¨×™×ª</h3>
                 <p style="margin-bottom: 15px; line-height: 1.8; font-size: 16px;">
-                    ניהול סיכונים ובקרת איכות הם נדבכים מרכזיים בטיפול באוכלוסייה הגריאטרית. אוכלוסייה זו מאופיינת ברגישות גבוהה, ריבוי מחלות רקע (מולטי-מורבידיות), ופגיעות יתר לזיהומים ולטעויות בטיפול התרופתי.
+                    × ×™×”×•×œ ×¡×™×›×•× ×™× ×•×‘×§×¨×ª ××™×›×•×ª ×”× × ×“×‘×›×™× ×ž×¨×›×–×™×™× ×‘×˜×™×¤×•×œ ×‘××•×›×œ×•×¡×™×™×” ×”×’×¨×™××˜×¨×™×ª. ××•×›×œ×•×¡×™×™×” ×–×• ×ž××•×¤×™×™× ×ª ×‘×¨×’×™×©×•×ª ×’×‘×•×”×”, ×¨×™×‘×•×™ ×ž×—×œ×•×ª ×¨×§×¢ (×ž×•×œ×˜×™-×ž×•×¨×‘×™×“×™×•×ª), ×•×¤×’×™×¢×•×ª ×™×ª×¨ ×œ×–×™×”×•×ž×™× ×•×œ×˜×¢×•×™×•×ª ×‘×˜×™×¤×•×œ ×”×ª×¨×•×¤×ª×™.
                     <br><br>
-                    <strong>מערכת "פורטל ארגוני" זו פותחה במטרה לתת מענה הוליסטי לצרכים אלו:</strong>
+                    <strong>×ž×¢×¨×›×ª "×¤×•×¨×˜×œ ××¨×’×•× ×™" ×–×• ×¤×•×ª×—×” ×‘×ž×˜×¨×” ×œ×ª×ª ×ž×¢× ×” ×”×•×œ×™×¡×˜×™ ×œ×¦×¨×›×™× ××œ×•:</strong>
                 </p>
                 <ul style="margin-right: 20px; margin-bottom: 25px; line-height: 1.8; font-size: 16px;">
-                    <li style="margin-bottom: 10px;"><strong>תיעוד ובקרה בזמן אמת:</strong> כלי בקרת האיכות הדיגיטליים מאפשרים לאתר כשלים באופן מיידי במחלקות האשפוז ולתקנם, מבלי להמתין לדוחות חודשיים.</li>
-                    <li style="margin-bottom: 10px;"><strong>הטמעת נהלים ומעקב קריאה:</strong> מנגנון נהלי העבודה מבטיח שכל איש צוות מודע לנהלים המעודכנים של משרד הבריאות, תוך חיוב קריאה וריענון אחת לשנה. הדבר מקטין משמעותית חשיפה משפטית ומקצועית של המוסד.</li>
-                    <li style="margin-bottom: 10px;"><strong>רצף למידה והדרכה:</strong> שילוב הלומדות בתוך פלטפורמה אחת מספק כלי Onboarding חזק לעובדים חדשים, וכן מרחב ריענון נגיש לצוותים הקיימים, כנדרש בבקרות משרד הבריאות.</li>
-                    <li style="margin-bottom: 10px;"><strong>ניהול מבוסס נתונים (Data-Driven):</strong> הדשבורד וסוכן המחקר החכם מאפשרים להנהלה לזהות מגמות, לנתח התפלגויות בין מחלקות, ולקבל החלטות מבוססות נתונים אובייקטיביים.</li>
+                    <li style="margin-bottom: 10px;"><strong>×ª×™×¢×•×“ ×•×‘×§×¨×” ×‘×–×ž×Ÿ ××ž×ª:</strong> ×›×œ×™ ×‘×§×¨×ª ×”××™×›×•×ª ×”×“×™×’×™×˜×œ×™×™× ×ž××¤×©×¨×™× ×œ××ª×¨ ×›×©×œ×™× ×‘××•×¤×Ÿ ×ž×™×™×“×™ ×‘×ž×—×œ×§×•×ª ×”××©×¤×•×– ×•×œ×ª×§× ×, ×ž×‘×œ×™ ×œ×”×ž×ª×™×Ÿ ×œ×“×•×—×•×ª ×—×•×“×©×™×™×.</li>
+                    <li style="margin-bottom: 10px;"><strong>×”×˜×ž×¢×ª × ×”×œ×™× ×•×ž×¢×§×‘ ×§×¨×™××”:</strong> ×ž× ×’× ×•×Ÿ × ×”×œ×™ ×”×¢×‘×•×“×” ×ž×‘×˜×™×— ×©×›×œ ××™×© ×¦×•×•×ª ×ž×•×“×¢ ×œ× ×”×œ×™× ×”×ž×¢×•×“×›× ×™× ×©×œ ×ž×©×¨×“ ×”×‘×¨×™××•×ª, ×ª×•×š ×—×™×•×‘ ×§×¨×™××” ×•×¨×™×¢× ×•×Ÿ ××—×ª ×œ×©× ×”. ×”×“×‘×¨ ×ž×§×˜×™×Ÿ ×ž×©×ž×¢×•×ª×™×ª ×—×©×™×¤×” ×ž×©×¤×˜×™×ª ×•×ž×§×¦×•×¢×™×ª ×©×œ ×”×ž×•×¡×“.</li>
+                    <li style="margin-bottom: 10px;"><strong>×¨×¦×£ ×œ×ž×™×“×” ×•×”×“×¨×›×”:</strong> ×©×™×œ×•×‘ ×”×œ×•×ž×“×•×ª ×‘×ª×•×š ×¤×œ×˜×¤×•×¨×ž×” ××—×ª ×ž×¡×¤×§ ×›×œ×™ Onboarding ×—×–×§ ×œ×¢×•×‘×“×™× ×—×“×©×™×, ×•×›×Ÿ ×ž×¨×—×‘ ×¨×™×¢× ×•×Ÿ × ×’×™×© ×œ×¦×•×•×ª×™× ×”×§×™×™×ž×™×, ×›× ×“×¨×© ×‘×‘×§×¨×•×ª ×ž×©×¨×“ ×”×‘×¨×™××•×ª.</li>
+                    <li style="margin-bottom: 10px;"><strong>× ×™×”×•×œ ×ž×‘×•×¡×¡ × ×ª×•× ×™× (Data-Driven):</strong> ×”×“×©×‘×•×¨×“ ×•×¡×•×›×Ÿ ×”×ž×—×§×¨ ×”×—×›× ×ž××¤×©×¨×™× ×œ×”× ×”×œ×” ×œ×–×”×•×ª ×ž×’×ž×•×ª, ×œ× ×ª×— ×”×ª×¤×œ×’×•×™×•×ª ×‘×™×Ÿ ×ž×—×œ×§×•×ª, ×•×œ×§×‘×œ ×”×—×œ×˜×•×ª ×ž×‘×•×¡×¡×•×ª × ×ª×•× ×™× ××•×‘×™×™×§×˜×™×‘×™×™×.</li>
                 </ul>
                 <div style="background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
-                    <h4 style="margin-bottom: 10px; color: var(--primary-color);">סיכום</h4>
-                    <p style="font-size: 16px;">הפורטל מעביר את המוסד מניהול תגובתי לניהול פרואקטיבי, משפר את איכות חיי המטופל הקשיש, ומבטיח סביבת טיפול בטוחה ומקצועית יותר.</p>
+                    <h4 style="margin-bottom: 10px; color: var(--primary-color);">×¡×™×›×•×</h4>
+                    <p style="font-size: 16px;">×”×¤×•×¨×˜×œ ×ž×¢×‘×™×¨ ××ª ×”×ž×•×¡×“ ×ž× ×™×”×•×œ ×ª×’×•×‘×ª×™ ×œ× ×™×”×•×œ ×¤×¨×•××§×˜×™×‘×™, ×ž×©×¤×¨ ××ª ××™×›×•×ª ×—×™×™ ×”×ž×˜×•×¤×œ ×”×§×©×™×©, ×•×ž×‘×˜×™×— ×¡×‘×™×‘×ª ×˜×™×¤×•×œ ×‘×˜×•×—×” ×•×ž×§×¦×•×¢×™×ª ×™×•×ª×¨.</p>
                 </div>
             </div>
             ${feedbackForm}
@@ -1375,22 +1375,22 @@ function submitIntroFeedback(e) {
         score: avg
     });
     localStorage.setItem('clinic_intro_feedback', JSON.stringify(introFeedbackDb));
-    showToast('תודה! המשוב התקבל בהצלחה.', 'success');
+    showToast('×ª×•×“×”! ×”×ž×©×•×‘ ×”×ª×§×‘×œ ×‘×”×¦×œ×—×”.', 'success');
     navigate('intro');
 }
 
 function renderProtocols() {
     let html = `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">טפסים ופרוטוקולים טיפוליים</h2>
+            <h2 style="margin-bottom: 20px;">×˜×¤×¡×™× ×•×¤×¨×•×˜×•×§×•×œ×™× ×˜×™×¤×•×œ×™×™×</h2>
             <div class="forms-list">
                 ${protocolsDb.map(p => `
                     <div class="card" style="margin-bottom: 15px;">
                         <h3 style="margin-bottom: 10px;">${p.title}</h3>
-                        ${p.link.startsWith('http') || p.link.match(/\.(html|png|jpg|jpeg|mp4)$/i) ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / תמונה / סרטון ↗</a>` : `<p>${p.link}</p>`}
+                        ${p.link.startsWith('http') || p.link.match(/\.(html|png|jpg|jpeg|mp4)$/i) ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">×¦×¤×” ×‘×ž×¡×ž×š / ×ª×ž×•× ×” / ×¡×¨×˜×•×Ÿ â†—</a>` : `<p>${p.link}</p>`}
                     </div>
                 `).join('')}
-                ${protocolsDb.length === 0 ? '<p>לא הוגדרו פרוטוקולים במערכת.</p>' : ''}
+                ${protocolsDb.length === 0 ? '<p>×œ× ×”×•×’×“×¨×• ×¤×¨×•×˜×•×§×•×œ×™× ×‘×ž×¢×¨×›×ª.</p>' : ''}
             </div>
         </div>
     `;
@@ -1406,10 +1406,10 @@ function filterProcedures() {
 }
 
 function exportProceduresExcel() {
-    let csvContent = "\uFEFFשם העובד,מחלקה,תאריך ביצוע,שם הנוהל\n";
+    let csvContent = "\uFEFF×©× ×”×¢×•×‘×“,×ž×—×œ×§×”,×ª××¨×™×š ×‘×™×¦×•×¢,×©× ×”× ×•×”×œ\n";
     proceduresDb.forEach(p => {
         p.readBy.forEach(r => {
-            let user = usersDb.find(u => u.name === r.name) || { team: 'לא ידוע' };
+            let user = usersDb.find(u => u.name === r.name) || { team: '×œ× ×™×“×•×¢' };
             let dateStr = new Date(r.date).toLocaleDateString('he-IL');
             csvContent += `"${r.name}","${user.team}","${dateStr}","${p.title}"\n`;
         });
@@ -1418,26 +1418,26 @@ function exportProceduresExcel() {
     let url = URL.createObjectURL(blob);
     let link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "דוח_קריאת_נהלים.csv");
+    link.setAttribute("download", "×“×•×—_×§×¨×™××ª_× ×”×œ×™×.csv");
     link.click();
 }
 
 function exportTrainingsExcel() {
-    let csvContent = "\uFEFFשם הלומדה / הדרכה,שם המבצע,מחלקה,תאריך ביצוע\n";
+    let csvContent = "\uFEFF×©× ×”×œ×•×ž×“×” / ×”×“×¨×›×”,×©× ×”×ž×‘×¦×¢,×ž×—×œ×§×”,×ª××¨×™×š ×‘×™×¦×•×¢\n";
     trainingsAnswersDb.forEach(ans => {
-        let user = usersDb.find(u => u.name === ans.user) || { team: 'לא ידוע' };
+        let user = usersDb.find(u => u.name === ans.user) || { team: '×œ× ×™×“×•×¢' };
         csvContent += `"${ans.title}","${ans.user}","${user.team}","${ans.date}"\n`;
     });
     let blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     let url = URL.createObjectURL(blob);
     let link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "דוח_ביצוע_לומדות.csv");
+    link.setAttribute("download", "×“×•×—_×‘×™×¦×•×¢_×œ×•×ž×“×•×ª.csv");
     link.click();
 }
 
 function exportDashboardExcel() {
-    let csvContent = "\uFEFFשם עובד (מגיש הבקרה),תאריך הגשה,שם טופס הבקרה,ציון\n";
+    let csvContent = "\uFEFF×©× ×¢×•×‘×“ (×ž×’×™×© ×”×‘×§×¨×”),×ª××¨×™×š ×”×’×©×”,×©× ×˜×•×¤×¡ ×”×‘×§×¨×”,×¦×™×•×Ÿ\n";
     filledFormsDb.forEach(f => {
         csvContent += `"${f.user}","${f.dateFilled}","${f.formTitle}","${f.score}%"\n`;
     });
@@ -1445,7 +1445,7 @@ function exportDashboardExcel() {
     let url = URL.createObjectURL(blob);
     let link = document.createElement("a");
     link.setAttribute("href", url);
-    link.setAttribute("download", "דוח_מעקב_ביצועים_בקרות.csv");
+    link.setAttribute("download", "×“×•×—_×ž×¢×§×‘_×‘×™×¦×•×¢×™×_×‘×§×¨×•×ª.csv");
     link.click();
 }
 
@@ -1457,7 +1457,7 @@ function submitInternalQuiz(e, title) {
         date: new Date().toLocaleString('he-IL')
     });
     localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
-    showToast('הלומדה הושלמה בהצלחה!', 'success');
+    showToast('×”×œ×•×ž×“×” ×”×•×©×œ×ž×” ×‘×”×¦×œ×—×”!', 'success');
     navigate('trainings');
 }
 
@@ -1467,12 +1467,12 @@ function addProtocolFromSettings() {
     if (title && link) {
         protocolsDb.push({ id: Date.now(), title, link });
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
-        showToast('פרוטוקול נוסף בהצלחה', 'success');
+        showToast('×¤×¨×•×˜×•×§×•×œ × ×•×¡×£ ×‘×”×¦×œ×—×”', 'success');
         navigate('settings');
     }
 }
 function removeProtocol(id) {
-    if (confirm('מחק פרוטוקול?')) {
+    if (confirm('×ž×—×§ ×¤×¨×•×˜×•×§×•×œ?')) {
         protocolsDb = protocolsDb.filter(p => p.id !== id);
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
         navigate('settings');
