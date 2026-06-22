@@ -692,18 +692,13 @@ function renderTrainings() {
 }
 
 function openTraining(url, title, isExternal = false) {
-    // Intercept old Google Docs URLs immediately
-    if (url.includes('docs.google.com') || url.includes('forms/d/e/')) {
-        if (title.includes('טיפול תומך') || url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q')) {
-            url = 'native_supportive_care';
-            isExternal = false;
-        } else if (title.includes('מניעת זיהומים') || url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A')) {
-            url = 'native_infections';
-            isExternal = false;
-        } else {
-            url = 'native_infections';
-            isExternal = false;
-        }
+    // Intercept based on title to guarantee native quiz routing
+    if (title.includes('טיפול תומך') || (url && url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q'))) {
+        url = 'native_supportive_care';
+        isExternal = false;
+    } else if (title.includes('מניעת זיהומים') || (url && url.includes('1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A'))) {
+        url = 'native_infections';
+        isExternal = false;
     }
 
     if (!url.startsWith('internal_quiz') && !url.startsWith('native_')) {
