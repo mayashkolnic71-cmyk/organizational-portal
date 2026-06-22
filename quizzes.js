@@ -61,7 +61,7 @@ const quizzesData = {
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/open?id=1VN4coDtzD-rrDZ2CFUJwfLj1E_PnZq4x-YhHDXKhYyo',
+                url: 'https://drive.google.com/file/d/1I_ytPYopTivbkf3k9I2AFOWrnAVqWf3V/view?usp=drive_link',
                 title: { he: '7. קישור - הנחיות מסוכמות למניעת זיהומים לפי סוגי המזהמים.pdf' },
                 linkText: { he: 'הנחיות מסוכמות למניעת זיהומים לפי סוגי המזהמים.pdf' }
             },
