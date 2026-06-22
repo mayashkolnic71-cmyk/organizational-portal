@@ -4,20 +4,83 @@ const quizzesData = {
     'infections': {
         formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/formResponse',
         title: {
-            he: 'מארז מניעת זיהומים',
-            en: 'Infection Prevention',
-            ar: 'مكافحة العدوى',
-            ru: 'Профилактика инфекций'
+            he: '(ינואר 2026) מארז הדרכה למניעת זיהומים<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
+            en: '(January 2026) Infection Prevention Training<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
+            ar: '(يناير 2026) حزمة مكافحة العدوى',
+            ru: '(Январь 2026) Пакет по профилактике инфекций'
         },
-        videos: [
-            { id: 'RY5wXbPCY-o', title: { he: 'מניעת הפצת מזהמים', en: 'Preventing the spread of pathogens', ar: 'منع انتشار مسببات الأمراض', ru: 'Предотвращение распространения патогенов' } },
-            { id: 'LjHnCvv48hA', title: { he: 'התמגנות והסרת מיגון', en: 'Donning and doffing PPE', ar: 'ارتداء وخلع معدات الوقاية', ru: 'Надевание и снятие СИЗ' } },
-            { id: 'sOR40jML8IA', title: { he: 'מה לא נעשה!', en: 'What NOT to do!', ar: 'ما لا يجب فعله!', ru: 'Чего делать НЕЛЬЗЯ!' } }
-        ],
-        links: [
-            { url: 'https://www.gov.il/files/health/moh-files/Infection-prevention/story.html', text: { he: 'לומדת משרד הבריאות להיגיינת ידיים', en: 'MOH Hand Hygiene Module', ar: 'وحدة نظافة اليدين التابعة لوزارة الصحة', ru: 'Модуль гигиены рук Минздрава' } }
+        contentItems: [
+            {
+                type: 'video',
+                id: 'RY5wXbPCY-o',
+                title: { he: '1. רקע המיועד לכלל אנשי הצוות -היגיינת ידיים היא האחריות של כולנו !' },
+                desc: { he: '(חצי דקה)' }
+            },
+            {
+                type: 'link',
+                url: 'https://www.gov.il/files/health/moh-files/Infection-prevention/story.html',
+                title: { he: '2. הכנס לקישור המיועד לאחיות/רופאים ומקצועות הבריאות - קישור ללומדת משרד הבריאות להיגיינת ידיים' },
+                linkText: { he: 'קישור ללומדת משרד הבריאות (חצי שעה- שעה)' },
+                desc: { he: 'נא להיכנס לקישור ולבצע את הלומדה !' }
+            },
+            {
+                type: 'video',
+                id: 'LjHnCvv48hA',
+                title: { he: '3. סרטון רקע המיועד לכלל אנשי הצוות - מניעת הפצת מזהמים !' },
+                desc: { he: '(1.5 דקות)' }
+            },
+            {
+                type: 'video',
+                id: 'sOR40jML8IA',
+                title: { he: '4. סרטון התמגנות והסרת מיגון המיועד לכלל אנשי הצוות !' },
+                desc: { he: '(2 דקות)' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/open?id=1QV7mt8nqzlvq8LgLG5_AEnz-6wkyLq8l',
+                title: { he: '5. הדרכה זו מיועדת : לכוח עזר .' },
+                linkText: { he: 'קישור לסרטון הדרכה לניקיון יומי בחדרי בידוד לכוחות עזר (3 דקות)' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/open?id=1vveMbozJT_iUxFtmYf04XSazQgspg5cK',
+                title: { he: '5. הדרכה זו מיועדת : לכוח עזר .' },
+                linkText: { he: 'קישור הדרכה לניקיון טרמינלי בחדרי בידוד לכוחות עזר (1 דקות)' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/open?id=1vVV85CpcEAOhgC6vdGRLoO9juXDJaZ61',
+                title: { he: '6. הדרכה זו מיועדת : לצוות רפואי, אחיות, ומקצועות הבריאות . להלן קישור לסרטון בשפה העברית ואנגלית. : (30 דקות)' },
+                linkText: { he: '1. קישור בעברית: מצגת למניעת זיהומים צולבים בבית הדר בשפה העברית .mp4' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/open?id=1ljn2Eqevuu4PATMsgUwU9PEOxxs-f4Ud',
+                title: { he: '' },
+                linkText: { he: '2. קישור באנגלית: מצגת למניעת זיהומים צולבים בבית הדר בשפה אנגלית .mp4' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/open?id=1VN4coDtzD-rrDZ2CFUJwfLj1E_PnZq4x-YhHDXKhYyo',
+                title: { he: '7. קישור - הנחיות מסוכמות למניעת זיהומים לפי סוגי המזהמים.pdf' },
+                linkText: { he: 'הנחיות מסוכמות למניעת זיהומים לפי סוגי המזהמים.pdf' }
+            },
+            {
+                type: 'link',
+                url: 'https://docs.google.com/presentation/d/1Xexample_presentation_id/edit', // Placeholder
+                title: { he: '8. קישור למצגת וסרטוני הדרכה לשימוש נאמני נושא:' },
+                linkText: { he: '1. מצגת בנושא מניעת זיהומים בגריאטריה : הנחיות לניקוי וחיטוי לשימוש נאמני נושא' }
+            },
+            {
+                type: 'link',
+                url: 'https://drive.google.com/file/d/1Xexample_video_id/view', // Placeholder
+                title: { he: '' },
+                linkText: { he: '2. סרטון מדובב להדרכת צוות בנושא מניעת זיהומים' }
+            }
         ],
         fields: [
+            { id: 'entry.date_placeholder', type: 'date', label: { he: 'תאריך כניסה ללומדה', en: 'Date of Entry', ar: 'تاريخ الدخول', ru: 'Дата входа' } },
+            { id: 'entry.time_placeholder', type: 'time', label: { he: 'שעה', en: 'Time', ar: 'الوقت', ru: 'Время' } },
             { id: 'entry.2128698376', type: 'text', label: { he: 'שם מלא', en: 'Full Name', ar: 'الاسم الكامل', ru: 'Полное имя' } },
             { id: 'entry.482346055', type: 'select', label: { he: 'מחלקה', en: 'Department', ar: 'القسم', ru: 'Отделение' }, options: [
                 { val: 'שיקום א', label: { he: 'שיקום א', en: 'Rehab A', ar: 'تأهيل أ', ru: 'Реабилитация А' } },
@@ -228,7 +291,7 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
 
     const isPersonalInfo = (field) => {
         const lbl = field.label['he'];
-        return lbl === 'שם מלא' || lbl === 'מחלקה' || lbl === 'תאריך' || lbl === 'תאריך כניסה ללומדה' || lbl === 'שם העובד';
+        return lbl === 'שם מלא' || lbl === 'מחלקה' || lbl === 'תאריך' || lbl === 'תאריך כניסה ללומדה' || lbl === 'שעה' || lbl === 'שם העובד';
     };
 
     const renderField = (field, index) => {
@@ -241,6 +304,10 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
         } else if (field.type === 'date') {
             const today = new Date().toISOString().split('T')[0];
             fHtml += `<input type="date" name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" value="${today}" readonly>`;
+        } else if (field.type === 'time') {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            fHtml += `<input type="time" name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" value="${timeStr}" readonly>`;
         } else if (field.type === 'select') {
             fHtml += `<select name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">`;
             fHtml += `<option value="">-- ${tStrings[lang].required} --</option>`;
