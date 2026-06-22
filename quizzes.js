@@ -67,7 +67,7 @@ const quizzesData = {
             },
             {
                 type: 'link',
-                url: 'https://docs.google.com/presentation/d/1Xexample_presentation_id/edit', // Placeholder
+                url: 'https://drive.google.com/file/d/1yT5BnQOfYh92uPIHjkJJPcszM97DJz9s/view?usp=sharing',
                 title: { he: '8. קישור למצגת וסרטוני הדרכה לשימוש נאמני נושא:' },
                 linkText: { he: '1. מצגת בנושא מניעת זיהומים בגריאטריה : הנחיות לניקוי וחיטוי לשימוש נאמני נושא' }
             },
