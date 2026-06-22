@@ -73,7 +73,7 @@ const quizzesData = {
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/file/d/1Xexample_video_id/view', // Placeholder
+                url: 'https://drive.google.com/file/d/18zxS04ValU2RNDKOWCh0m2qnNqoVnAEm/view?usp=drive_link',
                 title: { he: '' },
                 linkText: { he: '2. סרטון מדובב להדרכת צוות בנושא מניעת זיהומים' }
             }
