@@ -4,8 +4,8 @@ const quizzesData = {
     'infections': {
         formUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSebxYF_VF5fhT32MHFWrXPOS2d2nAdU2QxwFcU851Y9Zgb7_A/formResponse',
         title: {
-            he: '(ינואר 2026) מארז הדרכה למניעת זיהומים<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">עובד יקר, ברכות להצטרפות לצוות העובדים , בהצלחה !<br>להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
-            en: '(January 2026) Infection Prevention Training<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Dear employee, welcome to the staff, good luck!<br>Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
+            he: '(ינואר 2026) מארז הדרכה למניעת זיהומים<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">עובד יקר , ברכות להצטרפות לצוות העובדים , בהצלחה !<br>להלן רשימת הדרכות החובה שעליך לעבור כחלק מתהליך קליטתך לעבודה בחודש הראשון ובהמשך כל עובד יבצע אחת לשנה . משך ההדרכה כ- 3 שעות .</span>',
+            en: '(January 2026) Infection Prevention Training<br><br><span style="font-size: 16px; font-weight: normal; color: #555;">Dear employee , welcome to the staff , good luck!<br>Below is a list of mandatory trainings that you are required to complete as part of your onboarding process during your first month of employment. Thereafter, each employee is required to complete these trainings once a year. The total duration of the training is approximately 3 hours.</span>',
             ar: '(يناير 2026) حزمة مكافحة العدوى',
             ru: '(Январь 2026) Пакет по профилактике инфекций'
         },
@@ -91,75 +91,6 @@ const quizzesData = {
                 { val: 'מונשמים א', label: { he: 'מונשמים א', en: 'Ventilated A', ar: 'تنفس اصطناعي أ', ru: 'Вентиляция А' } },
                 { val: 'מונשמים ב', label: { he: 'מונשמים ב', en: 'Ventilated B', ar: 'تنفس اصطناعي ب', ru: 'Вентиляция Б' } },
                 { val: 'מונשמים ג', label: { he: 'מונשמים ג', en: 'Ventilated C', ar: 'تنفس اصطناعي ج', ru: 'Вентиляция В' } }
-            ] },
-            { id: 'entry.1264765965', type: 'radio', label: { he: 'שאלה 1: איזו פעולה מפחיתה את הסיכון לזיהומים במוסד הגריאטרי?', en: 'Question 1: Which action reduces the risk of infections in the geriatric facility?', ar: 'السؤال 1: أي إجراء يقلل من خطر الإصابة بالعدوى في مرفق رعاية المسنين؟', ru: 'Вопрос 1: Какое действие снижает риск заражения в гериатрическом учреждении?' }, options: [
-                { val: 'שימוש בכפפות בלבד', label: { he: 'שימוש בכפפות בלבד', en: 'Using gloves only', ar: 'استخدام القفازات فقط', ru: 'Использование только перчаток' } },
-                { val: 'הגיינת ידיים לפי ואחרי כל טיפול בחולה', label: { he: 'הגיינת ידיים לפני ואחרי כל טיפול בחולה', en: 'Hand hygiene before and after each patient treatment', ar: 'نظافة اليدين قبل وبعد كل علاج للمريض', ru: 'Гигиена рук до и после каждого ухода за пациентом' } },
-                { val: 'חיטוי חדרים בלבד', label: { he: 'חיטוי חדרים בלבד', en: 'Disinfecting rooms only', ar: 'تطهير الغرف فقط', ru: 'Только дезинфекция палат' } },
-                { val: 'שמירה על מרחק מהחולה', label: { he: 'שמירה על מרחק מהחולה', en: 'Keeping distance from the patient', ar: 'الحفاظ على مسافة من المريض', ru: 'Соблюдение дистанции от пациента' } }
-            ] },
-            { id: 'entry.1661314556', type: 'radio', label: { he: 'שאלה 2: מתי יש לשטוף ידיים במים וסבון?', en: 'Question 2: When must hands be washed with soap and water?', ar: 'السؤال 2: متى يجب غسل اليدين بالماء والصابون؟', ru: 'Вопрос 2: Когда необходимо мыть руки с мылом и водой?' }, options: [
-                { val: 'בכל מצב יש לשטוף ידיים', label: { he: 'בכל מצב יש לשטוף ידיים', en: 'In all situations', ar: 'في جميع الحالات', ru: 'В любой ситуации' } },
-                { val: 'כשיש לכלוך נראה לעין חובה לשטוף במים וסבון', label: { he: 'כשיש לכלוך נראה לעין חובה לשטוף במים וסבון', en: 'When there is visible dirt', ar: 'عند وجود أوساخ ظاهرة', ru: 'При видимых загрязнениях' } },
-                { val: 'חיטוי בתכשיר אלכוהולי בסיום שטיפת ידיים', label: { he: 'חיטוי בתכשיר אלכוהולי בסיום שטיפת ידיים', en: 'Alcohol rub after hand washing', ar: 'استخدام معقم كحولي بعد الغسل', ru: 'Дезинфекция спиртом после мытья рук' } },
-                { val: 'אף אחת מהתשובות לא נכונה', label: { he: 'אף אחת מהתשובות לא נכונה', en: 'None of the above', ar: 'لا شيء مما سبق', ru: 'Ничего из вышеперечисленного' } }
-            ] },
-            { id: 'entry.2002496322', type: 'radio', label: { he: 'שאלה 3: מה המשפט הנכון לאחר הסרת כפפות?', en: 'Question 3: What is the correct action after removing gloves?', ar: 'السؤال 3: ما هو الإجراء الصحيح بعد نزع القفازات؟', ru: 'Вопрос 3: Какое действие правильное после снятия перчаток?' }, options: [
-                { val: 'יש לשטוף ידיים במים וסבון', label: { he: 'יש לשטוף ידיים במים וסבון', en: 'Wash hands with soap and water', ar: 'اغسل يديك بالماء والصابون', ru: 'Вымыть руки с мылом и водой' } },
-                { val: 'יש לחטא בתכשיר אלכוהולי', label: { he: 'יש לחטא בתכשיר אלכוהולי', en: 'Use an alcohol-based hand rub', ar: 'استخدم معقم كحولي', ru: 'Использовать спиртовой антисептик' } },
-                { val: 'אין צורך בשיטפה או חיטוי כי השתמשתי בכפפות', label: { he: 'אין צורך בשיטפה או חיטוי כי השתמשתי בכפפות', en: 'No need because gloves were used', ar: 'لا داعي لأنني استخدمت القفازات', ru: 'Не нужно, так как использовались перчатки' } },
-                { val: 'תשובה 1 ו2 נכונות', label: { he: 'תשובה 1 ו-2 נכונות', en: 'Answers 1 and 2 are correct', ar: 'الإجابتان 1 و 2 صحيحتان', ru: 'Ответы 1 и 2 верны' } }
-            ] },
-            { id: 'entry.212725873', type: 'radio', label: { he: 'שאלה 4: מהו משך זמן נכון לשטוף ידיים במים וסבון?', en: 'Question 4: What is the correct duration for washing hands with soap and water?', ar: 'السؤال 4: ما هي المدة الصحيحة لغسل اليدين بالماء والصابون؟', ru: 'Вопрос 4: Какова правильная продолжительность мытья рук с мылом и водой?' }, options: [
-                { val: '15 שניות', label: { he: '15 שניות', en: '15 seconds', ar: '15 ثانية', ru: '15 секунд' } },
-                { val: '5-10 שניות', label: { he: '5-10 שניות', en: '5-10 seconds', ar: '5-10 ثوان', ru: '5-10 секунд' } },
-                { val: 'דקה', label: { he: 'דקה', en: 'One minute', ar: 'دقيقة واحدة', ru: 'Одна минута' } },
-                { val: '20-40 שניות', label: { he: '20-40 שניות', en: '20-40 seconds', ar: '20-40 ثانية', ru: '20-40 секунд' } }
-            ] },
-            { id: 'entry.1821630031', type: 'radio', label: { he: 'שאלה 5: מה ריכוז הכלור הנדרש לניקיון יום יומי של חדר מטופל?', en: 'Question 5: What is the required chlorine concentration for daily room cleaning?', ar: 'السؤال 5: ما هو تركيز الكلور المطلوب للتنظيف اليومي لغرفة المريض؟', ru: 'Вопрос 5: Какова требуемая концентрация хлора для ежедневной уборки палаты?' }, options: [
-                { val: '1000ppm  לליטר מים', label: { he: '1000ppm לליטר מים', en: '1000ppm per liter', ar: '1000 جزء في المليون لكل لتر', ru: '1000 ppm на литр' } },
-                { val: '2000ppm  לליטר מים', label: { he: '2000ppm לליטר מים', en: '2000ppm per liter', ar: '2000 جزء في المليون لكل لتر', ru: '2000 ppm на литр' } },
-                { val: '5000ppm  לליטר מים', label: { he: '5000ppm לליטר מים', en: '5000ppm per liter', ar: '5000 جزء في المليون لكل لتر', ru: '5000 ppm на литр' } },
-                { val: '10000ppm  לליטר מים', label: { he: '10000ppm לליטר מים', en: '10000ppm per liter', ar: '10000 جزء في المليون لكل لتر', ru: '10000 ppm на литр' } }
-            ] },
-            { id: 'entry.1747637410', type: 'radio', label: { he: 'שאלה 6: מה החשיבות של ניקיון וחיטוי סביבתי במוסד רפואי?', en: 'Question 6: What is the importance of environmental cleaning and disinfection in a medical facility?', ar: 'السؤال 6: ما أهمية التنظيف والتطهير البيئي في منشأة طبية؟', ru: 'Вопрос 6: В чем важность экологической уборки и дезинфекции в медицинском учреждении?' }, options: [
-                { val: 'שמירה על מראה אסטטי', label: { he: 'שמירה על מראה אסטטי', en: 'Maintaining an aesthetic appearance', ar: 'الحفاظ على المظهر الجمالي', ru: 'Поддержание эстетичного вида' } },
-                { val: 'מניעת העברת זיהומים ושבירת רצף ההדבקה בין מטופלים צוות ומבקרים', label: { he: 'מניעת העברת זיהומים ושבירת רצף ההדבקה בין מטופלים צוות ומבקרים', en: 'Preventing infection transmission and breaking the chain of infection', ar: 'منع انتقال العدوى وكسر سلسلة العدوى', ru: 'Предотвращение передачи инфекций и прерывание цепи заражения' } },
-                { val: 'חיסכון בזמן עבודת הצוות', label: { he: 'חיסכון בזמן עבודת הצוות', en: 'Saving staff time', ar: 'توفير وقت الموظفين', ru: 'Экономия времени персонала' } },
-                { val: 'הפחתת הצורך בטיפול תרופתי בלבד', label: { he: 'הפחתת הצורך בטיפול תרופתי בלבד', en: 'Reducing the need for medical treatment only', ar: 'تقليل الحاجة إلى العلاج الطبي فقط', ru: 'Снижение потребности только в медикаментозном лечении' } }
-            ] },
-            { id: 'entry.889830264', type: 'radio', label: { he: 'שאלה 7: מהו השיקול המרכזי בקביעת סוג הבידוד למטופל על פי נוהל מחוללים רבי־עמידות?', en: 'Question 7: What is the main consideration in determining the type of isolation according to multi-resistant pathogens protocol?', ar: 'السؤال 7: ما هو الاعتبار الرئيسي في تحديد نوع العزل وفقًا لبروتوكول مسببات الأمراض المقاومة للأدوية المتعددة؟', ru: 'Вопрос 7: Что является основным соображением при определении типа изоляции согласно протоколу по мультирезистентным патогенам?' }, options: [
-                { val: 'גיל המטופל ומצבו התפקודי', label: { he: 'גיל המטופל ומצבו התפקודי', en: 'Patient age and functional status', ar: 'عمر المريض وحالته الوظيفية', ru: 'Возраст пациента и его функциональное состояние' } },
-                { val: 'דרכי העברת המחולל הזיהומי', label: { he: 'דרכי העברת המחולל הזיהומי', en: 'Transmission routes of the infectious pathogen', ar: 'طرق انتقال الممرض المعدي', ru: 'Пути передачи инфекционного возбудителя' } },
-                { val: 'משך האשפוז הצפוי', label: { he: 'משך האשפוז הצפוי', en: 'Expected duration of hospitalization', ar: 'المدة المتوقعة لدخول المستشفى', ru: 'Ожидаемая продолжительность госпитализации' } },
-                { val: 'זמינות חדרי הבידוד במחלקה', label: { he: 'זמינות חדרי הבידוד במחלקה', en: 'Availability of isolation rooms', ar: 'توافر غرف العزل', ru: 'Наличие изоляторов' } }
-            ] },
-            { id: 'entry.1448244571', type: 'radio', label: { he: 'שאלה 8: מי מוסמך להחליט על הפעלת בידוד למטופל?', en: 'Question 8: Who is authorized to decide on implementing patient isolation?', ar: 'السؤال 8: من هو المخول لاتخاذ قرار بتنفيذ عزل المريض؟', ru: 'Вопрос 8: Кто уполномочен принимать решение о внедрении изоляции пациента?' }, options: [
-                { val: 'אחות אחראית בלבד', label: { he: 'אחות אחראית בלבד', en: 'Charge nurse only', ar: 'الممرضة المسؤولة فقط', ru: 'Только старшая медсестра' } },
-                { val: 'רופא בלבד', label: { he: 'רופא בלבד', en: 'Doctor only', ar: 'الطبيب فقط', ru: 'Только врач' } },
-                { val: 'רופא, אחות, נאמן מחלקתי או ועדת זיהומים', label: { he: 'רופא, אחות, נאמן מחלקתי או ועדת זיהומים', en: 'Doctor, nurse, department trustee or infection committee', ar: 'الطبيب والممرضة وأمين القسم أو لجنة العدوى', ru: 'Врач, медсестра, попечитель отделения или комитет по инфекциям' } },
-                { val: 'הנהלת בית החולים בלבד', label: { he: 'הנהלת בית החולים בלבד', en: 'Hospital management only', ar: 'إدارة المستشفى فقط', ru: 'Только руководство больницы' } }
-            ] },
-            { id: 'entry.1190367668', type: 'radio', label: { he: 'שאלה 9: מה נדרש לגבי ציוד רפואי בחדר בידוד?', en: 'Question 9: What is required regarding medical equipment in an isolation room?', ar: 'السؤال 9: ما المطلوب فيما يتعلق بالمعدات الطبية في غرفة العزل؟', ru: 'Вопрос 9: Каковы требования к медицинскому оборудованию в изоляторе?' }, options: [
-                { val: 'שימוש בציוד משותף לאחר חיטוי בלבד', label: { he: 'שימוש בציוד משותף לאחר חיטוי בלבד', en: 'Use of shared equipment after disinfection only', ar: 'استخدام المعدات المشتركة بعد التطهير فقط', ru: 'Использование общего оборудования только после дезинфекции' } },
-                { val: 'הקצאת ציוד אישי או חד־פעמי למטופל', label: { he: 'הקצאת ציוד אישי או חד־פעמי למטופל', en: 'Allocation of personal or disposable equipment', ar: 'تخصيص معدات شخصية أو ذات استخدام واحد', ru: 'Выделение личного или одноразового оборудования' } },
-                { val: 'הוצאת ציוד מהחדר ללא ניקוי', label: { he: 'הוצאת ציוד מהחדר ללא ניקוי', en: 'Removing equipment without cleaning', ar: 'إزالة المعدات بدون تنظيف', ru: 'Вынос оборудования без очистки' } },
-                { val: 'שימוש בציוד רב־פעמי בלבד', label: { he: 'שימוש בציוד רב־פעמי בלבד', en: 'Use of reusable equipment only', ar: 'استخدام المعدات القابلة لإعادة الاستخدام فقط', ru: 'Использование только многоразового оборудования' } }
-            ] },
-            { id: 'entry.1363240456', type: 'radio', label: { he: 'שאלה 10: כיצד יש לנהוג בעובד המסרב להתחסן?', en: 'Question 10: How should an employee who refuses to be vaccinated be handled?', ar: 'السؤال 10: كيف يجب التعامل مع الموظف الذي يرفض التطعيم؟', ru: 'Вопрос 10: Как следует поступать с работником, отказывающимся от вакцинации?' }, options: [
-                { val: 'לאפשר עבודה ללא תיעוד', label: { he: 'לאפשר עבודה ללא תיעוד', en: 'Allow working without documentation', ar: 'السماح بالعمل دون توثيق', ru: 'Разрешить работу без документации' } },
-                { val: 'בלהשעותו מיד', label: { he: 'להשעותו מיד', en: 'Suspend them immediately', ar: 'إيقافه عن العمل فوراً', ru: 'Немедленно отстранить от работы' } },
-                { val: 'להסביר את ההשלכות ולתעד סירוב חתום', label: { he: 'להסביר את ההשלכות ולתעד סירוב חתום', en: 'Explain consequences and document signed refusal', ar: 'شرح العواقب وتوثيق الرفض الموقع', ru: 'Объяснить последствия и задокументировать подписанный отказ' } },
-                { val: 'לחסן בכפייה', label: { he: 'לחסן בכפייה', en: 'Force vaccination', ar: 'التطعيم الإجباري', ru: 'Принудительная вакцинация' } }
-            ] },
-            { id: 'entry.1847352152', type: 'radio', label: { he: 'משוב: האם המארז נוח וזמין?', en: 'Feedback: Is the package convenient and accessible?', ar: 'ملاحظات: هل الحزمة مريحة ومتاحة؟', ru: 'Отзыв: Удобен ли и доступен пакет?' }, options: [
-                { val: '1', label: { he: '1', en: '1', ar: '1', ru: '1' } }, { val: '2', label: { he: '2', en: '2', ar: '2', ru: '2' } }, { val: '3', label: { he: '3', en: '3', ar: '3', ru: '3' } }, { val: '4', label: { he: '4', en: '4', ar: '4', ru: '4' } }, { val: '5', label: { he: '5', en: '5', ar: '5', ru: '5' } }
-            ] },
-            { id: 'entry.3764828', type: 'radio', label: { he: 'משוב: האם הסרטון חידש נהלים שלא הכרתם?', en: 'Feedback: Did the video introduce new procedures?', ar: 'ملاحظات: هل قدم الفيديو إجراءات جديدة؟', ru: 'Отзыв: Представило ли видео новые процедуры?' }, options: [
-                { val: '1', label: { he: '1', en: '1', ar: '1', ru: '1' } }, { val: '2', label: { he: '2', en: '2', ar: '2', ru: '2' } }, { val: '3', label: { he: '3', en: '3', ar: '3', ru: '3' } }, { val: '4', label: { he: '4', en: '4', ar: '4', ru: '4' } }, { val: '5', label: { he: '5', en: '5', ar: '5', ru: '5' } }
-            ] },
-            { id: 'entry.946442302', type: 'radio', label: { he: 'משוב: באיזה מידה הסרטון נותן לכם להרגיש שאתם חלק מתהליך מניעת זיהומים במוסד?', en: 'Feedback: To what extent does the video make you feel part of the infection prevention process?', ar: 'ملاحظات: إلى أي مدى يجعلك الفيديو تشعر بأنك جزء من عملية الوقاية من العدوى؟', ru: 'Отзыв: В какой степени видео заставляет вас чувствовать себя частью процесса?' }, options: [
-                { val: '1', label: { he: '1', en: '1', ar: '1', ru: '1' } }, { val: '2', label: { he: '2', en: '2', ar: '2', ru: '2' } }, { val: '3', label: { he: '3', en: '3', ar: '3', ru: '3' } }, { val: '4', label: { he: '4', en: '4', ar: '4', ru: '4' } }, { val: '5', label: { he: '5', en: '5', ar: '5', ru: '5' } }
             ] }
         ]
     },
