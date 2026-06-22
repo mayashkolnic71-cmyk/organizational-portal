@@ -36,14 +36,14 @@ const quizzesData = {
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/open?id=1QV7mt8nqzlvq8LgLG5_AEnz-6wkyLq8l',
+                url: 'https://drive.google.com/file/d/10HeB9Z5rq4LZwX3IIDRU1kqmalr7FTbF/view?usp=drivesdk',
                 title: { he: '5. הדרכה זו מיועדת : לכוח עזר .', en: '5. This training is for: Nursing Assistants.', ar: '5. هذا التدريب مخصص: لمساعدي التمريض.', ru: '5. Это обучение для: Помощников медсестер.' },
                 linkText: { he: 'קישור לסרטון הדרכה לניקיון יומי בחדרי בידוד לכוחות עזר (3 דקות)', en: 'Link to daily cleaning in isolation rooms video (3 mins)', ar: 'رابط لفيديو التنظيف اليومي في غرف العزل (3 دقائق)', ru: 'Ссылка на видео по ежедневной уборке в изоляторах (3 мин)' }
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/open?id=1vveMbozJT_iUxFtmYf04XSazQgspg5cK',
-                title: { he: '5א. הדרכה זו מיועדת : לכוח עזר .', en: '5a. This training is for: Nursing Assistants.', ar: '5أ. هذا التدريب مخصص: لمساعدي التمريض.', ru: '5а. Это обучение для: Помощников медсестер.' },
+                url: 'https://purple-judye-53.tiiny.site/',
+                title: { he: 'א. הדרכה זו מיועדת : לכוח עזר .', en: '5a. This training is for: Nursing Assistants.', ar: '5أ. هذا التدريب مخصص: لمساعدي التمريض.', ru: '5а. Это обучение для: Помощников медсестер.' },
                 linkText: { he: 'קישור הדרכה לניקיון טרמינלי בחדרי בידוד לכוחות עזר (1 דקות)', en: 'Terminal cleaning in isolation rooms video (1 min)', ar: 'فيديو التنظيف النهائي في غرف العزل (1 دقيقة)', ru: 'Видео по заключительной уборке в изоляторах (1 мин)' }
             },
             {
