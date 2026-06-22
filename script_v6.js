@@ -1520,7 +1520,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
     document.querySelectorAll('.manage-only').forEach(el => el.style.display = 'flex');
 
-    if(typeof navigate === 'function') {
-        navigate('dashboard');
+    if(typeof loadForms === 'function') {
+        loadForms().then(() => {
+            if(typeof navigate === 'function') navigate('dashboard');
+        });
+    } else {
+        if(typeof navigate === 'function') navigate('dashboard');
     }
 });
