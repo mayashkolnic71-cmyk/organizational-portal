@@ -1357,9 +1357,22 @@ function renderIntro() {
                     <li style="margin-bottom: 10px;"><strong>רצף למידה והדרכה:</strong> שילוב הלומדות בתוך פלטפורמה אחת מספק כלי Onboarding חזק לעובדים חדשים, וכן מרחב ריענון נגיש לצוותים הקיימים, כנדרש בבקרות משרד הבריאות.</li>
                     <li style="margin-bottom: 10px;"><strong>ניהול מבוסס נתונים (Data-Driven):</strong> הדשבורד וסוכן המחקר החכם מאפשרים להנהלה לזהות מגמות, לנתח התפלגויות בין מחלקות, ולקבל החלטות מבוססות נתונים אובייקטיביים.</li>
                 </ul>
-                <div style="background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center;">
+                <div style="background: var(--bg-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; margin-bottom: 30px;">
                     <h4 style="margin-bottom: 10px; color: var(--primary-color);">סיכום</h4>
                     <p style="font-size: 16px;">הפורטל מעביר את המוסד מניהול תגובתי לניהול פרואקטיבי, משפר את איכות חיי המטופל הקשיש, ומבטיח סביבת טיפול בטוחה ומקצועית יותר.</p>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 30px 0;">
+
+                <div style="display: flex; gap: 20px; align-items: center; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                    <img src="maya-profile.jpeg" alt="מאיה שקולניק גזית" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    <div>
+                        <h3 style="margin-bottom: 5px;">נוצר על ידי: מאיה שקולניק גזית</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 10px;">
+                            R.N, BA, M.H.A, Policy Management Specialist
+                        </p>
+                        <a href="cv.html" target="_blank" style="color: var(--primary-color); font-weight: bold; text-decoration: none;">📄 צפה בקורות החיים המלאים</a>
+                    </div>
                 </div>
             </div>
             ${feedbackForm}
