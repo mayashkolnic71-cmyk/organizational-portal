@@ -49,13 +49,13 @@ const quizzesData = {
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/open?id=1vVV85CpcEAOhgC6vdGRLoO9juXDJaZ61',
+                url: 'https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link',
                 title: { he: '6. הדרכה זו מיועדת : לצוות רפואי, אחיות, ומקצועות הבריאות . להלן קישור לסרטון בשפה העברית ואנגלית. : (30 דקות)' },
                 linkText: { he: '1. קישור בעברית: מצגת למניעת זיהומים צולבים בבית הדר בשפה העברית .mp4' }
             },
             {
                 type: 'link',
-                url: 'https://drive.google.com/open?id=1ljn2Eqevuu4PATMsgUwU9PEOxxs-f4Ud',
+                url: 'https://drive.google.com/file/d/1li5zEhP7r5QUFzhdJZ4CZGFYVE0I21dB/view?usp=drive_link',
                 title: { he: '' },
                 linkText: { he: '2. קישור באנגלית: מצגת למניעת זיהומים צולבים בבית הדר בשפה אנגלית .mp4' }
             },
