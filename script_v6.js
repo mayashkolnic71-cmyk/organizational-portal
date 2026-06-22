@@ -248,15 +248,10 @@ function register() {
 }
 
 function login() {
-    const rawUser = document.getElementById('login-user').value.trim();
-    const user = rawUser.toLowerCase();
-    const pass = document.getElementById('login-pass').value.trim();
+    const user = document.getElementById('login-user').value;
+    const pass = document.getElementById('login-pass').value;
 
-    if (!Array.isArray(usersDb)) usersDb = [];
-    let matchedUser = usersDb.find(u => u && (u.username || '').toLowerCase() === user && u.password === pass);
-    if (!matchedUser && user === 'admin' && pass.toLowerCase() === 'admin') {
-        matchedUser = { username: 'admin', password: 'admin', name: 'ד"ר ישראלי', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
-    }
+    const matchedUser = usersDb.find(u => u.username === user && u.password === pass);
 
     if (matchedUser) {
         currentUser = matchedUser;
@@ -1491,6 +1486,5 @@ function removeProtocol(id) {
 
 
 
-/ /   F o r c e   u p d a t e   f o r   d e p l o y m e n t 
- 
+/ /   F o r c e   u p d a t e   f o r   d e p l o y m e n t  
  
