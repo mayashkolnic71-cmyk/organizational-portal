@@ -182,7 +182,7 @@ initUsersDb();
 // Mock Data Load (using forms.js to bypass CORS on file://)
 function loadForms() {
     return new Promise((resolve) => {
-        const storedSchema = localStorage.getItem('clinic_forms_schema');
+        const storedSchema = localStorage.getItem('clinic_forms_schema_v3');
         if (storedSchema) {
             formsSchema = JSON.parse(storedSchema);
         } else if (typeof formsSchemaData !== 'undefined') {
@@ -1054,7 +1054,7 @@ function applyRecommendation(formId) {
             });
         }
     }
-    localStorage.setItem('clinic_forms_schema', JSON.stringify(formsSchema));
+    localStorage.setItem('clinic_forms_schema_v3', JSON.stringify(formsSchema));
     
     if (!trainingsDb.find(t => t.title === 'עדכון: מניעת זיהומים - פרוטוקול WHO')) {
         trainingsDb.push({

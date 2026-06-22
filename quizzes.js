@@ -283,9 +283,22 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
         else if (field.type === 'select') {
             html += `<select name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">`;
             html += `<option value="">-- ${tStrings[lang].required} --</option>`;
-            field.options.forEach(opt => {
-                html += `<option value="${opt.val}">${opt.label[lang]}</option>`;
-            });
+            
+            if (field.label['he'] === 'מחלקה' || field.label['en'] === 'Department') {
+                if (window.departmentsDb && window.departmentsDb.length > 0) {
+                    window.departmentsDb.forEach(dept => {
+                        html += `<option value="${dept}">${dept}</option>`;
+                    });
+                } else {
+                    field.options.forEach(opt => {
+                        html += `<option value="${opt.val}">${opt.label[lang]}</option>`;
+                    });
+                }
+            } else {
+                field.options.forEach(opt => {
+                    html += `<option value="${opt.val}">${opt.label[lang]}</option>`;
+                });
+            }
             html += `</select>`;
         }
         else if (field.type === 'radio') {
