@@ -89,7 +89,7 @@ function initProtocolsDb() {
 initProtocolsDb();
 
 (function() {
-    let t = localStorage.getItem('clinic_trainings');
+    let t = null; // Disabled to prevent overwrite
     if (t) {
         let arr = JSON.parse(t);
         arr = arr.filter(item => item && item.title);
