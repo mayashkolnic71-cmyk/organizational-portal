@@ -109,7 +109,9 @@ const quizzesData = {
             ru: 'Поддерживающая терапия'
         },
         videos: [
-            { id: 'l2Tngp8k938', title: { he: 'יפוי כוח מתמשך', en: 'Enduring Power of Attorney', ar: 'توكيل مستمر', ru: 'Продолжительная доверенность' } }
+            { id: 'l2Tngp8k938', title: { he: 'יפוי כוח מתמשך', en: 'Enduring Power of Attorney', ar: 'توكيل مستمر', ru: 'Продолжительная доверенность' } },
+            { id: 'IB5irFCuPxs', title: { he: 'חוק החולה הנוטה למות והעדפות טיפול', en: 'Dying Patient Act and End-of-Life Care Preferences', ar: 'قانون المريض المحتضر', ru: 'Закон об умирающем пациенте' } },
+            { id: 'l17BmQmFA5E', title: { he: 'הסבר למטופל בנושא החוק', en: 'Explanation to Patient', ar: 'شرح للمريض', ru: 'Объяснение пациенту' } }
         ],
         links: [
             { url: 'https://lms.gov.il/End-Of-Life-Preferences/story.html', text: { he: 'סוף מעשה במחשבה תחילה - העדפות טיפול בסוף החיים', en: 'End of Life Preferences', ar: 'تفضيلات نهاية الحياة', ru: 'Предпочтения в конце жизни' } },
@@ -195,8 +197,11 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
         quiz.videos.forEach(v => {
             html += `
             <div class="video-container" style="margin-bottom: 20px;">
-                <h4 style="margin-bottom: 10px;">${v.title[lang]}</h4>
+                <h3 style="margin-bottom:10px;">${v.title[lang] || v.title['he']}</h3>
                 <iframe width="100%" height="315" src="https://www.youtube.com/embed/${v.id}" frameborder="0" allowfullscreen style="border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);"></iframe>
+                <div style="margin-top: 5px; font-size: 14px; text-align: center;">
+                    <a href="https://www.youtube.com/watch?v=${v.id}" target="_blank" style="color: var(--primary-color);">אם הסרטון לא מופעל, לחץ/י כאן לצפייה ביוטיוב</a>
+                </div>
             </div>`;
         });
         html += `</div>`;
