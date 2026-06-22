@@ -108,14 +108,45 @@ const quizzesData = {
             ar: 'الرعاية الداعمة',
             ru: 'Поддерживающая терапия'
         },
-        videos: [
-            { id: 'l2Tngp8k938', title: { he: 'יפוי כוח מתמשך', en: 'Enduring Power of Attorney', ar: 'توكيل مستمر', ru: 'Продолжительная доверенность' } },
-            { id: 'IB5irFCuPxs', title: { he: 'חוק החולה הנוטה למות והעדפות טיפול', en: 'Dying Patient Act and End-of-Life Care Preferences', ar: 'قانون المريض المحتضر', ru: 'Закон об умирающем пациенте' } },
-            { id: 'l17BmQmFA5E', title: { he: 'הסבר למטופל בנושא החוק', en: 'Explanation to Patient', ar: 'شرح للمريض', ru: 'Объяснение пациенту' } }
-        ],
-        links: [
-            { url: 'https://lms.gov.il/End-Of-Life-Preferences/story.html', text: { he: 'סוף מעשה במחשבה תחילה - העדפות טיפול בסוף החיים', en: 'End of Life Preferences', ar: 'تفضيلات نهاية الحياة', ru: 'Предпочтения в конце жизни' } },
-            { url: 'https://www.health.gov.il/Subjects/Geriatrics/dying/Pages/forms.aspx', text: { he: 'מילוי מסמכים: הנחיות רפואיות מקדימות', en: 'Filling Documents: Advance Medical Directives', ar: 'تعبئة المستندات: التوجيهات الطبية المسبقة', ru: 'Заполнение документов: Предварительные медицинские указания' } }
+        contentItems: [
+            {
+                type: 'link',
+                url: 'https://www.gov.il/files/Health/dying_patient_law/story_html5.html',
+                title: { he: 'קישור ללומדת משרד הבריאות: סוף מעשה במחשבה תחילה - העדפות טיפול בסוף החיים' },
+                desc: { he: 'כניסה לקישור ללמידה עצמית. (משך זמן כ- 60 דקות )' }
+            },
+            {
+                type: 'link',
+                url: 'https://www.gov.il/files/health/dying_patient_request/story_html5.html',
+                title: { he: 'קישור ללומדת חולה נוטה למות' },
+                desc: { he: 'כניסה לקישור ללמידה עצמית. (משך זמן כ- 60 דקות )' }
+            },
+            {
+                type: 'video',
+                id: 'IB5irFCuPxs',
+                title: { he: 'סרטון הסברה: כבר כתבתם? הנחיות רפואיות מקדימות' },
+                desc: { he: 'צפייה 2 דקות' }
+            },
+            {
+                type: 'link',
+                url: 'https://me.health.gov.il/older-adult/services-rights/before-saying-goodbye/advance-medical-directives/?source=5273',
+                title: { he: 'מילוי מסמכים: כל אחד ואחת יכולים להיערך מראש למצב של אובדן כשירות בסוף החיים. חוק החולה הנוטה למות מאפשר לכל אחד ואחת לתת הנחיות רפואיות מקדימות או למנות מיופה כוח במקרה שבו יוגדרו על ידי רופא אחראי כחולה נוטה למות.' },
+                linkText: { he: 'קישור לסרטון: מילוי טופס הנחיות מקדימות' },
+                desc: { he: 'קריאה וצפייה בסרטון כ- 10 דקות' }
+            },
+            {
+                type: 'link',
+                url: 'https://www.gov.il/he/service/dying-patient-request',
+                title: { he: 'הגשת מסמכים: שירות זה הוא ייחודי ומאפשר לכל המעוניינים למלא טפסים עם הנחיות רפואיות מקדימות או מינוי מיופה כוח, למצב עתידי בו ייקבע כי הם חולים במחלה חשוכת מרפא (ללא אפשרות להחלמה). כל זאת, כדי להימנע מהארכת הסבל במצב שבו לא יוכלו להביע את רצונם.' },
+                linkText: { he: 'קישור להנחיות רפואיות מקדימות ויפוי כוח.' },
+                desc: { he: 'קריאה כ- 10 דקות' }
+            },
+            {
+                type: 'video',
+                id: 'l17BmQmFA5E',
+                title: { he: 'קישור לסרטון הסברה על יפוי כוח מתמשך' },
+                desc: { he: 'צפייה כ- 4 דקות' }
+            }
         ],
         fields: [
             { id: 'entry.2128698376', type: 'text', label: { he: 'שם מלא', en: 'Full Name', ar: 'الاسم الكامل', ru: 'Полное имя' } },
