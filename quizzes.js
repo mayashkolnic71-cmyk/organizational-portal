@@ -44,7 +44,7 @@ const quizzesData = {
             {
                 type: 'link',
                 url: 'https://drive.google.com/open?id=1vveMbozJT_iUxFtmYf04XSazQgspg5cK',
-                title: { he: '5. הדרכה זו מיועדת : לכוח עזר .' },
+                title: { he: '5א. הדרכה זו מיועדת : לכוח עזר .' },
                 linkText: { he: 'קישור הדרכה לניקיון טרמינלי בחדרי בידוד לכוחות עזר (1 דקות)' }
             },
             {
