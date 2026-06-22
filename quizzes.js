@@ -355,50 +355,34 @@ function submitNativeQuiz(event) {
     
     const quiz = quizzesData[currentQuizId];
     const form = event.target;
-    
-    // Create a temporary form to post to Google Docs
-    const gForm = document.createElement('form');
-    gForm.action = quiz.formUrl;
-    gForm.method = 'POST';
-    gForm.target = 'hidden_iframe';
-    gForm.style.display = 'none';
-    
-    // Append all fields
     const formData = new FormData(form);
+    
+    let userName = 'עובד (לא צוין שם)';
+    if (typeof currentUser !== 'undefined' && currentUser && currentUser.name) {
+        userName = currentUser.name;
+    }
+    
+    // Try to get name from form fields (e.g., 'entry.2128698376')
     for (let [key, value] of formData.entries()) {
-        let input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        gForm.appendChild(input);
-    }
-    
-    // Date & Time auto-fill for Form 1 if required
-    let d = new Date();
-    if (currentQuizId === 'infections') {
-        gForm.appendChild(createHidden('entry.1548808521_year', d.getFullYear()));
-        gForm.appendChild(createHidden('entry.1548808521_month', String(d.getMonth() + 1).padStart(2, '0')));
-        gForm.appendChild(createHidden('entry.1548808521_day', String(d.getDate()).padStart(2, '0')));
-        
-        gForm.appendChild(createHidden('entry.601953853_hour', String(d.getHours()).padStart(2, '0')));
-        gForm.appendChild(createHidden('entry.601953853_minute', String(d.getMinutes()).padStart(2, '0')));
-    }
-    
-    // Form 2 Date Entry: entry.1548808521
-    if (currentQuizId === 'supportive_care') {
-        gForm.appendChild(createHidden('entry.1548808521_year', d.getFullYear()));
-        gForm.appendChild(createHidden('entry.1548808521_month', String(d.getMonth() + 1).padStart(2, '0')));
-        gForm.appendChild(createHidden('entry.1548808521_day', String(d.getDate()).padStart(2, '0')));
+        if (key === 'entry.2128698376' && value.trim() !== '') {
+            userName = value.trim();
+        }
     }
 
-    document.body.appendChild(gForm);
-    gForm.submit();
+    if (typeof trainingsAnswersDb !== 'undefined') {
+        trainingsAnswersDb.push({
+            title: quiz.title[currentLanguage] || quiz.title['he'],
+            user: userName,
+            date: new Date().toLocaleString('he-IL')
+        });
+        localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
+    }
     
-    // Wait a brief moment to allow iframe post
+    // Simulate slight delay for processing UI feedback
     setTimeout(() => {
         alert(tStrings[currentLanguage].success);
         if (typeof closeTraining === 'function') closeTraining();
-    }, 1500);
+    }, 800);
 }
 
 function createHidden(name, value) {
