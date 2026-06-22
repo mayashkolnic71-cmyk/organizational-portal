@@ -9,6 +9,7 @@ const quizzesData = {
             ar: '(يناير 2026) حزمة مكافحة العدوى',
             ru: '(Январь 2026) Пакет по профилактике инфекций'
         },
+        contentItems: [
             {
                 type: 'video',
                 id: 'RY5wXbPCY-o',
