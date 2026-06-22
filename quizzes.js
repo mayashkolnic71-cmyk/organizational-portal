@@ -149,6 +149,7 @@ const quizzesData = {
             }
         ],
         fields: [
+            { id: 'entry.date_placeholder', type: 'date', label: { he: 'תאריך כניסה ללומדה', en: 'Date of Entry', ar: 'تاريخ الدخول', ru: 'Дата входа' } },
             { id: 'entry.2128698376', type: 'text', label: { he: 'שם מלא', en: 'Full Name', ar: 'الاسم الكامل', ru: 'Полное имя' } },
             { id: 'entry.482346055', type: 'select', label: { he: 'מחלקה', en: 'Department', ar: 'القسم', ru: 'Отделение' }, options: [
                 { val: 'שיקום א', label: { he: 'שיקום א', en: 'Rehab A', ar: 'تأهيل أ', ru: 'Реабилитация А' } },
@@ -223,6 +224,61 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
     let html = `<div class="native-quiz-wrapper" style="direction: ${dir}; ${align}">`;
     html += `<h2 style="margin-bottom: 20px; font-size: 24px; color: #333;">${quiz.title[lang]}</h2>`;
 
+    html += `<form id="nativeQuizForm" onsubmit="submitNativeQuiz(event)">`;
+
+    const isPersonalInfo = (field) => {
+        const lbl = field.label['he'];
+        return lbl === 'שם מלא' || lbl === 'מחלקה' || lbl === 'תאריך' || lbl === 'תאריך כניסה ללומדה' || lbl === 'שם העובד';
+    };
+
+    const renderField = (field, index) => {
+        let fHtml = `<div class="quiz-field" style="margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">`;
+        fHtml += `<label style="display: block; font-weight: bold; margin-bottom: 10px;">${field.label[lang]} <span style="color:red">*</span></label>`;
+        
+        if (field.type === 'text') {
+            const isNameField = field.id === 'entry.2128698376' || field.id === 'entry.888565256';
+            fHtml += `<input type="text" name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" value="${isNameField && window.currentUser ? window.currentUser.name : ''}">`;
+        } else if (field.type === 'date') {
+            const today = new Date().toISOString().split('T')[0];
+            fHtml += `<input type="date" name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" value="${today}" readonly>`;
+        } else if (field.type === 'select') {
+            fHtml += `<select name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">`;
+            fHtml += `<option value="">-- ${tStrings[lang].required} --</option>`;
+            
+            if (field.label['he'] === 'מחלקה' || field.label['en'] === 'Department') {
+                if (typeof departmentsDb !== 'undefined' && departmentsDb.length > 0) {
+                    departmentsDb.forEach(dept => {
+                        fHtml += `<option value="${dept}">${dept}</option>`;
+                    });
+                } else {
+                    field.options.forEach(opt => {
+                        fHtml += `<option value="${opt.val}">${opt.label[lang]}</option>`;
+                    });
+                }
+            } else {
+                field.options.forEach(opt => {
+                    fHtml += `<option value="${opt.val}">${opt.label[lang]}</option>`;
+                });
+            }
+            fHtml += `</select>`;
+        } else if (field.type === 'radio') {
+            field.options.forEach((opt, optIndex) => {
+                fHtml += `
+                <label style="display: block; margin-bottom: 8px; cursor: pointer; padding: 5px; border-radius: 4px; transition: background 0.2s;">
+                    <input type="radio" name="${field.id}" value="${opt.val}" required style="margin: 0 10px;">
+                    ${opt.label[lang]}
+                </label>`;
+            });
+        }
+        fHtml += `</div>`;
+        return fHtml;
+    };
+
+    // 1. Render Personal Info Fields at the TOP
+    quiz.fields.filter(isPersonalInfo).forEach((field, index) => {
+        html += renderField(field, index);
+    });
+
     if (quiz.contentItems && quiz.contentItems.length > 0) {
         html += `<div class="quiz-content-items">`;
         quiz.contentItems.forEach(item => {
@@ -271,46 +327,9 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
         html += `</div>`;
     }
 
-    html += `<form id="nativeQuizForm" onsubmit="submitNativeQuiz(event)">`;
-
-    quiz.fields.forEach((field, index) => {
-        html += `<div class="quiz-field" style="margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">`;
-        html += `<label style="display: block; font-weight: bold; margin-bottom: 10px;">${field.label[lang]} <span style="color:red">*</span></label>`;
-        
-        if (field.type === 'text') {
-            html += `<input type="text" name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;" value="${field.id === 'entry.2128698376' && window.currentUser ? window.currentUser.name : ''}">`;
-        } 
-        else if (field.type === 'select') {
-            html += `<select name="${field.id}" required style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">`;
-            html += `<option value="">-- ${tStrings[lang].required} --</option>`;
-            
-            if (field.label['he'] === 'מחלקה' || field.label['en'] === 'Department') {
-                if (window.departmentsDb && window.departmentsDb.length > 0) {
-                    window.departmentsDb.forEach(dept => {
-                        html += `<option value="${dept}">${dept}</option>`;
-                    });
-                } else {
-                    field.options.forEach(opt => {
-                        html += `<option value="${opt.val}">${opt.label[lang]}</option>`;
-                    });
-                }
-            } else {
-                field.options.forEach(opt => {
-                    html += `<option value="${opt.val}">${opt.label[lang]}</option>`;
-                });
-            }
-            html += `</select>`;
-        }
-        else if (field.type === 'radio') {
-            field.options.forEach((opt, optIndex) => {
-                html += `
-                <label style="display: block; margin-bottom: 8px; cursor: pointer; padding: 5px; border-radius: 4px; transition: background 0.2s;">
-                    <input type="radio" name="${field.id}" value="${opt.val}" required style="margin: 0 10px;">
-                    ${opt.label[lang]}
-                </label>`;
-            });
-        }
-        html += `</div>`;
+    // 3. Render Other Fields (Questions) BELOW the videos
+    quiz.fields.filter(f => !isPersonalInfo(f)).forEach((field, index) => {
+        html += renderField(field, index);
     });
 
     html += `<button type="submit" id="quizSubmitBtn" style="background: #28a745; color: white; border: none; padding: 15px 24px; font-size: 18px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">${tStrings[lang].submit}</button>`;
