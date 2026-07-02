@@ -41,6 +41,12 @@ function initTrainingsDb() {
              changed = true;
         }
     });
+    
+    if (!trainingsDb.find(t => t.title === 'סימולציית תירגול לאיבחון שבריריות')) {
+        trainingsDb.push({ id: Date.now() + 2, title: 'סימולציית תירגול לאיבחון שבריריות', url: 'frailty_simulation.html', icon: '👵🏼', external: true });
+        changed = true;
+    }
+
     if (changed || !stored) {
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
     }

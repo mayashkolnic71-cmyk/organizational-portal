@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>סימולציה קלינית: אומדן שבריריות</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .bubble-patient {
+            background-color: #f3e8ff; /* purple-100 */
+            border: 1px solid #e9d5ff; /* purple-200 */
+            border-bottom-right-radius: 0;
+        }
+        .bubble-staff {
+            background-color: #dbeafe; /* blue-100 */
+            border: 1px solid #bfdbfe; /* blue-200 */
+            border-bottom-left-radius: 0;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #4f46e5, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="antialiased min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-xl">🎓</div>
+                <h1 class="font-bold text-lg text-slate-800">מרכז הלמידה - גריאטריה 2026</h1>
+            </div>
+            <a href="#" class="text-sm font-medium text-blue-600 hover:text-blue-800 transition">חזרה לפורטל הראשי ⬅️</a>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 py-12">
+        
+        <!-- Hero Section -->
+        <header class="text-center mb-16">
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-4 inline-block">מודול סימולציה</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 text-slate-900 tracking-tight">
+                קבלת מטופלת ואומדן <span class="gradient-text">שבריריות</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                לומדת תסריט המדגימה יישום נכון של כלי אומדן (CFS ומודל Fried) במחלקת שיקום, תוך שימת דגש על דיוק קליני, תקשורת אמפתית ושימוש בהומור ככלי להפגת מתחים.
+            </p>
+            <div class="mt-8">
+                <a href="#simulation" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg shadow-blue-500/30 transition duration-300 inline-flex items-center gap-2">
+                    התחל בסימולציה ▶️
+                </a>
+            </div>
+        </header>
+
+        <!-- Characters Section -->
+        <section class="mb-16">
+            <h2 class="text-2xl font-bold text-center mb-8 text-slate-800">הכר את הדמויות</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Patient -->
+                <div class="glass-panel p-6 text-center border-t-4 border-purple-500 hover:-translate-y-1 transition duration-300">
+                    <div class="w-20 h-20 mx-auto bg-purple-100 rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner">👵🏼</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">שרה (87)</h3>
+                    <p class="text-purple-600 font-medium text-sm mb-3">המטופלת</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">צלולה וחדת לשון, הגיעה לשיקום לאחר ניתוח עקב שבר בצוואר הירך. משתמשת בהומור ציני קל כדי להתמודד עם המצב.</p>
+                </div>
+                <!-- Doctor -->
+                <div class="glass-panel p-6 text-center border-t-4 border-blue-500 hover:-translate-y-1 transition duration-300">
+                    <div class="w-20 h-20 mx-auto bg-blue-100 rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner">👨🏻⚕️</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">ד"ר לוי</h3>
+                    <p class="text-blue-600 font-medium text-sm mb-3">רופא מומחה</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">רופא מומחה בשיקום גריאטרי, לבבי, מקצועי וממוקד במטרה לשקם את המטופלת פיזית ותפקודית.</p>
+                </div>
+                <!-- Nurse -->
+                <div class="glass-panel p-6 text-center border-t-4 border-teal-500 hover:-translate-y-1 transition duration-300">
+                    <div class="w-20 h-20 mx-auto bg-teal-100 rounded-full flex items-center justify-center text-4xl mb-4 shadow-inner">👩🏽⚕️</div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-1">מאיה</h3>
+                    <p class="text-teal-600 font-medium text-sm mb-3">אחות אחראית / מומחית קלינית</p>
+                    <p class="text-slate-600 text-sm leading-relaxed">מובילת תחום האיכות והבטיחות, קשובה, מכילה ומובילה את תהליך האומדן הקליני והתקשורת.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Clinical Legend Section -->
+        <section class="mb-16">
+            <div class="glass-panel p-6 md:p-8 border-t-4 border-indigo-600">
+                <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                    <span class="text-3xl">📖</span> מקראה קלינית: כלי אומדן שבריריות
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- CFS Legend -->
+                    <div class="bg-indigo-50 rounded-xl p-5 border border-indigo-100">
+                        <h3 class="font-bold text-lg text-indigo-900 mb-3 border-b border-indigo-200 pb-2">סולם CFS (Clinical Frailty Scale)</h3>
+                        <p class="text-xs text-slate-600 mb-3 font-medium">הערכת תפקוד בשבועיים שטרם האירוע האקוטי (מבוסס ריאיון):</p>
+                        <ul class="space-y-3 text-sm text-slate-700">
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-green-200 text-green-800 flex items-center justify-center font-bold">1-3</span> <div><strong>כושר מצוין עד מתמודד היטב:</strong> עצמאי לחלוטין.</div></li>
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-yellow-200 text-yellow-800 flex items-center justify-center font-bold">4</span> <div><strong>פגיע (Vulnerable):</strong> עצמאי אבל איטי, תלוי בעזרה בפעולות בודדות.</div></li>
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-red-200 text-red-800 flex items-center justify-center font-bold">5-8</span> <div><strong class="text-red-600">שברירי (Frail):</strong> החל משבריריות קלה (5 - זקוק לעזרה ב-IADL) ועד קשה מאוד (8).</div></li>
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-slate-200 text-slate-800 flex items-center justify-center font-bold">9</span> <div><strong>מחלה סופנית:</strong> תוחלת חיים מוערכת מתחת ל-6 חודשים.</div></li>
+                        </ul>
+                    </div>
+                    <!-- Fried Legend -->
+                    <div class="bg-emerald-50 rounded-xl p-5 border border-emerald-100">
+                        <h3 class="font-bold text-lg text-emerald-900 mb-3 border-b border-emerald-200 pb-2">מודל Fried (הפנוטיפי)</h3>
+                        <div class="mb-4">
+                            <p class="text-sm font-bold text-slate-800 mb-2">5 הקריטריונים לאבחנה:</p>
+                            <ul class="text-xs text-slate-700 space-y-2 pr-1">
+                                <li class="flex items-start gap-2"><span class="text-emerald-500">▪</span> <div><strong>ירידה לא מכוונת במשקל:</strong> מעל 5% מכלל משקל הגוף בשנה.</div></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500">▪</span> <div><strong>תשישות סובייקטיבית:</strong> דיווח על חוסר סבילות למאמצים (הכל דורש מאמץ).</div></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500">▪</span> <div><strong>חולשת שרירים:</strong> נמדדת אובייקטיבית ע"י כוח לחיצת יד (Handgrip).</div></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500">▪</span> <div><strong>איטיות בהליכה:</strong> ירידה אובייקטיבית במהירות ההליכה.</div></li>
+                                <li class="flex items-start gap-2"><span class="text-emerald-500">▪</span> <div><strong>ירידה בפעילות גופנית:</strong> מיעוט ביצוע פעילות פיזית שגרתית.</div></li>
+                            </ul>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-3 font-medium border-t border-emerald-200 pt-3">מפתח סך הציונים:</p>
+                        <ul class="space-y-3 text-sm text-slate-700">
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-green-200 text-green-800 flex items-center justify-center font-bold">0</span> <div><strong>חזק (Robust):</strong> ללא קריטריונים.</div></li>
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-yellow-200 text-yellow-800 flex items-center justify-center font-bold">1-2</span> <div><strong class="text-yellow-700">טרום-שברירי (Pre-frail):</strong> נוכחות 1-2 קריטריונים.</div></li>
+                            <li class="flex items-start gap-3"><span class="shrink-0 w-8 h-8 rounded bg-red-200 text-red-800 flex items-center justify-center font-bold">3-5</span> <div><strong class="text-red-600">שברירי (Frail):</strong> נוכחות 3 קריטריונים ומעלה.</div></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Script Section -->
+        <section id="simulation" class="glass-panel p-4 md:p-8 mb-16 scroll-mt-24">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-4 mb-6">
+                <h2 class="text-2xl font-bold text-slate-800">תסריט הסימולציה</h2>
+                <span class="bg-slate-100 text-slate-600 px-3 py-1 rounded-md text-sm font-medium">זמן קריאה: 3 דקות</span>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Scene Setting -->
+                <div class="text-center text-sm text-slate-500 italic bg-slate-50 py-2 rounded-lg mb-8">
+                    🎬 חדר המטופלת במחלקת השיקום. ד"ר לוי ומאיה נכנסים לחדר עם טאבלט רפואי. שרה נחה במיטתה.
+                </div>
+
+                <!-- Chat Messages -->
+                <!-- Dr Levi -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👨🏻⚕️ ד"ר לוי</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        שלום שרה, ברוכה הבאה למחלקת השיקום שלנו. שמי ד"ר לוי וזו מאיה, האחות האחראית. אנחנו כאן כדי לעשות היכרות ראשונית ולתפור עבורך את חליפת השיקום המדויקת ביותר. איך את מרגישה הבוקר?
+                    </div>
+                </div>
+
+                <!-- Sarah -->
+                <div class="flex flex-col items-end max-w-2xl mr-auto gap-1">
+                    <span class="text-xs font-bold text-slate-500 ml-2">👵🏼 שרה (מגחכת קלות)</span>
+                    <div class="bubble-patient rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        ובכן דוקטור, חוץ מזה שהרצפה החליטה אתמול לקפוץ לי על הירך משום מקום, הכל פשוט נפלא.
+                    </div>
+                </div>
+
+                <!-- Maya -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👩🏽⚕️ מאיה (מחייכת)</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        אני שמחה לראות שחוש ההומור שלך נשאר שלם לחלוטין! כדי שהשיקום יצליח, אנחנו צריכים להבין מה היה המצב הכללי שלך <strong>לפני</strong> התקרית עם הרצפה. אני אשאל אותך כמה שאלות קצרות. לפני כחודש, איך נראתה שגרת היום שלך? הצלחת לעשות סידורים או עבודות בית?
+                    </div>
+                </div>
+
+                <!-- Sarah -->
+                <div class="flex flex-col items-end max-w-2xl mr-auto gap-1">
+                    <span class="text-xs font-bold text-slate-500 ml-2">👵🏼 שרה</span>
+                    <div class="bubble-patient rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        תראי מאיה, השתדלתי מאוד. אבל בחצי השנה האחרונה הילדים התחילו לעזור לי עם הקניות הכבדות והניקיונות. פשוט לא היה לי כוח לזה. למרות שאת התרופות שלי לקחתי לבד והתקלחתי בעצמי, אני עדיין לא צריכה בייביסיטר במקלחת.
+                    </div>
+                </div>
+
+                <!-- Maya -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👩🏽⚕️ מאיה (רושמת בטאבלט)</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        זה מצוין ששמרת על עצמאות אישית. ד"ר לוי, לפי התיאור של שרה, היא עצמאית בפעולות בסיסיות (ADL) אך זקוקה לעזרה בפעולות מורכבות יותר (IADL) בעצימות גבוהה. לפי סולם <strong>CFS</strong>, זה שם אותה בציון 5.
+                    </div>
+                </div>
+
+                <!-- Dr Levi -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👨🏻⚕️ ד"ר לוי</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        נכון מאוד. וחשוב שנזכור את העדכון בהנחיות – מטופל נחשב לשברירי החל מציון 5 ומעלה. שרה מוגדרת כסובלת מ-'שבריריות קלה' (Mildly Frail), מה שאומר שיש לנו חלון הזדמנויות מצוין לעבוד איתה ולחזק אותה.
+                    </div>
+                </div>
+
+                <!-- CLINICAL TOOL POPUP: CFS -->
+                <div class="my-6 bg-white border-r-4 border-indigo-500 shadow-lg rounded-xl p-5 md:mx-12 mx-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">חלון אומדן קליני</div>
+                    <h4 class="font-bold text-indigo-800 flex items-center gap-2 mt-2"><span class="text-2xl">📋</span> סולם Clinical Frailty Scale (CFS)</h4>
+                    <div class="mt-4 text-sm text-slate-700 space-y-2">
+                        <p><span class="font-semibold text-slate-900">קריטריון נבדק:</span> תפקוד יומיומי (ADL/IADL) בשבועיים שטרם האירוע האקוטי.</p>
+                        <p><span class="font-semibold text-slate-900">ממצאי האנמנזה:</span> זקוקה לעזרה בפעולות מורכבות (קניות, ניקיון), אך עצמאית בפעולות בסיסיות (תרופות, רחצה).</p>
+                        <div class="mt-4 bg-indigo-50 border border-indigo-100 p-3 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <span class="font-bold text-indigo-900">סיכום ביניים לאומדן:</span>
+                            <span class="bg-indigo-600 text-white px-4 py-1.5 rounded-full font-bold shadow-sm">ציון 5 - שבריריות קלה (Mildly Frail)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scene Transition -->
+                <div class="text-center text-sm text-slate-500 italic bg-slate-50 py-2 rounded-lg my-8">
+                    ⏱️ מעבר לאומדן פנוטיפי לשבריריות (מודל Fried)
+                </div>
+
+                <!-- Maya -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👩🏽⚕️ מאיה</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        שרה, אני רוצה לשאול אותך על עוד נתון מהתיק הרפואי. ראינו שירדת כ-4 קילוגרמים בשנה האחרונה. האם סוף סוף מצאת את הדיאטה המושלמת?
+                    </div>
+                </div>
+
+                <!-- Sarah -->
+                <div class="flex flex-col items-end max-w-2xl mr-auto gap-1">
+                    <span class="text-xs font-bold text-slate-500 ml-2">👵🏼 שרה</span>
+                    <div class="bubble-patient rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        הלוואי! בגילי לרדת 4 קילו זה אומר שאני צריכה לקנות מלתחה חדשה, ואין לי כוח להסתובב בקניון. פשוט איבדתי את התיאבון לאחרונה, הבגדים נהיו גדולים עליי מעצמם.
+                    </div>
+                </div>
+
+                <!-- CLINICAL TOOL POPUP: FRIED 1 -->
+                <div class="my-6 bg-white border-r-4 border-emerald-500 shadow-lg rounded-xl p-5 md:mx-12 mx-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">חלון אומדן קליני</div>
+                    <h4 class="font-bold text-emerald-800 flex items-center gap-2 mt-2"><span class="text-2xl">⚖️</span> מודל Fried (פנוטיפי) - שלב א'</h4>
+                    <div class="mt-4 text-sm text-slate-700 space-y-2">
+                        <div class="flex items-start gap-2 bg-emerald-50/50 p-2 rounded">
+                            <div class="w-6 h-6 shrink-0 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mt-0.5">1</div>
+                            <p><span class="font-semibold text-slate-900">קריטריון 1 מתוך 5:</span> ירידה לא מכוונת במשקל (מעל 5% ממשקל הגוף בשנה).</p>
+                        </div>
+                        <p class="pr-8"><span class="font-semibold text-slate-900">ממצאי האנמנזה:</span> ירידה של 4 ק"ג ללא דיאטה עקב אובדן תיאבון.</p>
+                        <div class="mt-4 bg-emerald-50 border border-emerald-100 p-3 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <span class="font-bold text-emerald-900">צבירת ניקוד עד כה:</span>
+                            <span class="text-emerald-700 font-bold bg-white px-4 py-1.5 rounded-full shadow-sm border border-emerald-200">1/5 קריטריונים (עדיין לא מוגדרת שברירית)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dr Levi -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👨🏻⚕️ ד"ר לוי</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        ואיך היו האנרגיות שלך? האם הרגשת תשישות? כאילו כל פעולה קטנה, אפילו לקום להכין תה, דורשת ממך מאמץ גדול?
+                    </div>
+                </div>
+
+                <!-- Sarah -->
+                <div class="flex flex-col items-end max-w-2xl mr-auto gap-1">
+                    <span class="text-xs font-bold text-slate-500 ml-2">👵🏼 שרה (נאנחת קלות)</span>
+                    <div class="bubble-patient rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        הו, בהחלט. לקום להכין כוס תה הרגיש לי בזמן האחרון כמו לטפס על הר האוורסט. ותאמין לי דוקטור, בגילי, אני מעדיפה את הנוף מהספה.
+                    </div>
+                </div>
+
+                <!-- Maya -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👩🏽⚕️ מאיה</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        תודה שאת כל כך כנה איתנו שרה. ד"ר, שים לב שלפי <strong>מודל Fried</strong>, יש לנו כאן כבר שני קריטריונים מובהקים: ירידה לא מכוונת במשקל ותשישות סובייקטיבית.
+                    </div>
+                </div>
+
+                <!-- Dr Levi -->
+                <div class="flex flex-col items-start max-w-2xl gap-1">
+                    <span class="text-xs font-bold text-slate-500 mr-2">👨🏻⚕️ ד"ר לוי</span>
+                    <div class="bubble-staff rounded-2xl p-4 text-slate-800 shadow-sm text-lg">
+                        מדויק. קיום של 1 או 2 קריטריונים כבר מגדיר אותה כסובלת מ<strong>טרום-שבריריות (Pre-frailty)</strong>. מחר בבוקר הפיזיותרפיסטית תבצע לשרה בדיקת כוח לחיצת יד כדי לבדוק את כוח השריר.
+                    </div>
+                </div>
+
+                <!-- CLINICAL TOOL POPUP: FRIED 2 -->
+                <div class="my-6 bg-white border-r-4 border-amber-500 shadow-lg rounded-xl p-5 md:mx-12 mx-4 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">חלון אומדן קליני</div>
+                    <h4 class="font-bold text-amber-800 flex items-center gap-2 mt-2"><span class="text-2xl">⚖️</span> מודל Fried (פנוטיפי) - שלב ב'</h4>
+                    <div class="mt-4 text-sm text-slate-700 space-y-2">
+                        <div class="flex items-start gap-2 p-2 rounded opacity-60">
+                            <div class="w-6 h-6 shrink-0 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs mt-0.5">✓</div>
+                            <p><span class="font-semibold text-slate-900">קריטריון 1:</span> ירידה לא מכוונת במשקל (נקבע קודם).</p>
+                        </div>
+                        <div class="flex items-start gap-2 bg-amber-50/80 p-2 rounded border border-amber-100">
+                            <div class="w-6 h-6 shrink-0 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-xs mt-0.5">2</div>
+                            <p><span class="font-semibold text-slate-900">קריטריון 2 מתוך 5:</span> תשישות סובייקטיבית או חוסר סבילות למאמץ.</p>
+                        </div>
+                        <p class="pr-8"><span class="font-semibold text-slate-900">ממצאי האנמנזה:</span> פעולות יומיומיות פשוטות דורשות מאמץ ניכר ("כמו לטפס על הר האוורסט").</p>
+                        <div class="mt-4 bg-amber-50 border border-amber-200 p-3 rounded-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-2">
+                            <span class="font-bold text-amber-900">סיכום ביניים לאומדן:</span>
+                            <span class="bg-amber-500 text-white px-4 py-1.5 rounded-full font-bold shadow-sm">2/5 קריטריונים - טרום שבריריות (Pre-frailty)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sarah -->
+                <div class="flex flex-col items-end max-w-2xl mr-auto gap-1">
+                    <span class="text-xs font-bold text-slate-500 ml-2">👵🏼 שרה (מחייכת חיוך רחב)</span>
+                    <div class="bubble-patient rounded-2xl p-4 text-slate-800 shadow-sm text-lg bg-purple-200 font-bold">
+                        הבנתי. אז אתם מתכננים לי כאן מחנה אימונים. בסדר, איפה חותמים? אני מוכנה.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Debriefing Section -->
+        <section class="bg-indigo-900 text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-500 rounded-full opacity-20 blur-3xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500 rounded-full opacity-20 blur-3xl"></div>
+            
+            <div class="relative z-10">
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-2xl">💡</div>
+                    <h2 class="text-3xl font-bold">נקודות מפתח להדרכת הצוות (Debriefing)</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                    <div class="bg-white/10 backdrop-blur border border-white/20 p-6 rounded-2xl">
+                        <div class="text-blue-300 font-bold text-xl mb-2">01</div>
+                        <h3 class="font-bold text-lg mb-2">התמודדות עם הומור</h3>
+                        <p class="text-indigo-100 text-sm">שימו לב כיצד מאיה וד"ר לוי "זורמים" עם ההומור של שרה. הדבר בונה יחסי אמון (Rapport) ומקל על השגת מידע רפואי אמין.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur border border-white/20 p-6 rounded-2xl">
+                        <div class="text-blue-300 font-bold text-xl mb-2">02</div>
+                        <h3 class="font-bold text-lg mb-2">דיוק בסולם CFS</h3>
+                        <p class="text-indigo-100 text-sm">האומדן מתבצע על סמך תפקוד המטופלת בשבועיים שטרם האירוע האקוטי. זכרו: ציון <strong>5 ומעלה</strong> מהווה שבריריות קלינית.</p>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur border border-white/20 p-6 rounded-2xl">
+                        <div class="text-blue-300 font-bold text-xl mb-2">03</div>
+                        <h3 class="font-bold text-lg mb-2">מודל Fried</h3>
+                        <p class="text-indigo-100 text-sm">אסור לדלג על מטופל עם תסמין יחיד! קיום 1-2 קריטריונים = Pre-frailty. קיום 3 קריטריונים ומעלה = Frailty.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-500 text-sm font-medium">
+        <p>פותח ועוצב עבור העמותה לקידום הסיעוד הגריאטרי | 2026</p>
+    </footer>
+
+</body>
+</html>
