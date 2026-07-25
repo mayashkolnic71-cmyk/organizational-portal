@@ -1,0 +1,21 @@
+# Ignore backup files and copies
+*.bak
+* - Copy.*
+* - Copy
+app.js - Copy.bak
+app - Copy.js
+app.js.bak
+feedback.html.bak
+style.css.bak
+
+# Ignore watcher logs and process files
+autopush.log
+autopush.pid
+
+# Ignore system generated files
+.system_generated/
+old code/
+project/
+פרויקט בקרות/
+פרויקט בקריות/
+חוברת כלים רחבה בעברית.pdf
