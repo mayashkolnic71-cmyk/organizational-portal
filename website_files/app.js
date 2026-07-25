@@ -46,11 +46,31 @@ navItems.forEach(item => {
         item.classList.add('active');
         document.getElementById(tabId).classList.add('active');
         
+        // Show/hide floating back button
+        const backBtn = document.getElementById('floating-back-btn');
+        if (backBtn) {
+            if (tabId === 'dashboard') {
+                backBtn.style.display = 'none';
+            } else {
+                backBtn.style.display = 'flex';
+            }
+        }
+        
         if(tabId === 'training-calendar' && calendar) {
             setTimeout(() => { calendar.render(); }, 100);
         }
     });
 });
+
+window.goToDashboard = function() {
+    const dashboardTab = document.querySelector('[data-tab="dashboard"]');
+    if (dashboardTab) {
+        dashboardTab.click();
+    }
+    document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+    document.body.classList.remove('has-modal');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+};
 
 // Editable table logic
 document.querySelectorAll('.editable-cell').forEach(cell => {
