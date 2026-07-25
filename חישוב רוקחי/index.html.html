@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת קלינית משולבת: חישובים, תמיכת החלטה ותרגול לצוות הסיעודי</title>
+    <style>
+        :root {
+            --primary-color: #2b4c7e;
+            --primary-light: #eef4fc;
+            --accent-danger: #d9534f;
+            --accent-warning: #f0ad4e;
+            --accent-success: #5cb85c;
+            --text-dark: #333333;
+            --text-muted: #666666;
+            --border-color: #cccccc;
+            --bg-light: #f9fbfd;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            color: var(--text-dark);
+            padding: 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid #1a3050;
+        }
+
+        header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .double-check-banner {
+            background-color: #fff3cd;
+            border-right: 5px solid var(--accent-warning);
+            color: #856404;
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .tabs {
+            display: flex;
+            background-color: #e9ecef;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: bold;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .tab-button:hover {
+            background-color: #dfe3e6;
+            color: var(--primary-color);
+        }
+
+        .tab-button.active {
+            background-color: #ffffff;
+            color: var(--primary-color);
+            border-top: 3px solid var(--primary-color);
+            margin-top: -3px;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 25px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab-button.active {
+                border-top: none;
+                border-right: 3px solid var(--primary-color);
+                margin-top: 0;
+            }
+        }
+
+        .card {
+            background: var(--bg-light);
+            border: 1px solid #e1e8ed;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #444;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: #ffffff;
+        }
+
+        .result-box {
+            background-color: #f1f3f5;
+            border-right: 4px solid var(--primary-color);
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .result-box .value {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 16px;
+        }
+
+        .clinical-alert {
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .clinical-alert.critical { background-color: #f8d7da; border-right: 5px solid var(--accent-danger); color: #721c24; }
+        .clinical-alert.warning { background-color: #fff3cd; border-right: 5px solid var(--accent-warning); color: #856404; }
+        .clinical-alert.success { background-color: #d4edda; border-right: 5px solid var(--accent-success); color: #155724; }
+
+        .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 5px; }
+        .checkbox-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+
+        /* Training Module Specific Styles */
+        .quiz-container {
+            background: #ffffff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+        }
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eef4fc;
+            padding-bottom: 10px;
+        }
+        .score-success { color: var(--accent-success); }
+        .score-danger { color: var(--accent-danger); }
+        
+        .quiz-question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #1a3050;
+        }
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .quiz-btn {
+            padding: 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #f9fbfd;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .quiz-btn:hover { background-color: #eef4fc; border-color: var(--primary-color); }
+        .quiz-btn.correct { background-color: #d4edda; border-color: var(--accent-success); color: #155724; font-weight: bold; }
+        .quiz-btn.wrong { background-color: #f8d7da; border-color: var(--accent-danger); color: #721c24; text-decoration: line-through; }
+        .quiz-btn:disabled { cursor: not-allowed; }
+
+        .quiz-feedback {
+            display: none;
+            padding: 15px;
+            border-radius: 6px;
+            background-color: #eef4fc;
+            margin-top: 20px;
+            text-align: right;
+            border-right: 4px solid var(--primary-color);
+        }
+        .next-btn {
+            margin-top: 15px;
+            padding: 10px 25px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: none;
+        }
+        .formulas-sheet {
+            background-color: #fffdf5;
+            border: 1px solid #ffecb3;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+        .formulas-sheet ul { list-style-type: none; padding-right: 0; }
+        .formulas-sheet li { margin-bottom: 8px; font-size: 14px; border-bottom: 1px dashed #ffe082; padding-bottom: 5px;}
+        .formulas-sheet strong { color: #d35400; }
+
+        footer { text-align: center; padding: 15px; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border-color); background: #f8f9fa; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>מערכת קלינית משולבת לניהול טיפול תרופתי</h1>
+        <p>מחשבון מינונים, הערכת סיכונים בגריאטריה ומרכז תרגול לצוות (מבוסס הנחיות קליניות)</p>
+    </header>
+
+    <div class="double-check-banner">
+        ⚠️ נוהל בטיחות לניהול סיכונים: תרופות בסיכון גבוה (High Alert) מחייבות Double Check על ידי איש צוות נוסף טרם המתן.
+    </div>
+
+    <div class="tabs">
+        <button class="tab-button active" onclick="switchTab('basic-calc')">מחשבוני מינונים בסיסיים</button>
+        <button class="tab-button" onclick="switchTab('cdss-calc')">מערכת תומכת החלטה גריאטרית</button>
+        <button class="tab-button" onclick="switchTab('training-calc')">מרכז הדרכה ותרגול (סימולטור) 🎓</button>
+    </div>
+
+    <!-- TAB 1: BASIC CALCULATIONS (הקוד הקיים ללא שינוי) -->
+    <div id="basic-calc" class="tab-content active">
+        <div class="grid-2">
+            <div class="card">
+                <h2>1. חישוב מנה למתן (PO / IM / IV)</h2>
+                <div class="form-group">
+                    <label>המנה המבוקשת במרשם (Desired Dose):</label>
+                    <input type="number" id="desiredDose" placeholder="הזן מינון (למשל: 12.5)" oninput="calculateDesiredOverHave()">
+                </div>
+                <div class="form-group">
+                    <label>המנה באמפולה/בקבוק (Available Dose):</label>
+                    <input type="number" id="availableDose" placeholder="הזן מינון מצוי (למשל: 10)" oninput="calculateDesiredOverHave()">
+                </div>
+                <div class="form-group">
+                    <label>נפח נוזל באמפולה/בקבוק (מ"ל):</label>
+                    <input type="number" id="availableVolume" placeholder="הזן נפח (למשל: 2)" oninput="calculateDesiredOverHave()">
+                </div>
+                <div class="result-box"><p>נפח לשאיבה / למתן:</p><div class="value" id="oralResult">הזן נתונים לקבלת תוצאה</div></div>
+            </div>
+
+            <div class="card">
+                <h2>2. קצב משאבת עירוי (Infusion Pump)</h2>
+                <div class="form-group">
+                    <label>סך הנפח להזלפה (מ"ל):</label>
+                    <input type="number" id="pumpVolume" placeholder="למשל: 500" oninput="calculatePumpRate()">
+                </div>
+                <div class="form-group">
+                    <label>זמן ההזלפה המבוקש (שעות):</label>
+                    <input type="number" id="pumpTime" placeholder="למשל: 4" oninput="calculatePumpRate()">
+                </div>
+                <div class="result-box"><p>קצב לכיוון המשאבה:</p><div class="value" id="pumpResult">הזן נתונים לקבלת תוצאה</div></div>
+            </div>
+
+            <div class="card">
+                <h2>3. קצב הזלפה (סט כבידתי - Gravity Drip)</h2>
+                <div class="form-group">
+                    <label>סך הנפח להזלפה (מ"ל):</label>
+                    <input type="number" id="dripVolume" placeholder="למשל: 100" oninput="calculateDripRate()">
+                </div>
+                <div class="form-group">
+                    <label>זמן ההזלפה המבוקש (דקות):</label>
+                    <input type="number" id="dripTime" placeholder="למשל: 30" oninput="calculateDripRate()">
+                </div>
+                <div class="form-group">
+                    <label>פקטור טיפות (Drop Factor):</label>
+                    <select id="dropFactor" onchange="calculateDripRate()">
+                        <option value="20" selected>20 טיפות/מ"ל (סט מקרו סטנדרטי)</option>
+                        <option value="15">15 טיפות/מ"ל (סט מקרו חלופי)</option>
+                        <option value="60">60 טיפות/מ"ל (מיקרו-סט)</option>
+                    </select>
+                </div>
+                <div class="result-box"><p>קצב מחושב:</p><div class="value" id="dripResult">הזן נתונים לקבלת תוצאה</div></div>
+            </div>
+
+            <div class="card">
+                <h2>4. חישוב מינון מבוסס משקל (mg/kg)</h2>
+                <div class="form-group">
+                    <label>משקל המטופל (ק"ג):</label>
+                    <input type="number" id="weightCalc" placeholder="למשל: 65" oninput="calculateWeightDose()">
+                </div>
+                <div class="form-group">
+                    <label>המינון הנדרש לק"ג (מ"ג/ק"ג):</label>
+                    <input type="number" id="dosePerKg" placeholder="למשל: 0.5" oninput="calculateWeightDose()">
+                </div>
+                <div class="result-box"><p>המינון הכולל הנדרש:</p><div class="value" id="weightResult">הזן נתונים לקבלת תוצאה</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 2: GERIATRIC CDSS & RENAL CALCULATIONS (הקוד הקיים) -->
+    <div id="cdss-calc" class="tab-content">
+        <div class="grid-2">
+            <div class="card">
+                <h2>הזנת נתונים קליניים (CDSS)</h2>
+                <div class="form-group">
+                    <label>גיל (שנים):</label>
+                    <input type="number" id="g_age" value="82" min="60" oninput="runGeriatricCdss()">
+                </div>
+                <div class="form-group">
+                    <label>משקל (ק"ג):</label>
+                    <input type="number" id="g_weight" value="65" min="30" oninput="runGeriatricCdss()">
+                </div>
+                <div class="form-group">
+                    <label>מין פיזיולוגי (לצורך חישוב כלייתי):</label>
+                    <select id="g_gender" onchange="runGeriatricCdss()">
+                        <option value="female" selected>נקבה</option>
+                        <option value="male">זכר</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>קריאטינין בדם (Serum Creatinine - mg/dL):</label>
+                    <input type="number" id="g_scr" value="1.2" step="0.1" min="0.1" oninput="runGeriatricCdss()">
+                </div>
+                <div class="form-group">
+                    <label>רקע רפואי (סמן את הרלוונטי):</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item"><input type="checkbox" id="cond_hf" onchange="runGeriatricCdss()"><label for="cond_hf">אי ספיקת לב (HF)</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="cond_falls" onchange="runGeriatricCdss()"><label for="cond_falls">היסטוריית נפילות</label></div>
+                        <div class="checkbox-item"><input type="checkbox" id="cond_dementia" onchange="runGeriatricCdss()"><label for="cond_dementia">דמנציה</label></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>בחירת תרופה להערכת סיכון:</label>
+                    <select id="g_med" onchange="runGeriatricCdss()">
+                        <option value="none" selected>-- בחר תרופה --</option>
+                        <option value="Enoxaparin">Enoxaparin (קלקסן)</option>
+                        <option value="Apixaban">Apixaban (אליקוויס)</option>
+                        <option value="Ibuprofen">Ibuprofen (NSAID - אדוויל)</option>
+                        <option value="Amitriptyline">Amitriptyline (אלטרול)</option>
+                        <option value="Digoxin">Digoxin (לנוקסין)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>הערכה קלינית (Clinical Output)</h2>
+                <div class="result-box" style="background-color: #eef4fc; border-right-color: var(--primary-color);">
+                    <p>פינוי קריאטינין משוער (Cockcroft-Gault):</p>
+                    <div class="value" id="crclValue" style="font-size: 24px;">-- mL/min</div>
+                </div>
+                <div class="alert-container" id="clinicalAlertsArea">
+                    <div class="clinical-alert" style="background-color: #e9ecef; border-right: 5px solid #6c757d;">הזן נתונים ובחר תרופה.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB 3: TRAINING MODULE (מודול חדש מבוסס תמונות) -->
+    <div id="training-calc" class="tab-content">
+        <div class="formulas-sheet">
+            <h3 style="color: #d35400; margin-bottom: 10px;">📚 נוסחאות זהב לחישובי רוקחות</h3>
+            <ul>
+                <li><strong>המרת משקל:</strong> מגרם למיליגרם (כפול 1000). ממיליגרם לגרם (חלקי 1000). 1mg = 1000mcg.</li>
+                <li><strong>מינון טבליות:</strong> מספר טבליות = מינון נדרש ÷ מינון בטבליה אחת (יש לוודא יחידות זהות!).</li>
+                <li><strong>ריכוז תרופות:</strong> ריכוז ידוע ÷ (מינון נדרש × נפח ידוע) = נפח לשאיבה.</li>
+                <li><strong>חישוב קצב טפטוף (Drops/min):</strong> (נפח העירוי במ"ל × פקטור טיפות הסט) ÷ (שעות × 60).</li>
+                <li><strong>תמיסה באחוזים:</strong> 10% משמעותם 10 גרם חומר פעיל ב-100 מ"ל תמיסה.</li>
+                <li><strong>יחידות מיוחדות (הפרין):</strong> מחושב ב-Units. שאיבה תמיד ביחס ופרופורציה לנפח האמפולה.</li>
+            </ul>
+        </div>
+
+        <div class="quiz-container">
+            <div class="score-board">
+                <span class="score-success">הצלחות: <span id="score-correct">0</span> ✔️</span>
+                <span>שאלון תרגול חישובים</span>
+                <span class="score-danger">שגיאות: <span id="score-wrong">0</span> ❌</span>
+            </div>
+            
+            <div class="quiz-question" id="quiz-question-text">
+                טוען שאלה...
+            </div>
+            
+            <div class="quiz-options" id="quiz-options-area">
+                <!-- Buttons will be generated here -->
+            </div>
+
+            <div class="quiz-feedback" id="quiz-feedback-area">
+                <p id="quiz-explanation"></p>
+            </div>
+            
+            <button class="next-btn" id="quiz-next-btn" onclick="loadNextQuestion()">הבא לשאלה הבאה</button>
+        </div>
+    </div>
+
+    <footer>
+        מערכת מקיפה לאבטחת איכות ובטיחות המטופל. תוכננה ככלי עזר והדרכה לצוותים רפואיים וסיעודיים.
+    </footer>
+</div>
+
+<script>
+    // Tab Navigation
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    // --- TAB 1 CALCULATIONS ---
+    function calculateDesiredOverHave() {
+        const desired = parseFloat(document.getElementById('desiredDose').value);
+        const available = parseFloat(document.getElementById('availableDose').value);
+        const volume = parseFloat(document.getElementById('availableVolume').value);
+        const resultDiv = document.getElementById('oralResult');
+        if (desired > 0 && available > 0 && volume > 0) {
+            resultDiv.innerHTML = `<strong>${((desired / available) * volume).toFixed(2)} מ"ל</strong> לטעינה.`;
+        } else { resultDiv.innerText = "הזן נתונים לקבלת תוצאה"; }
+    }
+
+    function calculatePumpRate() {
+        const volume = parseFloat(document.getElementById('pumpVolume').value);
+        const time = parseFloat(document.getElementById('pumpTime').value);
+        const resultDiv = document.getElementById('pumpResult');
+        if (volume > 0 && time > 0) {
+            resultDiv.innerHTML = `<strong>${(volume / time).toFixed(1)} מ"ל/שעה</strong> (mL/hr).`;
+        } else { resultDiv.innerText = "הזן נתונים לקבלת תוצאה"; }
+    }
+
+    function calculateDripRate() {
+        const volume = parseFloat(document.getElementById('dripVolume').value);
+        const time = parseFloat(document.getElementById('dripTime').value);
+        const factor = parseInt(document.getElementById('dropFactor').value);
+        const resultDiv = document.getElementById('dripResult');
+        if (volume > 0 && time > 0) {
+            resultDiv.innerHTML = `<strong>${Math.round((volume * factor) / time)} טיפות/דקה</strong>.`;
+        } else { resultDiv.innerText = "הזן נתונים לקבלת תוצאה"; }
+    }
+
+    function calculateWeightDose() {
+        const weight = parseFloat(document.getElementById('weightCalc').value);
+        const dose = parseFloat(document.getElementById('dosePerKg').value);
+        const resultDiv = document.getElementById('weightResult');
+        if (weight > 0 && dose > 0) {
+            resultDiv.innerHTML = `<strong>${(weight * dose).toFixed(2)} מ"ג</strong>.`;
+        } else { resultDiv.innerText = "הזן נתונים לקבלת תוצאה"; }
+    }
+
+    // --- TAB 2 GERIATRIC CDSS LOGIC ---
+    function runGeriatricCdss() {
+        const age = parseInt(document.getElementById('g_age').value);
+        const weight = parseFloat(document.getElementById('g_weight').value);
+        const gender = document.getElementById('g_gender').value;
+        const scr = parseFloat(document.getElementById('g_scr').value);
+        const med = document.getElementById('g_med').value;
+        const hf = document.getElementById('cond_hf').checked;
+        const falls = document.getElementById('cond_falls').checked;
+        const dementia = document.getElementById('cond_dementia').checked;
+
+        if (!age || !weight || !scr) { document.getElementById('crclValue').innerText = `-- mL/min`; return; }
+
+        let crcl = ((140 - age) * weight) / (72 * scr);
+        if (gender === 'female') { crcl = crcl * 0.85; }
+        crcl = Math.round(crcl);
+        document.getElementById('crclValue').innerText = `${crcl} mL/min`;
+
+        let alertsHtml = '';
+        if (crcl < 30) alertsHtml += `<div class="clinical-alert critical"><strong>🔴 אי ספיקת כליות (CrCl < 30):</strong> נדרשת התאמה.</div>`;
+        else if (crcl < 50) alertsHtml += `<div class="clinical-alert warning"><strong>🟡 תפקוד כלייתי בינוני.</strong></div>`;
+        else alertsHtml += `<div class="clinical-alert success"><strong>🟢 תפקוד כלייתי תקין.</strong></div>`;
+
+        if (med === 'none') { document.getElementById('clinicalAlertsArea').innerHTML = alertsHtml; return; }
+
+        if (med === 'Enoxaparin') {
+            if (crcl < 30) alertsHtml += `<div class="clinical-alert critical"><strong>💊 התאמת קלקסן:</strong> חובה להפחית מינון מניעתי ל-20 מ"ג.</div>`;
+            else alertsHtml += `<div class="clinical-alert success"><strong>💊 קלקסן:</strong> מינון מניעתי סטנדרטי (40 מ"ג).</div>`;
+        } else if (med === 'Ibuprofen') {
+            alertsHtml += `<div class="clinical-alert warning"><strong>⚠️ קריטריוני Beers:</strong> להימנע מ-NSAIDs בקשישים.</div>`;
+            if (hf) alertsHtml += `<div class="clinical-alert critical"><strong>❌ STOPP Criteria:</strong> התוויית נגד בחולי אי ספיקת לב!</div>`;
+        }
+        document.getElementById('clinicalAlertsArea').innerHTML = alertsHtml;
+    }
+
+    // --- TAB 3: QUIZ ENGINE (מודול תרגול) ---
+    const quizBank = [
+        {
+            q: "התקבלה הוראה לתת 1000ml של D5W במשך 10 שעות. העירוי ניתן דרך סט רגיל (20drops=1ml). מהו קצב הטפטוף?",
+            options: ["50 drops/min", "17 drops/min", "66 drops/min", "33 drops/min"],
+            answer: 3,
+            expl: "נוסחה לחישוב טיפות: (נפח × סט) ÷ (שעות × 60). חישוב: (1000 × 20) ÷ (10 × 60) = 20000 ÷ 600 = 33.3."
+        },
+        {
+            q: "רופא רשם 1gr של Paracetamol (אקמול) למטופל. בארון התרופות ישנן טבליות במינון 500mg. כמה טבליות תיתן?",
+            options: ["חצי טבליה", "טבליה 1", "2 טבליות", "4 טבליות"],
+            answer: 2,
+            expl: "המרת יחידות קודם כל: 1gr = 1000mg. לאחר מכן שימוש בנוסחת הטבליות: מינון נדרש (1000) ÷ מינון בטבליה (500) = 2 טבליות."
+        },
+        {
+            q: "ההוראה הרפואית היא ל- Gentamycin 60mg. התכשיר המצוי מכיל 80mg/2ml. כמה מ\"ל יש לשאוב?",
+            options: ["1.2 ml", "1.5 ml", "0.75 ml", "2.0 ml"],
+            answer: 1,
+            expl: "נוסחת ריכוז: (מינון נדרש × נפח ידוע) ÷ ריכוז ידוע. כלומר: (60 × 2) ÷ 80 = 120 ÷ 80 = 1.5ml."
+        },
+        {
+            q: "הוראה למתן Heparin במינון 5000 Units. באמפולה יש 25,000 Units ב-5ml. כמה מ\"ל תשאב?",
+            options: ["0.5 ml", "2 ml", "1 ml", "2.5 ml"],
+            answer: 2,
+            expl: "יחס ופרופורציה (כפל בהצלבה): (5000 × 5) ÷ 25000 = 25000 ÷ 25000 = 1ml."
+        },
+        {
+            q: "מטופל במשקל 70 ק\"ג זקוק לאנטיביוטיקה במינון של 5mg/kg. מהו המינון הכולל (Total Dose) שעל המטופל לקבל?",
+            options: ["140 mg", "35 mg", "350 mg", "700 mg"],
+            answer: 2,
+            expl: "נוסחה למינון לפי משקל גוף: מינון לק\"ג × משקל המטופל בק\"ג. חישוב: 5 × 70 = 350mg."
+        }
+    ];
+
+    let currentQuestionObj = null;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let isAnswered = false;
+
+    function loadNextQuestion() {
+        isAnswered = false;
+        document.getElementById('quiz-feedback-area').style.display = 'none';
+        document.getElementById('quiz-next-btn').style.display = 'none';
+        
+        // בחירת שאלה רנדומלית מתוך המאגר
+        const randomIndex = Math.floor(Math.random() * quizBank.length);
+        currentQuestionObj = quizBank[randomIndex];
+
+        document.getElementById('quiz-question-text').innerText = currentQuestionObj.q;
+        
+        const optionsArea = document.getElementById('quiz-options-area');
+        optionsArea.innerHTML = '';
+        
+        currentQuestionObj.options.forEach((optText, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-btn';
+            btn.innerText = optText;
+            btn.onclick = () => checkQuizAnswer(index, btn);
+            optionsArea.appendChild(btn);
+        });
+    }
+
+    function checkQuizAnswer(selectedIndex, clickedBtn) {
+        if (isAnswered) return; // מניעת לחיצה כפולה
+        isAnswered = true;
+
+        const allBtns = document.getElementById('quiz-options-area').children;
+        
+        if (selectedIndex === currentQuestionObj.answer) {
+            clickedBtn.classList.add('correct');
+            correctCount++;
+            document.getElementById('score-correct').innerText = correctCount;
+        } else {
+            clickedBtn.classList.add('wrong');
+            allBtns[currentQuestionObj.answer].classList.add('correct'); // חשיפת התשובה הנכונה
+            wrongCount++;
+            document.getElementById('score-wrong').innerText = wrongCount;
+        }
+
+        // ביטול לחיצה על שאר הכפתורים
+        for (let btn of allBtns) { btn.disabled = true; }
+
+        // הצגת ההסבר (Feedback)
+        const feedbackArea = document.getElementById('quiz-feedback-area');
+        document.getElementById('quiz-explanation').innerHTML = `<strong>💡 דרך הפתרון:</strong><br>${currentQuestionObj.expl}`;
+        feedbackArea.style.display = 'block';
+        
+        document.getElementById('quiz-next-btn').style.display = 'inline-block';
+    }
+
+    window.onload = function() {
+        runGeriatricCdss();
+        loadNextQuestion(); // טעינת השאלה הראשונה בסימולטור
+    };
+</script>
+
+</body>
+</html>
