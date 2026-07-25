@@ -831,14 +831,7 @@ q4 (Top-Left) points Top
 .modal-content .close-btn:hover {
     background: #e2e8f0;
 }
-.modal-content .print-btn {
-    position: absolute !important;
-    top: 15px !important;
-    left: 65px !important;
-    float: none !important;
-    margin: 0 !important;
-    z-index: 1000 !important;
-}
+
 
 /* Hamburger Menu Button */
 .mobile-menu-btn {
