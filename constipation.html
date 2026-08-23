@@ -325,11 +325,11 @@
                                 <th class="p-2.5">חודש</th>
                                 <th class="p-2.5 text-center" style="min-width: 140px;">1. אבחנה במקבלי משלשלים</th>
                                 <th class="p-2.5 text-center" style="min-width: 140px;">2. תוכנית טיפול תואמת</th>
-                                <th class="p-2.5 text-center">אומדן 24ש בקבלה</th>
-                                <th class="p-2.5 text-center">תיעוד Bristol יומי</th>
-                                <th class="p-2.5 text-center">התערבות ב-48ש</th>
-                                <th class="p-2.5 text-center">תגובה לטיפול</th>
-                                <th class="p-2.5 text-center">מניעת OIC</th>
+                                <th class="p-2.5 text-center">3. אומדן 24ש בקבלה</th>
+                                <th class="p-2.5 text-center">4. תיעוד Bristol יומי</th>
+                                <th class="p-2.5 text-center">5. התערבות ב-48ש</th>
+                                <th class="p-2.5 text-center">6. תגובה לטיפול</th>
+                                <th class="p-2.5 text-center">7. מניעת OIC</th>
                                 <th class="p-2.5">ציון בקרה</th>
                                 <th class="p-2.5 text-center">פעולות</th>
                             </tr>
@@ -1069,26 +1069,26 @@
             ],
             auditRows: [
                 // Department A
-                { id: '101', department: 'deptA', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '102', department: 'deptA', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'ישראל ישראלי', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: true },
-                { id: '103', department: 'deptA', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: false, q2_notes: 'משה לוי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
-                { id: '104', department: 'deptA', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '105', department: 'deptA', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '106', department: 'deptA', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: false, opioidPrev: true },
+                { id: '101', department: 'deptA', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '102', department: 'deptA', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'ישראל ישראלי', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: 'לא', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '103', department: 'deptA', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: false, q2_notes: 'משה לוי', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'לא' },
+                { id: '104', department: 'deptA', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '105', department: 'deptA', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '106', department: 'deptA', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'לא', opioidPrev: 'כן' },
                 
                 // Department B
-                { id: '107', department: 'deptB', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '108', department: 'deptB', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '109', department: 'deptB', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
+                { id: '107', department: 'deptB', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '108', department: 'deptB', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '109', department: 'deptB', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'לא' },
                 
                 // Department C
-                { id: '110', department: 'deptC', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'שרה כהן', q2: false, q2_notes: 'יוסף שלום', initial24: false, dailyBristol: false, hours48Resp: false, docResponse: false, opioidPrev: true },
-                { id: '111', department: 'deptC', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: false },
-                { id: '112', department: 'deptC', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true },
+                { id: '110', department: 'deptC', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'שרה כהן', q2: false, q2_notes: 'יוסף שלום', initial24: false, dailyBristol: false, hours48Resp: 'לא', docResponse: 'לא', opioidPrev: 'כן' },
+                { id: '111', department: 'deptC', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: 'לא', docResponse: 'כן', opioidPrev: 'לא' },
+                { id: '112', department: 'deptC', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'לא', docResponse: 'כן', opioidPrev: 'כן' },
                 
                 // Department D
-                { id: '113', department: 'deptD', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '114', department: 'deptD', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true }
+                { id: '113', department: 'deptD', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'כן', docResponse: 'כן', opioidPrev: 'כן' },
+                { id: '114', department: 'deptD', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: 'לא', docResponse: 'כן', opioidPrev: 'כן' }
             ]
         };
 
@@ -1155,6 +1155,35 @@
             loadState();
         });
 
+        function parseThreeState(val, defaultVal = 'כן') {
+            if (val === true || val === 'כן') return 'כן';
+            if (val === false || val === 'לא') return 'לא';
+            if (val === 'לא רלוונטי') return 'לא רלוונטי';
+            return defaultVal;
+        }
+
+        function calculateRowScore(row) {
+            let total = 7;
+            let earned = 0;
+            
+            if (row.q1) earned++;
+            if (row.q2) earned++;
+            if (row.initial24) earned++;
+            if (row.dailyBristol) earned++;
+            
+            const threeStateFields = ['hours48Resp', 'docResponse', 'opioidPrev'];
+            threeStateFields.forEach(field => {
+                const val = row[field];
+                if (val === 'לא רלוונטי') {
+                    total--;
+                } else if (val === 'כן') {
+                    earned++;
+                }
+            });
+            
+            return total > 0 ? Math.round((earned / total) * 100) : 100;
+        }
+
         function syncToGlobalDashboard() {
             let globalFilledForms = [];
             const stored = localStorage.getItem('clinic_filled_forms');
@@ -1174,8 +1203,7 @@
                 const deptObj = appState.departments.find(d => d.id === row.department);
                 const deptName = deptObj ? deptObj.name : 'מחלקה כללית';
                 
-                const passed = [row.q1, row.q2, row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
-                const score = Math.round((passed / 7) * 100);
+                const score = calculateRowScore(row);
                 
                 const monthMap = {
                     'ינואר': '2026-01-15',
@@ -1212,9 +1240,9 @@
                         'f19_q2_notes': row.q2_notes || '',
                         'f19_initial24': row.initial24 ? 'כן' : 'לא',
                         'f19_dailyBristol': row.dailyBristol ? 'כן' : 'לא',
-                        'f19_hours48Resp': row.hours48Resp ? 'כן' : 'לא',
-                        'f19_docResponse': row.docResponse ? 'כן' : 'לא',
-                        'f19_opioidPrev': row.opioidPrev ? 'כן' : 'לא',
+                        'f19_hours48Resp': row.hours48Resp,
+                        'f19_docResponse': row.docResponse,
+                        'f19_opioidPrev': row.opioidPrev,
                         'מחלקה': deptName,
                         'חודש': row.month
                     }
@@ -1259,9 +1287,9 @@
                                 q2_notes: f.data['f19_q2_notes'] || '',
                                 initial24: f.data['f19_initial24'] !== 'לא',
                                 dailyBristol: f.data['f19_dailyBristol'] !== 'לא',
-                                hours48Resp: f.data['f19_hours48Resp'] !== 'לא',
-                                docResponse: f.data['f19_docResponse'] !== 'לא',
-                                opioidPrev: f.data['f19_opioidPrev'] !== 'לא'
+                                hours48Resp: parseThreeState(f.data['f19_hours48Resp'], 'כן'),
+                                docResponse: parseThreeState(f.data['f19_docResponse'], 'כן'),
+                                opioidPrev: parseThreeState(f.data['f19_opioidPrev'], 'כן')
                             };
                         });
                         loadedFromGlobal = true;
@@ -1443,14 +1471,17 @@
             if (totalCount > 0) {
                 p1 = filteredRows.filter(r => r.initial24).length;
                 p2 = filteredRows.filter(r => r.dailyBristol).length;
-                p3 = filteredRows.filter(r => r.hours48Resp).length;
-                p4 = filteredRows.filter(r => r.docResponse).length;
-                p5 = filteredRows.filter(r => r.opioidPrev).length;
+                p3 = filteredRows.filter(r => r.hours48Resp === 'כן').length;
+                p4 = filteredRows.filter(r => r.docResponse === 'כן').length;
+                p5 = filteredRows.filter(r => r.opioidPrev === 'כן').length;
+
+                const hours48RespTotal = filteredRows.filter(r => r.hours48Resp !== 'לא רלוונטי').length;
+                const opioidPrevTotal = filteredRows.filter(r => r.opioidPrev !== 'לא רלוונטי').length;
 
                 kpi1 = Math.round((p2 / totalCount) * 100); // תיעוד בריסטול יומי
                 kpi2 = Math.round((p1 / totalCount) * 100); // אומדן 24ש בקבלה
-                kpi3 = Math.round((p5 / totalCount) * 100); // יציאות תקינות / מניעת OIC
-                kpi4 = Math.round(16 + (1 - (p3 / totalCount)) * 24); // זמן התערבות ממוצע (שעות): 16 עד 40
+                kpi3 = opioidPrevTotal > 0 ? Math.round((p5 / opioidPrevTotal) * 100) : 100; // יציאות תקינות / מניעת OIC
+                kpi4 = hours48RespTotal > 0 ? Math.round(16 + (1 - (p3 / hours48RespTotal)) * 24) : 16; // זמן התערבות ממוצע (שעות): 16 עד 40
             } else {
                 // Fallbacks if no data
                 kpi1 = 0; kpi2 = 0; kpi3 = 0; kpi4 = 0;
@@ -1601,7 +1632,11 @@
 
                 if (dRows.length > 0) {
                     const bVal = Math.round((dRows.filter(r => r.dailyBristol).length / dRows.length) * 100);
-                    const aVal = Math.round((1 - (dRows.filter(r => r.hours48Resp).length / dRows.length)) * 100);
+                    
+                    const hours48RespCount = dRows.filter(r => r.hours48Resp === 'כן').length;
+                    const hours48RespTotal = dRows.filter(r => r.hours48Resp !== 'לא רלוונטי').length;
+                    const aVal = hours48RespTotal > 0 ? Math.round((1 - (hours48RespCount / hours48RespTotal)) * 100) : 0;
+                    
                     deptBristolData.push(bVal);
                     deptAlertData.push(aVal);
                 } else {
@@ -1626,8 +1661,7 @@
                 tr.className = 'hover:bg-slate-50 transition border-b border-slate-200';
                 
                 // Calculate compliance score based on 7 elements
-                const passed = [row.q1, row.q2, row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
-                const score = Math.round((passed / 7) * 100);
+                const score = calculateRowScore(row);
                 const scoreBadgeClass = score >= 80 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200';
 
                 // Department Options
@@ -1674,30 +1708,41 @@
                         <input type="text" value="${row.q2_notes || ''}" placeholder="שם + משפחה..." onchange="updateAuditRowNotes(${idx}, 'q2_notes', this.value)" class="p-1 mt-1 border border-slate-200 rounded text-[10px] bg-slate-50 w-full focus:bg-white text-right">
                     </td>
                     
+                    <!-- initial24 (3) -->
                     <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'initial24')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.initial24 ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
+                    <!-- dailyBristol (4) -->
                     <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'dailyBristol')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.dailyBristol ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
+                    <!-- hours48Resp (5) -->
                     <td class="p-2.5 text-center">
-                        <button onclick="toggleAuditField(${idx}, 'hours48Resp')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
-                            ${row.hours48Resp ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
-                        </button>
+                        <select onchange="updateAuditRowField(${idx}, 'hours48Resp', this.value)" class="p-1 border border-slate-200 rounded text-[11px] bg-slate-50 focus:bg-white focus:outline-none w-20">
+                            <option value="כן" ${row.hours48Resp === 'כן' ? 'selected' : ''}>כן</option>
+                            <option value="לא" ${row.hours48Resp === 'לא' ? 'selected' : ''}>לא</option>
+                            <option value="לא רלוונטי" ${row.hours48Resp === 'לא רלוונטי' ? 'selected' : ''}>ל/ר</option>
+                        </select>
                     </td>
+                    <!-- docResponse (6) -->
                     <td class="p-2.5 text-center">
-                        <button onclick="toggleAuditField(${idx}, 'docResponse')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
-                            ${row.docResponse ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
-                        </button>
+                        <select onchange="updateAuditRowField(${idx}, 'docResponse', this.value)" class="p-1 border border-slate-200 rounded text-[11px] bg-slate-50 focus:bg-white focus:outline-none w-20">
+                            <option value="כן" ${row.docResponse === 'כן' ? 'selected' : ''}>כן</option>
+                            <option value="לא" ${row.docResponse === 'לא' ? 'selected' : ''}>לא</option>
+                            <option value="לא רלוונטי" ${row.docResponse === 'לא רלוונטי' ? 'selected' : ''}>ל/ר</option>
+                        </select>
                     </td>
+                    <!-- opioidPrev (7) -->
                     <td class="p-2.5 text-center">
-                        <button onclick="toggleAuditField(${idx}, 'opioidPrev')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
-                            ${row.opioidPrev ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
-                        </button>
+                        <select onchange="updateAuditRowField(${idx}, 'opioidPrev', this.value)" class="p-1 border border-slate-200 rounded text-[11px] bg-slate-50 focus:bg-white focus:outline-none w-20">
+                            <option value="כן" ${row.opioidPrev === 'כן' ? 'selected' : ''}>כן</option>
+                            <option value="לא" ${row.opioidPrev === 'לא' ? 'selected' : ''}>לא</option>
+                            <option value="לא רלוונטי" ${row.opioidPrev === 'לא רלוונטי' ? 'selected' : ''}>ל/ר</option>
+                        </select>
                     </td>
                     
                     <td class="p-2.5"><span class="px-2.5 py-0.5 rounded-full font-bold text-xs border ${scoreBadgeClass}">${score}%</span></td>
@@ -1712,6 +1757,11 @@
         // Toggle audit indicator values
         function toggleAuditField(idx, field) {
             appState.auditRows[idx][field] = !appState.auditRows[idx][field];
+            saveState();
+        }
+
+        function updateAuditRowField(idx, field, val) {
+            appState.auditRows[idx][field] = val;
             saveState();
         }
 
