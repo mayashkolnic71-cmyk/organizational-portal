@@ -270,6 +270,7 @@ function login() {
 
     if (matchedUser) {
         currentUser = matchedUser;
+        localStorage.setItem('clinic_current_user', JSON.stringify(currentUser));
     } else {
         showToast('שם משתמש או סיסמה שגויים', 'warning');
         return;
@@ -301,6 +302,7 @@ function login() {
 
 function logout() {
     currentUser = null;
+    localStorage.removeItem('clinic_current_user');
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app-container').style.display = 'none';
 }
@@ -1517,6 +1519,7 @@ function removeProtocol(id) {
 // --- AUTO BYPASS LOGIN ---
 document.addEventListener('DOMContentLoaded', () => {
     currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
+    localStorage.setItem('clinic_current_user', JSON.stringify(currentUser));
     const loginScreen = document.getElementById('login-screen');
     const appContainer = document.getElementById('app-container');
     if(loginScreen) loginScreen.style.display = 'none';

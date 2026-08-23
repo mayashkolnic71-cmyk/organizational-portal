@@ -136,7 +136,7 @@
                     <i class="fa-solid fa-chart-line text-teal-600"></i> דשבורד איכות ובקרה
                 </button>
                 <button onclick="switchTab('assessment')" id="tab-assessment" class="tab-btn px-4 py-3 flex items-center gap-2 hover:text-teal-700 transition-colors">
-                    <i class="fa-solid fa-stethoscope text-teal-600"></i> אומדן קליני ומחשבונים
+                    <i class="fa-solid fa-stethoscope text-teal-600"></i> אומדן קלייני ומחשבונים
                 </button>
                 <button onclick="switchTab('protocols')" id="tab-protocols" class="tab-btn px-4 py-3 flex items-center gap-2 hover:text-teal-700 transition-colors">
                     <i class="fa-solid fa-book-medical text-teal-600"></i> פרוטוקולים ובטיחות (משרד הבריאות)
@@ -265,7 +265,7 @@
                         <span class="text-xs text-slate-500 mr-2">יעד: ≤ 24 שעות</span>
                     </div>
                     <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-                        <div id="kpi4-bar" class="bg-rose-500 h-2 rounded-full transition-all duration-500" style="width: 65%"></div>
+                        <div id="kpi4-bar" class="bg-rose-50 h-2 rounded-full transition-all duration-500" style="width: 65%"></div>
                     </div>
                     <span class="text-[11px] text-rose-700 mt-2 font-medium" id="kpi4-desc">חריגה! נדרש דיווח מיידי לאחות אחראית</span>
                 </div>
@@ -1144,16 +1144,101 @@
 
         // Initialize Application
         document.addEventListener('DOMContentLoaded', () => {
-            populateUnitSelectors();
             initCharts();
             renderBristolCards();
             selectBristolType(4);
-            renderAuditTable();
             renderQuiz();
             setupAcbCalculator();
             setDecisionPath('prev');
-            updateDashboardData();
+            loadState();
         });
+
+        function syncToGlobalDashboard() {
+            let globalFilledForms = [];
+            const stored = localStorage.getItem('clinic_filled_forms');
+            if (stored) {
+                try {
+                    globalFilledForms = JSON.parse(stored);
+                } catch(e) {
+                    console.error(e);
+                }
+            }
+            
+            // Filter out existing constipation forms
+            globalFilledForms = globalFilledForms.filter(f => f.formId !== 'constipation' && (!f.id || f.id.toString().indexOf('constipation_') !== 0));
+            
+            // Map each row to the global forms
+            appState.auditRows.forEach(row => {
+                const deptObj = appState.departments.find(d => d.id === row.department);
+                const deptName = deptObj ? deptObj.name : 'מחלקה כללית';
+                
+                const passed = [row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
+                const score = Math.round((passed / 5) * 100);
+                
+                const monthMap = {
+                    'ינואר': '2026-01-15',
+                    'פברואר': '2026-02-15',
+                    'מרץ': '2026-03-15',
+                    'אפריל': '2026-04-15',
+                    'מאי': '2026-05-15',
+                    'יוני': '2026-06-15'
+                };
+                const dateFilled = monthMap[row.month] || '2026-06-15';
+                
+                let currentUserName = 'מבקר סיעודי';
+                const userStored = localStorage.getItem('clinic_current_user');
+                if (userStored) {
+                    try {
+                        currentUserName = JSON.parse(userStored).name;
+                    } catch(e) {}
+                }
+                
+                globalFilledForms.push({
+                    id: 'constipation_' + row.id,
+                    formId: 'constipation',
+                    formTitle: 'כלי בקרה מספר 9: מעקב עצירות וניהול מעיים',
+                    dateFilled: dateFilled,
+                    score: score,
+                    user: currentUserName,
+                    data: {
+                        'מחלקה': deptName,
+                        'חודש': row.month,
+                        'אומדן קבלה 24ש': row.initial24 ? 'כן' : 'לא',
+                        'תיעוד בריסטול יומי': row.dailyBristol ? 'כן' : 'לא',
+                        'התערבות ב-48ש': row.hours48Resp ? 'כן' : 'לא',
+                        'תיעוד תגובה לטיפול': row.docResponse ? 'כן' : 'לא',
+                        'שימוש מונע באופיואידים': row.opioidPrev ? 'כן' : 'לא'
+                    }
+                });
+            });
+            
+            localStorage.setItem('clinic_filled_forms', JSON.stringify(globalFilledForms));
+        }
+
+        function saveState() {
+            localStorage.setItem('constipation_audit_rows', JSON.stringify(appState.auditRows));
+            localStorage.setItem('constipation_departments', JSON.stringify(appState.departments));
+            syncToGlobalDashboard();
+            populateUnitSelectors();
+            renderAuditTable();
+            updateDashboardData();
+        }
+
+        function loadState() {
+            const storedRows = localStorage.getItem('constipation_audit_rows');
+            if (storedRows) {
+                try {
+                    appState.auditRows = JSON.parse(storedRows);
+                } catch(e) {}
+            }
+            const storedDepts = localStorage.getItem('constipation_departments');
+            if (storedDepts) {
+                try {
+                    appState.departments = JSON.parse(storedDepts);
+                } catch(e) {}
+            }
+            saveState();
+        }
 
         // Tab Switching Logic
         function switchTab(tabId) {
@@ -1553,21 +1638,17 @@
         // Toggle audit indicator values
         function toggleAuditField(idx, field) {
             appState.auditRows[idx][field] = !appState.auditRows[idx][field];
-            renderAuditTable();
-            updateDashboardData();
+            saveState();
         }
 
         function updateAuditRowDept(idx, newDept) {
             appState.auditRows[idx].department = newDept;
-            updateDashboardData();
-            renderAuditTable();
+            saveState();
         }
 
-        // Update month value in row
         function updateAuditRowMonth(idx, newMonth) {
             appState.auditRows[idx].month = newMonth;
-            updateDashboardData();
-            renderAuditTable();
+            saveState();
         }
 
         function addNewAuditRow() {
@@ -1590,14 +1671,13 @@
                 opioidPrev: true
             });
             
-            renderAuditTable();
-            updateDashboardData();
+            saveState();
         }
 
+        // Delete audit row
         function deleteAuditRow(idx) {
             appState.auditRows.splice(idx, 1);
-            renderAuditTable();
-            updateDashboardData();
+            saveState();
         }
 
         // Department Manager Modal Controls
@@ -1650,7 +1730,7 @@
             const dept = appState.departments.find(d => d.id === id);
             if (dept) {
                 dept.name = newName.trim();
-                saveAndRefresh();
+                saveState();
             }
         }
 
@@ -1664,7 +1744,7 @@
             input.value = '';
             
             renderDeptManagerList();
-            saveAndRefresh();
+            saveState();
         }
 
         function deleteDepartment(id) {
@@ -1676,13 +1756,7 @@
             }
 
             renderDeptManagerList();
-            saveAndRefresh();
-        }
-
-        function saveAndRefresh() {
-            populateUnitSelectors();
-            renderAuditTable();
-            updateDashboardData();
+            saveState();
         }
 
         // Bristol Scale Interactive Cards Rendering & Selection
