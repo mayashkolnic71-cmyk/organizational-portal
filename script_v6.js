@@ -192,11 +192,22 @@ initUsersDb();
 // Mock Data Load (using forms.js to bypass CORS on file://)
 function loadForms() {
     return new Promise((resolve) => {
-        const storedSchema = localStorage.getItem('clinic_forms_schema_v3');
+        let storedSchema = localStorage.getItem('clinic_forms_schema_v3');
+        if (storedSchema) {
+            try {
+                let parsed = JSON.parse(storedSchema);
+                let f19 = parsed.forms.find(f => f.id === 'form_19');
+                if (f19 && !f19.fields.find(field => field.id === 'f19_initial24')) {
+                    localStorage.removeItem('clinic_forms_schema_v3');
+                    storedSchema = null;
+                }
+            } catch(e) {}
+        }
         if (storedSchema) {
             formsSchema = JSON.parse(storedSchema);
         } else if (typeof formsSchemaData !== 'undefined') {
             formsSchema = formsSchemaData;
+            localStorage.setItem('clinic_forms_schema_v3', JSON.stringify(formsSchema));
         } else {
             console.error("Failed to load formsSchemaData. Using fallback mock.");
             formsSchema = {
