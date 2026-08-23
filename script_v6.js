@@ -79,9 +79,13 @@ function initProtocolsDb() {
         if (!protocolsDb.find(p => p.link === 'pharmacological_risk.html')) {
             protocolsDb.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
         }
+        if (!protocolsDb.find(p => p.link === 'constipation.html')) {
+            protocolsDb.unshift({ id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html' });
+        }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
+            { id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html' },
             { id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' },
             { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' },
             { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' },
