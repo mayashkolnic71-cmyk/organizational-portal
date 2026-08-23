@@ -223,7 +223,12 @@ const formsSchemaData = {
         { "id": "f19_q1", "type": "select", "label": "1. האם למטופל עם טיפול במשלשלים קיימת אבחנת \"עצירות\"", "options": ["כן", "לא"], "is_critical": true },
         { "id": "f19_q1_notes", "type": "text", "label": "נא לציין אי התאמה(שם + משפחה) אם ענית \"לא\" בשאלה קודמת , לפנות לרופא לתיקון", "is_critical": false },
         { "id": "f19_q2", "type": "select", "label": "2. האם למטופלים עם אבחנת \"עצירות\" וטיפול במשלשלים קיימת תוכנית טיפול - עצירות", "options": ["כן", "לא"], "is_critical": true },
-        { "id": "f19_q2_notes", "type": "text", "label": "נא לציין אי התאמה(שם + משפחה) אם ענית \"לא\" בשאלה קודמת ולתקן בהתאם", "is_critical": false }
+        { "id": "f19_q2_notes", "type": "text", "label": "נא לציין אי התאמה(שם + משפחה) אם ענית \"לא\" בשאלה קודמת ולתקן בהתאם", "is_critical": false },
+        { "id": "f19_initial24", "type": "select", "label": "האם בוצע אומדן 24ש בקבלה?", "options": ["כן", "לא"], "is_critical": true },
+        { "id": "f19_dailyBristol", "type": "select", "label": "האם בוצע תיעוד Bristol יומי?", "options": ["כן", "לא"], "is_critical": true },
+        { "id": "f19_hours48Resp", "type": "select", "label": "האם בוצעה התערבות ב-48ש ללא יציאה?", "options": ["כן", "לא"], "is_critical": true },
+        { "id": "f19_docResponse", "type": "select", "label": "האם תועדה תגובה לטיפול?", "options": ["כן", "לא"], "is_critical": true },
+        { "id": "f19_opioidPrev", "type": "select", "label": "האם ניתן טיפול מונע OIC באופיואידים?", "options": ["כן", "לא"], "is_critical": true }
       ]
     },
     {
