@@ -197,7 +197,9 @@ function loadForms() {
             try {
                 let parsed = JSON.parse(storedSchema);
                 let f19 = parsed.forms.find(f => f.id === 'form_19');
-                if (f19 && !f19.fields.find(field => field.id === 'f19_initial24')) {
+                if (f19 && (!f19.fields.find(field => field.id === 'f19_initial24') || 
+                            !f19.fields.find(field => field.id === 'f19_initial24' && field.label.startsWith('3.')) ||
+                            !f19.fields.find(field => field.id === 'f19_opioidPrev' && field.options.includes('לא רלוונטי')))) {
                     localStorage.removeItem('clinic_forms_schema_v3');
                     storedSchema = null;
                 }
