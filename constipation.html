@@ -317,17 +317,19 @@
                 </div>
 
                 <div class="overflow-x-auto custom-scroll">
-                    <table class="w-full text-right text-xs border-collapse min-w-[800px]">
+                    <table class="w-full text-right text-xs border-collapse min-w-[1100px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
                                 <th class="p-2.5">מס' תיק</th>
                                 <th class="p-2.5">מחלקה</th>
                                 <th class="p-2.5">חודש</th>
-                                <th class="p-2.5">אומדן 24ש בקבלה</th>
-                                <th class="p-2.5">תיעוד Bristol יומי</th>
-                                <th class="p-2.5">התערבות ב-48ש ללא יציאה</th>
-                                <th class="p-2.5">תיעוד תגובה לטיפול</th>
-                                <th class="p-2.5">שימוש מונע באופיואידים</th>
+                                <th class="p-2.5 text-center" style="min-width: 140px;">1. אבחנה במקבלי משלשלים</th>
+                                <th class="p-2.5 text-center" style="min-width: 140px;">2. תוכנית טיפול תואמת</th>
+                                <th class="p-2.5 text-center">אומדן 24ש בקבלה</th>
+                                <th class="p-2.5 text-center">תיעוד Bristol יומי</th>
+                                <th class="p-2.5 text-center">התערבות ב-48ש</th>
+                                <th class="p-2.5 text-center">תגובה לטיפול</th>
+                                <th class="p-2.5 text-center">מניעת OIC</th>
                                 <th class="p-2.5">ציון בקרה</th>
                                 <th class="p-2.5 text-center">פעולות</th>
                             </tr>
@@ -1067,26 +1069,26 @@
             ],
             auditRows: [
                 // Department A
-                { id: '101', department: 'deptA', month: 'ינואר', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '102', department: 'deptA', month: 'פברואר', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: true },
-                { id: '103', department: 'deptA', month: 'מרץ', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
-                { id: '104', department: 'deptA', month: 'אפריל', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '105', department: 'deptA', month: 'מאי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '106', department: 'deptA', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: false, opioidPrev: true },
+                { id: '101', department: 'deptA', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '102', department: 'deptA', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'ישראל ישראלי', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: true },
+                { id: '103', department: 'deptA', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: false, q2_notes: 'משה לוי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
+                { id: '104', department: 'deptA', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '105', department: 'deptA', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '106', department: 'deptA', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: false, opioidPrev: true },
                 
                 // Department B
-                { id: '107', department: 'deptB', month: 'ינואר', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '108', department: 'deptB', month: 'מרץ', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '109', department: 'deptB', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
+                { id: '107', department: 'deptB', month: 'ינואר', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '108', department: 'deptB', month: 'מרץ', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '109', department: 'deptB', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
                 
                 // Department C
-                { id: '110', department: 'deptC', month: 'פברואר', initial24: false, dailyBristol: false, hours48Resp: false, docResponse: false, opioidPrev: true },
-                { id: '111', department: 'deptC', month: 'אפריל', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: false },
-                { id: '112', department: 'deptC', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true },
+                { id: '110', department: 'deptC', month: 'פברואר', auditor: 'ד"ר ישראלי', q1: false, q1_notes: 'שרה כהן', q2: false, q2_notes: 'יוסף שלום', initial24: false, dailyBristol: false, hours48Resp: false, docResponse: false, opioidPrev: true },
+                { id: '111', department: 'deptC', month: 'אפריל', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: false },
+                { id: '112', department: 'deptC', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true },
                 
                 // Department D
-                { id: '113', department: 'deptD', month: 'מאי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '114', department: 'deptD', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true }
+                { id: '113', department: 'deptD', month: 'מאי', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '114', department: 'deptD', month: 'יוני', auditor: 'ד"ר ישראלי', q1: true, q1_notes: '', q2: true, q2_notes: '', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true }
             ]
         };
 
@@ -1164,16 +1166,16 @@
                 }
             }
             
-            // Filter out existing constipation forms
-            globalFilledForms = globalFilledForms.filter(f => f.formId !== 'constipation' && (!f.id || f.id.toString().indexOf('constipation_') !== 0));
+            // Filter out existing constipation forms (either old 'constipation' formId or new 'form_19' with 'constipation_' id prefix)
+            globalFilledForms = globalFilledForms.filter(f => f.formId !== 'form_19' && f.formId !== 'constipation' && (!f.id || f.id.toString().indexOf('constipation_') !== 0));
             
             // Map each row to the global forms
             appState.auditRows.forEach(row => {
                 const deptObj = appState.departments.find(d => d.id === row.department);
                 const deptName = deptObj ? deptObj.name : 'מחלקה כללית';
                 
-                const passed = [row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
-                const score = Math.round((passed / 5) * 100);
+                const passed = [row.q1, row.q2, row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
+                const score = Math.round((passed / 7) * 100);
                 
                 const monthMap = {
                     'ינואר': '2026-01-15',
@@ -1185,9 +1187,9 @@
                 };
                 const dateFilled = monthMap[row.month] || '2026-06-15';
                 
-                let currentUserName = 'מבקר סיעודי';
+                let currentUserName = row.auditor || 'מבקר סיעודי';
                 const userStored = localStorage.getItem('clinic_current_user');
-                if (userStored) {
+                if (userStored && !row.auditor) {
                     try {
                         currentUserName = JSON.parse(userStored).name;
                     } catch(e) {}
@@ -1195,19 +1197,26 @@
                 
                 globalFilledForms.push({
                     id: 'constipation_' + row.id,
-                    formId: 'constipation',
-                    formTitle: 'כלי בקרה מספר 9: מעקב עצירות וניהול מעיים',
+                    formId: 'form_19',
+                    formTitle: '9. דפוסי הפרשות - מעקב עצירות',
                     dateFilled: dateFilled,
                     score: score,
                     user: currentUserName,
                     data: {
+                        'f19_date': dateFilled,
+                        'f19_dept': deptName,
+                        'f19_auditor': currentUserName,
+                        'f19_q1': row.q1 ? 'כן' : 'לא',
+                        'f19_q1_notes': row.q1_notes || '',
+                        'f19_q2': row.q2 ? 'כן' : 'לא',
+                        'f19_q2_notes': row.q2_notes || '',
+                        'f19_initial24': row.initial24 ? 'כן' : 'לא',
+                        'f19_dailyBristol': row.dailyBristol ? 'כן' : 'לא',
+                        'f19_hours48Resp': row.hours48Resp ? 'כן' : 'לא',
+                        'f19_docResponse': row.docResponse ? 'כן' : 'לא',
+                        'f19_opioidPrev': row.opioidPrev ? 'כן' : 'לא',
                         'מחלקה': deptName,
-                        'חודש': row.month,
-                        'אומדן קבלה 24ש': row.initial24 ? 'כן' : 'לא',
-                        'תיעוד בריסטול יומי': row.dailyBristol ? 'כן' : 'לא',
-                        'התערבות ב-48ש': row.hours48Resp ? 'כן' : 'לא',
-                        'תיעוד תגובה לטיפול': row.docResponse ? 'כן' : 'לא',
-                        'שימוש מונע באופיואידים': row.opioidPrev ? 'כן' : 'לא'
+                        'חודש': row.month
                     }
                 });
             });
@@ -1225,12 +1234,52 @@
         }
 
         function loadState() {
-            const storedRows = localStorage.getItem('constipation_audit_rows');
-            if (storedRows) {
+            let loadedFromGlobal = false;
+            const storedGlobal = localStorage.getItem('clinic_filled_forms');
+            if (storedGlobal) {
                 try {
-                    appState.auditRows = JSON.parse(storedRows);
-                } catch(e) {}
+                    const globalForms = JSON.parse(storedGlobal);
+                    const constipationForms = globalForms.filter(f => f.formId === 'form_19');
+                    if (constipationForms.length > 0) {
+                        appState.auditRows = constipationForms.map(f => {
+                            const deptName = f.data['f19_dept'] || f.data['מחלקה'] || 'מחלקה גריאטרית א\'';
+                            const deptObj = appState.departments.find(d => d.name === deptName || d.id === deptName);
+                            const deptId = deptObj ? deptObj.id : (appState.departments[0] ? appState.departments[0].id : 'deptA');
+                            
+                            const month = f.data['חודש'] || getMonthFromDate(f.dateFilled);
+                            
+                            return {
+                                id: f.id.toString().replace('constipation_', ''),
+                                department: deptId,
+                                month: month,
+                                auditor: f.data['f19_auditor'] || f.user || 'מבקר סיעודי',
+                                q1: f.data['f19_q1'] === 'כן',
+                                q1_notes: f.data['f19_q1_notes'] || '',
+                                q2: f.data['f19_q2'] === 'כן',
+                                q2_notes: f.data['f19_q2_notes'] || '',
+                                initial24: f.data['f19_initial24'] !== 'לא',
+                                dailyBristol: f.data['f19_dailyBristol'] !== 'לא',
+                                hours48Resp: f.data['f19_hours48Resp'] !== 'לא',
+                                docResponse: f.data['f19_docResponse'] !== 'לא',
+                                opioidPrev: f.data['f19_opioidPrev'] !== 'לא'
+                            };
+                        });
+                        loadedFromGlobal = true;
+                    }
+                } catch(e) {
+                    console.error("Error loading forms from global", e);
+                }
             }
+
+            if (!loadedFromGlobal) {
+                const storedRows = localStorage.getItem('constipation_audit_rows');
+                if (storedRows) {
+                    try {
+                        appState.auditRows = JSON.parse(storedRows);
+                    } catch(e) {}
+                }
+            }
+            
             const storedDepts = localStorage.getItem('constipation_departments');
             if (storedDepts) {
                 try {
@@ -1238,6 +1287,15 @@
                 } catch(e) {}
             }
             saveState();
+        }
+
+        function getMonthFromDate(dateStr) {
+            if (!dateStr) return 'יוני';
+            const parts = dateStr.split('-');
+            if (parts.length < 2) return 'יוני';
+            const m = parseInt(parts[1]);
+            const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+            return months[m - 1] || 'יוני';
         }
 
         // Tab Switching Logic
@@ -1567,9 +1625,9 @@
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-slate-50 transition border-b border-slate-200';
                 
-                // Calculate compliance score
-                const passed = [row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
-                const score = (passed / 5) * 100;
+                // Calculate compliance score based on 7 elements
+                const passed = [row.q1, row.q2, row.initial24, row.dailyBristol, row.hours48Resp, row.docResponse, row.opioidPrev].filter(Boolean).length;
+                const score = Math.round((passed / 7) * 100);
                 const scoreBadgeClass = score >= 80 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200';
 
                 // Department Options
@@ -1600,27 +1658,43 @@
                         </select>
                     </td>
                     
-                    <td class="p-2.5">
+                    <!-- Question 1 -->
+                    <td class="p-2.5 text-center">
+                        <button onclick="toggleAuditField(${idx}, 'q1')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
+                            ${row.q1 ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
+                        </button>
+                        <input type="text" value="${row.q1_notes || ''}" placeholder="שם + משפחה..." onchange="updateAuditRowNotes(${idx}, 'q1_notes', this.value)" class="p-1 mt-1 border border-slate-200 rounded text-[10px] bg-slate-50 w-full focus:bg-white text-right">
+                    </td>
+                    
+                    <!-- Question 2 -->
+                    <td class="p-2.5 text-center">
+                        <button onclick="toggleAuditField(${idx}, 'q2')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
+                            ${row.q2 ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
+                        </button>
+                        <input type="text" value="${row.q2_notes || ''}" placeholder="שם + משפחה..." onchange="updateAuditRowNotes(${idx}, 'q2_notes', this.value)" class="p-1 mt-1 border border-slate-200 rounded text-[10px] bg-slate-50 w-full focus:bg-white text-right">
+                    </td>
+                    
+                    <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'initial24')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.initial24 ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
-                    <td class="p-2.5">
+                    <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'dailyBristol')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.dailyBristol ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
-                    <td class="p-2.5">
+                    <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'hours48Resp')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.hours48Resp ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
-                    <td class="p-2.5">
+                    <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'docResponse')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.docResponse ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
                     </td>
-                    <td class="p-2.5">
+                    <td class="p-2.5 text-center">
                         <button onclick="toggleAuditField(${idx}, 'opioidPrev')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
                             ${row.opioidPrev ? '<i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>' : '<i class="fa-solid fa-circle-xmark text-rose-500 text-lg"></i>'}
                         </button>
@@ -1638,6 +1712,11 @@
         // Toggle audit indicator values
         function toggleAuditField(idx, field) {
             appState.auditRows[idx][field] = !appState.auditRows[idx][field];
+            saveState();
+        }
+
+        function updateAuditRowNotes(idx, field, val) {
+            appState.auditRows[idx][field] = val;
             saveState();
         }
 
@@ -1664,6 +1743,11 @@
                 id: nextId.toString(),
                 department: defaultDept,
                 month: 'יוני',
+                auditor: 'מבקר סיעודי',
+                q1: true,
+                q1_notes: '',
+                q2: true,
+                q2_notes: '',
                 initial24: true,
                 dailyBristol: true,
                 hours48Resp: true,
