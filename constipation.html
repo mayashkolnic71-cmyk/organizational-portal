@@ -110,8 +110,8 @@
                         <p class="text-xs text-slate-400">פרוטוקול סיעודי, בטיחות הטיפול ודשבורד איכות מוסדי | מבוסס הנחיות משרד הבריאות</p>
                     </div>
                 </div>
-                <!-- Back Button for Portal Integration -->
-                <button onclick="window.close()" class="md:hidden bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1">
+                <!-- Back Button for Portal Integration (Mobile) -->
+                <button onclick="if(window.opener) { window.close(); } else { location.href='index.html'; }" class="md:hidden bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg border border-slate-700 transition flex items-center gap-1">
                     <i class="fa-solid fa-arrow-right"></i> חזרה לפורטל
                 </button>
             </div>
@@ -123,7 +123,7 @@
                     <i class="fa-solid fa-shield-halved"></i> תואם Beers 2023
                 </span>
                 <!-- Desktop Back Button -->
-                <button onclick="window.close()" class="hidden md:flex bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg border border-slate-700 transition items-center gap-1.5">
+                <button onclick="if(window.opener) { window.close(); } else { location.href='index.html'; }" class="hidden md:flex bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg border border-slate-700 transition items-center gap-1.5">
                     <i class="fa-solid fa-arrow-right"></i> חזרה לפורטל
                 </button>
             </div>
@@ -170,27 +170,30 @@
 
             <!-- Dashboard Control Filters -->
             <div class="bg-teal-900 text-white p-4 rounded-xl shadow flex flex-wrap items-center justify-between gap-4">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-filter text-teal-300"></i>
-                    <span class="font-bold text-sm">סינון תצוגת דשבורד:</span>
-                </div>
-                <div class="flex flex-wrap items-center gap-3 text-slate-800">
-                    <div>
-                        <select id="dash-unit-select" onchange="updateDashboardData()" class="bg-white text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
-                            <option value="all">כלל המחלקות (ממוצע מוסדי)</option>
-                            <option value="deptA">מחלקה גריאטרית א'</option>
-                            <option value="deptB">מחלקה גריאטרית ב'</option>
-                            <option value="deptC">סיעודית מורכבת C</option>
-                            <option value="deptD">מחלקה פליאטיבית D</option>
-                        </select>
+                <div class="flex items-center gap-4 flex-wrap">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-filter text-teal-300"></i>
+                        <span class="font-bold text-sm">סינון תצוגת דשבורד:</span>
                     </div>
-                    <div>
-                        <select id="dash-time-select" onchange="updateDashboardData()" class="bg-white text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
-                            <option value="q1">רבעון אחרון (ינואר - יוני 2026)</option>
-                            <option value="m6">חודש נוכחי (יוני 2026)</option>
-                        </select>
+                    <div class="flex flex-wrap items-center gap-3 text-slate-800">
+                        <div>
+                            <select id="dash-unit-select" onchange="appState.selectedUnit = this.value; updateDashboardData();" class="bg-white text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div>
+                            <select id="dash-time-select" onchange="updateDashboardData()" class="bg-white text-xs font-semibold px-3 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-teal-500">
+                                <option value="q1">רבעון אחרון (ינואר - יוני 2026)</option>
+                                <option value="m6">חודש נוכחי (יוני 2026)</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+                
+                <!-- Manage Departments Button -->
+                <button onclick="openDeptManager()" class="px-3.5 py-1.5 text-xs font-bold bg-teal-800 hover:bg-teal-700 border border-teal-700 rounded-lg shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-cog"></i> ⚙️ ניהול מחלקות
+                </button>
             </div>
 
             <!-- Top KPI Cards Grid -->
@@ -303,10 +306,10 @@
             <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm space-y-4">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
                     <div>
-                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
-                            <i class="fa-solid fa-clipboard-check text-teal-600"></i> כלי בקרת איכות חודשית לתיקים רפואיים (מדגם 10-20 תיקים)
+                        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2 font-bold text-teal-900">
+                            <i class="fa-solid fa-clipboard-check text-teal-600"></i> כלי בקרה מספר 9: מעקב עצירות וניהול מעיים (מדגם 10-20 תיקים)
                         </h3>
-                        <p class="text-xs text-slate-500">לחץ על כפתורי ה- <i class="fa-solid fa-circle-check text-emerald-600"></i> / <i class="fa-solid fa-circle-xmark text-rose-500"></i> בטבלה כדי לערוך את נתוני התיק ישירות ועדכון הציון בזמן אמת.</p>
+                        <p class="text-xs text-slate-500">לחצי על כפתורי ה- <i class="fa-solid fa-circle-check text-emerald-600"></i> / <i class="fa-solid fa-circle-xmark text-rose-500"></i> בטבלה כדי לערוך את נתוני התיק. שינויי הבקרה והחלוקה למחלקות מעדכנים מיידית את הגרפים בדשבורד.</p>
                     </div>
                     <button onclick="addNewAuditRow()" class="self-start sm:self-auto px-3 py-1.5 text-xs font-semibold bg-teal-700 text-white rounded-lg hover:bg-teal-800 transition shadow flex items-center gap-1.5">
                         <i class="fa-solid fa-plus"></i> הוסף תיק מדגם לבקרה
@@ -314,10 +317,12 @@
                 </div>
 
                 <div class="overflow-x-auto custom-scroll">
-                    <table class="w-full text-right text-xs border-collapse min-w-[700px]">
+                    <table class="w-full text-right text-xs border-collapse min-w-[800px]">
                         <thead>
                             <tr class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
                                 <th class="p-2.5">מס' תיק</th>
+                                <th class="p-2.5">מחלקה</th>
+                                <th class="p-2.5">חודש</th>
                                 <th class="p-2.5">אומדן 24ש בקבלה</th>
                                 <th class="p-2.5">תיעוד Bristol יומי</th>
                                 <th class="p-2.5">התערבות ב-48ש ללא יציאה</th>
@@ -633,7 +638,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                         <div class="bg-rose-950/60 p-2.5 rounded border border-rose-800">
                             <strong class="text-rose-300 block mb-0.5"><i class="fa-solid fa-xmark"></i> בטן חריפה:</strong>
-                            <span>כאב בטן עז, דיסטנציה ניכרת, בטן קשה כקרש או רגישות מוקפצת (Rebound).</span>
+                            <span>כאב בטן עז, דיסטנציה ניכת, בטן קשה כקרש או רגישות מוקפצת (Rebound).</span>
                         </div>
                         <div class="bg-rose-950/60 p-2.5 rounded border border-rose-800">
                             <strong class="text-rose-300 block mb-0.5"><i class="fa-solid fa-xmark"></i> סימנים סיסטמיים:</strong>
@@ -1012,7 +1017,41 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Department Manager Modal Overlay -->
+    <div id="dept-modal-overlay" onclick="closeDeptManager()" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300"></div>
+
+    <!-- Department Manager Modal Dialog -->
+    <div id="dept-modal" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-md bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 hidden opacity-0 transition-all duration-300 flex flex-col p-6 space-y-4">
+        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <i class="fa-solid fa-cog text-teal-600"></i> ניהול רשימת מחלקות
+            </h3>
+            <button onclick="closeDeptManager()" class="text-slate-400 hover:text-slate-600 transition p-1">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        
+        <!-- Departments List -->
+        <div class="space-y-2 max-h-60 overflow-y-auto custom-scroll p-1" id="dept-manager-list">
+            <!-- Populated via JS -->
+        </div>
+
+        <!-- Add New Department Form -->
+        <div class="flex gap-2 pt-2 border-t border-slate-100">
+            <input type="text" id="new-dept-name" placeholder="שם מחלקה חדשה..." class="flex-grow p-2 border border-slate-200 rounded-lg text-xs bg-slate-50 focus:bg-white focus:outline-none focus:ring-1 focus:ring-teal-500">
+            <button onclick="addNewDepartment()" class="px-4 py-2 bg-teal-700 text-white rounded-lg text-xs font-bold hover:bg-teal-800 transition flex items-center gap-1 shrink-0">
+                <i class="fa-solid fa-plus"></i> הוסף
+            </button>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+            <button onclick="closeDeptManager()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg text-xs transition">
+                סגור
+            </button>
+        </div>
+    </div>
+
+    <!-- Script Section -->
     <script>
         // Global Application State & Data Storage
         const appState = {
@@ -1020,11 +1059,34 @@
             selectedUnit: 'all',
             timeframe: 'q1',
             selectedBristol: 4,
+            departments: [
+                { id: 'deptA', name: 'מחלקה גריאטרית א\'' },
+                { id: 'deptB', name: 'מחלקה גריאטרית ב\'' },
+                { id: 'deptC', name: 'סיעודית מורכבת C' },
+                { id: 'deptD', name: 'מחלקה פליאטיבית D' }
+            ],
             auditRows: [
-                { id: '101', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
-                { id: '102', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: true },
-                { id: '103', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
-                { id: '104', initial24: false, dailyBristol: false, hours48Resp: false, docResponse: false, opioidPrev: true }
+                // Department A
+                { id: '101', department: 'deptA', month: 'ינואר', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '102', department: 'deptA', month: 'פברואר', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: true },
+                { id: '103', department: 'deptA', month: 'מרץ', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
+                { id: '104', department: 'deptA', month: 'אפריל', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '105', department: 'deptA', month: 'מאי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '106', department: 'deptA', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: false, opioidPrev: true },
+                
+                // Department B
+                { id: '107', department: 'deptB', month: 'ינואר', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '108', department: 'deptB', month: 'מרץ', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '109', department: 'deptB', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: false },
+                
+                // Department C
+                { id: '110', department: 'deptC', month: 'פברואר', initial24: false, dailyBristol: false, hours48Resp: false, docResponse: false, opioidPrev: true },
+                { id: '111', department: 'deptC', month: 'אפריל', initial24: true, dailyBristol: false, hours48Resp: false, docResponse: true, opioidPrev: false },
+                { id: '112', department: 'deptC', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true },
+                
+                // Department D
+                { id: '113', department: 'deptD', month: 'מאי', initial24: true, dailyBristol: true, hours48Resp: true, docResponse: true, opioidPrev: true },
+                { id: '114', department: 'deptD', month: 'יוני', initial24: true, dailyBristol: true, hours48Resp: false, docResponse: true, opioidPrev: true }
             ]
         };
 
@@ -1082,6 +1144,7 @@
 
         // Initialize Application
         document.addEventListener('DOMContentLoaded', () => {
+            populateUnitSelectors();
             initCharts();
             renderBristolCards();
             selectBristolType(4);
@@ -1089,6 +1152,7 @@
             renderQuiz();
             setupAcbCalculator();
             setDecisionPath('prev');
+            updateDashboardData();
         });
 
         // Tab Switching Logic
@@ -1112,107 +1176,35 @@
                 setTimeout(() => {
                     if (trendChartInstance) trendChartInstance.resize();
                     if (deptChartInstance) deptChartInstance.resize();
+                    updateDashboardData();
                 }, 50);
             }
         }
 
-        // Database of dynamic metrics for BI charts
-        const biData = {
-            all: {
-                q1: {
-                    trendBristol: [72, 75, 78, 80, 81, 82],
-                    trendRegular: [68, 70, 71, 74, 75, 76],
-                    deptBristol: [85, 91, 67, 85],
-                    deptAlert: [18, 9, 33, 15],
-                    kpis: ['82%', '88%', '76%', '28 שעות'],
-                    kpiBars: [82, 88, 76, 65]
-                },
-                m6: {
-                    trendBristol: [80, 81, 82, 84],
-                    trendRegular: [75, 75, 76, 78],
-                    deptBristol: [86, 92, 69, 87],
-                    deptAlert: [15, 7, 28, 12],
-                    kpis: ['84%', '90%', '78%', '22 שעות'],
-                    kpiBars: [84, 90, 78, 50]
-                }
-            },
-            deptA: {
-                q1: {
-                    trendBristol: [78, 80, 82, 83, 84, 85],
-                    trendRegular: [72, 73, 75, 76, 77, 78],
-                    deptBristol: [85, 0, 0, 0],
-                    deptAlert: [18, 0, 0, 0],
-                    kpis: ['85%', '86%', '78%', '24 שעות'],
-                    kpiBars: [85, 86, 78, 55]
-                },
-                m6: {
-                    trendBristol: [83, 84, 85, 86],
-                    trendRegular: [76, 77, 78, 79],
-                    deptBristol: [86, 0, 0, 0],
-                    deptAlert: [16, 0, 0, 0],
-                    kpis: ['86%', '88%', '79%', '19 שעות'],
-                    kpiBars: [86, 88, 79, 45]
-                }
-            },
-            deptB: {
-                q1: {
-                    trendBristol: [83, 85, 88, 89, 90, 91],
-                    trendRegular: [76, 78, 80, 81, 81, 82],
-                    deptBristol: [0, 91, 0, 0],
-                    deptAlert: [0, 9, 0, 0],
-                    kpis: ['91%', '93%', '82%', '21 שעות'],
-                    kpiBars: [91, 93, 82, 48]
-                },
-                m6: {
-                    trendBristol: [90, 91, 91, 93],
-                    trendRegular: [81, 82, 82, 83],
-                    deptBristol: [0, 92, 0, 0],
-                    deptAlert: [0, 7, 0, 0],
-                    kpis: ['93%', '95%', '83%', '16 שעות'],
-                    kpiBars: [93, 95, 83, 38]
-                }
-            },
-            deptC: {
-                q1: {
-                    trendBristol: [60, 62, 63, 65, 66, 67],
-                    trendRegular: [62, 64, 65, 66, 67, 68],
-                    deptBristol: [0, 0, 67, 0],
-                    deptAlert: [0, 0, 33, 0],
-                    kpis: ['67%', '77%', '68%', '34 שעות'],
-                    kpiBars: [67, 77, 68, 80]
-                },
-                m6: {
-                    trendBristol: [65, 66, 67, 69],
-                    trendRegular: [67, 67, 68, 70],
-                    deptBristol: [0, 0, 69, 0],
-                    deptAlert: [0, 0, 28, 0],
-                    kpis: ['69%', '80%', '70%', '30 שעות'],
-                    kpiBars: [69, 80, 70, 70]
-                }
-            },
-            deptD: {
-                q1: {
-                    trendBristol: [77, 79, 81, 83, 84, 85],
-                    trendRegular: [70, 72, 73, 75, 75, 76],
-                    deptBristol: [0, 0, 0, 85],
-                    deptAlert: [0, 0, 0, 15],
-                    kpis: ['85%', '90%', '76%', '26 שעות'],
-                    kpiBars: [85, 90, 76, 60]
-                },
-                m6: {
-                    trendBristol: [84, 84, 85, 87],
-                    trendRegular: [75, 75, 76, 77],
-                    deptBristol: [0, 0, 0, 87],
-                    deptAlert: [0, 0, 0, 12],
-                    kpis: ['87%', '92%', '77%', '20 שעות'],
-                    kpiBars: [87, 92, 77, 45]
-                }
+        // Populate unit filter select box
+        function populateUnitSelectors() {
+            const unitSelect = document.getElementById('dash-unit-select');
+            const currentValue = unitSelect.value || 'all';
+            
+            unitSelect.innerHTML = '<option value="all">כלל המחלקות (ממוצע מוסדי)</option>';
+            appState.departments.forEach(dept => {
+                const opt = document.createElement('option');
+                opt.value = dept.id;
+                opt.innerText = dept.name;
+                unitSelect.appendChild(opt);
+            });
+
+            if (appState.departments.find(d => d.id === currentValue)) {
+                unitSelect.value = currentValue;
+                appState.selectedUnit = currentValue;
+            } else {
+                unitSelect.value = 'all';
+                appState.selectedUnit = 'all';
             }
-        };
+        }
 
         // Dashboard Charts Initialization (Chart.js)
         function initCharts() {
-            // Chart 1: Monthly Trends (Line Chart)
             const ctxTrend = document.getElementById('trendChart').getContext('2d');
             trendChartInstance = new Chart(ctxTrend, {
                 type: 'line',
@@ -1221,7 +1213,7 @@
                     datasets: [
                         {
                             label: 'שיעור תיעוד Bristol יומי (%)',
-                            data: [72, 75, 78, 80, 81, 82],
+                            data: [0, 0, 0, 0, 0, 0],
                             borderColor: '#0f766e',
                             backgroundColor: 'rgba(15, 118, 110, 0.08)',
                             fill: true,
@@ -1229,8 +1221,8 @@
                             borderWidth: 2.5
                         },
                         {
-                            label: 'שיעור יציאות תקינות ≥3/שבוע (%)',
-                            data: [68, 70, 71, 74, 75, 76],
+                            label: 'שיעור אומדן קבלה ב-24ש (%)',
+                            data: [0, 0, 0, 0, 0, 0],
                             borderColor: '#0284c7',
                             backgroundColor: 'transparent',
                             borderDash: [5, 5],
@@ -1243,40 +1235,29 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { font: { family: 'Heebo', size: 11 } } },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) label += ': ';
-                                    if (context.parsed.y !== null) label += context.parsed.y + '%';
-                                    return label;
-                                }
-                            }
-                        }
+                        legend: { position: 'bottom', labels: { font: { family: 'Heebo', size: 11 } } }
                     },
                     scales: {
-                        y: { min: 40, max: 100, ticks: { callback: value => value + '%' } }
+                        y: { min: 0, max: 100, ticks: { callback: value => value + '%' } }
                     }
                 }
             });
 
-            // Chart 2: Department Comparison (Bar Chart)
             const ctxDept = document.getElementById('deptChart').getContext('2d');
             deptChartInstance = new Chart(ctxDept, {
                 type: 'bar',
                 data: {
-                    labels: ['גריאטרית א\'', 'גריאטרית ב\'', 'סיעודית מורכבת C', 'פליאטיבית D'],
+                    labels: [],
                     datasets: [
                         {
                             label: 'תיעוד Bristol יומי (%)',
-                            data: [85, 91, 67, 85],
+                            data: [],
                             backgroundColor: '#0d9488',
                             borderRadius: 6
                         },
                         {
-                            label: 'חריגות מענה להתערבות >24ש (%)',
-                            data: [18, 9, 33, 15],
+                            label: 'פיגור בהתערבות >24ש (%)',
+                            data: [],
                             backgroundColor: '#f43f5e',
                             borderRadius: 6
                         }
@@ -1297,25 +1278,61 @@
 
         // Update Dashboard Data and BI Charts Dynamically
         function updateDashboardData() {
-            const unit = document.getElementById('dash-unit-select').value;
-            const timeframe = document.getElementById('dash-time-select').value;
+            const unit = appState.selectedUnit;
+            const timeframe = document.getElementById('dash-time-select').value; // 'q1' (all months) or 'm6' (June only)
+
+            // Filter audit rows by department and month
+            let filteredRows = appState.auditRows;
             
-            const dataSet = biData[unit][timeframe];
-            if (!dataSet) return;
+            if (unit !== 'all') {
+                filteredRows = filteredRows.filter(r => r.department === unit);
+            }
+            
+            if (timeframe === 'm6') {
+                filteredRows = filteredRows.filter(r => r.month === 'יוני');
+            }
 
-            // 1. Update text indicators
-            document.getElementById('kpi1-val').innerText = dataSet.kpis[0];
-            document.getElementById('kpi2-val').innerText = dataSet.kpis[1];
-            document.getElementById('kpi3-val').innerText = dataSet.kpis[2];
-            document.getElementById('kpi4-val').innerText = dataSet.kpis[3];
+            const totalCount = filteredRows.length;
 
-            // Update color indicators and descriptions for KPI 1 based on threshold (target 90%)
-            const kpi1Percent = parseInt(dataSet.kpis[0]);
-            const kpi1Bar = document.getElementById('kpi1-bar');
+            let kpi1 = 0, kpi2 = 0, kpi3 = 0, kpi4 = 0;
+            let p1 = 0, p2 = 0, p3 = 0, p4 = 0, p5 = 0;
+
+            if (totalCount > 0) {
+                p1 = filteredRows.filter(r => r.initial24).length;
+                p2 = filteredRows.filter(r => r.dailyBristol).length;
+                p3 = filteredRows.filter(r => r.hours48Resp).length;
+                p4 = filteredRows.filter(r => r.docResponse).length;
+                p5 = filteredRows.filter(r => r.opioidPrev).length;
+
+                kpi1 = Math.round((p2 / totalCount) * 100); // תיעוד בריסטול יומי
+                kpi2 = Math.round((p1 / totalCount) * 100); // אומדן 24ש בקבלה
+                kpi3 = Math.round((p5 / totalCount) * 100); // יציאות תקינות / מניעת OIC
+                kpi4 = Math.round(16 + (1 - (p3 / totalCount)) * 24); // זמן התערבות ממוצע (שעות): 16 עד 40
+            } else {
+                // Fallbacks if no data
+                kpi1 = 0; kpi2 = 0; kpi3 = 0; kpi4 = 0;
+            }
+
+            // Update text indicators
+            document.getElementById('kpi1-val').innerText = `${kpi1}%`;
+            document.getElementById('kpi2-val').innerText = `${kpi2}%`;
+            document.getElementById('kpi3-val').innerText = `${kpi3}%`;
+            document.getElementById('kpi4-val').innerText = `${kpi4} שעות`;
+
+            // Update bar widths
+            document.getElementById('kpi1-bar').style.width = `${kpi1}%`;
+            document.getElementById('kpi2-bar').style.width = `${kpi2}%`;
+            document.getElementById('kpi3-bar').style.width = `${kpi3}%`;
+            
+            // KPI 4 bar: target is <= 24 hours (so lower is better). Let's represent bar percentage
+            const kpi4Percent = Math.max(0, Math.min(100, Math.round((24 / kpi4) * 100)));
+            document.getElementById('kpi4-bar').style.width = `${kpi4Percent}%`;
+
+            // Update color indicators and descriptions for KPI 1 (target 90%)
             const kpi1Icon = document.getElementById('kpi1-status-icon');
             const kpi1Desc = document.getElementById('kpi1-desc');
-            kpi1Bar.style.width = dataSet.kpiBars[0] + '%';
-            if (kpi1Percent >= 90) {
+            const kpi1Bar = document.getElementById('kpi1-bar');
+            if (kpi1 >= 90) {
                 kpi1Icon.className = "w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold";
                 kpi1Icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
                 kpi1Desc.className = "text-[11px] text-emerald-700 mt-2 font-medium";
@@ -1329,13 +1346,11 @@
                 kpi1Bar.className = "bg-amber-500 h-2 rounded-full transition-all duration-500";
             }
 
-            // Update KPI 2 (target 85%)
-            const kpi2Percent = parseInt(dataSet.kpis[1]);
-            const kpi2Bar = document.getElementById('kpi2-bar');
+            // KPI 2 (target 85%)
             const kpi2Icon = document.getElementById('kpi2-status-icon');
             const kpi2Desc = document.getElementById('kpi2-desc');
-            kpi2Bar.style.width = dataSet.kpiBars[1] + '%';
-            if (kpi2Percent >= 85) {
+            const kpi2Bar = document.getElementById('kpi2-bar');
+            if (kpi2 >= 85) {
                 kpi2Icon.className = "w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold";
                 kpi2Icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
                 kpi2Desc.className = "text-[11px] text-emerald-700 mt-2 font-medium";
@@ -1349,13 +1364,11 @@
                 kpi2Bar.className = "bg-amber-500 h-2 rounded-full transition-all duration-500";
             }
 
-            // Update KPI 3 (target 80%)
-            const kpi3Percent = parseInt(dataSet.kpis[2]);
-            const kpi3Bar = document.getElementById('kpi3-bar');
+            // KPI 3 (target 80%)
             const kpi3Icon = document.getElementById('kpi3-status-icon');
             const kpi3Desc = document.getElementById('kpi3-desc');
-            kpi3Bar.style.width = dataSet.kpiBars[2] + '%';
-            if (kpi3Percent >= 80) {
+            const kpi3Bar = document.getElementById('kpi3-bar');
+            if (kpi3 >= 80) {
                 kpi3Icon.className = "w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold";
                 kpi3Icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
                 kpi3Desc.className = "text-[11px] text-emerald-700 mt-2 font-medium";
@@ -1369,13 +1382,11 @@
                 kpi3Bar.className = "bg-amber-500 h-2 rounded-full transition-all duration-500";
             }
 
-            // Update KPI 4 (target <= 24 hours)
-            const kpi4Hours = parseInt(dataSet.kpis[3]);
-            const kpi4Bar = document.getElementById('kpi4-bar');
+            // KPI 4 (target <= 24 hours)
             const kpi4Icon = document.getElementById('kpi4-status-icon');
             const kpi4Desc = document.getElementById('kpi4-desc');
-            kpi4Bar.style.width = dataSet.kpiBars[3] + '%';
-            if (kpi4Hours <= 24) {
+            const kpi4Bar = document.getElementById('kpi4-bar');
+            if (kpi4 <= 24) {
                 kpi4Icon.className = "w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold";
                 kpi4Icon.innerHTML = `<i class="fa-solid fa-check"></i>`;
                 kpi4Desc.className = "text-[11px] text-emerald-700 mt-2 font-medium";
@@ -1389,42 +1400,76 @@
                 kpi4Bar.className = "bg-rose-50 h-2 rounded-full transition-all duration-500";
             }
 
-            // 2. Update Charts
-            if (timeframe === 'q1') {
-                trendChartInstance.data.labels = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני'];
-                document.getElementById('trend-chart-badge').innerText = '% היענות מוסדית';
-                document.getElementById('trend-chart-desc').innerText = 'השוואה בין שיעור התיעוד היומי לבין שיעור המטופלים עם תדירות יציאות תקינה.';
-            } else {
-                trendChartInstance.data.labels = ['שבוע 1', 'שבוע 2', 'שבוע 3', 'שבוע 4'];
+            // 3. Update Chart 1: Monthly trends (based on month averages)
+            const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני'];
+            let trendLabels = months;
+            let trendBristolValues = [];
+            let trendInitialValues = [];
+
+            if (timeframe === 'm6') {
+                trendLabels = ['שבוע 1', 'שבוע 2', 'שבוע 3', 'שבוע 4'];
+                const juneRows = appState.auditRows.filter(r => r.month === 'יוני' && (unit === 'all' || r.department === unit));
+                for (let w = 1; w <= 4; w++) {
+                    const weekRows = juneRows.filter((r, i) => (i % 4) + 1 === w);
+                    if (weekRows.length > 0) {
+                        const bVal = Math.round((weekRows.filter(r => r.dailyBristol).length / weekRows.length) * 100);
+                        const iVal = Math.round((weekRows.filter(r => r.initial24).length / weekRows.length) * 100);
+                        trendBristolValues.push(bVal);
+                        trendInitialValues.push(iVal);
+                    } else {
+                        trendBristolValues.push(kpi1);
+                        trendInitialValues.push(kpi2);
+                    }
+                }
                 document.getElementById('trend-chart-badge').innerText = '% היענות שבועית';
                 document.getElementById('trend-chart-desc').innerText = 'שיעור ההתערבויות ומדדי התיעוד לפי חלוקה שבועית במהלך חודש יוני 2026.';
+            } else {
+                months.forEach(m => {
+                    const mRows = appState.auditRows.filter(r => r.month === m && (unit === 'all' || r.department === unit));
+                    if (mRows.length > 0) {
+                        const bVal = Math.round((mRows.filter(r => r.dailyBristol).length / mRows.length) * 100);
+                        const iVal = Math.round((mRows.filter(r => r.initial24).length / mRows.length) * 100);
+                        trendBristolValues.push(bVal);
+                        trendInitialValues.push(iVal);
+                    } else {
+                        trendBristolValues.push(0);
+                        trendInitialValues.push(0);
+                    }
+                });
+                document.getElementById('trend-chart-badge').innerText = '% היענות מוסדית';
+                document.getElementById('trend-chart-desc').innerText = 'השוואה בין שיעור התיעוד היומי לבין שיעור אומדן קבלה ב-24 שעות.';
             }
 
-            // Update datasets
-            trendChartInstance.data.datasets[0].data = dataSet.trendBristol;
-            trendChartInstance.data.datasets[1].data = dataSet.trendRegular;
+            trendChartInstance.data.labels = trendLabels;
+            trendChartInstance.data.datasets[0].data = trendBristolValues;
+            trendChartInstance.data.datasets[1].data = trendInitialValues;
             trendChartInstance.update();
 
-            // Update Department Comparisons Chart
-            if (unit === 'all') {
-                deptChartInstance.data.labels = ['גריאטרית א\'', 'גריאטרית ב\'', 'סיעודית מורכבת C', 'פליאטיבית D'];
-                deptChartInstance.data.datasets[0].data = dataSet.deptBristol;
-                deptChartInstance.data.datasets[1].data = dataSet.deptAlert;
-            } else {
-                // Focus on selected department
-                const deptLabel = document.getElementById('dash-unit-select').options[document.getElementById('dash-unit-select').selectedIndex].text;
-                deptChartInstance.data.labels = [deptLabel, 'שאר המוסד'];
-                
-                // Get general averages for comparison
-                const generalSet = biData['all'][timeframe];
-                const selectedValBristol = dataSet.trendBristol[dataSet.trendBristol.length - 1];
-                const generalValBristol = generalSet.trendBristol[generalSet.trendBristol.length - 1];
-                const selectedValAlert = dataSet.trendRegular[dataSet.trendRegular.length - 1];
-                const generalValAlert = generalSet.trendRegular[generalSet.trendRegular.length - 1];
+            // 4. Update Chart 2: Inter-department comparisons
+            const deptNames = appState.departments.map(d => d.name);
+            let deptBristolData = [];
+            let deptAlertData = [];
 
-                deptChartInstance.data.datasets[0].data = [selectedValBristol, generalValBristol];
-                deptChartInstance.data.datasets[1].data = [100 - selectedValAlert, 100 - generalValAlert];
-            }
+            appState.departments.forEach(d => {
+                let dRows = appState.auditRows.filter(r => r.department === d.id);
+                if (timeframe === 'm6') {
+                    dRows = dRows.filter(r => r.month === 'יוני');
+                }
+
+                if (dRows.length > 0) {
+                    const bVal = Math.round((dRows.filter(r => r.dailyBristol).length / dRows.length) * 100);
+                    const aVal = Math.round((1 - (dRows.filter(r => r.hours48Resp).length / dRows.length)) * 100);
+                    deptBristolData.push(bVal);
+                    deptAlertData.push(aVal);
+                } else {
+                    deptBristolData.push(0);
+                    deptAlertData.push(0);
+                }
+            });
+
+            deptChartInstance.data.labels = deptNames;
+            deptChartInstance.data.datasets[0].data = deptBristolData;
+            deptChartInstance.data.datasets[1].data = deptAlertData;
             deptChartInstance.update();
         }
 
@@ -1442,8 +1487,33 @@
                 const score = (passed / 5) * 100;
                 const scoreBadgeClass = score >= 80 ? 'bg-emerald-100 text-emerald-800 border-emerald-200' : 'bg-rose-100 text-rose-800 border-rose-200';
 
+                // Department Options
+                let deptOptions = '';
+                appState.departments.forEach(d => {
+                    const isSel = d.id === row.department;
+                    deptOptions += `<option value="${d.id}" ${isSel ? 'selected' : ''}>${d.name}</option>`;
+                });
+
+                // Month Options
+                const months = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני'];
+                let monthOptions = '';
+                months.forEach(m => {
+                    const isSel = m === row.month;
+                    monthOptions += `<option value="${m}" ${isSel ? 'selected' : ''}>${m}</option>`;
+                });
+
                 tr.innerHTML = `
                     <td class="p-2.5 font-bold text-slate-800">#${row.id}</td>
+                    <td class="p-2.5">
+                        <select onchange="updateAuditRowDept(${idx}, this.value)" class="p-1 border border-slate-200 rounded text-[11px] bg-slate-50 focus:bg-white focus:outline-none w-28">
+                            ${deptOptions}
+                        </select>
+                    </td>
+                    <td class="p-2.5">
+                        <select onchange="updateAuditRowMonth(${idx}, this.value)" class="p-1 border border-slate-200 rounded text-[11px] bg-slate-50 focus:bg-white focus:outline-none w-20">
+                            ${monthOptions}
+                        </select>
+                    </td>
                     
                     <td class="p-2.5">
                         <button onclick="toggleAuditField(${idx}, 'initial24')" class="transition-transform hover:scale-110 focus:outline-none" title="לחץ לשינוי">
@@ -1484,29 +1554,134 @@
         function toggleAuditField(idx, field) {
             appState.auditRows[idx][field] = !appState.auditRows[idx][field];
             renderAuditTable();
+            updateDashboardData();
+        }
+
+        function updateAuditRowDept(idx, newDept) {
+            appState.auditRows[idx].department = newDept;
+            updateDashboardData();
+            renderAuditTable();
+        }
+
+        function updateAuditRowMonth(idx, newMonth) {
+            appState.auditRows[idx].month = newMonth;
+            updateDashboardData();
+            renderAuditTable();
         }
 
         function addNewAuditRow() {
-            // Find next ID
             let nextId = 101;
             if (appState.auditRows.length > 0) {
                 const ids = appState.auditRows.map(r => parseInt(r.id)).filter(id => !isNaN(id));
                 if (ids.length > 0) nextId = Math.max(...ids) + 1;
             }
+
+            const defaultDept = appState.departments.length > 0 ? appState.departments[0].id : 'deptA';
+
             appState.auditRows.push({
                 id: nextId.toString(),
+                department: defaultDept,
+                month: 'יוני',
                 initial24: true,
                 dailyBristol: true,
                 hours48Resp: true,
                 docResponse: true,
                 opioidPrev: true
             });
+            
             renderAuditTable();
+            updateDashboardData();
         }
 
         function deleteAuditRow(idx) {
             appState.auditRows.splice(idx, 1);
             renderAuditTable();
+            updateDashboardData();
+        }
+
+        // Department Manager Modal Controls
+        function openDeptManager() {
+            const overlay = document.getElementById('dept-modal-overlay');
+            const modal = document.getElementById('dept-modal');
+            
+            renderDeptManagerList();
+
+            overlay.classList.remove('hidden');
+            modal.classList.remove('hidden');
+            overlay.offsetHeight;
+            overlay.classList.remove('opacity-0');
+            modal.classList.remove('opacity-0');
+        }
+
+        function closeDeptManager() {
+            const overlay = document.getElementById('dept-modal-overlay');
+            const modal = document.getElementById('dept-modal');
+            
+            overlay.classList.add('opacity-0');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                if (overlay.classList.contains('opacity-0')) {
+                    overlay.classList.add('hidden');
+                    modal.classList.add('hidden');
+                }
+            }, 300);
+        }
+
+        function renderDeptManagerList() {
+            const list = document.getElementById('dept-manager-list');
+            list.innerHTML = '';
+
+            appState.departments.forEach((dept) => {
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 bg-slate-50 p-2 rounded-lg border border-slate-200';
+                item.innerHTML = `
+                    <input type="text" value="${dept.name}" onchange="updateDepartmentName('${dept.id}', this.value)" class="flex-grow bg-white border border-slate-200 rounded p-1 text-xs focus:outline-none focus:ring-1 focus:ring-teal-500">
+                    <button onclick="deleteDepartment('${dept.id}')" class="text-slate-400 hover:text-rose-600 p-1.5 transition" title="מחק מחלקה">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        function updateDepartmentName(id, newName) {
+            if (!newName.trim()) return;
+            const dept = appState.departments.find(d => d.id === id);
+            if (dept) {
+                dept.name = newName.trim();
+                saveAndRefresh();
+            }
+        }
+
+        function addNewDepartment() {
+            const input = document.getElementById('new-dept-name');
+            const name = input.value.trim();
+            if (!name) return;
+
+            const id = 'dept' + Date.now();
+            appState.departments.push({ id, name });
+            input.value = '';
+            
+            renderDeptManagerList();
+            saveAndRefresh();
+        }
+
+        function deleteDepartment(id) {
+            appState.auditRows = appState.auditRows.filter(r => r.department !== id);
+            appState.departments = appState.departments.filter(d => d.id !== id);
+            
+            if (appState.selectedUnit === id) {
+                appState.selectedUnit = 'all';
+            }
+
+            renderDeptManagerList();
+            saveAndRefresh();
+        }
+
+        function saveAndRefresh() {
+            populateUnitSelectors();
+            renderAuditTable();
+            updateDashboardData();
         }
 
         // Bristol Scale Interactive Cards Rendering & Selection
@@ -1525,7 +1700,6 @@
                     : 'border-slate-200 bg-white hover:border-teal-400 hover:shadow-sm hover:translate-y-[-1px]'
                 }`;
                 
-                // Pure HTML/CSS representations of stool textures
                 let illustration = '';
                 if (item.type === 1) {
                     illustration = `
@@ -1639,7 +1813,6 @@
 
             scoreVal.innerText = `${total} נקודות`;
 
-            // Display current selected drugs list
             if (selectedDrugs.length > 0) {
                 selectedDrugsBox.innerHTML = '<span class="text-slate-400 block mb-1">תרופות שנבחרו:</span>' + 
                     selectedDrugs.map(d => `<span class="inline-block bg-slate-800 text-teal-300 text-[10px] px-2 py-0.5 rounded border border-slate-700 ml-1 mb-1 font-semibold">${d}</span>`).join('');
@@ -1695,7 +1868,6 @@
         function setDecisionPath(pathKey) {
             const container = document.getElementById('decision-display-card');
             
-            // Handle buttons styling
             const btnPrev = document.getElementById('btn-path-prev');
             const btnOic = document.getElementById('btn-path-oic');
             const btnImpaction = document.getElementById('btn-path-impaction');
@@ -1761,14 +1933,12 @@
             const bristol = document.getElementById('gen-bristol').value;
             const strain = document.getElementById('gen-strain').value;
 
-            // Checked symptoms
             const syms = [];
             if (document.getElementById('sym-bloat').checked) syms.push('בטן תפוחה/רגישות');
             if (document.getElementById('sym-pain').checked) syms.push('כאב בטן עוויתי');
             if (document.getElementById('sym-nausea').checked) syms.push('בחילות/אי שקט');
             if (document.getElementById('sym-leak').checked) syms.push('דליפת נוזל צואתי (חשד לשלשול מדומה)');
 
-            // Checked actions
             const acts = [];
             if (document.getElementById('act-fluid').checked) acts.push('עידוד שתייה הדרגתי');
             if (document.getElementById('act-sit').checked) acts.push('ישיבה יזומה בשירותים לאחר ארוחה');
@@ -1850,17 +2020,14 @@
                 const expBox = document.getElementById(`quiz-exp-${qIdx}`);
                 expBox.classList.remove('hidden');
 
-                // Clear previous classes and style response visually
                 const radioInputs = document.querySelectorAll(`input[name="quiz-q-${qIdx}"]`);
                 radioInputs.forEach((input, oIdx) => {
                     const labelContainer = input.closest('label');
                     labelContainer.className = "flex items-start gap-2 text-xs p-2.5 bg-white rounded-lg border border-slate-200 cursor-pointer transition";
                     
                     if (oIdx === item.correct) {
-                        // Highlight correct answer in green
                         labelContainer.classList.add('border-emerald-500', 'bg-emerald-50', 'text-emerald-900', 'font-semibold');
                     } else if (selected && parseInt(selected.value) === oIdx) {
-                        // Highlight selected incorrect answer in red
                         labelContainer.classList.add('border-rose-400', 'bg-rose-50', 'text-rose-900');
                     }
                 });
@@ -1882,7 +2049,6 @@
             
             if (isOpen) {
                 overlay.classList.remove('hidden');
-                // Force reflow
                 overlay.offsetHeight;
                 overlay.classList.remove('opacity-0');
                 drawer.classList.remove('translate-x-full');
@@ -1893,7 +2059,7 @@
                     if (overlay.classList.contains('opacity-0')) {
                         overlay.classList.add('hidden');
                     }
-                }, 300); // 300ms match transition duration
+                }, 300);
             }
         }
 
@@ -1913,7 +2079,6 @@
                 return;
             }
 
-            // Cap docVal to totalVal for sanity
             const docNormalized = Math.min(docVal, totalVal);
             const pct = Math.round((docNormalized / totalVal) * 100);
 
