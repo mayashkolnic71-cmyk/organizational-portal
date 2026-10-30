@@ -86,6 +86,15 @@ function initProtocolsDb() {
     }
 
     // 1. Wound Care Protocol ( סל חבישות 2024 ומקראה דירוג 1-6 )
+        upsertProtocol({
+        id: "proto_wound_care_infographic_img",
+        title: "אינפוגרפיקה: פרוטוקול טיפול בפצעים וסל חבישות 2024 (תמונה גרפית)",
+        link: "wound_care_protocol_infographic.jpeg",
+        category: "clinical",
+        type: "infographic",
+        desc: "אינפוגרפיקה קלינית מקיפה וברורה (תמונה גרפית נקייה ללא לוגו וללא חתימות): סל חבישות מתקדמות 2024, התאמה לפי רמת הפרשה ומקראה מלאה לדירוג פצעי לחץ 1 עד 6 ופצע טראומטי."
+    });
+
     upsertProtocol({
         id: "proto_wound_care_2024",
         title: "פרוטוקול טיפולי בפצעים - סל חבישות מתקדמות 2024 ומקראה דירוג פצעי לחץ",
