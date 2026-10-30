@@ -1207,24 +1207,54 @@ function renderShiftSupervisor() {
 }
 
 function navigate(viewName) {
-    document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
-    if(document.getElementById(`nav-${viewName}`)) {
-        document.getElementById(`nav-${viewName}`).classList.add('active');
+    try {
+        document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
+        if(document.getElementById(`nav-${viewName}`)) {
+            document.getElementById(`nav-${viewName}`).classList.add(`active`);
+        }
+        
+        const contentArea = document.getElementById('content-area');
+        if (!contentArea) return;
+
+        if (viewName === 'user-guide') {
+            if (typeof renderUserGuideView === 'function') renderUserGuideView();
+        } else if (viewName === 'intro') {
+            contentArea.innerHTML = renderIntro();
+        } else if (viewName === 'tip') {
+            contentArea.innerHTML = renderTip();
+        } else if (viewName === 'dashboard') {
+            contentArea.innerHTML = renderDashboard();
+        } else if (viewName === 'onboarding') {
+            contentArea.innerHTML = renderOnboarding();
+        } else if (viewName === 'shift-supervisor') {
+            contentArea.innerHTML = renderShiftSupervisor();
+        } else if (viewName === 'interprofessional') {
+            if (typeof renderInterprofessionalDashboard === 'function') renderInterprofessionalDashboard();
+        } else if (viewName === 'pocket-guides') {
+            if (typeof renderPocketGuides === 'function') renderPocketGuides();
+        } else if (viewName === 'trainings') {
+            contentArea.innerHTML = renderTrainings();
+        } else if (viewName === 'cdss') {
+            if (typeof renderCdssView === 'function') renderCdssView();
+        } else if (viewName === 'procedures') {
+            contentArea.innerHTML = renderProcedures();
+        } else if (viewName === 'protocols') {
+            contentArea.innerHTML = renderProtocols();
+        } else if (viewName === 'forms') {
+            contentArea.innerHTML = renderForms();
+        } else if (viewName === 'manager-portal') {
+            if (typeof renderManagerPortalView === 'function') renderManagerPortalView();
+        } else if (viewName === 'agent') {
+            contentArea.innerHTML = renderAgent();
+        } else if (viewName === 'settings') {
+            contentArea.innerHTML = renderSettings();
+        } else {
+            if (typeof renderUserGuideView === 'function') renderUserGuideView();
+            else contentArea.innerHTML = renderDashboard();
+        }
+    } catch(err) {
+        console.error('Error navigating to view: ' + viewName, err);
     }
-    
-    const contentArea = document.getElementById('content-area');
-    if (viewName === 'intro') contentArea.innerHTML = renderIntro();
-    else if (viewName === 'tip') contentArea.innerHTML = renderTip();
-    else if (viewName === 'dashboard') contentArea.innerHTML = renderDashboard();
-    else if (viewName === 'onboarding') contentArea.innerHTML = renderOnboarding();
-    else if (viewName === 'shift-supervisor') contentArea.innerHTML = renderShiftSupervisor();
-    else if (viewName === 'forms') contentArea.innerHTML = renderForms();
-    else if (viewName === 'trainings') contentArea.innerHTML = renderTrainings();
-    else if (viewName === 'procedures') contentArea.innerHTML = renderProcedures();
-    else if (viewName === 'protocols') contentArea.innerHTML = renderProtocols();
-    else if (viewName === 'agent') contentArea.innerHTML = renderAgent();
-    else if (viewName === 'settings') contentArea.innerHTML = renderSettings();
-    else contentArea.innerHTML = `<h2>${viewName}</h2>`;
 }
 
 let agentWeeklyKnowledgeBase = [
@@ -3874,4 +3904,46 @@ function filterUserGuideTOC(query) {
             `).join('');
         }
     }
+}
+
+
+// ==============================================================
+// CDSS & MANAGER PORTAL EMBEDDED VIEWS WITH RETURN NAVIGATION
+// ==============================================================
+function renderCdssView() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+    contentArea.innerHTML = `
+        <div class="view-header-bar" style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:12px 18px; border-radius:12px; margin-bottom:15px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+            <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                <span>➜</span> חזרה לדשבורד הראשי
+            </button>
+            <div style="font-weight:bold; font-size:15px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                <span>🩺</span> מערכת תומכת החלטה קלינית (CDSS) המותאמת לאוכלוסייה הגריאטרית
+            </div>
+            <a href="https://geriatric-cdss-calculator2.vercel.app/" target="_blank" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); text-decoration:none; font-size:12px; padding:8px 14px; border-radius:8px;">
+                פתח בחלון נפרד ↗
+            </a>
+        </div>
+        <iframe src="https://geriatric-cdss-calculator2.vercel.app/" style="width:100%; height:calc(100vh - 175px); min-height:650px; border:none; border-radius:12px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.06);" title="CDSS"></iframe>
+    `;
+}
+
+function renderManagerPortalView() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+    contentArea.innerHTML = `
+        <div class="view-header-bar" style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:12px 18px; border-radius:12px; margin-bottom:15px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+            <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                <span>➜</span> חזרה לדשבורד הראשי
+            </button>
+            <div style="font-weight:bold; font-size:15px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+                <span>📊</span> פורטל מעקב ובקרה למנהל
+            </div>
+            <a href="https://organizational-nurse-management-wor.vercel.app/" target="_blank" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); text-decoration:none; font-size:12px; padding:8px 14px; border-radius:8px;">
+                פתח בחלון נפרד ↗
+            </a>
+        </div>
+        <iframe src="https://organizational-nurse-management-wor.vercel.app/" style="width:100%; height:calc(100vh - 175px); min-height:650px; border:none; border-radius:12px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.06);" title="פורטל מעקב ובקרה למנהל"></iframe>
+    `;
 }
