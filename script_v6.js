@@ -2853,3 +2853,642 @@ function sendTeamMessage(e) {
 }
 
 window.simulateNotifications = openMessagingModal;
+
+
+// ==============================================================
+// 1. INTERPROFESSIONAL DEPARTMENTAL GOALS DASHBOARD (ETHICAL / NO PHI)
+// ==============================================================
+let activeInterprofDept = 'all';
+
+function renderInterprofessionalDashboard() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+        <div class="fade-in space-y-6">
+            <!-- Header Bar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                    <span>➜</span> חזרה לדשבורד הראשי
+                </button>
+                <div style="text-align:center;">
+                    <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <span>🎯</span> דשבורד יעדים וממשקים רב-מקצועיים במחלקה
+                    </h2>
+                    <span style="font-size:12px; color:var(--text-secondary);">ניהול איכות, סנכרון ממשקים ובטיחות הטיפול ברמה המחלקתית (ללא פרטי מטופלים מזוהים)</span>
+                </div>
+                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🖨️</span> הדפס סיכום A4
+                </button>
+            </div>
+
+            <!-- Ethical Standard Notice -->
+            <div style="background:rgba(2, 132, 199, 0.08); border-right:4px solid #0284c7; padding:12px 16px; border-radius:0 10px 10px 0; font-size:12.5px; color:var(--text-primary); display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:16px;">🛡️</span>
+                    <span><strong>תקן אתיקה והגנת הפרטיות:</strong> דשבורד זה מנהל יעדי איכות, נהלים וממשקי עבודה מחלקתיים. תוכניות טיפול פרטניות מנוהלות אך ורק בתוך הגיליון הרפואי הממוחשב (EHR).</span>
+                </div>
+                <span class="badge" style="background:#0284c7; color:white; font-size:10.5px; padding:3px 8px; border-radius:6px;">ISO / MOH Accredited</span>
+            </div>
+
+            <!-- Department Filter & Overview Cards -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; gap:8px;">
+                    <button onclick="filterInterprofDept('all')" class="btn" style="${activeInterprofDept==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">כלל המחלקות</button>
+                    <button onclick="filterInterprofDept('complex')" class="btn" style="${activeInterprofDept==='complex' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">סיעוד מורכב</button>
+                    <button onclick="filterInterprofDept('vent')" class="btn" style="${activeInterprofDept==='vent' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">סיעוד מונשמים</button>
+                    <button onclick="filterInterprofDept('rehab')" class="btn" style="${activeInterprofDept==='rehab' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">שיקום גריאטרי</button>
+                </div>
+                <div style="font-size:12px; color:var(--text-secondary);">תקופת יעד: <strong>רבעון נוכחי 2026</strong></div>
+            </div>
+
+            <!-- KPI Metric Counters -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
+                <div class="interprof-card" style="border-top:4px solid #059669;">
+                    <div style="font-size:11.5px; color:var(--text-secondary);">מניעת פצעים ותפרחת IAD</div>
+                    <div style="font-size:24px; font-weight:800; color:#059669; margin:4px 0;">94% עמידה</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">פרוטוקול 3 שלבים וליחוח מותאם</div>
+                </div>
+                <div class="interprof-card" style="border-top:4px solid #0284c7;">
+                    <div style="font-size:11.5px; color:var(--text-secondary);">בטיחות ברחצה יומית</div>
+                    <div style="font-size:24px; font-weight:800; color:#0284c7; margin:4px 0;">100% תקין</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">אפס כוויות ונפילות במקלחת</div>
+                </div>
+                <div class="interprof-card" style="border-top:4px solid #d97706;">
+                    <div style="font-size:11.5px; color:var(--text-secondary);">סנכרון ניוד ומעברים (פיזיו+סיעוד)</div>
+                    <div style="font-size:24px; font-weight:800; color:#d97706; margin:4px 0;">88% יישום</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">קימה לכורסה וסולמות תמיכה</div>
+                </div>
+                <div class="interprof-card" style="border-top:4px solid #7c3aed;">
+                    <div style="font-size:11.5px; color:var(--text-secondary);">התאמת מרקמים (IDDSI) ותזונה</div>
+                    <div style="font-size:24px; font-weight:800; color:#7c3aed; margin:4px 0;">96% סנכרון</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">אומדן קלינאית ודיאטנית תוך 48 שעות</div>
+                </div>
+            </div>
+
+            <!-- Interprofessional Quality Targets List -->
+            <div class="interprof-card" style="padding:22px;">
+                <h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin-top:0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                    <span>📋</span> יעדי איכות מחלקתיים וממשקים רב-מקצועיים מוגדרים
+                </h3>
+
+                <div style="display:flex; flex-direction:column; gap:16px;">
+                    <!-- Target 1 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:12px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                            <div>
+                                <strong style="font-size:13.5px; color:var(--text-primary);">1. מניעת פצעי לחץ, קרעי עור (Skin Tears) ופגיעות לחות IAD</strong>
+                                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">
+                                    יישום פרוטוקול שלמות העור: שימוש בסבוני pH 5.5 ללא שטיפה, מריחת אמוליינט תוך 3 דקות, חבישות סיליקון ותרסיס מגן Cavilon.
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#dcfce7; color:#15803d; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">95% עמידה ביעד</span>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
+                            <span class="role-badge role-nurse">סיעוד: אומדן עור ושינויי תנוחה</span>
+                            <span class="role-badge role-caregiver">מטפלים: ניקוי עדין ושימון עור</span>
+                            <span class="role-badge role-diet">דיאטה: העשרת חלבון ואבץ</span>
+                            <span class="role-badge role-ot">ריפוי בעיסוק: כריות לחץ ומזרנים</span>
+                        </div>
+                    </div>
+
+                    <!-- Target 2 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:12px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                            <div>
+                                <strong style="font-size:13.5px; color:var(--text-primary);">2. פרוטוקול רחצה יומית בטוחה ומניעת כוויות/נפילות</strong>
+                                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">
+                                    בדיקת טמפרטורת מים (37-40°C), רחצה בישיבה בלבד בכסא מקלחת נעול, כיסוי למניעת היפותרמיה, הגנה אטומה על צנתרים ופצעים.
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#e0f2fe; color:#0369a1; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">100% תקין במדדי הבקרה</span>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
+                            <span class="role-badge role-caregiver">מטפלים: בדיקת מים וליווי צמוד</span>
+                            <span class="role-badge role-nurse">סיעוד: כיסוי צנתרים ומעקב עור</span>
+                            <span class="role-badge role-pt">פיזיותרפיה: הנחיות מעבר בטוח</span>
+                        </div>
+                    </div>
+
+                    <!-- Target 3 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:12px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                            <div>
+                                <strong style="font-size:13.5px; color:var(--text-primary);">3. תוכנית ניוד ומעברים משותפת (פיזיותרפיה + סיעוד)</strong>
+                                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">
+                                    הגדרת רמת סיוע ברורה לכל מטופל (מטפל יחיד / 2 מטפלים / מנוף הרמה), קימה מתוזמנת לכורסה במשמרות בוקר וערב.
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#fef3c7; color:#b45309; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">88% יישום (יעד 90%)</span>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
+                            <span class="role-badge role-pt">פיזיותרפיה: קביעת רמת ניידות</span>
+                            <span class="role-badge role-nurse">סיעוד: סנכרון שעות הושבה</span>
+                            <span class="role-badge role-caregiver">מטפלים: שימוש במנופים תקניים</span>
+                        </div>
+                    </div>
+
+                    <!-- Target 4 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:12px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                            <div>
+                                <strong style="font-size:13.5px; color:var(--text-primary);">4. מניעת אספירציות והתאמת מרקמי בליעה (IDDSI)</strong>
+                                <div style="font-size:12px; color:var(--text-secondary); margin-top:3px;">
+                                    ביצוע אומדן בליעה ותזונה תוך 48 שעות, התאמת צמיגות נוזלים (נקטר/דבש/פודינג), הדרכת אכילה בישיבה זקופה 90 מעלות.
+                                </div>
+                            </div>
+                            <span class="badge" style="background:#fae8ff; color:#86198f; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">96% סנכרון תקין</span>
+                        </div>
+                        <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
+                            <span class="role-badge role-st">קלינאות: מבדק בליעה וקביעת IDDSI</span>
+                            <span class="role-badge role-diet">דיאטה: העשרה תזונתית מותאמת</span>
+                            <span class="role-badge role-nurse">סיעוד: ניטור קוצר נשימה ושיעול</span>
+                            <span class="role-badge role-caregiver">מטפלים: האכלה איטית ומנח 90°</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interprofessional Responsibility Matrix Table -->
+            <div class="interprof-card" style="padding:22px;">
+                <h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin-top:0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                    <span>🤝</span> מטריצת ממשקי עבודה וחלוקת אחריות קלינית
+                </h3>
+
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:12.5px; text-align:right;">
+                        <thead>
+                            <tr style="background:var(--bg-color); border-bottom:2px solid var(--border-color);">
+                                <th style="padding:10px 14px;">תחום קליני</th>
+                                <th style="padding:10px 14px;">סיעוד (אח/ות)</th>
+                                <th style="padding:10px 14px;">מטפלים סיעודיים</th>
+                                <th style="padding:10px 14px;">פיזיותרפיה / ריפוי בעיסוק</th>
+                                <th style="padding:10px 14px;">תזונה / קלינאות תקשורת</th>
+                                <th style="padding:10px 14px;">רופא מחלקה</th>
+                            </tr>
+                        </thead>
+                        <tbody style="divide-y: 1px solid var(--border-color);">
+                            <tr>
+                                <td style="padding:12px 14px; font-weight:bold; color:var(--primary-color);">שלמות העור ו-IAD</td>
+                                <td style="padding:12px 14px;">סקר עור מלא, התאמת חבישות, טיפול ב-IAD דרגה 2+</td>
+                                <td style="padding:12px 14px;">ניקוי ללא שטיפה, החלפה מידית, מריחת אמוליינט</td>
+                                <td style="padding:12px 14px;">התאמת כריות ישיבה מונעות לחץ ומנחי גפה</td>
+                                <td style="padding:12px 14px;">התאמת חלבון 1.25-1.5 גרם/ק"ג לריפוי רקמות</td>
+                                <td style="padding:12px 14px;">מרשם משחות טיפוליות (אנטי-פטרייתי בקנדידה)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 14px; font-weight:bold; color:var(--primary-color);">בטיחות רחצה יומית</td>
+                                <td style="padding:12px 14px;">כיסוי צנתרים/פצעים, מעקב המודינמי לאחר רחצה</td>
+                                <td style="padding:12px 14px;">בדיקת מים (37-40°C), רחצה בישיבה, מניעת החלקה</td>
+                                <td style="padding:12px 14px;">הדרכת שימוש במנופי רחצה וכסאות מקלחת</td>
+                                <td style="padding:12px 14px;">-</td>
+                                <td style="padding:12px 14px;">הנחיות הגבלת חום במטופלים עם אי ספיקת לב</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 14px; font-weight:bold; color:var(--primary-color);">ניוד ובטיחות מעברים</td>
+                                <td style="padding:12px 14px;">פיקוח על הושבה מתוזמנת, מניעת נפילות</td>
+                                <td style="padding:12px 14px;">הקפדה על מספר מטפלים נדרש ונעילת מעצורים</td>
+                                <td style="padding:12px 14px;">קביעת תוכנית ניוד אישית והתאמת אביזרי הליכה</td>
+                                <td style="padding:12px 14px;">-</td>
+                                <td style="padding:12px 14px;">סקירת תרופות הגורמות לתת ל"ד תנוחתי (Beers)</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:12px 14px; font-weight:bold; color:var(--primary-color);">מרקמי מזון ובליעה</td>
+                                <td style="padding:12px 14px;">ניטור סימני חנק, אומדן נשימתי בארוחה</td>
+                                <td style="padding:12px 14px;">האכלה בישיבה זקופה 90°, איסור השכבה שעה מסיום</td>
+                                <td style="padding:12px 14px;">התאמת מנח ראש וצוואר בישיבה (OT)</td>
+                                <td style="padding:12px 14px;">קביעת רמת IDDSI (ST) והרכב קלורי מועשר (דיאטה)</td>
+                                <td style="padding:12px 14px;">הפניה לבדיקת בליעה מכשירית (FEES/VFSS)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Interdisciplinary Team Meeting Checklist (Huddle Form) -->
+            <div class="interprof-card" style="padding:22px; background:var(--bg-color);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div>
+                        <h4 style="font-size:14px; font-weight:700; color:var(--text-primary); margin:0;">
+                            📝 צ'ק-ליסט שבועי למפגש צוות רב-מקצועי (Interdisciplinary Huddle)
+                        </h4>
+                        <span style="font-size:12px; color:var(--text-secondary);">כלי מובנה למנהלת לסקירת מגמות, צווארי בקבוק ופתרונות ממשקיים</span>
+                    </div>
+                    <button onclick="saveHuddleNotes()" class="btn" style="background:var(--primary-color); color:white; font-size:12px; padding:6px 14px; border-radius:8px;">
+                        שמור סיכום מפגש
+                    </button>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:12px;">
+                    <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; background:var(--surface); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer;">
+                        <input type="checkbox" id="huddle_chk_1" style="margin-top:2px;">
+                        <span>נסקרו מטופלים עם סיכון גבוה ל-IAD / פצעי לחץ וסוכם פרוטוקול חבישות וספיגה</span>
+                    </label>
+                    <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; background:var(--surface); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer;">
+                        <input type="checkbox" id="huddle_chk_2" style="margin-top:2px;">
+                        <span>בוצעה בקרה על נהלי רחצה יומית בטוחה (טמפ' מים ורחצה בישיבה בלבד)</span>
+                    </label>
+                    <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; background:var(--surface); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer;">
+                        <input type="checkbox" id="huddle_chk_3" style="margin-top:2px;">
+                        <span>תוכניות ניוד עודכנו ע"י פיזיותרפיה וסונכרנו מול אחיות המשמרת והמטפלים</span>
+                    </label>
+                    <label style="display:flex; align-items:flex-start; gap:8px; font-size:12.5px; background:var(--surface); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer;">
+                        <input type="checkbox" id="huddle_chk_4" style="margin-top:2px;">
+                        <span>הושלמה התאמת מרקמי בליעה (IDDSI) והעשרה תזונתית לכל הקבלות החדשות</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function filterInterprofDept(dept) {
+    activeInterprofDept = dept;
+    renderInterprofessionalDashboard();
+}
+
+function saveHuddleNotes() {
+    showToast('סיכום המפגש הרב-מקצועי נשמר בהצלחה במערכת האיכות!', 'success');
+}
+
+
+// ==============================================================
+// 2. RESPONSIVE POCKET GUIDES (MOBILE-FIRST)
+// ==============================================================
+let activePocketCategory = 'all';
+let pocketSearchQuery = '';
+
+function renderPocketGuides() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+        <div class="fade-in space-y-6">
+            <!-- Header Bar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                    <span>➜</span> חזרה לדשבורד הראשי
+                </button>
+                <div style="text-align:center;">
+                    <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <span>📱</span> כרטיסיות עזר מהירות לנייד (Clinical Pocket Guides)
+                    </h2>
+                    <span style="font-size:12px; color:var(--text-secondary);">מדריכים קליניים מתומצתים ומעשיים לשליפה מהירה ליד מיטת המטופל</span>
+                </div>
+                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🖨️</span> הדפס כרטיסיות
+                </button>
+            </div>
+
+            <!-- Search & Category Filters (Mobile Optimized) -->
+            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:14px; padding:14px; space-y:12px;">
+                <div style="position:relative;">
+                    <input type="text" id="pocket-search-input" oninput="handlePocketSearch(this.value)" placeholder="חפש מושג, סוג פצע, IAD, מרקם, רחצה, תרופה..." value="${pocketSearchQuery}" style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:13px; box-sizing:border-box;">
+                </div>
+
+                <div style="display:flex; gap:6px; flex-wrap:wrap; overflow-x:auto; padding-bottom:4px;">
+                    <button onclick="filterPocketCategory('all')" class="btn" style="${activePocketCategory==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">הכל</button>
+                    <button onclick="filterPocketCategory('skin_iad')" class="btn" style="${activePocketCategory==='skin_iad' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛡️ עור ו-IAD</button>
+                    <button onclick="filterPocketCategory('bathing')" class="btn" style="${activePocketCategory==='bathing' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛁 סיכוני רחצה</button>
+                    <button onclick="filterPocketCategory('wounds')" class="btn" style="${activePocketCategory==='wounds' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🩹 אטלס פצעים</button>
+                    <button onclick="filterPocketCategory('iddsi')" class="btn" style="${activePocketCategory==='iddsi' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🥄 מרקמים (IDDSI)</button>
+                    <button onclick="filterPocketCategory('mobility')" class="btn" style="${activePocketCategory==='mobility' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🚶 מעברים וניוד</button>
+                    <button onclick="filterPocketCategory('delirium')" class="btn" style="${activePocketCategory==='delirium' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🧠 דליריום (CAM)</button>
+                    <button onclick="filterPocketCategory('beers')" class="btn" style="${activePocketCategory==='beers' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">⚠️ קריטריוני Beers</button>
+                </div>
+            </div>
+
+            <!-- Pocket Cards Container -->
+            <div class="pocket-grid" id="pocket-cards-container">
+                <!-- Dynamically rendered -->
+            </div>
+        </div>
+    `;
+
+    renderPocketCards();
+}
+
+function filterPocketCategory(cat) {
+    activePocketCategory = cat;
+    renderPocketGuides();
+}
+
+function handlePocketSearch(val) {
+    pocketSearchQuery = val.trim().toLowerCase();
+    renderPocketCards();
+}
+
+const pocketGuidesMasterData = [
+    // 1. SKIN INTEGRITY & IAD
+    {
+        id: "guide_skin_iad",
+        category: "skin_iad",
+        title: "פרוטוקול שלמות העור: אמצעי ליחוח, ניקוי והגנה מותאמים (מניעת תפרחת IAD ו-MASD)",
+        icon: "🛡️",
+        badge: "בטיחות עור ומניעת לחות",
+        content: `
+            <div class="space-y-3">
+                <div class="success-callout">
+                    <strong>פרוטוקול 3 השלבים התקני לשמירה על העור בגיל השלישי:</strong>
+                </div>
+                
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>1. ניקוי עדין (Cleanse):</strong>
+                    <ul style="margin:4px 0 0 16px; padding:0; list-style-type:disc;">
+                        <li>שימוש בתכשירי ניקוי ללא שטיפה (No-Rinse Foams) בעלי <strong>pH 5.5</strong> מותאם לחומציות העור הטבעית.</li>
+                        <li><strong>איסור מוחלט:</strong> שפשוף במגבות, סבון גוף רגיל ומגבונים מבושמים/אלכוהוליים המפרקים את שכבת השומן המגנה.</li>
+                    </ul>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>2. ליחוח ושימון מונע (Moisturize):</strong>
+                    <ul style="margin:4px 0 0 16px; padding:0; list-style-type:disc;">
+                        <li>מריחה יומית של קרם לחות מרכך (Emollients/Urea) על עור הגפיים והגו (מניעת עור יבש, גרד וקרעי עור).</li>
+                        <li><strong>כלל 3 הדקות:</strong> מריחה תוך 3 דקות מסיום שטיפה כשהעור עוד לח לכליאת המים.</li>
+                    </ul>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>3. הגנה ומחסום לחות (Protect / Barrier):</strong>
+                    <ul style="margin:4px 0 0 16px; padding:0; list-style-type:disc;">
+                        <li><strong>קרם מחסום שקוף (Dimethicone):</strong> מאפשר ניטור שוטף של העור ואינו סותם את כושר הספיגה של החיתול.</li>
+                        <li><strong>משחת אבץ עבה (Zinc Oxide):</strong> מומלץ בהפרשות חומציות מרובות ובשלשולים תכופים.</li>
+                        <li><strong>תרסיס סרט מגן (Cavilon Barrier Film):</strong> אינו צורב, מגן על עור שברירי מפני פציעות דבק ולחות.</li>
+                    </ul>
+                </div>
+
+                <div class="warning-callout">
+                    <strong>דגש בטיחות:</strong> יש להשתמש במוצרי ספיגה נושמים (Breathable). <strong>חל איסור מוחלט על "חיתול כפול"</strong> (חיתול בתוך חיתול) החוסם מעבר אוויר ומאיץ תפרחת IAD חמורה.
+                </div>
+            </div>
+        `
+    },
+
+    // 2. BATHING SAFETY
+    {
+        id: "guide_bathing",
+        category: "bathing",
+        title: "בטיחות ברחצה יומית: ניהול סיכונים ושמירה על שלמות העור",
+        icon: "🛁",
+        badge: "מניעת נפילות וכוויות",
+        content: `
+            <div class="space-y-3">
+                <div class="warning-callout">
+                    <strong>5 סיכוני הליבה ברחצה יומית בקשישים והנחיות מניעה:</strong>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>1. סיכון כוויות ופגיעה תרמית:</strong>
+                    <p style="margin:3px 0;">בקשישים קיימת ירידה בתחושת חום. <strong>טמפרטורת מים מרבית מותרת: 37°C עד 40°C בלבד!</strong> חובת בדיקת מים על אמת היד של המטפל/ת לפני הרטבת המטופל. פתיחת מים קרים תחילה.</p>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>2. סיכון נפילות והחלקות במקלחת:</strong>
+                    <p style="margin:3px 0;">רחצה בישיבה בלבד (כסא גלגלים לרחצה / כסא מקלחת ייעודי עם מעצורים נעולים וחגורת בטיחות). איסור מוחלט על עזיבת המטופל לבדו אפילו לרגע אחד!</p>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>3. תת לחץ דם תנוחתי והיפותרמיה:</strong>
+                    <p style="margin:3px 0;">מים חמים גורמים להרחבת כלי דם (Vasodilation), ירידת ל"ד והתעלפות. יש לוודא חדר מחומם ללא משבי רוח, רחצה בחלקים וכיסוי שאר הגוף במגבת יבשה.</p>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>4. הגנה על צנתרים, נקזים וחבישות:</strong>
+                    <p style="margin:3px 0;">חובת כיסוי אטום למים של צנתר ורידי מרכזי (PICC/CVC), נקזים או פצעים פעילים לפני הרחצה למניעת זיהומי זרם דם קטלניים (CLABSI).</p>
+                </div>
+
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>5. מניעת פגיעה במחסום השומני של העור:</strong>
+                    <p style="margin:3px 0;">הימנעות משפשוף במגבות גסות. ייבוש עדין בטפיחות (Pat dry) ומריחת קרם לחות בתוך 3 דקות מסיום הרחצה.</p>
+                </div>
+            </div>
+        `
+    },
+
+    // 3. WOUND ATLAS - INCLUDING IAD WOUND TYPE
+    {
+        id: "guide_wounds",
+        category: "wounds",
+        title: "אטלס סוגי פצעים קליניים ואבחנה מבדלת (כולל פצעי IAD)",
+        icon: "🩹",
+        badge: "אבחנה מבדלת ופרוטוקול טיפול",
+        content: `
+            <div class="space-y-4">
+                <!-- IAD -->
+                <div style="border:1px solid #fbcfe8; background:#fff5f7; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-iad">פצעי IAD ופגיעות לחות (Incontinence-Associated Dermatitis)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה:</strong> פגיעה כימית ומכאנית משתן וצואה שלשולית חומצית (אנזימי פרוטאז וליפאז).</li>
+                        <li><strong>מיקום:</strong> מפשעות, קפלי עור, ישבן פנימי, פרינאום (פיזור סימטרי מפושט).</li>
+                        <li><strong>מאפיינים:</strong> דרגה 1: אריתמה מבריקה ללא אובדן עור; דרגה 2: אובדן עור שטחי (Denuded) עם אזורים מפרישים נקודתיים; זיהום פטרייתי: נגעי לוויין אדומים (Satellite lesions).</li>
+                        <li><strong>טיפול:</strong> ניקוי בקצף pH 5.5, קרם Dimethicone או משחת אבץ, תרסיס Cavilon, משחה אנטי-פטרייתית בקנדידה.</li>
+                    </ul>
+                </div>
+
+                <!-- PRESSURE INJURY -->
+                <div style="border:1px solid #bfdbfe; background:#f0f7ff; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-pi">פצעי לחץ (Pressure Injuries - PI)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה:</strong> איסכמיה רקמתית ממושכת מלחץ וכוחות גזירה מעל בליטה גרמית.</li>
+                        <li><strong>דרגות:</strong> דרגה 1 (אודם בלתי נעלם), דרגה 2 (אובדן דרמיס שטחי/שלפוחית), דרגה 3 (חשיפת שומן תת-עורי), דרגה 4 (חשיפת שריר/עצם/גיד), DTI (רקמה עמוקה), Unstageable (מכוסה Slough/גלד).</li>
+                        <li><strong>טיפול:</strong> שחרור לחץ מוחלט (Offloading), שינויי תנוחה במנח 30 מעלות, חבישות ספוג מתקדמות.</li>
+                    </ul>
+                </div>
+
+                <!-- SKIN TEARS -->
+                <div style="border:1px solid #fef08a; background:#fefce8; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-st">קרעי עור (Skin Tears - ISTAP)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה:</strong> גזירה או מכה קהה בעור דק ושברירי (Dermatoporosis), מעברים לא זהירים, הסרת דבקים.</li>
+                        <li><strong>סיווג:</strong> סוג 1 (ללא אובדן מתלה עור), סוג 2 (אובדן מתלה חלקי), סוג 3 (אובדן מתלה מלא).</li>
+                        <li><strong>טיפול:</strong> <strong>החזרת מתלה העור למקומו</strong>, איסור מוחלט על פלסטר דביק, שימוש בחבישת סיליקון (Mepilex).</li>
+                    </ul>
+                </div>
+
+                <!-- VENOUS ULCERS -->
+                <div style="border:1px solid #a7f3d0; background:#f0fdf4; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-vlu">כיבים ורידיים (Venous Leg Ulcers - VLU)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה ומאפיינים:</strong> אי ספיקה ורידית כרונית (CVI). מיקום מעל פטישון פנימי (Gaiter). הפרשות מרובות (Exudate גבוה), פיגמנטציה חומה ובצקת. דופק היקפי שמור.</li>
+                        <li><strong>טיפול עיקרי:</strong> <strong>חבישת לחץ (Compression Therapy)</strong> – לאחר שלילת מחלה עורקית בלבד! הרמת רגליים.</li>
+                    </ul>
+                </div>
+
+                <!-- ARTERIAL ULCERS -->
+                <div style="border:1px solid #fecdd3; background:#fff1f2; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-art">כיבים עורקיים (Arterial / Ischemic Ulcers)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה ומאפיינים:</strong> חסימת כלי דם (PAD). פצע בגבולות חדים ("Punch-out") בקצות אצבעות או עקב, ללא הפרשות, עור קר וללא שיער, היעדר דפקים, <strong>כאב עז</strong> בלילה.</li>
+                        <li><strong>⚠️ אזהרה קריטית: איסור מוחלט על חבישת לחץ!</strong> עלול להוביל לנמק מיידי וקטיעה. הפניה דחופה להערכת כלי דם.</li>
+                    </ul>
+                </div>
+
+                <!-- DIABETIC FOOT -->
+                <div style="border:1px solid #ddd6fe; background:#faf5ff; border-radius:10px; padding:12px;">
+                    <span class="wound-type-pill wound-pill-dfu">כיב כף רגל סוכרתית (Diabetic Foot Ulcer - DFU)</span>
+                    <ul style="margin:4px 0 0 16px; padding:0; font-size:12.5px; list-style-type:disc;">
+                        <li><strong>אטיולוגיה:</strong> נוירופתיה תחושתית (חוסר כאב) ועיוותי כף רגל. מוקף ביבלת קשה (Callus).</li>
+                        <li><strong>טיפול:</strong> פיזור עומסים (Offloading) והנעלה מותאמת, בדיקה יומית בין אצבעות, איזון גליקמי.</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
+
+    // 4. IDDSI DYSPHAGIA GUIDE
+    {
+        id: "guide_iddsi",
+        category: "iddsi",
+        title: "מדריך מרקמי בליעה והאכלה בטוחה (תקן בינלאומי IDDSI)",
+        icon: "🥄",
+        badge: "מניעת אספירציות וחנק",
+        content: `
+            <div class="space-y-3">
+                <div class="success-callout">
+                    <strong>רמות צמיגות נוזלים ומזון לפי תקן IDDSI:</strong>
+                </div>
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <ul style="margin:0 0 0 16px; padding:0; list-style-type:disc;">
+                        <li><strong>רמה 0 (דק - Thin):</strong> מים, תה צלול (זרימה חופשית).</li>
+                        <li><strong>רמה 1 (דק מוסמך - Slightly Thick):</strong> סמיכות קלה למניעת שאיפה.</li>
+                        <li><strong>רמה 2 (מוסמך קל / נקטר - Mildly Thick):</strong> זורם מכפית אך משאיר ציפוי.</li>
+                        <li><strong>רמה 3 (מוסמך בינוני / דבש - Moderately Thick):</strong> נלגם מכוס או נאכל בכפית.</li>
+                        <li><strong>רמה 4 (מוסמך מאוד / פודינג - Extremely Thick):</strong> שומר על צורתו בכפית, אינו נלגם.</li>
+                        <li><strong>רמה 5 (קצוץ ולח - Minced & Moist):</strong> חתיכות עד 4 מ"מ לקשישים.</li>
+                        <li><strong>רמה 6 (רך וקטן - Soft & Bite-Sized):</strong> חתיכות עד 15 מ"מ, נמעך במזלג.</li>
+                        <li><strong>רמה 7 (רגיל - Regular):</strong> מרקם מזון רגיל.</li>
+                    </ul>
+                </div>
+                <div class="warning-callout">
+                    <strong>כללי בטיחות בהאכלה:</strong> הושבה זקופה ב-90 מעלות, אכילה איטית ללא דיבור בזמן בליעה, השארת המטופל בישיבה לפחות 30-45 דקות מסיום הארוחה למניעת רפלוקס ואספירציה שקטה.
+                </div>
+            </div>
+        `
+    },
+
+    // 5. MOBILITY & TRANSFERS
+    {
+        id: "guide_mobility",
+        category: "mobility",
+        title: "מדריך סולם מעברים וניוד בטוח (פיזיותרפיה וסיעוד)",
+        icon: "🚶",
+        badge: "ארגונומיה ומניעת פציעות",
+        content: `
+            <div class="space-y-3">
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <strong>סולם רמות סיוע במעברים:</strong>
+                    <ul style="margin:4px 0 0 16px; padding:0; list-style-type:disc;">
+                        <li><strong>עצמאי (Independent):</strong> ללא צורך בסיוע אדם.</li>
+                        <li><strong>השגחה / הנחיה מילולית:</strong> שמירת קשר עין ללא תמיכה פיזית.</li>
+                        <li><strong>סיוע אדם אחד:</strong> תמיכה במותן או בחגורת הליכה (Gait belt).</li>
+                        <li><strong>סיוע שני מטפלים:</strong> מטופל מוגבל עם חוסר יציבות משמעותי.</li>
+                        <li><strong>מנוף הרמה אקטיבי (Sit-to-Stand):</strong> למטופל המסוגל לשאת משקל על הרגליים.</li>
+                        <li><strong>מנוף הרמה פסיבי (Passive Hoist):</strong> למטופל סיעודי מרותק ללא נשיאת משקל.</li>
+                    </ul>
+                </div>
+                <div class="warning-callout">
+                    <strong>כללי ברזל:</strong> תמיד לנעול מעצורי מיטה וכסא לפני מעבר! הימנעות ממשיכה בזרועות המטופל (סכנת פריקת כתף וקרעי עור).
+                </div>
+            </div>
+        `
+    },
+
+    // 6. DELIRIUM CAM GUIDE
+    {
+        id: "guide_delirium",
+        category: "delirium",
+        title: "זיהוי מהיר של דליריום חריף (מבחן CAM מקוצר)",
+        icon: "🧠",
+        badge: "גילוי מוקדם ודגלים אדומים",
+        content: `
+            <div class="space-y-3">
+                <p>אבחנת דליריום דורשת נוכחות של <strong>קריטריונים 1 ו-2</strong> + לפחות אחד מבין <strong>3 או 4</strong>:</p>
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <ul style="margin:0 0 0 16px; padding:0; list-style-type:disc;">
+                        <li><strong>1. התחלה חריפה ומהלך תנודתי:</strong> שינוי פתאומי במצב ההכרה לעומת מצב הבסיס.</li>
+                        <li><strong>2. חוסר קשב (Inattention):</strong> קושי למקד, לשמור או להעביר קשב (מבחן ימי השבוע לאחור).</li>
+                        <li><strong>3. חשיבה לא מאורגנת:</strong> דיבור מקוטע, לא הגיוני, קפיצה מנושא לנושא.</li>
+                        <li><strong>4. שינוי ברמת ההכרה:</strong> ישנוניות יתר (היפואקטיבי) או אי שקט קיצוני (היפראקטיבי).</li>
+                    </ul>
+                </div>
+                <div class="success-callout">
+                    <strong>סיבות הפיכות נפוצות לבדיקה מיידית (I WATCH DEATH):</strong> זיהום סמוי (UTI/דלקת ריאות), עצירות חריפה, התייבשות, אצירת שתן, ותרופות חדשות (אנטיכולינרגיים/בנזודיאזפינים).
+                </div>
+            </div>
+        `
+    },
+
+    // 7. BEERS CRITERIA POCKET GUIDE
+    {
+        id: "guide_beers",
+        category: "beers",
+        title: "קריטריוני Beers 2023: תרופות בסיכון מוגבר בגיל השלישי",
+        icon: "⚠️",
+        badge: "בטיחות תרופתית ופוליפרמסי",
+        content: `
+            <div class="space-y-3">
+                <div class="warning-callout">
+                    <strong>קבוצות תרופות שיש להימנע מהן ככל האפשר בקשישים:</strong>
+                </div>
+                <div style="background:var(--bg-color); padding:10px; border-radius:8px;">
+                    <ul style="margin:0 0 0 16px; padding:0; list-style-type:disc;">
+                        <li><strong>בנזודיאזפינים (Lorivan, Clonex, Valium):</strong> מעלים פי 2-3 סיכון לנפילות, שברי צוואר ירך ודליריום.</li>
+                        <li><strong>אנטי-היסטמינים דור ראשון (Otrivin, Dimenhydrinate):</strong> נטל אנטיכולינרגי חמור, אצירת שתן ובלבול.</li>
+                        <li><strong>תרופות אנטי-פסיכוטיות (Halidol, Risperdal):</strong> אזהרת Black Box Warning לעלייה בתמותה ואירועים מוחיים בקשישים דמנטיים.</li>
+                        <li><strong>NSAIDs כרוני (Ibuprofen, Voltaren):</strong> סכנת דמם מדרכי עיכול ואי ספיקת כליות חריפה.</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    }
+];
+
+function renderPocketCards() {
+    const container = document.getElementById('pocket-cards-container');
+    if (!container) return;
+
+    const filtered = pocketGuidesMasterData.filter(g => {
+        const matchesCategory = (activePocketCategory === 'all' || g.category === activePocketCategory);
+        const matchesSearch = (!pocketSearchQuery || 
+            g.title.toLowerCase().includes(pocketSearchQuery) || 
+            g.content.toLowerCase().includes(pocketSearchQuery) ||
+            g.badge.toLowerCase().includes(pocketSearchQuery)
+        );
+        return matchesCategory && matchesSearch;
+    });
+
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:30px; color:var(--text-secondary);">לא נמצאו כרטיסיות תואמות לחיפוש שלך.</div>';
+        return;
+    }
+
+    container.innerHTML = filtered.map((g, idx) => `
+        <div class="pocket-guide-card" id="pocket-card-${g.id}">
+            <div class="pocket-guide-header" onclick="togglePocketCard('${g.id}')">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="font-size:24px;">${g.icon}</span>
+                    <div>
+                        <span class="badge" style="background:rgba(2,132,199,0.12); color:#0284c7; font-size:10.5px; padding:2px 7px; border-radius:4px; font-weight:bold;">${g.badge}</span>
+                        <h4 style="margin:4px 0 0 0; font-size:14px; font-weight:800; color:var(--text-primary); line-height:1.35;">${g.title}</h4>
+                    </div>
+                </div>
+                <span id="pocket-chevron-${g.id}" style="font-size:14px; color:var(--text-secondary); transition:transform 0.2s;">▼</span>
+            </div>
+            <div class="pocket-guide-body" id="pocket-body-${g.id}">
+                ${g.content}
+            </div>
+        </div>
+    `).join('');
+}
+
+function togglePocketCard(id) {
+    const body = document.getElementById('pocket-body-' + id);
+    const chevron = document.getElementById('pocket-chevron-' + id);
+    if (!body) return;
+    if (body.style.display === 'none') {
+        body.style.display = 'block';
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+    } else {
+        body.style.display = 'none';
+        if (chevron) chevron.style.transform = 'rotate(180deg)';
+    }
+}
