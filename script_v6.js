@@ -2849,6 +2849,8 @@ function sendTeamMessage(e) {
         complex_care: 'complex-care@hospital.org.il',
         vent_care: 'vent-care@hospital.org.il',
         rehab: 'rehab-geriatric@hospital.org.il',
+        chronic_nursing: 'chronic-nursing@hospital.org.il',
+        psychogeriatric: 'psychogeriatric@hospital.org.il',
         physicians: 'physicians@hospital.org.il'
     };
 
@@ -2894,6 +2896,59 @@ function renderInterprofessionalDashboard() {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
 
+    const deptInfoMap = {
+        all: {
+            title: '${curDept.title}',
+            sub: '${curDept.sub}',
+            kpi1: { label: 'מניעת פצעים ותפרחת IAD', val: '94% עמידה', sub: 'פרוטוקול 3 שלבים וליחוח מותאם' },
+            kpi2: { label: 'בטיחות ברחצה יומית', val: '100% תקין', sub: 'אפס כוויות ונפילות במקלחת' },
+            kpi3: { label: 'סנכרון ניוד ומעברים', val: '88% יישום', sub: 'קימה לכורסה וסולמות תמיכה' },
+            kpi4: { label: 'התאמת מרקמים (IDDSI) ותזונה', val: '96% סנכרון', sub: 'אומדן קלינאית ודיאטנית תוך 48 שעות' }
+        },
+        complex: {
+            title: 'יעדים וממשקים: מחלקת סיעוד מורכב',
+            sub: 'דגשי איכות: מניעת פצעי לחץ וקרעי עור, שלמות צנתרים, איזון כאב ורצף טיפול',
+            kpi1: { label: 'מניעת פצעי לחץ ו-IAD', val: '95% עמידה', sub: 'מזרנים דינמיים ושינויי תנוחה 30°' },
+            kpi2: { label: 'בטיחות רחצה והיפותרמיה', val: '100% תקין', sub: 'הגנה אטומה על צנתרים ופצעים' },
+            kpi3: { label: 'ניוד והושבה מתוזמנת', val: '85% יישום', sub: 'התאמת כריות ישיבה מונעות לחץ' },
+            kpi4: { label: 'העשרה חלבונית ו-IDDSI', val: '97% עמידה', sub: 'תוספי חלבון 1.5 גר/קג לריפוי פצעים' }
+        },
+        vent: {
+            title: 'יעדים וממשקים: מחלקת סיעוד מונשמים',
+            sub: 'דגשי איכות: מניעת דלקת ריאות מונשמים (VAP Bundle), בטיחות קנולות ופיום קנה, מניעת לחץ',
+            kpi1: { label: 'שלמות עור סביב טרכאוסטומיה', val: '98% תקין', sub: 'חבישות ספוגיות ייעודיות לטרכאו' },
+            kpi2: { label: 'בטיחות רחצה במיטה', val: '100% עמידה', sub: 'רחצה ללא מים וסבון pH 5.5' },
+            kpi3: { label: 'שינויי תנוחה וניקוז ריאתי', val: '92% יישום', sub: 'סנכרון פיזיו נשימתית וסיעוד' },
+            kpi4: { label: 'הזנה אנטרלית בטוחה (PEG)', val: '99% תקין', sub: 'הרמת מראשות 30-45° למניעת שאיפה' }
+        },
+        rehab: {
+            title: 'יעדים וממשקים: מחלקת שיקום גריאטרי',
+            sub: 'דגשי איכות: שיפור עצמאות תפקודית (FIM), מניעת נפילות פעילה, תרגול מעברים וחזרה לקהילה',
+            kpi1: { label: 'מניעת פציעות עור בפעילות', val: '96% תקין', sub: 'שרוולי הגנה במעברים וניוד' },
+            kpi2: { label: 'עצמאות ברחצה בליווי', val: '92% עמידה', sub: 'הדרכת מקלחת בטוחה עם אביזרי עזר' },
+            kpi3: { label: 'השגת יעדי ניוד ומרחק הליכה', val: '90% יישום', sub: 'סנכרון תרגילי הליכה יומיים במשמרת' },
+            kpi4: { label: 'התקדמות מרקמי מזון לרגיל', val: '94% סנכרון', sub: 'גמילה מהסמכה והדרכת בליעה' }
+        },
+        chronic_nursing: {
+            title: 'יעדים וממשקים: מחלקת גריאטריה כרונית סיעודית',
+            sub: 'דגשי איכות: שימור איכות חיים ותפקוד, מניעת פצעי לחץ ו-IAD במרותקים, מניעת קונטרקטורות וסרקופניה',
+            kpi1: { label: 'מניעת פצעי לחץ ו-IAD במרותקים', val: '96% עמידה', sub: 'פרוטוקול עור מקיף והחלפות תכופות' },
+            kpi2: { label: 'בטיחות ברחצה ושימון מונע', val: '100% תקין', sub: 'כלל 3 הדקות לליחוח ואפס כוויות' },
+            kpi3: { label: 'שינויי תנוחה ומנופי הרמה', val: '91% יישום', sub: 'מניעת משיכת גפיים וקרעי עור' },
+            kpi4: { label: 'האכלה סבלנית ומרקמי IDDSI', val: '95% סנכרון', sub: 'מניעת התייבשות ואספירציה שקטה' }
+        },
+        psychogeriatric: {
+            title: 'יעדים וממשקים: מחלקת תשושי נפש (דמנציה ואלצהיימר)',
+            sub: 'דגשי איכות: מניעת שוטטות ונפילות ללא קשירות (Restraint-Free), גישות לא-תרופתיות לאי-שקט, בטיחות רחצה סבלנית',
+            kpi1: { label: 'בטיחות סביבתית ללא קשירות', val: '98% חופש תנועה', sub: 'חיישני תנועה, סביבה מרופדת ונעימה' },
+            kpi2: { label: 'רחצה מרגיעה ללא כפייה', val: '100% תקין', sub: 'גישה סבלנית, מוזיקה ומים חמימים' },
+            kpi3: { label: 'ניהול אי-שקט (BPSD) לא-תרופתי', val: '92% יישום', sub: 'הפחתת סדציה לפי קריטריוני Beers' },
+            kpi4: { label: 'אכילה עצמאית ו-Finger Foods', val: '94% עמידה', sub: 'עידוד הידרציה שוטפת למניעת דליריום' }
+        }
+    };
+    const curDept = deptInfoMap[activeInterprofDept] || deptInfoMap.all;
+
+
     contentArea.innerHTML = `
         <div class="fade-in space-y-6">
             <!-- Header Bar -->
@@ -2924,10 +2979,12 @@ function renderInterprofessionalDashboard() {
             <!-- Department Filter & Overview Cards -->
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <div style="display:flex; gap:8px;">
-                    <button onclick="filterInterprofDept('all')" class="btn" style="${activeInterprofDept==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">כלל המחלקות</button>
-                    <button onclick="filterInterprofDept('complex')" class="btn" style="${activeInterprofDept==='complex' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">סיעוד מורכב</button>
-                    <button onclick="filterInterprofDept('vent')" class="btn" style="${activeInterprofDept==='vent' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">סיעוד מונשמים</button>
-                    <button onclick="filterInterprofDept('rehab')" class="btn" style="${activeInterprofDept==='rehab' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 14px; border-radius:8px; font-weight:700;">שיקום גריאטרי</button>
+                    <button onclick="filterInterprofDept('all')" class="btn" style="${activeInterprofDept==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">כלל המחלקות</button>
+                    <button onclick="filterInterprofDept('complex')" class="btn" style="${activeInterprofDept==='complex' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מורכב</button>
+                    <button onclick="filterInterprofDept('vent')" class="btn" style="${activeInterprofDept==='vent' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מונשמים</button>
+                    <button onclick="filterInterprofDept('rehab')" class="btn" style="${activeInterprofDept==='rehab' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">שיקום גריאטרי</button>
+                    <button onclick="filterInterprofDept('chronic_nursing')" class="btn" style="${activeInterprofDept==='chronic_nursing' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">גריאטריה כרונית סיעודית</button>
+                    <button onclick="filterInterprofDept('psychogeriatric')" class="btn" style="${activeInterprofDept==='psychogeriatric' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">תשושי נפש</button>
                 </div>
                 <div style="font-size:12px; color:var(--text-secondary);">תקופת יעד: <strong>רבעון נוכחי 2026</strong></div>
             </div>
@@ -2935,24 +2992,24 @@ function renderInterprofessionalDashboard() {
             <!-- KPI Metric Counters -->
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
                 <div class="interprof-card" style="border-top:4px solid #059669;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">מניעת פצעים ותפרחת IAD</div>
-                    <div style="font-size:24px; font-weight:800; color:#059669; margin:4px 0;">94% עמידה</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">פרוטוקול 3 שלבים וליחוח מותאם</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi1.label}</div>
+                    <div style="font-size:24px; font-weight:800; color:#059669; margin:4px 0;">${curDept.kpi1.val}</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi1.sub}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #0284c7;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">בטיחות ברחצה יומית</div>
-                    <div style="font-size:24px; font-weight:800; color:#0284c7; margin:4px 0;">100% תקין</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">אפס כוויות ונפילות במקלחת</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi2.label}</div>
+                    <div style="font-size:24px; font-weight:800; color:#0284c7; margin:4px 0;">${curDept.kpi2.val}</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi2.sub}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #d97706;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">סנכרון ניוד ומעברים (פיזיו+סיעוד)</div>
-                    <div style="font-size:24px; font-weight:800; color:#d97706; margin:4px 0;">88% יישום</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">קימה לכורסה וסולמות תמיכה</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi3.label}</div>
+                    <div style="font-size:24px; font-weight:800; color:#d97706; margin:4px 0;">${curDept.kpi3.val}</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi3.sub}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #7c3aed;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">התאמת מרקמים (IDDSI) ותזונה</div>
-                    <div style="font-size:24px; font-weight:800; color:#7c3aed; margin:4px 0;">96% סנכרון</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">אומדן קלינאית ודיאטנית תוך 48 שעות</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi4.label}</div>
+                    <div style="font-size:24px; font-weight:800; color:#7c3aed; margin:4px 0;">${curDept.kpi4.val}</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi4.sub}</div>
                 </div>
             </div>
 
