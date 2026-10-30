@@ -185,3 +185,73 @@ body { font-family: 'Heebo', sans-serif; background-color: var(--bg-color); colo
         margin: 10% auto !important;
     }
 }
+
+
+/* Audit Tools & Knowledge Findings Styling */
+.audit-findings-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    font-size: 13.5px;
+}
+.audit-findings-table th {
+    background: var(--bg-color);
+    padding: 12px 14px;
+    text-align: right;
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 700;
+}
+.audit-findings-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: top;
+    line-height: 1.5;
+}
+.badge-critical {
+    background: #ffe3e3;
+    color: #c92a2a;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    display: inline-block;
+}
+.badge-warning {
+    background: #fff3bf;
+    color: #d9480f;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    display: inline-block;
+}
+.badge-ok {
+    background: #d3f9d8;
+    color: #2b8a3e;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 12px;
+    display: inline-block;
+}
+
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    .sidebar, .theme-toggle, .btn-no-print, nav, #login-screen {
+        display: none !important;
+    }
+    .app-container, .main-content, #content-area {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        display: block !important;
+    }
+    .card, .quiz-results-container {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+}
