@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>פורטל לניהול איכות ובטיחות ארגונית</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=37">
+    <link rel="stylesheet" href="style.css?v=38">
     <meta name="description" content="מערכת לניהול כלי בקרה קליניים">
 </head>
 <body>
@@ -110,45 +110,54 @@
                 <span class="icon">⚕️</span>
                 <h1>פורטל לניהול איכות ובטיחות ארגונית</h1>
             </div>
-            <nav>
+                        <nav>
                 <ul>
+                    <li id="nav-user-guide" class="active" onclick="navigate('user-guide')">
+                        <span class="nav-icon">📖</span> 1. דף מנחה למשתמש ותוכן עניינים
+                    </li>
                     <li id="nav-intro" onclick="navigate('intro')">
-                        <span class="nav-icon">💡</span> הדרכת מבוא
+                        <span class="nav-icon">💡</span> 2. הדרכת מבוא לאיכות ובטיחות
                     </li>
                     <li id="nav-tip" onclick="navigate('tip')">
-                        <span class="nav-icon">✨</span> טיפ השבוע
+                        <span class="nav-icon">✨</span> 3. טיפ השבוע
                     </li>
-                    <li id="nav-dashboard" class="active" onclick="navigate('dashboard')">
-                        <span class="nav-icon">📊</span> דשבורד
+                    <li id="nav-dashboard" onclick="navigate('dashboard')">
+                        <span class="nav-icon">📊</span> 4. דשבורד בקרה ראשי
                     </li>
                     <li id="nav-onboarding" onclick="navigate('onboarding')">
-                        <span class="nav-icon">🎓</span> ערכת הדרכה בקליטה
+                        <span class="nav-icon">🎓</span> 5. ערכת הדרכה בקליטה
                     </li>
                     <li id="nav-shift-supervisor" onclick="navigate('shift-supervisor')">
-                        <span class="nav-icon">🩺</span> הכשרת אחראית משמרת
+                        <span class="nav-icon">🩺</span> 6. הכשרת אחראית משמרת וסוכן תרופות
+                    </li>
+                    <li id="nav-interprofessional" onclick="navigate('interprofessional')">
+                        <span class="nav-icon">🎯</span> 7. דשבורד יעדים וממשקים רב-מקצועיים
+                    </li>
+                    <li id="nav-pocket-guides" onclick="navigate('pocket-guides')">
+                        <span class="nav-icon">📱</span> 8. כרטיסיות עזר מהירות לנייד (Pocket Guides)
                     </li>
                     <li id="nav-trainings" onclick="navigate('trainings')">
-                        <span class="nav-icon">📚</span> לומדות והדרכות
+                        <span class="nav-icon">📚</span> 9. לומדות והדרכות צוות
                     </li>
                     <li onclick="window.open('https://www.health.gov.il/Services/educ/Pages/default.aspx', '_blank')">
-                        <span class="nav-icon">🌍</span> לומדות משרד הבריאות
+                        <span class="nav-icon">🌍</span> 10. לומדות משרד הבריאות
                     </li>
                     <li id="nav-cdss" onclick="navigate('cdss')">
-                        <span class="nav-icon">🩺</span> מערכת תומכת החלטה קלינית (CDSS) המותאמת לאוכלוסייה הגריאטרית
+                        <span class="nav-icon">🩺</span> 11. מערכת תומכת החלטה קלינית (CDSS)
                     </li>
-
                     <li id="nav-procedures" onclick="navigate('procedures')">
-                        <span class="nav-icon">📖</span> נהלי עבודה
+                        <span class="nav-icon">📖</span> 12. נהלי עבודה מוסדיים
                     </li>
                     <li id="nav-protocols" onclick="navigate('protocols')">
-                        <span class="nav-icon">📑</span> טפסים ופרוטוקולים טיפוליים
+                        <span class="nav-icon">📑</span> 13. טפסים ופרוטוקולים טיפוליים
                     </li>
                     <li id="nav-forms" onclick="navigate('forms')">
-                        <span class="nav-icon">📝</span> כלי בקרה
+                        <span class="nav-icon">📝</span> 14. כלי בקרה ומבדקי ידע (CAPA)
                     </li>
                     <li id="nav-manager-portal" onclick="navigate('manager-portal')">
-                        <span class="nav-icon">📊</span> פורטל מעקב ובקרה למנהל
+                        <span class="nav-icon">📊</span> 15. פורטל מעקב ובקרה למנהל
                     </li>
+
                     <li id="nav-agent" onclick="navigate('agent')" class="admin-only">
                         <span class="nav-icon">🤖</span> סוכן מחקר (מנהל)
                     </li>
@@ -267,9 +276,9 @@
 
         </main>
     </div>
-    <script src="forms.js?v=37"></script>
-    <script src="quizzes.js?v=37"></script>
-    <script src="script_v6.js?v=37"></script>
+    <script src="forms.js?v=38"></script>
+    <script src="quizzes.js?v=38"></script>
+    <script src="script_v6.js?v=38"></script>
 </body>
 </html>
 

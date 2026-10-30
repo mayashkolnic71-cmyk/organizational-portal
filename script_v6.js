@@ -1187,7 +1187,7 @@ function renderShiftSupervisor() {
                         <span>🩺</span> פורטל ליווי והסמכה לאחראית משמרת – אשפוז גריאטרי
                     </h2>
                     <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 14px;">
-                        תוכנית הדרכה מדורגת, תנאי סף, מחוון בוחן למבחן תרופות, סימולטור אפר"ת, תרגול SBAR וייצוא דוחות אקסל
+                        תוכנית הדרכה מדורגת, תנאי סף, מחוון בוחן למבחן תרופות, סימולטור אפר'ת, תרגול SBAR וייצוא דוחות אקסל
                     </p>
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
@@ -3490,5 +3490,388 @@ function togglePocketCard(id) {
     } else {
         body.style.display = 'none';
         if (chevron) chevron.style.transform = 'rotate(180deg)';
+    }
+}
+
+
+// ==============================================================
+// 1. NUMBERED USER GUIDE & INTERACTIVE TABLE OF CONTENTS (TOC)
+// ==============================================================
+function renderUserGuideView() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+        <div class="fade-in space-y-6">
+            <!-- Header Bar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:16px 22px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                    <span>➜</span> מעבר לדשבורד הראשי
+                </button>
+                <div style="text-align:center;">
+                    <div style="font-size:11px; font-weight:bold; color:var(--primary-color); text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">
+                        פורטל ניהול איכות ובטיחות ארגונית
+                    </div>
+                    <h2 style="font-size:20px; font-weight:900; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <span>📖</span> דף מנחה למשתמש ותוכן עניינים ממוספר
+                    </h2>
+                    <span style="font-size:12px; color:var(--text-secondary);">מפת הדרכים המלאה של הפורטל: אינדקס 15 הלשוניות, מטרות, קהל יעד והנחיות שימוש</span>
+                </div>
+                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🖨️</span> הדפס מדריך A4
+                </button>
+            </div>
+
+            <!-- Ethical Standard & Security Notice -->
+            <div style="background:rgba(2, 132, 199, 0.08); border-right:4px solid #0284c7; padding:12px 18px; border-radius:0 10px 10px 0; font-size:12.5px; color:var(--text-primary); display:flex; align-items:center; justify-content:space-between;">
+                <div>
+                    <strong>🛡️ עקרונות אתיקה ואבטחת מידע:</strong> הפורטל מיועד להדרכה, הערכת כשירות קלינית, בקרה וממשקי עבודה מחלקתיים. 
+                    <span style="color:var(--text-secondary);">תוכניות טיפול פרטניות מנוהלות אך ורק בגיליון הרפואי הממוחשב (EHR).</span>
+                </div>
+                <span class="badge" style="background:#0284c7; color:white; font-size:11px; padding:3px 9px; border-radius:6px; font-weight:bold;">גרסה 2026.11</span>
+            </div>
+
+            <!-- Quick Search in Guide -->
+            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:12px; padding:12px 16px;">
+                <input type="text" id="guide-search-input" oninput="filterUserGuideTOC(this.value)" placeholder="חפש נושא במדריך (למשל: סוכן תרופות, IAD, רחצה, בקרות, CDSS, הרשמה)..." style="width:100%; padding:9px 14px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:13px; box-sizing:border-box;">
+            </div>
+
+            <!-- Interactive Numbered Table of Contents (TOC Cards Grid) -->
+            <div class="interprof-card" style="padding:22px;">
+                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin-top:0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
+                    <span>📑</span> תוכן עניינים אינטראקטיבי - 15 לשוניות הפורטל
+                </h3>
+                <p style="font-size:12.5px; color:var(--text-secondary); margin-top:0; margin-bottom:18px;">
+                    לחץ/י על כל כרטיסייה לניווט ישיר ללשונית הרצויה באתר או לצפייה בהנחיות המפורטות להלן:
+                </p>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:12px;" id="toc-grid-container">
+                    ${getUserGuideTOCItems().map(item => `
+                        <div onclick="navigate('${item.navKey}')" style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='none'">
+                            <div>
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                    <span style="font-size:11px; font-weight:bold; background:var(--primary-color); color:white; padding:2px 7px; border-radius:4px;">לשונית ${item.num}</span>
+                                    <span style="font-size:18px;">${item.icon}</span>
+                                </div>
+                                <strong style="font-size:13px; color:var(--text-primary); display:block; line-height:1.35;">${item.num}. ${item.title}</strong>
+                                <p style="font-size:11.5px; color:var(--text-secondary); margin:6px 0 0 0; line-height:1.4;">${item.desc}</p>
+                            </div>
+                            <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); pt:6px; padding-top:6px;">
+                                <span style="font-size:10.5px; color:var(--primary-color); font-weight:bold;">מעבר ללשונית ➜</span>
+                                <span style="font-size:10.5px; color:var(--text-secondary);">${item.audience}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+
+            <!-- Detailed Chapters Section -->
+            <div class="space-y-4" id="guide-detailed-chapters">
+                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin:20px 0 10px 0; display:flex; align-items:center; gap:8px;">
+                    <span>📚</span> פירוט מודולי המערכת והנחיות הפעלה שלב-אחר-שלב
+                </h3>
+
+                ${getUserGuideTOCItems().map(item => `
+                    <div class="interprof-card" id="guide-chapter-${item.num}" style="padding:20px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <span style="font-size:24px;">${item.icon}</span>
+                                <div>
+                                    <div style="font-size:11px; font-weight:bold; color:var(--primary-color);">לשונית מספר ${item.num}</div>
+                                    <h4 style="font-size:15px; font-weight:800; color:var(--text-primary); margin:0;">${item.num}. ${item.title}</h4>
+                                </div>
+                            </div>
+                            <button onclick="navigate('${item.navKey}')" class="btn" style="background:var(--primary-color); color:white; font-size:11.5px; font-weight:bold; padding:5px 12px; border-radius:6px;">
+                                פתח לשונית זו ➜
+                            </button>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; font-size:12.5px;">
+                            <div style="background:var(--bg-color); padding:12px; border-radius:8px;">
+                                <strong style="color:var(--text-primary); display:block; margin-bottom:4px;">🎯 מטרת המודול:</strong>
+                                <p style="margin:0; color:var(--text-secondary); line-height:1.5;">${item.fullObjective}</p>
+                            </div>
+                            <div style="background:var(--bg-color); padding:12px; border-radius:8px;">
+                                <strong style="color:var(--text-primary); display:block; margin-bottom:4px;">👥 קהל יעד מיועד:</strong>
+                                <p style="margin:0; color:var(--text-secondary); line-height:1.5;">${item.fullAudience}</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top:12px; font-size:12.5px; background:rgba(2, 132, 199, 0.04); border:1px solid rgba(2, 132, 199, 0.15); border-radius:8px; padding:12px;">
+                            <strong style="color:#0369a1; display:block; margin-bottom:6px;">🛠️ כיצד להשתמש שלב-אחר-שלב:</strong>
+                            <ol style="margin:0 0 0 18px; padding:0; color:var(--text-primary); line-height:1.55;">
+                                ${item.steps.map(step => `<li>${step}</li>`).join('')}
+                            </ol>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+function getUserGuideTOCItems() {
+    return [
+        {
+            num: 1,
+            title: "דף מנחה למשתמש ותוכן עניינים",
+            navKey: "user-guide",
+            icon: "📖",
+            desc: "מפת הדרכים של הפורטל, אינדקס 15 הלשוניות, מטרות והנחיות שימוש שלב-אחר-שלב.",
+            audience: "כלל הצוות, מנהלות, מנטוריות",
+            fullObjective: "מתן התמצאות מערכתית מלאה בכלל מודולי הפורטל, הגדרת נהלי אבטחת מידע, ואיתור מהיר של כלי עבודה.",
+            fullAudience: "אחיות אחראיות, אחיות צוות, מקצועות הבריאות, מנהלי מחלקות ונאמני איכות.",
+            steps: [
+                "עיין/י בתוכן העניינים האינטראקטיבי כדי להכיר את 15 הלשוניות.",
+                "השתמש/י בתיבת החיפוש לאיתור מהיר של מודול או כלי עבודה.",
+                "לחץ/י על כפתור הניווט הישיר למעבר מיידי לכל לשונית באתר."
+            ]
+        },
+        {
+            num: 2,
+            title: "הדרכת מבוא לאיכות ובטיחות",
+            navKey: "intro",
+            icon: "💡",
+            desc: "עקרונות איכות קלינית, עקרונות תחקור אירוע חריג ותרבות בטיחות מוסדית.",
+            audience: "קליטת עובדים וריענון צוות",
+            fullObjective: "הטמעת שפת איכות אחידה, זיהוי כשלים בטיחותיים, וקידום תרבות דיווח ללא אשם (Just Culture).",
+            fullAudience: "כלל עובדי בית החולים בעת קליטה וברענון שנתי.",
+            steps: [
+                "מעבר על שקופיות ההדרכה האינטראקטיביות.",
+                "לימוד עקרונות תחקור סיבת שורש (RCA) ומניעת הישנות אירועים.",
+                "ביצוע בוחן הבנה קצר בסיום ההדרכה."
+            ]
+        },
+        {
+            num: 3,
+            title: "טיפ השבוע בבטיחות הטיפול",
+            navKey: "tip",
+            icon: "✨",
+            desc: "מסר שבועי קצר ומרענן עם דגש קליני בטיחותי מתחלף לצוות המחלקתי.",
+            audience: "כלל אנשי הצוות",
+            fullObjective: "שמירה על ערנות בטיחותית שוטפת באמצעות מסר קליני קצר וממוקד הניתן לתרגול מיידי במשמרת.",
+            fullAudience: "אחיות, רופאים, מטפלים ומקצועות הבריאות בתדריכי בוקר וערב.",
+            steps: [
+                "קריאת טיפ השבוע בתחילת משמרת הבוקר בימי ראשון.",
+                "שיתוף הטיפ בתדריך המחלקתי (Huddle).",
+                "מעקב אחר יישום הדגש הקליני בשטח."
+            ]
+        },
+        {
+            num: 4,
+            title: "דשבורד בקרה ראשי",
+            navKey: "dashboard",
+            icon: "📊",
+            desc: "לוח מחוונים מרכזי: אחוזי עמידה בבקרות, התפלגות ציונים וגרפים מחלקתיים.",
+            audience: "הנהלה ואחיות אחראיות",
+            fullObjective: "תמונת מצב בזמן אמת של ציוני הבקרה המוסדיים, פערי ביצוע, והתפלגות עמידה ביעדי איכות.",
+            fullAudience: "הנהלת סיעוד, מנהלות איכות, אחיות אחראיות ומנטוריות.",
+            steps: [
+                "סינון הנתונים לפי מחלקה, סוג כלי בקרה ותקופת זמן.",
+                "סקירת אחוזי עמידה מעל/מתחת לסף המעבר (85%).",
+                "זיהוי מחלקות ונושאים הדורשים תוכנית תיקון מידית (CAPA)."
+            ]
+        },
+        {
+            num: 5,
+            title: "ערכת הדרכה בקליטה",
+            navKey: "onboarding",
+            icon: "🎓",
+            desc: "תוכנית קליטה מובנית לאחיות ומטפלים חדשים, צ'ק-ליסטים וחניכה מחלקתית.",
+            audience: "עובדים חדשים ומנטורים",
+            fullObjective: "הבטחת קליטה שיטתית, בטוחה ומדורגת של אנשי צוות חדשים, מבוססת אבני דרך וכשירויות ליבה.",
+            fullAudience: "אחיות חדשות, מטפלים סיעודיים, אחיות קולטות ומנטוריות מחלקה.",
+            steps: [
+                "בחירת תיק עובד/ת חדש/ה.",
+                "מילוי צ'ק-ליסט ימי הקליטה הראשונים (יום 1, שבוע 1, חודש 1).",
+                "מעקב חתימות מנטורית ואישור כשירות עצמאית."
+            ]
+        },
+        {
+            num: 6,
+            title: "הכשרת אחראית משמרת וסוכן תרופות",
+            navKey: "shift-supervisor",
+            icon: "🩺",
+            desc: "פיתוח מנהיגות, מודל אפר'ת, וסוכן AI לבנק שאלות בפרמקולוגיה גריאטרית.",
+            audience: "אחראיות משמרת ומנטוריות",
+            fullObjective: "בניית מיומנויות ניהול משמרת, תקשורת במצבי קונפליקט (אפר'ת), והסמכה ממוחשבת בטיפול תרופתי בטוח.",
+            fullAudience: "אחיות המיועדות להסמכה כאחראיות משמרת, אחיות אחראיות ובוחנות קליניות.",
+            steps: [
+                "תרגול מודל אפר'ת על מקרי בוחן ניהוליים מעשיים.",
+                "הפעלת סוכן ה-AI לעדכון חודשי מבוסס ספרות (Lippincott & Beers 2023).",
+                "ביצוע מבחן תרופות רשמי (20 שאלות, סף מעבר 85% + 100% חישוב רוקחי) ותרגול עצמי."
+            ]
+        },
+        {
+            num: 7,
+            title: "דשבורד יעדים וממשקים רב-מקצועיים",
+            navKey: "interprofessional",
+            icon: "🎯",
+            desc: "סנכרון מחלקתי אתי: מניעת פצעים, בטיחות רחצה, ניוד, מרקמים ומטריצת אחריות.",
+            audience: "כלל הצוות הרב-מקצועי",
+            fullObjective: "תיאום וסנכרון בין סיעוד, פיזיותרפיה, ריפוי בעיסוק, תזונה ורפואה סביב יעדי איכות מחלקתיים מדידים.",
+            fullAudience: "אחיות, מטפלים, פיזיותרפיסטים, מרפאים בעיסוק, דיאטניות, קלינאיות תקשורת ורופאים.",
+            steps: [
+                "סקירת 4 יעדי האיכות המחלקתיים (עור/IAD, רחצה, ניוד, IDDSI).",
+                "בדיקת חלוקת האחריות במטריצת הממשקים הקלינית.",
+                "שימוש בצ'ק-ליסט השבועי למפגש צוות רב-מקצועי (Huddle)."
+            ]
+        },
+        {
+            num: 8,
+            title: "כרטיסיות עזר מהירות לנייד (Pocket Guides)",
+            navKey: "pocket-guides",
+            icon: "📱",
+            desc: "כרטיסיות כיס נשלפות: שלמות עור ו-IAD, סיכוני רחצה, אטלס פצעים, IDDSI, CAM ו-Beers.",
+            audience: "צוות בשטח ליד המיטה",
+            fullObjective: "שליפה מיידית של הנחיות קליניות מצילות חיים ואבחנה מבדלת מסמארטפון או טאבלט בעת הטיפול.",
+            fullAudience: "אחיות משמרת, מטפלים סיעודיים, כוננים וסטודנטים בסיעוד.",
+            steps: [
+                "פתיחת המדריך מסמארטפון/טאבלט.",
+                "סינון מהיר לפי קטגוריה (עור, רחצה, פצעים, מרקמים, ניוד).",
+                "שימוש באטלס הפצעים לאבחנה מבדלת (IAD, פצע לחץ, קרע עור, כיב ורידי/עורקי)."
+            ]
+        },
+        {
+            num: 9,
+            title: "לומדות והדרכות צוות",
+            navKey: "trainings",
+            icon: "📚",
+            desc: "ספריית לומדות אינטראקטיביות מחלקתיות, סרטוני הדרכה והעשרה מקצועית.",
+            audience: "כלל אנשי הצוות",
+            fullObjective: "ריענון ידע מקצועי ושימור כשירות קלינית בתחומי ליבה (החייאה, מניעת זיהומים, בטיחות).",
+            fullAudience: "אחיות, מטפלים וצוותים פרא-רפואיים.",
+            steps: [
+                "בחירת לומדה מתוך הספרייה.",
+                "צפייה בלומדה או בסרטון ההדרכה.",
+                "ביצוע מבדק ידע קצר בסיום וקבלת אישור השלמה."
+            ]
+        },
+        {
+            num: 10,
+            title: "לומדות משרד הבריאות",
+            navKey: "external-moh",
+            icon: "🌍",
+            desc: "קישור ישיר למערכת הלמידה הלאומית של משרד הבריאות (Educ).",
+            audience: "כלל הצוות הסיעודי והרפואי",
+            fullObjective: "השלמת לומדות חובה לאומיות והסמכות ממשלתיות רשמיות.",
+            fullAudience: "אחיות ורופאים הנדרשים לחידוש הסמכות תקופתיות.",
+            steps: [
+                "לחיצה על הלשונית פותחת את פורטל הלמידה הממשלתי בלשונית נפרדת.",
+                "הזנת פרטי הזדהות ממשלתיים.",
+                "השלמת לומדות החובה ושליחת אישור למנהלת המחלקה."
+            ]
+        },
+        {
+            num: 11,
+            title: "מערכת תומכת החלטה קלינית (CDSS)",
+            navKey: "cdss",
+            icon: "🩺",
+            desc: "מערכת מחשבונים קליניים ואומדנים מותאמים לאוכלוסייה הגריאטרית.",
+            audience: "אחיות ורופאים",
+            fullObjective: "תמיכה בקבלת החלטות טיפוליות, חישובי מינון, אומדני שבריריות וסיכונים מורכבים.",
+            fullAudience: "צוות סיעודי ורפואי בעת קבלה, שחרור והערכה מחודשת של מטופלים.",
+            steps: [
+                "צפייה במערכת המשולבת ישירות בתוך הפורטל.",
+                "הזנת מדדים קליניים לקבלת המלצות טיפוליות מבוססות ראיות.",
+                "לחיצה על '➜ חזרה לדשבורד הראשי' לחזרה נוחה בכל עת."
+            ]
+        },
+        {
+            num: 12,
+            title: "נהלי עבודה מוסדיים",
+            navKey: "procedures",
+            icon: "📖",
+            desc: "ספריית נהלי עבודה מחייבים, פרוטוקולי חירום ובטיחות הטיפול.",
+            audience: "כלל עובדי המוסד",
+            fullObjective: "הנגשת נהלי העבודה המעודכנים, הנחיות משרד הבריאות ופקודות שגרה וחירום.",
+            fullAudience: "כלל הסקטורים הרפואיים, הסיעודיים והמנהליים.",
+            steps: [
+                "חיפוש נוהל לפי מילת מפתח או קטגוריה.",
+                "קריאת הנוהל המלא או הורדת קובץ PDF.",
+                "בדיקת תאריך תוקף הנוהל וסעיפי הביצוע המחייבים."
+            ]
+        },
+        {
+            num: 13,
+            title: "טפסים ופרוטוקולים טיפוליים",
+            navKey: "protocols",
+            icon: "📑",
+            desc: "טפסים קליניים להורדה, הדפסה ומילוי מחלקתי (בטיחות, פצעים, החייאה).",
+            audience: "צוות מחלקתי בשטח",
+            fullObjective: "אספקת טפסים ופרוטוקולים רשמיים לפעילות השוטפת במחלקה.",
+            fullAudience: "אחיות אחראיות, אחיות צוות ומזכירות רפואיות.",
+            steps: [
+                "איתור הטופס המבוקש.",
+                "הורדה או הדפסה ישירה לעבודה ליד מיטת המטופל.",
+                "שמירת עותק מתועד בתיק המטופל לפי הנהלים."
+            ]
+        },
+        {
+            num: 14,
+            title: "כלי בקרה ומבדקי ידע (CAPA)",
+            navKey: "forms",
+            icon: "📝",
+            desc: "מילוי כלי בקרה דיגיטליים, ציון אוטומטי, מבדקי ידע ודוח ממצאים לתיקון.",
+            audience: "אחיות אחראיות ונאמני איכות",
+            fullObjective: "ביצוע בקרות תקופתיות שיטתיות, הפקת ציון איכות מיידי ודוח פעולות מתקנות (CAPA).",
+            fullAudience: "מנהלות איכות, אחיות אחראיות, נאמני בטיחות ומפקחות קליניות.",
+            steps: [
+                "בחירת כלי הבקרה הרצוי (בטיחות תרופתית, מניעת זיהומים, עגלת החייאה וכו').",
+                "מילוי סעיפי הבקרה בזמן אמת.",
+                "בדיקת הציון המסכם, קריאת ממצאי הליקויים ושמירת דוח ה-CAPA."
+            ]
+        },
+        {
+            num: 15,
+            title: "פורטל מעקב ובקרה למנהל",
+            navKey: "manager-portal",
+            icon: "📊",
+            desc: "פורטל ניהולי רוחבי לבקרה ומעקב אחר ביצועים, כשירויות ותוכניות עבודה.",
+            audience: "הנהלה בכירה ומנהלי איכות",
+            fullObjective: "מבט-על ארגוני לצורך קבלת החלטות ניהוליות והערכת עמידה בתוכניות עבודה שנתיות.",
+            fullAudience: "הנהלת בית החולים, מנהלי אגפים, מנהלת הסיעוד ומנהלת האיכות.",
+            steps: [
+                "כניסה לתצוגת הפורטל הניהולי המשולבת.",
+                "מעקב אחר משימות חוצות-מחלקות וצווארי בקבוק.",
+                "לחיצה על '➜ חזרה לדשבורד הראשי' לחזרה נוחה בכל עת."
+            ]
+        }
+    ];
+}
+
+function filterUserGuideTOC(query) {
+    const q = query.trim().toLowerCase();
+    const items = getUserGuideTOCItems();
+    
+    // Filter cards
+    const grid = document.getElementById('toc-grid-container');
+    if (grid) {
+        const filtered = items.filter(it => 
+            !q || 
+            it.title.toLowerCase().includes(q) || 
+            it.desc.toLowerCase().includes(q) || 
+            it.fullObjective.toLowerCase().includes(q)
+        );
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; text-align:center; padding:20px; color:var(--text-secondary);">לא נמצאו לשוניות התואמות לחיפוש שלך.</div>';
+        } else {
+            grid.innerHTML = filtered.map(item => `
+                <div onclick="navigate('${item.navKey}')" style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='none'">
+                    <div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                            <span style="font-size:11px; font-weight:bold; background:var(--primary-color); color:white; padding:2px 7px; border-radius:4px;">לשונית ${item.num}</span>
+                            <span style="font-size:18px;">${item.icon}</span>
+                        </div>
+                        <strong style="font-size:13px; color:var(--text-primary); display:block; line-height:1.35;">${item.num}. ${item.title}</strong>
+                        <p style="font-size:11.5px; color:var(--text-secondary); margin:6px 0 0 0; line-height:1.4;">${item.desc}</p>
+                    </div>
+                    <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:6px;">
+                        <span style="font-size:10.5px; color:var(--primary-color); font-weight:bold;">מעבר ללשונית ➜</span>
+                        <span style="font-size:10.5px; color:var(--text-secondary);">${item.audience}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
     }
 }
