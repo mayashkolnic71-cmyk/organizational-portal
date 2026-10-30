@@ -3147,66 +3147,6 @@ function saveHuddleNotes() {
 let activePocketCategory = 'all';
 let pocketSearchQuery = '';
 
-function renderPocketGuides() {
-    const contentArea = document.getElementById('content-area');
-    if (!contentArea) return;
-
-    contentArea.innerHTML = `
-        <div class="fade-in space-y-6">
-            <!-- Header Bar -->
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
-                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
-                    <span>➜</span> חזרה לדשבורד הראשי
-                </button>
-                <div style="text-align:center;">
-                    <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <span>📱</span> כרטיסיות עזר מהירות לנייד (Clinical Pocket Guides)
-                    </h2>
-                    <span style="font-size:12px; color:var(--text-secondary);">מדריכים קליניים מתומצתים ומעשיים לשליפה מהירה ליד מיטת המטופל</span>
-                </div>
-                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
-                    <span>🖨️</span> הדפס כרטיסיות
-                </button>
-            </div>
-
-            <!-- Search & Category Filters (Mobile Optimized) -->
-            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:14px; padding:14px; space-y:12px;">
-                <div style="position:relative;">
-                    <input type="text" id="pocket-search-input" oninput="handlePocketSearch(this.value)" placeholder="חפש מושג, סוג פצע, IAD, מרקם, רחצה, תרופה..." value="${pocketSearchQuery}" style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:13px; box-sizing:border-box;">
-                </div>
-
-                <div style="display:flex; gap:6px; flex-wrap:wrap; overflow-x:auto; padding-bottom:4px;">
-                    <button onclick="filterPocketCategory('all')" class="btn" style="${activePocketCategory==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">הכל</button>
-                    <button onclick="filterPocketCategory('skin_iad')" class="btn" style="${activePocketCategory==='skin_iad' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛡️ עור ו-IAD</button>
-                    <button onclick="filterPocketCategory('bathing')" class="btn" style="${activePocketCategory==='bathing' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛁 סיכוני רחצה</button>
-                    <button onclick="filterPocketCategory('wounds')" class="btn" style="${activePocketCategory==='wounds' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🩹 אטלס פצעים</button>
-                    <button onclick="filterPocketCategory('iddsi')" class="btn" style="${activePocketCategory==='iddsi' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🥄 מרקמים (IDDSI)</button>
-                    <button onclick="filterPocketCategory('mobility')" class="btn" style="${activePocketCategory==='mobility' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🚶 מעברים וניוד</button>
-                    <button onclick="filterPocketCategory('delirium')" class="btn" style="${activePocketCategory==='delirium' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🧠 דליריום (CAM)</button>
-                    <button onclick="filterPocketCategory('beers')" class="btn" style="${activePocketCategory==='beers' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">⚠️ קריטריוני Beers</button>
-                </div>
-            </div>
-
-            <!-- Pocket Cards Container -->
-            <div class="pocket-grid" id="pocket-cards-container">
-                <!-- Dynamically rendered -->
-            </div>
-        </div>
-    `;
-
-    renderPocketCards();
-}
-
-function filterPocketCategory(cat) {
-    activePocketCategory = cat;
-    renderPocketGuides();
-}
-
-function handlePocketSearch(val) {
-    pocketSearchQuery = val.trim().toLowerCase();
-    renderPocketCards();
-}
-
 const pocketGuidesMasterData = [
     // 1. SKIN INTEGRITY & IAD
     {
@@ -3471,6 +3411,68 @@ const pocketGuidesMasterData = [
         `
     }
 ];
+
+
+
+function renderPocketGuides() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+        <div class="fade-in space-y-6">
+            <!-- Header Bar -->
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
+                    <span>➜</span> חזרה לדשבורד הראשי
+                </button>
+                <div style="text-align:center;">
+                    <h2 style="font-size:18px; font-weight:800; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <span>📱</span> כרטיסיות עזר מהירות לנייד (Clinical Pocket Guides)
+                    </h2>
+                    <span style="font-size:12px; color:var(--text-secondary);">מדריכים קליניים מתומצתים ומעשיים לשליפה מהירה ליד מיטת המטופל</span>
+                </div>
+                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                    <span>🖨️</span> הדפס כרטיסיות
+                </button>
+            </div>
+
+            <!-- Search & Category Filters (Mobile Optimized) -->
+            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:14px; padding:14px; space-y:12px;">
+                <div style="position:relative;">
+                    <input type="text" id="pocket-search-input" oninput="handlePocketSearch(this.value)" placeholder="חפש מושג, סוג פצע, IAD, מרקם, רחצה, תרופה..." value="${pocketSearchQuery}" style="width:100%; padding:10px 14px; border-radius:10px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:13px; box-sizing:border-box;">
+                </div>
+
+                <div style="display:flex; gap:6px; flex-wrap:wrap; overflow-x:auto; padding-bottom:4px;">
+                    <button onclick="filterPocketCategory('all')" class="btn" style="${activePocketCategory==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">הכל</button>
+                    <button onclick="filterPocketCategory('skin_iad')" class="btn" style="${activePocketCategory==='skin_iad' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛡️ עור ו-IAD</button>
+                    <button onclick="filterPocketCategory('bathing')" class="btn" style="${activePocketCategory==='bathing' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🛁 סיכוני רחצה</button>
+                    <button onclick="filterPocketCategory('wounds')" class="btn" style="${activePocketCategory==='wounds' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🩹 אטלס פצעים</button>
+                    <button onclick="filterPocketCategory('iddsi')" class="btn" style="${activePocketCategory==='iddsi' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🥄 מרקמים (IDDSI)</button>
+                    <button onclick="filterPocketCategory('mobility')" class="btn" style="${activePocketCategory==='mobility' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🚶 מעברים וניוד</button>
+                    <button onclick="filterPocketCategory('delirium')" class="btn" style="${activePocketCategory==='delirium' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">🧠 דליריום (CAM)</button>
+                    <button onclick="filterPocketCategory('beers')" class="btn" style="${activePocketCategory==='beers' ? 'background:var(--primary-color); color:white;' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:6px 12px; border-radius:8px; font-weight:700;">⚠️ קריטריוני Beers</button>
+                </div>
+            </div>
+
+            <!-- Pocket Cards Container -->
+            <div class="pocket-grid" id="pocket-cards-container">
+                <!-- Dynamically rendered -->
+            </div>
+        </div>
+    `;
+
+    renderPocketCards();
+}
+
+function filterPocketCategory(cat) {
+    activePocketCategory = cat;
+    renderPocketGuides();
+}
+
+function handlePocketSearch(val) {
+    pocketSearchQuery = val.trim().toLowerCase();
+    renderPocketCards();
+}
 
 function renderPocketCards() {
     const container = document.getElementById('pocket-cards-container');
