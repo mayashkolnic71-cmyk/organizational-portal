@@ -1,368 +1,1651 @@
 <!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ניהול סיכונים פרמקולוגיים באשפוז גריאטרי</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-body {
-    font-family: 'Assistant', sans-serif;
-    background-color: #f0f9ff;
-    color: #0f172a;
-}
-h1, h2, h3, h4, .heebo-font {
-    font-family: 'Heebo', sans-serif;
-}
-.chart-container {
-    position: relative;
-    width: 100%;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    height: 350px;
-    max-height: 400px;
-}
-@media (min-width: 768px) {
-    .chart-container {
-        height: 380px;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מדריך קליני מאוחד - דף ריכוז הוראות ומעקב רפואי בדייר סיעודי / תושש נפש</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Assistant', sans-serif;
+      background: #0f172a;
+      color: #1e293b;
     }
-}
-.glass-card {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 10px 25px -5px rgba(12, 74, 110, 0.1), 0 8px 10px -6px rgba(12, 74, 110, 0.1);
-}
-.process-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: #0ea5e9;
-    margin: 1rem 0;
-}
-@media (min-width: 768px) {
-    .process-arrow {
-        transform: rotate(-90deg);
-        margin: 0 1rem;
+    .slide-page {
+      transition: all 0.25s ease-in-out;
     }
-}
-/* סגנון למיכל הלוגו */
-.logo-container {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: white;
-    border-radius: 50%;
-    padding: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    border: 3px solid #0ea5e9;
-    margin-bottom: 20px;
-    width: 120px;
-    height: 120px;
-}
-.logo-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 50%;
-}
-</style>
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .slide-page {
+        display: block !important;
+        page-break-after: always;
+        break-after: page;
+        min-height: auto;
+        box-shadow: none !important;
+        margin-bottom: 2rem !important;
+        border: 1px solid #cbd5e1;
+        padding: 1.5rem !important;
+      }
+    }
+  </style>
 </head>
-<body class="antialiased pb-20">
+<body class="min-h-screen flex flex-col justify-between">
 
-<header class="bg-[#0c4a6e] text-white py-12 px-6 shadow-xl relative overflow-hidden">
-    <div class="absolute inset-0 opacity-10" style="background-image: repeating-linear-gradient(45deg, #ffffff 0, #ffffff 2px, transparent 2px, transparent 10px);"></div>
-    <div class="max-w-6xl mx-auto relative z-10 text-center">
-        
-        <!-- מיקום הלוגו -->
-        <div class="logo-container">
-            <!-- יש להחליף את ה-src בנתיב האמיתי של הלוגו -->
-            <img src="https://placehold.co/200x200/ffffff/0c4a6e?text=לוגו+העמותה&font=heebo" alt="">
+  <!-- Header Bar -->
+  <header class="no-print bg-slate-900 border-b border-slate-800 text-white px-4 md:px-6 py-3 sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
+      
+      <!-- Brand & Title: Maya Shkolnic Gazit Personal Branding -->
+      <div class="flex items-center gap-3">
+        <button onclick="if(window.parent && window.parent !== window && window.parent.closeProtocolModal) { window.parent.closeProtocolModal(); } else if(window.opener) { window.close(); } else if(window.history.length > 1 && document.referrer) { window.history.back(); } else { window.location.href='index.html#protocols'; }" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow transition" title="חזרה למסך הקודם בפורטל">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          <span>חזרה למסך הקודם</span>
+        </button>
+        <div>
+          <h1 class="text-sm md:text-base font-extrabold text-white leading-tight">נוצר על ידי: מאיה שקולניק גזית</h1>
+          <p class="text-[11px] md:text-xs text-slate-300 font-medium">R.N, BA, M.H.A, Policy Management Specialist</p>
         </div>
+      </div>
 
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight text-[#e0f2fe]">ניהול סיכונים פרמקולוגיים</h1>
-        <h2 class="text-2xl md:text-3xl font-semibold mb-6 text-[#bae6fd]">באשפוז גריאטרי ממושך: מעבר מתיאוריה לפרקטיקה</h2>
-        <p class="text-lg md:text-xl max-w-3xl mx-auto font-medium text-[#f0f9ff] bg-[#075985] p-4 rounded-xl border border-[#0284c7]">
-            מוגש ע"י: העמותה לקידום הסיעוד בגריאטריה בישראל 🩺<br>
-            <span class="text-sm font-normal opacity-90">מבוסס על תובנות מהסימפוזיון האירופי לאיכות ובטיחות ברפואה גריאטרית (EuGMS)</span>
-        </p>
+      <!-- Navigation Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto py-1">
+        <button onclick="goToSlide(0)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-blue-600 text-white" data-index="0">תקציר ומבוא</button>
+        <button onclick="goToSlide(1)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="1">טבלה מסכמת של רשומת מטופל לפי תדירות ביצוע (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(2)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="2">משטרי מינון וסמ"ח</button>
+        <button onclick="goToSlide(3)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="3">ניהול רשומה 2026: רפואי/סיעודי (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(4)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="4">ניהול רשומה 2026: פרא-רפואי (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(5)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="5">ניהול רשומה 2026 (גריאטריה פעילה)</button>
+        <button onclick="goToSlide(6)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="6">שמונת ה-Right</button>
+        <button onclick="goToSlide(7)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="7">בירס: בוקר מול ערב</button>
+        <button onclick="goToSlide(8)" class="tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700" data-index="8">בירס: איסורים ודגשים</button>
+      </div>
+
+      <!-- Print Button -->
+      <div class="flex items-center gap-2">
+        <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold px-3 py-2 rounded-lg flex items-center gap-1.5 shadow transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+          הדפס / PDF
+        </button>
+      </div>
     </div>
-</header>
+  </header>
 
-<main class="max-w-6xl mx-auto px-6 mt-12 space-y-16">
+  <main class="max-w-6xl mx-auto w-full p-4 md:p-6 flex-grow">
 
-    <section class="text-center max-w-4xl mx-auto">
-        <p class="text-2xl text-[#334155] leading-relaxed font-medium">
-            טיפול תרופתי מורכב בגיל השלישי מציב אתגרים בטיחותיים משמעותיים. מחקרים עדכניים מצביעים על כך שמעברי טיפול (למשל, קבלה מאשפוז אקוטי) וריבוי תרופות (Polypharmacy) הם מגורמי הסיכון המובילים לאירועים חריגים, הידרדרות קוגניטיבית ונפילות באשפוז הממושך.
+    <!-- SLIDE 0: Executive Summary -->
+    <div id="slide-0" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-10 border border-slate-200">
+      
+      <!-- Slide Header with Maya's Profile Card -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 mb-6 border-b border-slate-200 gap-4">
+        <div>
+          <div class="flex items-center flex-wrap gap-2 mb-2">
+            <span class="bg-blue-100 text-blue-800 text-xs font-black px-2.5 py-1 rounded-full uppercase">מסמך תדרוך קליני רשמי</span>
+            <span class="bg-emerald-100 text-emerald-900 text-xs font-black px-2.5 py-1 rounded-full">אמות מידה לניהול רשומת מטופל 01/01/2026</span>
+            <span class="bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-1 rounded-full">נוהלי אגף הגריאטריה וקריטריוני Beers</span>
+          </div>
+          <h2 class="text-2xl md:text-3xl font-black text-slate-900">מדריך קליני מאוחד לניהול רשומת מטופל, מעקב רפואי ומתן תרופות בטוח</h2>
+          <p class="text-sm text-slate-600 mt-1">ריכוז אמות מידה לניהול רשומה במערך הכרוני (סיעודי / תשוש נפש) ובגריאטריה פעילה (סיעוד מורכב, שיקום ומונשמים)</p>
+        </div>
+
+        <!-- Personal Brand Badge -->
+        <div class="bg-white border border-slate-200 px-4 py-3 rounded-2xl shadow-sm min-w-[260px] text-right">
+          <div class="font-extrabold text-slate-700 text-sm md:text-base">נוצר על ידי: מאיה שקולניק גזית</div>
+          <div class="text-xs text-slate-500 mt-0.5">R.N, BA, M.H.A, Policy Management Specialist</div>
+        </div>
+      </div>
+
+      <!-- Executive Summary Cards -->
+      <div class="mb-8">
+        <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
+          <span class="w-2.5 h-5 bg-blue-600 rounded"></span>
+          תקציר מנהלים ומבנה המדריך (עודכן לשנת 2026)
+        </h3>
+        <p class="text-sm text-slate-700 leading-relaxed mb-6">
+          מסמך תדרוך זה מאחד את <strong>אמות המידה לניהול רשומת מטופל לשנת 2026 (עודכן 01/01/2026)</strong> הן עבור <strong>מחלקות סיעודיות ותשושי נפש</strong> והן עבור <strong>מחלקות גריאטריה פעילה (סיעוד מורכב, שיקום ומונשמים)</strong>, יחד עם הנחיות המעקב הקליני, משטרי המינון וניטור הסימנים החיוניים, שמונת הכללים למתן תרופות בטוח (Right 8) וקריטריוני בירס (Beers).
+          המדריך מסדיר עבור כלל הסקטורים (רפואה, סיעוד ומקצועות הבריאות) את לוחות הזמנים לביצוע קבלות ואומדנים, עמידה ב<strong>מדדי איכות</strong> של משרד הבריאות, והפקת תדפיסים לתיק הידני ולמעטפת חירום (<strong>"זמן יקר"</strong>).
         </p>
-    </section>
 
-    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#f59e0b]">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-[#fffbeb] text-[#f59e0b] p-4 rounded-2xl text-4xl shadow-inner"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <h3 class="text-4xl font-bold text-[#0f172a]">ניהול "עייפות התרעות"</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-amber-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">1</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">טבלה מסכמת לפי תדירות ביצוע (גריאטריה כרונית)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">ריכוז כרונולוגי של פעולות החובה מהקבלה (תוך 24 שעות), בדיקות מעבדה (נוהל 1.3.2), מעקבים שבועיים, רבעוניים, חצי-שנתיים ושנתיים.</p>
+          </div>
+          <div class="bg-teal-50/60 border border-teal-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-teal-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">2</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">משטרי מינון, סמ"ח, עור ופצעים</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">שעות מתן קבועות (P.O, IV, PEG, אינסולין), מדידת סמ"ח ודקסטרו, אומדן עור יומי המתועד בדיווח השבועי, מעקב פצע שבועי ואומדן כאב לפני ואחרי טיפול מקומי.</p>
+          </div>
+          <div class="bg-blue-50/60 border border-blue-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-blue-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">3</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">ניהול רשומה 2026 (גריאטריה כרונית)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">פירוט מלא של מדור רפואי, מדור סיעודי ומדור פארא-רפואי במחלקות גריאטריה כרונית (סיעודיות ותשושי נפש), כולל מדדי איכות ותדפיסי "זמן יקר".</p>
+          </div>
+          <div class="bg-emerald-50/60 border border-emerald-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-emerald-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">4</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">ניהול רשומה 2026 (גריאטריה פעילה)</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">אמות מידה מותאמות למחלקות סיעוד מורכב, שיקום ומונשמים: מעקב רפואי שבועי, בקרת תרופות שבועית ו-7 ימים לפני שחרור משיקום, FIM, הערכת דליריום, תזונה תוך 36 שעות/5 ימים וישיבות צוות.</p>
+          </div>
+          <div class="bg-indigo-50/60 border border-indigo-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-indigo-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">5</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">8 הכללים (Right 8) ותזמון Beers</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">שמונת העקרונות למתן תרופות בטוח, וסנכרון תרופות בוקר (משתנים למניעת השתנה לילית ונפילות) מול ערב (חוסמי אלפא, סטטינים, תרופות מרגיעות).</p>
+          </div>
+          <div class="bg-red-50/60 border border-red-200 rounded-xl p-4">
+            <span class="w-7 h-7 bg-red-600 text-white font-bold rounded-lg flex items-center justify-center text-xs mb-2">6</span>
+            <h4 class="font-bold text-slate-900 text-sm mb-1">אזהרות ואיסורים קריטיים בגיל השלישי</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">הימנעות מוחלטת מתרופות אנטי-כולינרגיות, איסור שימוש כרוני ב-NSAIDs וזהירות מחמירה בבנזודיאזפינים למניעת דליריום, שברים ותמותה.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-4">
+        <span class="text-xs text-slate-500 font-semibold">דף 1 מתוך 9 • תקציר ומבוא (עודכן: אמות מידה 2026)</span>
+        <button onclick="goToSlide(1)" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition">לטבלה מסכמת של רשומת מטופל לפי תדירות ביצוע (גריאטריה כרונית) &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 1: Summary Table of Patient Record by Frequency -->
+    <div id="slide-1" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      
+      <!-- Top banner formatted exactly like original form -->
+      <div class="bg-amber-400 text-slate-950 font-black text-center py-2.5 px-4 rounded-t-xl text-base md:text-lg border-2 border-b-0 border-amber-500">
+        טבלה מסכמת של רשומת מטופל לפי תדירות ביצוע (גריאטריה כרונית – סיעודי / תשוש נפש)
+        <div class="text-xs font-semibold text-slate-900 mt-0.5">(מבוסס על נהלי משרד הבריאות אגף הגריאטריה, מכרז הקודים ואמות מידה לניהול רשומה 01/01/2026)</div>
+      </div>
+
+      <!-- Main Clinical Table -->
+      <div class="overflow-x-auto border-2 border-amber-500 rounded-b-xl mb-6">
+        <table class="w-full text-right text-xs md:text-sm border-collapse">
+          <thead>
+            <tr class="bg-amber-100/70 text-slate-900 border-b border-amber-300 font-extrabold">
+              <th class="p-3 w-1/4 border-l border-amber-200">תדירות / שעות</th>
+              <th class="p-3 w-1/2 border-l border-amber-200">פעולות ומפרט נדרש</th>
+              <th class="p-3 w-1/4">גורם מבצע ותיעוד</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 text-slate-800">
+            <!-- 1. Admission -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-red-600 border-l border-slate-200">לא יאוחר מ-24 שעות מקבלה</td>
+              <td class="p-3 font-bold text-slate-900 border-l border-slate-200">קבלה רפואית ואנמנזה סיעודית (כולל כרטיס מטופל ואישור אפוטרופוס)</td>
+              <td class="p-3 text-slate-600">רופא ואחות מחלקה</td>
+            </tr>
+
+            <!-- 2. Admission Labs -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200">
+                תוך שבוע עד חודש מקבלה
+                <div class="text-[11px] font-normal text-slate-500">(באם אין בדיקות בחודש האחרון שלפני הקבלה)</div>
+                <div class="text-[11px] font-bold text-amber-700 mt-1">שעת נטילה: 08:00</div>
+              </td>
+              <td class="p-3 border-l border-slate-200">
+                <strong class="text-slate-900 block mb-0.5">בדיקות בקבלה (נוהל 1.3.2):</strong>
+                ס.ד, כימיה, תפקודי כבד, בדיקת שתן לכללית, תפקודי בלוטת תריס, רמות ברזל וטרנספרין + Vitamin B12. תוצאות הבדיקות יאושרו מדי יום ע"י גורם מורשה.
+              </td>
+              <td class="p-3 text-slate-600">הוראה בטיפולים/הוראות</td>
+            </tr>
+
+            <!-- 3. Routine Labs -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200">אחת לשנה</td>
+              <td class="p-3 border-l border-slate-200">
+                <strong class="text-slate-900 block mb-0.5">בדיקות שיגרה:</strong>
+                ס.ד, כימיה כולל תפקודי כליה ואלבומין. (בנוסף לסוכרתיים: בדיקת קרקעית עיניים - פונדוס פעם בשנה).
+              </td>
+              <td class="p-3 text-slate-600">מעבדה שנתית שגרתית</td>
+            </tr>
+
+            <!-- 4. Target Follow-ups -->
+            <tr class="hover:bg-slate-50 bg-slate-50/50">
+              <td class="p-3 font-semibold border-l border-slate-200 text-slate-900">
+                כולל בדיקות שיגרה מינימלית אחת לשנה, ובדיקות במצבים ספציפיים לפי צורך:
+              </td>
+              <td class="p-3 border-l border-slate-200">
+                <strong class="text-slate-900 block mb-1">בדיקות מעקב:</strong>
+                <ol class="list-decimal list-inside space-y-1 text-slate-700">
+                  <li><strong>מטופל במשתנים:</strong> אלקטרוליטים ואוריאה <span class="text-blue-700 font-bold">פעם ב-3 חודשים</span>.</li>
+                  <li><strong>מטופל סוכרתי:</strong> מעקב HbA1C <span class="font-bold">כל 6 חודשים</span>.</li>
+                  <li><strong>מטופל בנוגדי קרישה:</strong> בדיקת רמות INR לפי צורך וס.ד <span class="font-bold">לפחות פעם בחודש</span>.</li>
+                  <li><strong>מטופלים עם תחלואה:</strong> יתר לחץ דם, אי ספיקת לב, סוכרת, פצעי לחץ – אחת ל-3 חודשים.</li>
+                </ol>
+                <div class="mt-1 text-xs font-bold text-indigo-900 bg-indigo-50 p-1.5 rounded">
+                  חולים עם בעיות רפואיות מיוחדות אחרות: שיקול רפואי
                 </div>
-                <p class="text-xl text-[#475569] mb-6 leading-relaxed">
-                    מערכות המידע מתריעות לעיתים קרובות על אינטראקציות תרופתיות, אך ריבוי ההתרעות מוביל להתעלמות מאזהרות קריטיות (Alert Fatigue). הפתרון המערכתי הוא להתמקד ב-<strong class="text-[#b45309]">Hard Stops</strong> המחייבים חשיבה מחדש.
+              </td>
+              <td class="p-3 text-slate-600">רופא מטפל / בדיקות דם</td>
+            </tr>
+
+            <!-- 5. Documentation & Care Plan -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200">מעקב סיעודי: שבועי<br>מעקב רפואי: בקבלה ואחת לחודש</td>
+              <td class="p-3 border-l border-slate-200">רישום דיווח רפואי (אחת לחודש ולפי צורך) ומעקב סיעודי (אחת לשבוע ולפי צורך, כולל תיעוד אומדן עור יומי)</td>
+              <td class="p-3 text-slate-600">רופא / אחות</td>
+            </tr>
+
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200">דף אבחנות: אחת ל-3 חודשים<br>בקרת תרופות: אחת ל-6 חודשים</td>
+              <td class="p-3 border-l border-slate-200">עדכון דף אבחנות (אחת ל-3 חודשים ולפי צורך) והתאמת תרופה-אבחנה לכל תרופה</td>
+              <td class="p-3 text-slate-600">חתימה אלקטרונית + תדפיס "זמן יקר"</td>
+            </tr>
+
+            <!-- 6. Team Conferences & Periodic Exam -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200 text-xs">
+                מטופל חדש: עד חודש מהקבלה,<br>
+                בהמשך: <strong>אחת לשנה</strong> ובכל שינוי במצב<br>
+                <span class="text-slate-500">(בדיקה תקופתית יזומה של הרופא: בקבלה ואחת ל-6 חודשים)</span>
+              </td>
+              <td class="p-3 border-l border-slate-200 font-semibold text-slate-900">
+                ישיבות צוות רב-מקצועיות, תוכנית טיפול כוללנית ובדיקה תקופתית יזומה של הרופא
+              </td>
+              <td class="p-3 text-slate-600">צוות רב-מקצועי</td>
+            </tr>
+
+            <!-- 7. Family Coordination -->
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-semibold border-l border-slate-200 text-blue-700">סמוך לקבלה, אחת לשנה, לקראת שחרור ולפי צורך</td>
+              <td class="p-3 border-l border-slate-200">שיחת הסבר, תיאום ציפיות וקיום שיחה לתיאום טיפול עם דייר ובני משפחתו (מדד איכות פנימי - בירור הנחיות מקדימות / מיופה כוח / חוק החולה הנוטה למות)</td>
+              <td class="p-3 text-slate-600">רופא בשיתוף עו"ס / אחות</td>
+            </tr>
+
+            <!-- 8. Comprehensive Assessments -->
+            <tr class="hover:bg-slate-50 bg-amber-50/30">
+              <td class="p-3 font-bold border-l border-slate-200 text-xs">
+                בקבלה, אחת ל-6 חודשים / אחת לשנה ובהתאם לצורך
+                <div class="mt-2 text-slate-600 font-normal">ראה פירוט מלא בלשוניות ניהול רשומה 2026</div>
+              </td>
+              <td class="p-3 border-l border-slate-200">
+                <strong class="text-slate-900 block mb-1">ביצוע אומדנים בהתאם לנהלים (2026):</strong>
+                <ul class="list-disc list-inside space-y-1 text-xs">
+                  <li><strong>רופא:</strong> מבחן קוגניטיבי מובנה והערכת דליריום מובנה בקבלה (מדדי איכות), מבחן MSSE בזימון ייעוץ פליאטיבי ושיחת תיאום טיפול.</li>
+                  <li><strong>איתור ואומדן דיכאון (GDS / PHQ-2):</strong> תוך 7 ימים מקבלה ולפי צורך.</li>
+                  <li><strong>אחיות:</strong> FARMER (תוך 24 ש' מקבלה ובשינוי מצב), NORTON (בקבלה, כל 6 חודשים, ובפצע פעיל פעם בחודש), כף רגל סוכרתית (תוך 24-48 ש' ולפי דרגת סיכון 0-3), שאלון אי-שקט COHEN-MANSFIELD (בשבוע ה-1 ואחת לשנה).</li>
+                  <li><strong>תזונה, בליעה וסוגרים:</strong> אומדן פה, SNAQ, הערכת בליעה (תוך 10 ימים מקבלה ואחת לשנה), שליטה על סוגרים (תוך 72 ש' ואחת לשנה), סיכון לעצירות (בקבלה ואחת לשנה), שקילה (בקבלה ופעם בחודש).</li>
+                </ul>
+              </td>
+              <td class="p-3 text-slate-600">אחיות / רופא / צוות רב-מקצועי</td>
+            </tr>
+
+            <!-- 9. Geriatric Flags -->
+            <tr class="hover:bg-slate-50 bg-red-50/40">
+              <td class="p-3 font-bold text-red-700 border-l border-slate-200 text-xs">
+                עד חודש מהקבלה ואחת ל-6 חודשים
+                <div class="mt-1 font-semibold text-slate-700">מנהל רפואי / גריאטר: בקרה אחת ל-3 חודשים</div>
+              </td>
+              <td class="p-3 border-l border-slate-200 text-xs">
+                <strong class="text-red-900 block mb-1">הדגשים בבעיות גריאטריות מיוחדות ובקרת ספר פקודות:</strong>
+                <div>• <strong>ספר פקודות מרוכז מול הוראות חדשות:</strong> בקרה אחת למשמרת. חיתום על הוראות חדשות יבוצע בטווח שעה ממתן ההוראה!</div>
+                <div>• <strong>בקרת ספר פקודות (כולל רגישות):</strong> אחת ל-6 חודשים אחות עם הרופא יבצעו עדכון תרופות, בשחרור ובהתאם לצורך. מנהל רפואי / יועץ גריאטרי עורך בקרה אחת ל-3 חודשים.</div>
+                <div>• <strong>קטטר שתן / עצירות:</strong> חובת תיעוד באבחנות ובמעקב הדגשים גריאטריים.</div>
+              </td>
+              <td class="p-3 text-slate-600">רופא, אחות ומנהל רפואי • הדפסה כל 6 חודשים + "זמן יקר"</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(0)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; חזרה לתקציר</button>
+        <button onclick="goToSlide(2)" class="no-print bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">למשטרי המינון וניטור סמ"ח &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: Dosage Regimens, Timing & Vital Signs Monitoring -->
+    <div id="slide-2" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-5">
+        <span class="text-xs font-bold text-amber-600 uppercase">חלק ב' של מסמך המקור</span>
+        <h3 class="text-2xl font-black text-slate-900">משטרי מינון, זמני מתן לפי סוג הוראה וניטור סימנים חיוניים</h3>
+        <p class="text-xs text-slate-600">לוח הזמנים המובנה והמחייב של המוסד לכל דרכי המתן והניטור הקליני</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 mb-5">
+        
+        <!-- Left Column: Administration Timing Tables -->
+        <div class="space-y-4 text-xs md:text-sm">
+          
+          <!-- P.O. Box -->
+          <div class="border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-amber-500 text-white font-black px-3 py-2 flex justify-between items-center">
+              <span>הוראה למתן תרופות P.O. (דרך הפה)</span>
+              <span class="text-xs bg-amber-600 px-2 py-0.5 rounded">תדירות / שעות</span>
+            </div>
+            <div class="p-3 bg-white space-y-1.5 text-slate-800">
+              <div class="flex justify-between border-b pb-1">
+                <span>פעמיים ביום (X2):</span>
+                <strong class="text-slate-950 font-black">08:00 , 20:00</strong>
+              </div>
+              <div class="flex justify-between border-b pb-1">
+                <span>שלוש פעמים ביום (X3):</span>
+                <strong class="text-slate-950 font-black">08:00 , 12:00 , 20:00</strong>
+              </div>
+              <div class="flex justify-between">
+                <span>ארבע פעמים ביום (X4):</span>
+                <strong class="text-slate-950 font-black">08:00 , 12:00 , 16:00 , 20:00</strong>
+              </div>
+              <p class="text-[11px] text-amber-800 pt-1 font-semibold">* יש לוודא התאמה מלאה בין שעות הארוחות לסוג התרופה.</p>
+            </div>
+          </div>
+
+          <!-- I.V. Box -->
+          <div class="border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-indigo-600 text-white font-black px-3 py-2 flex justify-between items-center">
+              <span>הוראה למתן תרופות IV (תוך-ורידי)</span>
+              <span class="text-xs bg-indigo-700 px-2 py-0.5 rounded">תדירות / שעות</span>
+            </div>
+            <div class="p-3 bg-white space-y-1.5 text-slate-800">
+              <div class="flex justify-between border-b pb-1">
+                <span>X2 (פעמיים ביום):</span>
+                <strong class="text-indigo-950 font-black">08:00 , 20:00</strong>
+              </div>
+              <div class="flex justify-between border-b pb-1">
+                <span>X3 (שלוש פעמים ביום):</span>
+                <strong class="text-indigo-950 font-black">02:00 , 10:00 , 18:00</strong>
+              </div>
+              <div class="flex justify-between">
+                <span>X4 (ארבע פעמים ביום):</span>
+                <strong class="text-indigo-950 font-black">00:00 , 06:00 , 12:00 , 18:00</strong>
+              </div>
+              <p class="text-[11px] text-indigo-700 pt-1 font-semibold">* נדרש מעקב קפדני אחר גישה ורידית וזמני הזלפה.</p>
+            </div>
+          </div>
+
+          <!-- Feed & Water Tube -->
+          <div class="border border-slate-300 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-teal-600 text-white font-black px-3 py-2">
+              כלכלה ומים דרך PZ / PEG
+            </div>
+            <div class="p-3 bg-white space-y-2 text-slate-800">
+              <div>
+                <div class="flex justify-between items-center">
+                  <span class="font-bold">הוראה למתן כלכלה PZ/PEG (X3):</span>
+                  <span class="font-black text-teal-900">06:00 , 12:00 , 18:00</span>
+                </div>
+                <div class="text-[11px] text-slate-600">שטיפת הצינור במים לפני ואחרי כל הזנה.</div>
+              </div>
+              <div class="border-t pt-1.5">
+                <div class="flex justify-between items-center">
+                  <span class="font-bold">הוראה למתן מים PZ/PEG (X4):</span>
+                  <span class="font-black text-teal-900">06:00 , 10:00 , 16:00 , 22:00</span>
+                </div>
+                <div class="text-[11px] text-slate-600">מתן מים בהתאם למאזן הנוזלים של הדייר.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Insulin Regimen -->
+          <div class="border-2 border-red-400 bg-red-50 rounded-xl p-3 shadow-sm">
+            <div class="flex justify-between items-center mb-1">
+              <span class="font-black text-red-900">הוראה למתן אינסולין למי שאוכל PO (X3)</span>
+              <span class="bg-red-600 text-white font-black px-2 py-0.5 rounded text-xs">08:00 , 12:00 , 18:00</span>
+            </div>
+            <p class="text-xs font-black text-red-700">⚠️ אזהרה: מתן אינסולין בסמוך לארוחות בלבד! חל איסור מוחלט על מתן ללא זמינות מזון מיידית.</p>
+          </div>
+        </div>
+
+        <!-- Right Column: Vital Signs & Regular Assessments -->
+        <div class="border border-slate-300 rounded-xl p-4 bg-slate-50 flex flex-col justify-between shadow-sm">
+          <div>
+            <div class="bg-slate-800 text-white px-3 py-2 rounded-lg font-black text-sm mb-3 flex items-center justify-between">
+              <span>הוראות למדידת סימנים חיוניים ואומדנים שוטפים</span>
+              <span class="text-xs bg-slate-700 px-2 py-0.5 rounded">תדירות / שעות</span>
+            </div>
+
+            <div class="space-y-3 text-xs md:text-sm">
+              
+              <!-- Vitals row -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-slate-900 font-black">סימנים חיוניים (סמ"ח) - פעמיים ביום (2X)</strong>
+                  <span class="bg-emerald-100 text-emerald-900 font-black px-2 py-0.5 rounded">08:00 , 16:00</span>
+                </div>
+                <p class="text-slate-700 leading-relaxed">
+                  מעקב חום ודופק, לחץ דם, נשימות ורוויית חמצן בדם (SpO2 / SAO2).<br>
+                  בשוטף לפי הוראה רפואית / תוכנית טיפול / שיקול דעת אחות בהתאם למצב רפואי בזמן ביצוע בקרת תרופות אחת לחצי שנה יש לשקול שינוי התדירות בהתאם למצב הדייר.
                 </p>
-                <div class="bg-[#f8fafc] rounded-2xl p-6 border border-[#e2e8f0]">
-                    <h4 class="text-xl font-bold text-[#334155] mb-4">🛑 שילובים מסוכנים נפוצים:</h4>
-                    <ul class="space-y-4 text-[#475569] text-lg font-medium">
-                        <li class="flex items-start gap-3">
-                            <span class="text-[#ef4444] text-xl mt-1"><i class="fa-solid fa-xmark"></i></span>
-                            <span><strong>נוגדי דיכאון (SSRI/SNRI)</strong> בשילוב עם תרופות <strong>אנטי-פסיכוטיות</strong>.</span>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="text-[#ef4444] text-xl mt-1"><i class="fa-solid fa-xmark"></i></span>
-                            <span><strong>בנזודיאזפינים</strong> בשילוב עם תרופות מדכאות מערכת העצבים המרכזית (כמו אופיואידים).</span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="mt-6 bg-[#ecfdf5] p-5 rounded-2xl border border-[#34d399] text-[#065f46]">
-                    <strong>המלצה לצוות הסיעודי:</strong> בעת הופעת התרעה על שילובים אלו, יש לעצור, לבחון את המצב הקליני (טשטוש, בלבול, ירידת ל"ד), ולדווח לרופא בטרם מתן הטיפול.
-                </div>
-            </div>
-            <div>
-                <div class="chart-container">
-                    <canvas id="alertFatigueChart"></canvas>
-                </div>
-            </div>
-        </div>
-    </section>
+              </div>
 
-    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#0ea5e9]">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div class="order-2 md:order-1">
-                <div class="chart-container">
-                    <canvas id="anticholinergicChart"></canvas>
+              <!-- Dextro -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200">
+                <div class="flex justify-between items-center mb-1">
+                  <strong class="text-slate-900 font-black">סוכר בדם קפילרי (דקסטרו)</strong>
+                  <span class="bg-blue-100 text-blue-900 font-black px-2 py-0.5 rounded text-xs">2 פעמים ביום (08:00, 16:00)</span>
                 </div>
-            </div>
-            <div class="order-1 md:order-2">
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="bg-[#f0f9ff] text-[#0ea5e9] p-4 rounded-2xl text-4xl shadow-inner"><i class="fa-solid fa-brain"></i></div>
-                    <h3 class="text-4xl font-bold text-[#0f172a]">עומס אנטי-כולינרגי</h3>
-                </div>
-                <p class="text-xl text-[#475569] mb-6 leading-relaxed">
-                    תרופות אלו חוסמות את פעילות האצטילכולין. בגיל המבוגר, רגישות זו עולה משמעותית ומהווה גורם סיכון מוביל לנפילות ולהידרדרות קוגניטיבית.
+                <p class="text-slate-700 leading-relaxed">
+                  ב-3 ימים ראשונים לקבלה יש למדוד 2 פעמים ביום. כמו כן בעת שינוי טיפול תרופתי או לפי הנחיה רפואית.
                 </p>
-                <div class="grid grid-cols-2 gap-4 mb-6">
-                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
-                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-droplet-slash"></i></div>
-                        <div class="font-bold text-[#334155]">תרופות שלפוחית שתן</div>
-                    </div>
-                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
-                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-head-side-cough"></i></div>
-                        <div class="font-bold text-[#334155]">אנטי-היסטמינים ישנים</div>
-                    </div>
-                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
-                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-face-frown"></i></div>
-                        <div class="font-bold text-[#334155]">נוגדי דיכאון טריציקליים</div>
-                    </div>
-                    <div class="bg-[#f1f5f9] p-4 rounded-xl text-center border border-[#cbd5e1]">
-                        <div class="text-3xl mb-2 text-[#0c4a6e]"><i class="fa-solid fa-arrows-spin"></i></div>
-                        <div class="font-bold text-[#334155]">תרופות נגד סחרחורת</div>
-                    </div>
-                </div>
-                <div class="bg-[#eff6ff] p-5 rounded-2xl border border-[#60a5fa] text-[#1e3a8a]">
-                    <strong>פעולת מנע:</strong> שימוש במחשבוני ACB Score, ערנות להחמרת בלבול או יובש, ועידוד Deprescribing (הפסקת טיפול הדרגתית) בצוות הרב-מקצועי.
-                </div>
+              </div>
+
+              <!-- Pain -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200">
+                <strong class="text-slate-900 font-black block mb-0.5">אומדן כאב:</strong>
+                <p class="text-slate-700 leading-relaxed">
+                  • <strong>אומדן כאב ראשוני:</strong> יש לבצע תוך 12 שעות מקבלה.<br>
+                  • <strong>אומדן כאב שוטף:</strong> לפחות אחת לשבוע. דייר שקיבל טיפול נגד כאב יבוצע לפני ואחרי קבלת טיפול.
+                </p>
+              </div>
+
+              <!-- Wounds -->
+              <div class="bg-white p-3 rounded-lg border border-slate-200">
+                <strong class="text-slate-900 font-black block mb-0.5">אומדן עור ופצעים:</strong>
+                <p class="text-slate-700 leading-relaxed">
+                  • <strong>אומדן עור:</strong> יבוצע באופן יומי ויתועד בדיווח השבועי.<br>
+                  • <strong>פצע:</strong> יבוצע מעקב אחת לשבוע, ואומדן כאב למטופל עם פצע יבוצע לפני ואחרי ביצוע טיפול מקומי.
+                </p>
+              </div>
+
             </div>
-        </div>
-    </section>
+          </div>
 
-    <section class="glass-card rounded-3xl p-8 md:p-12 border-t-8 border-t-[#10b981]">
-        <div class="text-center max-w-3xl mx-auto mb-12">
-            <div class="inline-block bg-[#ecfdf5] text-[#10b981] p-4 rounded-full text-5xl mb-4 shadow-inner"><i class="fa-solid fa-clipboard-list"></i></div>
-            <h3 class="text-4xl font-bold text-[#0f172a] mb-4">"התאמת תרופות" במעברי טיפול</h3>
-            <p class="text-xl text-[#475569]">
-                נקודת התורפה המשמעותית ביותר הגורמת לשגיאות הרות גורל, היא רגע הקבלה של המטופל למחלקה – במיוחד קבלה מאשפוז אקוטי.
-            </p>
+          <div class="mt-4 pt-3 border-t border-slate-200 text-xs text-slate-500">
+            * בהתאם להנחיות אגף הגריאטריה ונוהל מתן תרופות מוסדי.
+          </div>
         </div>
 
-        <div class="flex flex-col md:flex-row items-stretch justify-between gap-4">
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(1)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; טבלה מסכמת של רשומת מטופל לפי תדירות ביצוע (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(3)" class="no-print bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לניהול רשומה 2026: רפואי/סיעודי (גריאטריה כרונית) &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 3: 2026 Record Management Standards (Medical & Nursing) -->
+    <div id="slide-3" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-4 flex flex-col md:flex-row justify-between md:items-center gap-2">
+        <div>
+          <span class="text-xs font-bold text-blue-600 uppercase">עודכן 01/01/2026 • גריאטריה כרונית (מכרז הקודים 2024)</span>
+          <h3 class="text-xl md:text-2xl font-black text-slate-900">אמות מידה לניהול רשומת מטופל: מדור רפואי ומדור סיעודי (גריאטריה כרונית)</h3>
+          <p class="text-xs text-slate-600">לוחות זמנים ומועדי הפקת תדפיס במחלקות גריאטריה כרונית (סיעודיות ותשושי נפש)</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-[11px] font-bold">
+          <span class="bg-red-100 text-red-800 border border-red-300 px-2.5 py-1 rounded-lg">🚨 חירום = "זמן יקר"</span>
+          <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-lg">⭐ מדד איכות משרד הבריאות</span>
+          <span class="bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-1 rounded-lg">🖨️ צהוב = הדפסה ותיוק בגיליון</span>
+        </div>
+      </div>
+
+      <!-- Legend Box: Definition of "Zman Yakar" -->
+      <div class="bg-red-50/80 border border-red-200 rounded-xl p-3 mb-5 text-xs text-slate-800 flex items-start gap-2.5">
+        <span class="text-base leading-none mt-0.5">🚨</span>
+        <div>
+          <strong class="text-red-900 font-black">מקרא – מהו נוהל "זמן יקר" בשעת חירום?</strong>
+          <span>ריכוז תדפיסים חיוניים המתויקים בגיליון הידני של המטופל לשמירה על <strong>רצף טיפולי ובטיחות המטופל בשעת חירום</strong> (השבתת מערכות מחשוב, הפסקת חשמל, אירוע סייבר או פינוי חירום). הערכת "זמן יקר" כוללת: כרטיס מטופל ומדבקות זיהוי, קבלה רפואית, דף אבחנות ורגישויות, בקרת תרופות ודף חלוקת תרופות (CARDEX) עדכני וחתום, מעקב פצעים ואומדן NORTON, והמלצות תזונה/פרה-רפואי.</span>
+        </div>
+      </div>
+
+      <!-- Medical Section Table -->
+      <div class="mb-6">
+        <div class="bg-blue-900 text-white font-black px-4 py-2 rounded-t-xl text-sm flex justify-between items-center">
+          <span>1-2. כרטיס מטופל ומדור רפואי</span>
+          <span class="text-xs bg-blue-800 px-2 py-0.5 rounded">נהלי משרד הבריאות 2026</span>
+        </div>
+        <div class="overflow-x-auto border border-slate-300 rounded-b-xl">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-extrabold">
+                <th class="p-2.5 w-1/4 border-l border-slate-200">שם הרשומה</th>
+                <th class="p-2.5 w-1/2 border-l border-slate-200">ניהול הרשומה לפי נהלי משרד הבריאות</th>
+                <th class="p-2.5 w-1/4">מועד הפקת תדפיס</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr class="bg-amber-50/60">
+                <td class="p-2 font-bold text-slate-900 border-l">1. כרטיס מטופל ואישור אפוטרופוס</td>
+                <td class="p-2 border-l">לאחר דיווח ע"י חתימת משתמש מורשה</td>
+                <td class="p-2 font-bold text-red-700">בקבלה + "זמן יקר"</td>
+              </tr>
+              <tr class="bg-amber-50/60">
+                <td class="p-2 font-bold text-slate-900 border-l">דף אבחנות</td>
+                <td class="p-2 border-l">עדכון אחת ל-3 חודשים ולפי הצורך</td>
+                <td class="p-2 font-bold text-red-700">בקבלה ולפי צורך + "זמן יקר"</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">קבלה רפואית</td>
+                <td class="p-2 border-l">לא יאוחר מ-24 שעות מקבלה</td>
+                <td class="p-2">בקבלת חולה</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">לקיחת בדיקות מעבדה (נוהל 1.3.2)</td>
+                <td class="p-2 border-l">
+                  יינתנו בטיפולים/הוראות ותוצאות יאושרו מדי יום ע"י גורם מורשה.<br>
+                  • <strong>בקבלה (תוך שבוע עד חודש):</strong> ס.ד, כימיה, תפקודי כבד, שתן לכללית, תפקודי תריס, ברזל, טרנספרין + B12.<br>
+                  • <strong>שגרה (אחת לשנה):</strong> ס.ד, כימיה כולל תפקודי כליה ואלבומין.<br>
+                  • <strong>מעקב:</strong> משתנים (אלקטרוליטים ואוריאה כל 3 חודשים); סוכרת (HbA1C כל 6 חודשים); נוגדי קרישה (INR לפי צורך וס.ד פעם בחודש); תחלואה כרונית/פצעי לחץ (כל 3 חודשים).
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מבחן קוגניטיבי מובנה <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">בקבלה ולפי צורך (מדד איכות משרד הבריאות)</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">בדיקות עזר</td>
+                <td class="p-2 border-l">בקבלה ולפי צורך: א.ק.ג מאובחן, צילום חזה עדכני מהשנה האחרונה, US שארית שתן (לפי שיקול מקצועי), אוטוסקופיה/אודיאומטריה בחשד לירידה בשמיעה, ולסוכרתיים בדיקת פונדוס (קרקעית עיניים) פעם בשנה.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הערכת דליריום מובנה <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">בקבלה ולפי צורך (מדד איכות)</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">שיחה לתיאום טיפול עם מאושפז/משפחה</td>
+                <td class="p-2 border-l">מדד איכות פנימי: אבחנה ומצב החולה, חלופות טיפוליות, בירור הנחיות מקדימות / מיופה כוח / חוק החולה הנוטה למות (רופא בשיתוף עו"ס/אחות) + שאלון MSSE</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב רפואי וייעוצים מומחים</td>
+                <td class="p-2 border-l"><strong>מעקב רפואי:</strong> ביום הקבלה ואחת לחודש (או לפי צורך). <strong>ייעוץ גריאטרי:</strong> עד חודש מקבלה חדשה. <strong>ייעוץ אחות פצע:</strong> לכל מטופל עם פצע.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">בדיקה תקופתית יזומה והדגשים גריאטריים</td>
+                <td class="p-2 border-l"><strong>בדיקה תקופתית:</strong> בקבלה ואחת ל-6 חודשים. <strong>הדגשים בבעיות גריאטריות:</strong> עד חודש מהקבלה ואחת ל-6 חודשים.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/60">
+                <td class="p-2 font-bold text-slate-900 border-l">ספר פקודות מרוכז ובקרת תרופות</td>
+                <td class="p-2 border-l">
+                  • <strong>ספר פקודות מול הוראות חדשות:</strong> בקרה אחת למשמרת (חיתום תוך שעה ממתן ההוראה).<br>
+                  • <strong>בקרת ספר פקודות ורגישות:</strong> אחת ל-6 חודשים אחות ורופא (ומנהל רפואי/גריאטר כל 3 חודשים).
+                </td>
+                <td class="p-2 font-bold text-red-700">אחת ל-6 חודשים + "זמן יקר"</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">סיכום אשפוז / סיכום פטירה / מרשמים</td>
+                <td class="p-2 border-l">סיכום אשפוז בשחרור; סיכום פטירה תוך 48 שעות (הודעת פטירה ב-4 העתקים); מרשמים אחת לחודש.</td>
+                <td class="p-2">בשחרור / בפטירה</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Nursing Section Table -->
+      <div class="mb-4">
+        <div class="bg-teal-800 text-white font-black px-4 py-2 rounded-t-xl text-sm flex justify-between items-center">
+          <span>3. מדור סיעודי (אומדנים, תוכניות טיפול ומעקבים)</span>
+          <span class="text-xs bg-teal-700 px-2 py-0.5 rounded">אמות מידה 2026</span>
+        </div>
+        <div class="overflow-x-auto border border-slate-300 rounded-b-xl">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-extrabold">
+                <th class="p-2.5 w-1/4 border-l border-slate-200">שם הרשומה / אומדן</th>
+                <th class="p-2.5 w-1/2 border-l border-slate-200">ניהול הרשומה ותדירות לפי נהלי משרד הבריאות</th>
+                <th class="p-2.5 w-1/4">מועד הפקת תדפיס</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">אנמנזה סיעודית ותוכנית טיפול</td>
+                <td class="p-2 border-l"><strong>אנמנזה:</strong> תוך 24 שעות מקבלה/אשפוז חוזר. <strong>תוכנית טיפול ראשונית:</strong> תוך 72 שעות. <strong>תוכנית כוללנית:</strong> עד חודש מהקבלה ובהמשך אחת לשנה ולפי צורך.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הערכה תקופתית יזומה ומעקב סיעודי</td>
+                <td class="p-2 border-l"><strong>הערכה תקופתית:</strong> שבועיים עד חודש מקבלה, ובהמשך אחת לשנה (סמוך לישיבה רב-מקצועית) ובכל שינוי מצב. <strong>מעקב סיעודי:</strong> אחת לשבוע ולפי צורך (כולל תיעוד אומדן עור יומי).</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/60">
+                <td class="p-2 font-bold text-slate-900 border-l">אומדן עור, מעקב פצעים ו-NORTON</td>
+                <td class="p-2 border-l">
+                  • <strong>אומדן עור:</strong> יבוצע באופן יומי ויתועד בדיווח השבועי.<br>
+                  • <strong>פצע:</strong> מעקב אחת לשבוע, ואומדן כאב למטופל עם פצע יבוצע לפני ואחרי ביצוע טיפול מקומי (פצע דרגה 2 ומעלה – דיווח להנהלה).<br>
+                  • <strong>NORTON:</strong> בקבלה, אחת ל-6 חודשים ובשינוי מצב. בהיווצרות פצע – פעם בחודש.
+                </td>
+                <td class="p-2 font-bold text-red-700">"זמן יקר"</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">סימנים חיוניים ואומדן כאב</td>
+                <td class="p-2 border-l"><strong>סמ"ח:</strong> בקבלה ובשוטף. <strong>כאב:</strong> ראשוני תוך 12 שעות מקבלה, שוטף לפחות אחת לשבוע, ולפני ואחרי מתן טיפול נגד כאב.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">FARMER (נפילות) וכף רגל סוכרתית</td>
+                <td class="p-2 border-l">
+                  • <strong>FARMER:</strong> תוך 24 שעות מקבלה ובהתאם לשינוי במצב התפקודי.<br>
+                  • <strong>כף רגל סוכרתית:</strong> בקבלה תוך 24-48 שעות; מעקב לפי דרגת סיכון: 0 (אחת לשנה), 1 (כל 6 חודשים), 2 (כל 3-6 חודשים), 3 (לפי צורך עד ריפוי ואח"כ כל 3 חודשים).
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">דיכאון (GDS/PHQ-2) ואי-שקט (COHEN-MANSFIELD)</td>
+                <td class="p-2 border-l"><strong>דיכאון:</strong> תוך 7 ימים מקבלה ולפי צורך. <strong>COHEN-MANSFIELD:</strong> בשבוע הראשון לקבלה (לדמנציה/אי-שקט) ואחת לשנה סמוך לישיבה רב-מקצועית.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">תזונה (SNAQ, כלכלה, משקל), פה, בליעה, סוגרים ועצירות</td>
+                <td class="p-2 border-l">
+                  • <strong>SNAQ, אומדן פה, יכולת בליעה:</strong> תוך 10 ימים מקבלה (כחלק מאנמנזה) ובהמשך אחת לשנה.<br>
+                  • <strong>שליטה על סוגרים:</strong> תוך 72 שעות מקבלה, אחת לשנה, בשינוי מצב ובתהליך גמילה מצנתר.<br>
+                  • <strong>סיכון לעצירות ורישום כלכלה:</strong> בקבלה ואחת לשנה. <strong>משקל:</strong> בקבלה ופעם בחודש.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/60">
+                <td class="p-2 font-bold text-slate-900 border-l">טיפולים/הוראות, חלוקת תרופות, זיהומים, חיסונים ושחרור</td>
+                <td class="p-2 border-l"><strong>חלוקת תרופות:</strong> חתימה אלקטרונית מיידית. <strong>חיסונים:</strong> שפעת (שנתי - מדד איכות), פנאומוקוק (אחת ל-5 שנים או חד-פעמי מעל גיל 65). <strong>מכתב שחרור סיעודי:</strong> בהפניה לאשפוז אקוטי/שחרור.</td>
+                <td class="p-2 font-bold text-red-700">בשחרור + "זמן יקר"</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(2)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; משטרי מינון וסמ"ח</button>
+        <button onclick="goToSlide(4)" class="no-print bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לניהול רשומה 2026: פרא-רפואי (גריאטריה כרונית) &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 4: 2026 Record Management Standards (Paramedical & Multidisciplinary) -->
+    <div id="slide-4" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-5 flex flex-col md:flex-row justify-between md:items-center gap-2">
+        <div>
+          <span class="text-xs font-bold text-purple-600 uppercase">עודכן 01/01/2026 • גריאטריה כרונית (מדור 4)</span>
+          <h3 class="text-xl md:text-2xl font-black text-slate-900">אמות מידה לניהול רשומת מטופל: מקצועות הבריאות וצוות רב-מקצועי (גריאטריה כרונית)</h3>
+          <p class="text-xs text-slate-600">לוחות זמנים מחייבים להערכות קבלה ומעקבים תקופתיים במערך הגריאטריה הכרונית (פיזיותרפיה, ריפוי בעיסוק, עו"ס, קלינאית תקשורת, תזונה ורוקחות)</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto border-2 border-purple-400 rounded-xl mb-6">
+        <table class="w-full text-right text-xs md:text-sm border-collapse">
+          <thead>
+            <tr class="bg-purple-100 text-purple-950 border-b border-purple-300 font-extrabold">
+              <th class="p-3 w-1/4 border-l border-purple-200">סקטור מקצועי</th>
+              <th class="p-3 w-1/2 border-l border-purple-200">ניהול הרשומה, הערכה ראשונית ומעקב שוטף</th>
+              <th class="p-3 w-1/4">סיווג ותדפיס</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200 text-slate-800">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">פיזיותרפיה</td>
+              <td class="p-3 border-l">
+                • <strong>הערכה ראשונה (סיעודי ותשוש נפש):</strong> תוך שבוע מהקבלה.<br>
+                • <strong>מעקב וטיפול:</strong> לפחות אחת ל-3 חודשים או בכל שינוי במצב המטופל.<br>
+                • <strong>מבחנים מובנים:</strong> FIM, Berg Balance Scale, Dynamic Gait Index, TUG לפי הצורך.
+              </td>
+              <td class="p-3"></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">ריפוי בעיסוק</td>
+              <td class="p-3 border-l">
+                • <strong>הערכה ראשונית:</strong> עד שבועיים (14 ימים) מיום הקבלה.<br>
+                • <strong>מעקב וטיפול:</strong> הערכה תקופתית לפחות אחת לשנה ויזומה לפי צורך.<br>
+                • <strong>טופס השאלת ציוד:</strong> בשחרור ולפי צורך.
+              </td>
+              <td class="p-3">בשחרור (השאלת ציוד)</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">עבודה סוציאלית (עו"ס)</td>
+              <td class="p-3 border-l">
+                • <strong>הערכה ראשונה (טופס רישום סוציאלי וגיליון קבלה):</strong> תוך יומיים (48 שעות) מהקבלה.<br>
+                • <strong>הערכה ביו-פסיכו-סוציאלית ותוכנית טיפול:</strong> השלמה במהלך החודש הראשון לקבלה.<br>
+                • <strong>שיחות עם משפחה:</strong> סמוך לקבלה, אחת לשנה, לקראת שחרור ולפי צורך.
+              </td>
+              <td class="p-3"></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">קלינאית תקשורת</td>
+              <td class="p-3 border-l">
+                • <strong>אבחון בליעה ראשוני:</strong> תוך 30 יום מהקבלה.<br>
+                • <strong>אומדן בליעה דחוף:</strong> עד 3 ימים מהזמנת רופא או מגילוי ליקוי בליעה ע"י סיעוד.<br>
+                • <strong>מעקב תקופתי:</strong> אחת לשנה ובהתאם לצורך.
+              </td>
+              <td class="p-3"></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">תזונה ודיאטה (דיאטנית)</td>
+              <td class="p-3 border-l">
+                • <strong>הערכה תזונתית ראשונה:</strong> תוך שבוע מהגעת המטופל (עד 10 ימים מקבלה).<br>
+                • <strong>מעקב ועדכון אבחנות תזונתיות:</strong> לפחות אחת לשנה ולפי צורך.<br>
+                • <strong>דוח משקלים שנתי:</strong> בקבלה ומעקב שקילה אחת לחודש.
+              </td>
+              <td class="p-3"></td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-black text-purple-900 border-l">רוקחות קלינית</td>
+              <td class="p-3 border-l">
+                • <strong>יומן התערבויות רוקח:</strong> בקרה ותיעוד אחת ל-3 חודשים ולפי צורך.
+              </td>
+              <td class="p-3"></td>
+            </tr>
+            <tr class="hover:bg-slate-50 bg-purple-50/50">
+              <td class="p-3 font-black text-purple-950 border-l">ישיבת צוות רב-מקצועית</td>
+              <td class="p-3 border-l">
+                • <strong>מטופל חדש:</strong> לא יאוחר מחודש מיום הקבלה.<br>
+                • <strong>מעקב תקופתי:</strong> אחת לשנה ובכל שינוי מהותי במצב המטופל (בשיתוף רופא, אחות, עו"ס ומקצועות הבריאות).
+              </td>
+              <td class="p-3"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(3)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; ניהול רשומה 2026: רפואי/סיעודי (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(5)" class="no-print bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לניהול רשומה 2026 (גריאטריה פעילה) &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 5: 2026 Record Management Standards (Active Geriatrics: Complex Nursing, Rehabilitation & Ventilated) -->
+    <div id="slide-5" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-4 flex flex-col md:flex-row justify-between md:items-center gap-2">
+        <div>
+          <span class="text-xs font-bold text-emerald-700 uppercase">עודכן 01/01/2026 • גריאטריה פעילה</span>
+          <h3 class="text-xl md:text-2xl font-black text-slate-900">אמות מידה לניהול רשומת מטופל במחלקות סיעוד מורכב, שיקום ומונשמים</h3>
+          <p class="text-xs text-slate-600">ריכוז דרישות משרד הבריאות, מדדי איכות לאומיים ומועדי הפקת תדפיס במערך הגריאטריה הפעילה</p>
+        </div>
+        <div class="flex flex-wrap gap-1.5 text-[11px] font-bold">
+          <span class="bg-red-100 text-red-800 border border-red-300 px-2.5 py-1 rounded-lg">🚨 חירום = "זמן יקר"</span>
+          <span class="bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-1 rounded-lg">⭐ מדד איכות משרד הבריאות</span>
+          <span class="bg-amber-100 text-amber-900 border border-amber-300 px-2.5 py-1 rounded-lg">🖨️ צהוב = הדפסה ותיוק בגיליון</span>
+        </div>
+      </div>
+
+      <!-- Legend Box: Definition of "Zman Yakar" -->
+      <div class="bg-red-50/80 border border-red-200 rounded-xl p-3 mb-5 text-xs text-slate-800 flex items-start gap-2.5">
+        <span class="text-base leading-none mt-0.5">🚨</span>
+        <div>
+          <strong class="text-red-900 font-black">מקרא – מהו נוהל "זמן יקר" בשעת חירום?</strong>
+          <span>ריכוז תדפיסים חיוניים המתויקים בגיליון הידני של המטופל לשמירה על <strong>רצף טיפולי ובטיחות המטופל בשעת חירום</strong> (השבתת מערכות מחשוב, הפסקת חשמל, אירוע סייבר או פינוי חירום). הערכת "זמן יקר" כוללת: כרטיס מטופל ומדבקות זיהוי, קבלה רפואית, דף אבחנות ורגישויות, בקרת תרופות ודף חלוקת תרופות (CARDEX) עדכני וחתום, מעקב פצעים ואומדן NORTON, והמלצות תזונה/פרה-רפואי.</span>
+        </div>
+      </div>
+
+      <!-- 1-2. Medical Section Table (Active Geriatrics) -->
+      <div class="mb-6">
+        <div class="bg-emerald-900 text-white font-black px-4 py-2 rounded-t-xl text-sm flex justify-between items-center">
+          <span>1-2. כרטיס מטופל ומדור רפואי (סיעוד מורכב, שיקום ומונשמים)</span>
+          <span class="text-xs bg-emerald-800 px-2 py-0.5 rounded">נהלי משרד הבריאות 2026</span>
+        </div>
+        <div class="overflow-x-auto border border-slate-300 rounded-b-xl">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-extrabold">
+                <th class="p-2.5 w-1/4 border-l border-slate-200">שם הרשומה</th>
+                <th class="p-2.5 w-1/2 border-l border-slate-200">ניהול הרשומה לפי נהלי משרד הבריאות</th>
+                <th class="p-2.5 w-1/4">מועד הפקת תדפיס</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">1. כרטיס מטופל ואישור אפוטרופוס</td>
+                <td class="p-2 border-l">הזנת פרטי מטופל ואישור אפוטרופוס בקבלה</td>
+                <td class="p-2 font-bold text-red-700">בקבלה + "זמן יקר" 🚨</td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">דף אבחנות</td>
+                <td class="p-2 border-l font-semibold text-red-700">עדכון אחת ל-3 חודשים ולפי צורך</td>
+                <td class="p-2 font-bold text-red-700">בקבלה ולפי צורך + "זמן יקר" 🚨</td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">קבלה רפואית</td>
+                <td class="p-2 border-l font-semibold text-red-700">לא יאוחר מ-24 שעות מקבלה</td>
+                <td class="p-2 font-bold text-red-700">בקבלת מטופל + "זמן יקר" 🚨</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">בדיקות מעבדה (נוהל 1.3.2)</td>
+                <td class="p-2 border-l">
+                  "לקיחת בדיקות מעבדה" – יינתנו בטיפולים/הוראות ותוצאות הבדיקות יאושרו מדי יום ע"י גורם מורשה.<br>
+                  • <strong>בדיקות בקבלה (תוך שבוע עד חודש מקבלה):</strong> ס.ד, כימיה, תפקודי כבד, בדיקת שתן לכללית, תפקודי בלוטת תריס, רמות ברזל וטרנספרין + B12 (באם אין בדיקות בחודש האחרון שלפני הקבלה).<br>
+                  • <strong>בדיקות שגרה (אחת לשנה):</strong> ס.ד, כימיה כולל תפקודי כליה ואלבומין.<br>
+                  • <strong>בדיקות מעקב:</strong> 1. מטופל במשתנים: אלקטרוליטים ואוריאה פעם ב-3 חודשים. 2. מטופל סוכרתי: מעקב HbA1C כל 6 חודשים. 3. מטופל בנוגדי קרישה: INR לפי צורך וס.ד פעם בחודש. 4. מטופלים עם תחלואה (יתר ל"ד, אי ספיקת לב, סוכרת, פצעי לחץ): אחת ל-3 חודשים. בעיות רפואיות מיוחדות אחרות: שיקול רפואי.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מבחן קוגניטיבי מובנה</td>
+                <td class="p-2 border-l">בקבלה ולפי צורך</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">בדיקות עזר</td>
+                <td class="p-2 border-l">בקבלה ולפי צורך: תרשים א.ק.ג מאובחן, צילום חזה עדכני ומאובחן, US שארית שתן בשלפוחית (לפי שיקול מקצועי).</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הערכת דליריום מובנה <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l"><strong class="text-red-700">מדד איכות:</strong> הערכת דליריום בכניסה לאשפוז בשיקום למשתקמים בגין שבר בצוואר הירך <strong>תוך 3 ימים מקבלה</strong>.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">קיום שיחה לתיאום טיפול עם מאושפזים / בני משפחתם <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  <strong class="text-red-700">מדד איכות:</strong> לחולים במחלקות <strong>סיעוד מורכב והנשמה ממושכת</strong> יש לקיים שיחה עם מטופל או בני משפחה <strong>תוך 30 יום הראשונים לאשפוז</strong>.<br>
+                  השיחה מחייבת התייחסות ל: אבחנה רפואית ותיאור מצב החולה, חלופות טיפוליות, בירור מילוי הנחיות רפואיות מקדימות ו/או מינוי מיופה כוח ו/או יידוע לגבי חוק "החולה הנוטה למות". מנוהלת ע"י רופא בשיתוף עו"ס/אחות.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב רפואי</td>
+                <td class="p-2 border-l"><strong>חולה יציב:</strong> אחת לשבוע.<br><strong>חולה לא יציב:</strong> לפי צורך.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">ייעוצים מומחים</td>
+                <td class="p-2 border-l">• לפי שיקול דעת מקצועי.<br>• <strong>במונשמים:</strong> רופא מומחה (ריאות / טיפול נמרץ / גריאטריה) – <strong>אחת לשבוע</strong> ולפחות אחת לחודש.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הדגשים בבעיות גריאטריות</td>
+                <td class="p-2 border-l">עד חודש מהקבלה ואחת ל-6 חודשים</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">טופס הוראות הנשמה</td>
+                <td class="p-2 border-l">חידוש הוראה <strong>אחת לחודש</strong> ולפי צורך</td>
+                <td class="p-2">ידני</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">"ספר פקודות מרוכז" מול "הוראות חדשות"</td>
+                <td class="p-2 border-l">אחת למשמרת לבקרה ומעקב על חיתום וביצוע (חיתום על הוראות חדשות יבוצע בטווח שעה ממתן ההוראה).</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">"בקרת ספר פקודות" הכולל גם רגישות (בקרת תרופות) <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong class="text-red-700">אחת לשבוע אחות + רופא יבצעו עדכון תרופות מודפס וחתום.</strong><br>
+                  • <strong class="text-red-700">מדד איכות:</strong> בקרת תרופות <strong>עד 7 ימים לפני השחרור במחלקות שיקום</strong>.
+                </td>
+                <td class="p-2 font-bold text-red-700">אחת לשבוע + "זמן יקר" 🚨</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הערכה קוגניטיבית לפני השחרור מאשפוז <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  <strong class="text-red-700">מדד איכות:</strong> הערכה קוגניטיבית לחולים בסטטוס אקוטי, תת-אקוטי ושיקום מגיל 65 ומעלה ותיעוד במכתב השחרור. במידה ולמטופל בוצעו שני מבחנים במהלך אותו אשפוז, יש לדווח למדד את התאריך ואת הערך של המבחן הקרוב לשחרור.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב סוכרת</td>
+                <td class="p-2 border-l">מעקב סוכר בדם יבוצע לכלל המטופלים בקבלה (תמונת נתוני בסיס). מעקב סוכר רציף בדם קפילרי יבוצע לדיירים מאובחנים בסוכרת ע"פ הוראה רפואית או תוכנית טיפול (במצב חריף לפי הצורך ולפחות אחת למשמרת).</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">Mini Suffering State Examination (MSSE)</td>
+                <td class="p-2 border-l">מילוי המבחן בזימון ייעוץ פליאטיבי ובמועד קיום שיחה לתיאום טיפול עם מאושפז / בני משפחה.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מתן המלצה לנטילת ויטמין D בסיכום אשפוז <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l"><strong class="text-red-700">מדד איכות:</strong> מתן המלצה לנטילת ויטמין D בשחרור משיקום בגין שבר בצוואר הירך בסיכום אשפוז.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">סיכום אשפוז / סיכום פטירה / הודעת פטירה / מרשמים</td>
+                <td class="p-2 border-l">
+                  • <strong>סיכום אשפוז:</strong> יימסר למטופל בעת שחרורו והעתק אחד יתויק בגיליון הרפואי.<br>
+                  • <strong>סיכום פטירה:</strong> ייכתב תוך 48 שעות ממועד הפטירה. <strong>טופס הודעת פטירה:</strong> ימולא ב-4 העתקים.<br>
+                  • <strong>מרשמים:</strong> אחת לחודש.
+                </td>
+                <td class="p-2">בשחרור / בפטירה</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. Nursing Section Table (Active Geriatrics) -->
+      <div class="mb-6">
+        <div class="bg-teal-900 text-white font-black px-4 py-2 rounded-t-xl text-sm flex justify-between items-center">
+          <span>3. מדור סיעודי (סיעוד מורכב, שיקום ומונשמים)</span>
+          <span class="text-xs bg-teal-800 px-2 py-0.5 rounded">אמות מידה 2026</span>
+        </div>
+        <div class="overflow-x-auto border border-slate-300 rounded-b-xl">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-extrabold">
+                <th class="p-2.5 w-1/4 border-l border-slate-200">שם הרשומה / אומדן</th>
+                <th class="p-2.5 w-1/2 border-l border-slate-200">ניהול הרשומה לפי נהלי משרד הבריאות</th>
+                <th class="p-2.5 w-1/4">מועד הפקת תדפיס</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">אנמנזה סיעודית ותוכנית טיפול סיעודית</td>
+                <td class="p-2 border-l">
+                  • <strong>אנמנזה סיעודית:</strong> לא יאוחר מ-24 שעות מקבלה ראשונה ומאשפוז חוזר.<br>
+                  • <strong>תוכנית טיפול סיעודית:</strong> תוכנית ראשונית תוך 72 שעות מיום קבלה. עדכון תוכנית הטיפול הכתובה לפי מצב החולה ו<strong>לפחות פעם בחודש</strong> (הוספת התערבות והערכה לבעיה הקיימת או הגדרת בעיה חדשה). בחטיבת מונשמים וסיעוד מורכב תומך – דגש לטיפול פליאטיבי ותהליכי גמילה מהנשמה.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">סימנים חיוניים + מעקב כאב <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong class="text-red-700">מדד איכות: אומדן כאב ראשוני יש לבצע תוך 12 שעות מקבלה.</strong><br>
+                  • <strong>חולה יציב:</strong> לפי הוראה רפואית ולפחות אחת ליממה.<br>
+                  • <strong>חולה לא יציב:</strong> לפי צורך.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב סיעודי</td>
+                <td class="p-2 border-l"><strong>אחת למשמרת</strong> (בוקר, ערב, לילה)</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב פצעים ואומדן NORTON <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong>מעקב פצעים:</strong> סוג הפצע, מעקב וטיפול בפצע יבוצע אחת לשבוע לפחות.<br>
+                  • <strong class="text-red-700">מדדי איכות:</strong> מדד שיעור פצעי לחץ נרכש מדרגה 2+ (ל-1000 ימי אשפוז) ומדד שיעור פצעי לחץ מיובא שהחמיר מדרגה 2+.<br>
+                  • <strong>NORTON:</strong> בקבלה ו<strong>אחת לחודש</strong> או במידה וחל שינוי במצב המטופל.
+                </td>
+                <td class="p-2 font-bold text-red-700">"זמן יקר" 🚨</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">אומדן סיכון לנפילות FARMER <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l"><strong class="text-red-700">מדד איכות:</strong> כל המאושפזים החדשים בגיל 65 ומעלה שהתאשפזו בסטטוס אקוטי, תת-אקוטי, סיעוד מורכב ושיקום ושהו לפחות 24 שעות באשפוז, ובהמשך בהתאם לשינוי במצבו התפקודי.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">מעקב כף רגל סוכרתית <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  <strong class="text-red-700">מדד איכות: תוך 24 שעות מקבלה לחולה עם אבחנת סוכרת.</strong><br>
+                  בהמשך מעקב לפי רמות סיכון: 0 – אחת לשנה; דרגה 1 – אחת ל-6 חודשים; דרגה 2 – אחת ל-3-6 חודשים; דרגה 3 – בתדירות הנדרשת עד לריפוי ואח"כ אחת ל-3 חודשים.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">הערכה תפקודית FIM <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  <strong class="text-red-700">מדד איכות:</strong> במחלקות שיקום לחולים אחרי אירוע מוחי חד או אחרי שבר בצוואר הירך (מעל גיל 65) <strong>עד 7 ימים מיום הקבלה ועד 7 ימים מיום השחרור</strong>, ע"י צוות רב-מקצועי. בהמשך לפי הצורך ולפחות <strong>אחת לחודש</strong>.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">איתור והערכת דיכאון GDS / PHQ-2 <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  <strong class="text-red-700">מדד איכות:</strong> איתור והערכת דיכאון בקרב מאושפזים במחלקות תת-אקוטיות <strong>בתוך 7 ימים ראשונים לאשפוז</strong>, והערכת דיכאון לאחר אירוע חד במוח <strong>תוך 7 ימים מהכניסה לאשפוז במחלקת שיקום</strong> (ביתר המחלקות כחלק מאנמנזה סיעודית).
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">שאלון שינויי התנהגות (COHEN-MANSFIELD)</td>
+                <td class="p-2 border-l">למטופלים הסובלים מדמנציה או אי-שקט פסיכומוטורי בקבלה בשבוע הראשון. הערכה חוזרת <strong>אחת לשלושה חודשים</strong> ובסמוך לישיבה רב-מקצועית ו/או לפי שינויים.</td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">רישום כלכלה, מעקב משקל וסיקור תזונתי SNAQ <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong class="text-red-700">מדד איכות SNAQ: במחלקת שיקום תוך 36 שעות מקבלה</strong>, וביתר המחלקות כחלק מאנמנזה סיעודית.<br>
+                  • <strong>רישום כלכלה:</strong> במונשמים ומורכב – במשך 3 ימים לכל מטופל חדש (או בגמילה מהזנה אנטרלית); בשיקום – בציון SNAQ 2 ומעלה או לפי צורך.<br>
+                  • <strong>מעקב משקל:</strong> במונשמים – בקבלה, כעבור שבועיים ובהמשך אחת לחודש; בשיקום ומורכב – בקבלה ואחת לחודש.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">אומדן פה, יכולת בליעה, שליטה על סוגרים וסיכון לעצירות</td>
+                <td class="p-2 border-l">
+                  • <strong>אומדן פה:</strong> בקבלה ובהמשך <strong>אחת ל-3 חודשים</strong> ובכל שינוי מצב. <strong>יכולת בליעה:</strong> בקבלה כחלק מאנמנזה.<br>
+                  • <strong>שליטה על סוגרים:</strong> לא יאוחר מ-72 שעות מהקבלה, לפחות אחת לשנה, בשינוי מצב ובתהליך גמילה מצנתר.<br>
+                  • <strong>סיכון לעצירות:</strong> בשיקום וסיעוד מורכב – בקבלה ו<strong>אחת לשבוע</strong>; בהנשמה ממושכת – בקבלה ו<strong>אחת ל-3 חודשים</strong>.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">טיפולים/הוראות, חלוקת תרופות (CARDEX), זיהומים, חיסונים ושחרור <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong>טיפולים/הוראות ודף חלוקת תרופות (CARDEX):</strong> בקבלה ולפי הוראות רופא.<br>
+                  • <strong class="text-red-700">חיסונים (מדד איכות):</strong> שפעת (INFLUENZA) אחת לשנה עונתי; פנאומוקוק (PNEUMAVAX) אחת ל-5 שנים או חד-פעמי מעל גיל 65.<br>
+                  • <strong>ניהול זיהומים:</strong> נוהל 1.10.3 נספח 3. <strong>מכתב שחרור סיעודי:</strong> בהפניה לאשפוז אקוטי / שחרור לקהילה.
+                </td>
+                <td class="p-2 font-bold text-red-700">בשחרור + "זמן יקר" 🚨</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4-5. Paramedical & Multidisciplinary Section Table (Active Geriatrics) -->
+      <div class="mb-4">
+        <div class="bg-purple-900 text-white font-black px-4 py-2 rounded-t-xl text-sm flex justify-between items-center">
+          <span>4-5. מדור פארא-רפואי וכללי (סיעוד מורכב, שיקום ומונשמים)</span>
+          <span class="text-xs bg-purple-800 px-2 py-0.5 rounded">מקצועות הבריאות וישיבות צוות</span>
+        </div>
+        <div class="overflow-x-auto border border-slate-300 rounded-b-xl">
+          <table class="w-full text-right text-xs border-collapse">
+            <thead>
+              <tr class="bg-slate-100 text-slate-800 border-b border-slate-300 font-extrabold">
+                <th class="p-2.5 w-1/4 border-l border-slate-200">סקטור מקצועי / רשומה</th>
+                <th class="p-2.5 w-1/2 border-l border-slate-200">ניהול הרשומה לפי נהלי משרד הבריאות</th>
+                <th class="p-2.5 w-1/4">מועד הפקת תדפיס</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">פיזיותרפיה (ומבחני FIM, Dynamic Gait, Berg, TUG)</td>
+                <td class="p-2 border-l">
+                  • <strong>הערכה ראשונה:</strong> מונשמים – <strong>תוך 24 שעות</strong> מהקבלה; סיעוד מורכב – <strong>תוך 48 שעות</strong> מהקבלה; שיקום – <strong>תוך 24 שעות</strong> מהקבלה.<br>
+                  • <strong>מעקב:</strong> מונשמים – לפחות אחת ל-3 חודשים ובכל שינוי מצב; סיעוד מורכב – חצי שנה ראשונה לפחות אחת לחודש, ולאחר חצי שנה לפחות אחת ל-3 חודשים ובכל שינוי מצב; שיקום – לפחות <strong>פעמיים בשבוע</strong> ובכל שינוי מצב.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">ריפוי בעיסוק</td>
+                <td class="p-2 border-l">
+                  • <strong>הערכה ראשונה (שיקום, מונשמים, מורכב):</strong> קבלה ראשונית <strong>עד שבוע</strong> מהקבלה.<br>
+                  • <strong>מעקב וטיפול:</strong> לפי צורך ובהתאם למטרות הטיפול. <strong>טופס השאלת ציוד:</strong> בשחרור ולפי צורך.
+                </td>
+                <td class="p-2">בשחרור (השאלת ציוד)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">עו"ס (עבודה סוציאלית)</td>
+                <td class="p-2 border-l"><strong>הערכה ראשונה:</strong> טופס רישום סוציאלי וגיליון קבלה – <strong>יומיים מהקבלה</strong>. <strong>מעקב:</strong> לפי צורך.</td>
+                <td class="p-2">בשיקול דעת עו"ס</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">קלינאית תקשורת</td>
+                <td class="p-2 border-l">
+                  • <strong>חטיבת סיעוד מורכב ומונשמים:</strong> בדיקת כל מטופל <strong>תוך 4 שבועות</strong> מהקבלה, ומעקב תקופתי מדי שנה וחצי ע"פ המלצת צוות רב-מקצועי (במטופל עם הזנה אנטרלית – בהתאם להחלטת ישיבה רב-מקצועית ונוהל 9.0.1).<br>
+                  • <strong>מחלקת שיקום:</strong> 1. בדיקת בליעה – <strong>עד 3 ימים</strong> מקבלתו. 2. הערכת תפקודי שפה ודיבור – <strong>עד 10 ימים</strong> מקבלתו. 3. שמיעה – הערכה והדרכה.
+                </td>
+                <td class="p-2"></td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">דיאטנית והמלצות תזונה <span class="text-emerald-700">⭐</span></td>
+                <td class="p-2 border-l">
+                  • <strong>הערכה תזונתית ראשונה:</strong> תוך שבוע מהגעת המטופל; קביעת מצב תזונתי חוזר – אחת לחצי שנה ולפי צורך.<br>
+                  • <strong class="text-red-700">מדד איכות: הערכה תזונתית מלאה באשפוז (סיעוד מורכב ומונשמים) תוך 5 ימים מהכניסה למחלקה</strong> (כולל שקילה/הערכת משקל ומדידת/הערכת גובה).<br>
+                  • <strong>דוח משקלים שנתי:</strong> בקבלה ואחת לחודש. <strong>דוח תזונה:</strong> בקבלה ואחת לשבוע.
+                </td>
+                <td class="p-2 font-bold text-red-700">המלצות ב"זמן יקר" 🚨</td>
+              </tr>
+              <tr class="bg-amber-50/70">
+                <td class="p-2 font-bold text-slate-900 border-l">רוקח והמלצות פרה-רפואיות</td>
+                <td class="p-2 border-l"><strong>יומן התערבויות רוקח:</strong> אחת ל-3 חודשים. <strong>המלצות פרה-רפואית:</strong> בקבלה ולפי צורך.</td>
+                <td class="p-2 font-bold text-red-700">"זמן יקר" 🚨</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold text-slate-900 border-l">5. ישיבת צוות רב-מקצועית, שיחות משפחה וכללי</td>
+                <td class="p-2 border-l">
+                  • <strong>ישיבת צוות רב-מקצועית:</strong> <strong>במונשמים</strong> – מטופל חדש עד שבועיים מהקבלה (בהמשך: יציב כל 3 חודשים, לא יציב/גמילה אקטיבית לפחות אחת לשבוע); <strong>בשיקום</strong> – כל מטופל יעלה לדיון <strong>אחת לשבוע</strong>; <strong>בסיעוד מורכב</strong> – יציב כל 6 חודשים, לא יציב אחת לחודש.<br>
+                  • <strong>שיחות עם משפחה וביקורים:</strong> סמוך לקבלה, לפחות בתדירות קבועה <strong>אחת לחודש</strong>, לקראת שחרור ולפי צורך.<br>
+                  • <strong>הפניות/מסמכים/רנטגן:</strong> סריקה ותיוק ממוחשב. <strong>מדבקות זיהוי (וידון):</strong> גיליון מטופל + "זמן יקר". <strong>אישור יציאה לחופשה:</strong> ידני בגיליון.
+                </td>
+                <td class="p-2">"זמן יקר" (מדבקות זיהוי)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(4)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; ניהול רשומה 2026: פרא-רפואי (גריאטריה כרונית)</button>
+        <button onclick="goToSlide(6)" class="no-print bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לשמונת ה-Right &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 6: The Eight Rights (Right 8) -->
+    <div id="slide-6" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="flex flex-col md:flex-row justify-between md:items-center border-b border-slate-200 pb-3 mb-5 gap-3">
+        <div>
+          <span class="text-xs font-bold text-indigo-600 uppercase">הנחיות בטיחות מחייבות</span>
+          <h3 class="text-2xl font-black text-slate-900">הנחיות למתן טיפול תרופתי בטוח (שמונת ה-Right)</h3>
+          <p class="text-xs text-slate-600">בכל תהליך של חלוקת תרופות ומתן טיפול תרופתי, חובה לפעול על פי שמונת העקרונות הבאים:</p>
+        </div>
+        <button onclick="openModalElement('poster-right8-svg', 'כרזה מקורית - שמונת ה-Right למתן טיפול תרופתי בטוח')" class="no-print bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+          פתח כרזה מלאה בהגדלה
+        </button>
+      </div>
+
+      <!-- Original Poster Rendered Perfectly in Vector SVG -->
+      <div class="mb-6 rounded-2xl overflow-hidden border-2 border-indigo-300 shadow-lg bg-slate-50 cursor-pointer group relative" onclick="openModalElement('poster-right8-svg', 'כרזה מקורית - שמונת ה-Right למתן טיפול תרופתי בטוח')">
+        <div id="poster-right8-svg" class="w-full flex justify-center bg-[#daf1fb] p-3 md:p-6">
+          <svg viewBox="0 0 900 680" class="w-full max-w-4xl h-auto drop-shadow-md select-none" xmlns="http://www.w3.org/2000/svg" font-family="'Assistant', sans-serif">
+            <!-- Background with subtle pills pattern -->
+            <rect width="900" height="680" fill="#e4f4fb" rx="16"/>
             
-            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
-                <div class="text-4xl mb-3 text-[#f59e0b]"><i class="fa-regular fa-clock"></i></div>
-                <h4 class="text-xl font-bold text-[#0f172a] mb-2">1. חלון זמן קריטי</h4>
-                <p class="text-[#475569]">ביצוע השוואה מדוקדקת (Reconciliation) של כלל התרופות בתוך <strong>24 השעות הראשונות</strong> לקבלת המטופל.</p>
-            </div>
+            <g stroke="#ffffff" stroke-width="2.5" fill="none" opacity="0.6">
+              <!-- Background Pill SVGs -->
+              <rect x="30" y="80" width="50" height="90" rx="25" transform="rotate(-25 55 125)"/>
+              <line x1="25" y1="125" x2="85" y2="125" transform="rotate(-25 55 125)"/>
+              
+              <rect x="800" y="100" width="45" height="85" rx="22.5" transform="rotate(35 820 140)"/>
+              <circle cx="120" cy="480" r="30"/>
+              <line x1="90" y1="480" x2="150" y2="480"/>
+              <rect x="750" y="440" width="40" height="80" rx="20" transform="rotate(-40 770 480)"/>
+              <circle cx="250" cy="620" r="24"/>
+              <rect x="620" y="580" width="45" height="80" rx="22.5" transform="rotate(15 640 620)"/>
+            </g>
 
-            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <!-- Top Header Ribbon -->
+            <path d="M 200 25 L 820 25 Q 835 25 835 45 L 835 55 Q 835 75 820 75 L 200 75 Q 185 75 185 55 L 185 45 Q 185 25 200 25 Z" fill="#0ea5e9"/>
+            <text x="510" y="60" text-anchor="middle" font-size="34" font-weight="900" fill="#ffffff" letter-spacing="1">הנחיות למתן טיפול תרופתי בטוח</text>
 
-            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
-                <div class="text-4xl mb-3 text-[#3b82f6]"><i class="fa-solid fa-file-medical"></i></div>
-                <h4 class="text-xl font-bold text-[#0f172a] mb-2">2. השוואת מקורות</h4>
-                <p class="text-[#475569]">הצוות הסיעודי חייב להשוות בין מכתב השחרור מבית החולים הכללי לבין הגיליון הכרוני הקודם.</p>
-            </div>
+            <!-- Personal Branding (Maya Shkolnic Gazit) Badge on top left -->
+            <g transform="translate(25, 20)">
+              <rect width="150" height="65" rx="12" fill="#ffffff" stroke="#0ea5e9" stroke-width="2" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.1))"/>
+              <text x="75" y="28" text-anchor="middle" font-size="13" font-weight="900" fill="#0f172a">מאיה שקולניק גזית</text>
+              <text x="75" y="44" text-anchor="middle" font-size="9.5" font-weight="700" fill="#0284c7">אחות מומחית במדיניות</text>
+              <text x="75" y="56" text-anchor="middle" font-size="9" font-weight="600" fill="#64748b">ומנהל בבריאות</text>
+            </g>
 
-            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <!-- CARDS GRID: ROW 1 (Cards 1, 2, 3, 4) -->
+            
+            <!-- CARD 1 (Right Medication) -->
+            <g transform="translate(680, 105)">
+              <rect width="170" height="250" rx="20" fill="#fbcfe8" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">1</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">התרופה הנכונה</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Medication</text>
+              <foreignObject x="15" y="92" width="140" height="150">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:14px; font-weight:700; color:#0f172a; line-height:1.45; direction:rtl;">
+                  בדיקת זהות התרופה;<br/>
+                  לוודא כי התרופה וצורתה הם אלה שנרשמו בהוראה.
+                </div>
+              </foreignObject>
+            </g>
 
-            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
-                <div class="text-4xl mb-3 text-[#ef4444]"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
-                <h4 class="text-xl font-bold text-[#0f172a] mb-2">3. איתור פערים</h4>
-                <p class="text-[#475569]">חיפוש פעיל של תרופות שהוספו או הופסקו ללא הסבר ברור (למשל תרופת שינה מאשפוז קצר).</p>
-            </div>
+            <!-- CARD 2 (Right Patient) -->
+            <g transform="translate(470, 105)">
+              <rect width="170" height="250" rx="20" fill="#ffedd5" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">2</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">המטופל הנכון</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Patient</text>
+              <foreignObject x="15" y="92" width="140" height="150">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:14px; font-weight:700; color:#0f172a; line-height:1.45; direction:rtl;">
+                  בדיקת זיהוי מטופל באמצעות שני פרטים מזהים לפחות.
+                </div>
+              </foreignObject>
+            </g>
 
-            <div class="process-arrow"><i class="fa-solid fa-arrow-down"></i></div>
+            <!-- CARD 3 (Right Dose) -->
+            <g transform="translate(260, 105)">
+              <rect width="170" height="250" rx="20" fill="#fef08a" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">3</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">המינון הנכון</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Dose</text>
+              <foreignObject x="12" y="92" width="146" height="150">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:13.5px; font-weight:700; color:#0f172a; line-height:1.4; direction:rtl;">
+                  לוודא כי המינון וצורת מתן מתאימים למטופל, בדיקת טווח התרופה עם הוראה כתובה.
+                </div>
+              </foreignObject>
+            </g>
 
-            <div class="flex-1 bg-white p-6 rounded-2xl shadow-lg border border-[#e2e8f0] text-center relative">
-                <div class="text-4xl mb-3 text-[#10b981]"><i class="fa-solid fa-check-double"></i></div>
-                <h4 class="text-xl font-bold text-[#0f172a] mb-2">4. בקרה כפולה</h4>
-                <p class="text-[#475569]">על הצוות האחראי לוודא ולאמת את רשימת התרופות מול הרופא המקבל לפני מתן המנה הראשונה במחלקה.</p>
-            </div>
+            <!-- CARD 4 (Right Time) -->
+            <g transform="translate(50, 105)">
+              <rect width="170" height="250" rx="20" fill="#bef264" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">4</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">הזמן הנכון</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Time</text>
+              <foreignObject x="15" y="92" width="140" height="150">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:14px; font-weight:700; color:#0f172a; line-height:1.45; direction:rtl;">
+                  לוודא כי התרופה ניתנת בזמן ובסדירות נכונים.
+                </div>
+              </foreignObject>
+            </g>
 
+            <!-- CARDS GRID: ROW 2 (Cards 5, 6, 7, 8) -->
+            
+            <!-- CARD 5 (Right Route) -->
+            <g transform="translate(680, 400)">
+              <rect width="170" height="250" rx="20" fill="#a7f3d0" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">5</text>
+              <text x="85" y="50" text-anchor="middle" font-size="17" font-weight="900" fill="#000000">הדרך והזמן</text>
+              <text x="85" y="70" text-anchor="middle" font-size="16" font-weight="900" fill="#000000">הנכונה:</text>
+              <text x="85" y="88" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Route</text>
+              <foreignObject x="15" y="98" width="140" height="145">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:13.5px; font-weight:700; color:#0f172a; line-height:1.4; direction:rtl;">
+                  לוודא כי דרך מתן התרופה תואמת לרשום בהוראה ולמצבו המטופל.
+                </div>
+              </foreignObject>
+            </g>
+
+            <!-- CARD 6 (Right Reason) -->
+            <g transform="translate(470, 400)">
+              <rect width="170" height="250" rx="20" fill="#bae6fd" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">6</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">הסיבה הנכונה</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Reason</text>
+              <foreignObject x="15" y="100" width="140" height="140">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:14.5px; font-weight:700; color:#0f172a; line-height:1.5; direction:rtl;">
+                  לוודא כי התרופה מתאימה לאבחנת המטופל.
+                </div>
+              </foreignObject>
+            </g>
+
+            <!-- CARD 7 (Right Response) -->
+            <g transform="translate(260, 400)">
+              <rect width="170" height="250" rx="20" fill="#ddd6fe" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">7</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">התגובה הנכונה</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Response</text>
+              <foreignObject x="15" y="100" width="140" height="140">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:14.5px; font-weight:700; color:#0f172a; line-height:1.5; direction:rtl;">
+                  תגובת המטופל לתרופה שניתנה.
+                </div>
+              </foreignObject>
+            </g>
+
+            <!-- CARD 8 (Right Documentation) -->
+            <g transform="translate(50, 400)">
+              <rect width="170" height="250" rx="20" fill="#99f6e4" stroke="#000000" stroke-width="3" filter="drop-shadow(2px 4px 6px rgba(0,0,0,0.15))"/>
+              <circle cx="85" cy="0" r="32" fill="#ffffff" stroke="#000000" stroke-width="3"/>
+              <text x="85" y="11" text-anchor="middle" font-size="32" font-weight="900" fill="#000000">8</text>
+              <text x="85" y="58" text-anchor="middle" font-size="19" font-weight="900" fill="#000000">התיעוד הנכון</text>
+              <text x="85" y="78" text-anchor="middle" font-size="13" font-weight="800" fill="#1e293b">Right Documentation</text>
+              <foreignObject x="12" y="94" width="146" height="150">
+                <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:'Assistant',sans-serif; text-align:center; font-size:13px; font-weight:700; color:#0f172a; line-height:1.35; direction:rtl;">
+                  תיעוד מלא ומדויק בתיק רפואי של המטופל, את התרופה שניתנה, מינון המטופל כולל תגובתו והתערבויות סיעודיות אחרות.
+                </div>
+              </foreignObject>
+            </g>
+          </svg>
         </div>
-    </section>
-
-    <section class="bg-[#0c4a6e] rounded-3xl p-8 md:p-12 text-center text-white shadow-2xl relative overflow-hidden">
-        <div class="absolute -right-20 -top-20 text-[200px] opacity-10"><i class="fa-solid fa-shield-heart"></i></div>
-        <div class="relative z-10 max-w-4xl mx-auto">
-            <h3 class="text-3xl md:text-4xl font-bold mb-6 text-[#e0f2fe]">סיכום לצוות הסיעודי</h3>
-            <p class="text-xl md:text-2xl leading-relaxed mb-8 text-[#bae6fd]">
-                הבטחת בטיחות תרופתית אינה מסתכמת רק ב"חמשת הכללים". היא דורשת <strong class="text-white">חשיבה ביקורתית</strong> של הצוות הסיעודי, הבנת מנגנוני התרופות בגיל המבוגר, ויכולת לעצור ולהטיל ספק בעת איתור "דגלים אדומים".
-            </p>
-            <div class="inline-block bg-white text-[#0c4a6e] font-bold text-xl py-4 px-8 rounded-full shadow-lg">
-                העמותה לקידום הסיעוד בגריאטריה פועלת להעמקת הידע והכשירות כקו ההגנה העיקרי!
-            </div>
+        <div class="absolute bottom-3 left-3 bg-slate-900/90 text-white text-xs font-bold px-3 py-1.5 rounded-lg backdrop-blur flex items-center gap-1.5 shadow">
+          <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path></svg>
+          <span>לחץ כאן לצפייה מלאה בהגדלה</span>
         </div>
-    </section>
+      </div>
 
-    <!-- תוספת: קישור לאתר העמותה -->
-    <footer class="text-center mt-12 text-[#64748b] font-medium">
-        <p>למידע נוסף ולהדרכות מקצועיות, בקרו באתר העמותה:</p>
-        <a href="https://www.iang.co.il" target="_blank" class="text-[#0ea5e9] hover:text-[#0284c7] transition-colors text-lg font-bold flex items-center justify-center gap-2 mt-2">
-            <i class="fa-solid fa-globe"></i> www.iang.co.il
-        </a>
-    </footer>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 mb-6">
+        <!-- 1 -->
+        <div class="border-2 border-pink-200 bg-pink-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-pink-600 text-white font-black rounded-full flex items-center justify-center text-xs">1</span>
+              <span class="text-[11px] font-bold text-pink-700">Right Medication</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">התרופה הנכונה</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">בדיקת זהות התרופה; לוודא כי התרופה וצורתה הם אלה שנרשמו בהוראה.</p>
+          </div>
+        </div>
 
-</main>
+        <!-- 2 -->
+        <div class="border-2 border-orange-200 bg-orange-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-orange-600 text-white font-black rounded-full flex items-center justify-center text-xs">2</span>
+              <span class="text-[11px] font-bold text-orange-700">Right Patient</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">המטופל הנכון</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">בדיקת זיהוי מטופל באמצעות שני פרטים מזהים לפחות.</p>
+          </div>
+        </div>
 
-<script>
-function wrapLabel(label) {
-    if (label.length <= 16) return label;
-    const words = label.split(' ');
-    const lines = [];
-    let currentLine = '';
-    words.forEach(word => {
-        if ((currentLine + word).length > 16) {
-            if(currentLine) lines.push(currentLine.trim());
-            currentLine = word + ' ';
+        <!-- 3 -->
+        <div class="border-2 border-amber-200 bg-amber-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-amber-600 text-white font-black rounded-full flex items-center justify-center text-xs">3</span>
+              <span class="text-[11px] font-bold text-amber-700">Right Dose</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">המינון הנכון</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">לוודא כי המינון וצורת מתן מתאימים למטופל, בדיקת טווח התרופה עם הוראה כתובה.</p>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="border-2 border-lime-200 bg-lime-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-lime-700 text-white font-black rounded-full flex items-center justify-center text-xs">4</span>
+              <span class="text-[11px] font-bold text-lime-800">Right Time</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">הזמן הנכון</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">לוודא כי התרופה ניתנת בזמן ובסדירות נכונים.</p>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="border-2 border-emerald-200 bg-emerald-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-emerald-600 text-white font-black rounded-full flex items-center justify-center text-xs">5</span>
+              <span class="text-[11px] font-bold text-emerald-700">Right Route</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">הדרך הנכונה</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">לוודא כי דרך מתן התרופה תואמת לרשום בהוראה ולמצבו המטופל.</p>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="border-2 border-sky-200 bg-sky-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-sky-600 text-white font-black rounded-full flex items-center justify-center text-xs">6</span>
+              <span class="text-[11px] font-bold text-sky-700">Right Reason</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">הסיבה הנכונה</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">לוודא כי התרופה מתאימה לאבחנת המטופל.</p>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="border-2 border-purple-200 bg-purple-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-purple-600 text-white font-black rounded-full flex items-center justify-center text-xs">7</span>
+              <span class="text-[11px] font-bold text-purple-700">Right Response</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">התגובה הנכונה</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">תגובת המטופל לתרופה שניתנה.</p>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="border-2 border-teal-200 bg-teal-50/50 rounded-xl p-3.5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="w-6 h-6 bg-teal-700 text-white font-black rounded-full flex items-center justify-center text-xs">8</span>
+              <span class="text-[11px] font-bold text-teal-800">Right Documentation</span>
+            </div>
+            <h4 class="font-extrabold text-slate-900 text-sm mb-1">התיעוד הנכון</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">תיעוד מלא ומדויק בתיק רפואי של המטופל, את התרופה שניתנה, מינון המטופל כולל תגובתו והתערבויות סיעודיות אחרות.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(5)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; ניהול רשומה 2026 (גריאטריה פעילה)</button>
+        <button onclick="goToSlide(7)" class="no-print bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לקריטריוני בירס (בוקר/ערב) &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 7: Beers Criteria - Morning vs Evening -->
+    <div id="slide-7" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-5">
+        <span class="text-xs font-bold text-amber-600 uppercase">קריטריוני בירס (Beers) והגיל השלישי</span>
+        <h3 class="text-2xl font-black text-slate-900">תזמון מתן תרופות: שעות הבוקר מול שעות הערב / לילה</h3>
+        <p class="text-xs text-slate-600">התאמת תזמון הנטילה מבוסס היגיון פיזיולוגי למניעת נפילות, תופעות לוואי ונדודי שינה</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
+        
+        <!-- Morning Column -->
+        <div class="border-2 border-amber-300 bg-amber-50/40 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-3 pb-2 border-b border-amber-200">
+            <span class="text-2xl">🌞</span>
+            <h4 class="font-black text-amber-950 text-base">תרופות המומלצות למתן בשעות הבוקר (Morning)</h4>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="bg-white p-2.5 rounded-lg border border-amber-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">משתנים (Diuretics - כגון Furosemide, Hydrochlorothiazide):</strong>
+              <div class="text-red-700 font-extrabold mb-0.5">הנחיה: חובה לתת בבוקר!</div>
+              <p class="text-slate-700"><strong>היגיון קליני:</strong> מתן בשעות אחה"צ או הערב מגביר את הסיכון להשתנה לילית (Nocturia), הגורמת ליקיצות תכופות, הפרעות שינה ונפילות בדרך לשירותים בחושך.</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-amber-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">מעוררי מערכת העצבים ונוגדי דיכאון (SSRIs - Fluoxetine, SNRIs, Methylphenidate):</strong>
+              <p class="text-slate-700"><strong>היגיון קליני:</strong> מתן בערב עלול לגרום לנדודי שינה, עוררות יתר והפרעות שינה קשות.</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-amber-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">מפחיתי חומציות (PPIs - כגון Omeprazole, Lansoprazole):</strong>
+              <div class="text-slate-800 font-semibold mb-0.5">נטילה כ-30 דקות לפני ארוחת הבוקר לשיפור ספיגה ויעילות לאורך היום.</div>
+              <p class="text-slate-600"><strong>זהירות:</strong> שימוש ממושך ב-PPI בקשישים קשור לסיכון מוגבר לשברים, זיהומי <em>C. difficile</em> וחוסר בוויטמין B12.</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-amber-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">מעכבי אצטילכולין-אסטראז (כגון Donepezil, Rivastigmine):</strong>
+              <p class="text-slate-700">תרופות לדמנציה אשר עלולות לגרום לסיוטי לילה והפרעות שינה אם ניתנות לפני השינה. (אם המטופל סובל מבחילות, ניתן לשקול מתן בערב עם אוכל).</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-amber-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">סטרואידים (Corticosteroids - כגון Prednisone):</strong>
+              <p class="text-slate-700">מתן בבוקר מחקה את ההפרשה הפיזיולוגית הטבעית של הקורטיזול בגוף ומונע נדודי שינה, אי-שקט או הפרעות פסיכיאטריות בלילה.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Evening Column -->
+        <div class="border-2 border-indigo-300 bg-indigo-50/40 rounded-xl p-4">
+          <div class="flex items-center gap-2 mb-3 pb-2 border-b border-indigo-200">
+            <span class="text-2xl">🌙</span>
+            <h4 class="font-black text-indigo-950 text-base">תרופות המומלצות למתן בשעות הערב / לילה (Evening)</h4>
+          </div>
+
+          <div class="space-y-2.5 text-xs">
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">נוגדי לחץ דם ספציפיים (חוסמי אלפא - כגון Doxazosin/Cardiloc, מעכבי ACE / ARBs):</strong>
+              <div class="text-indigo-800 font-extrabold mb-0.5">הנחיה: מתן לפני השינה.</div>
+              <p class="text-slate-700"><strong>היגיון קליני וזהירות:</strong> חוסמי אלפא עלולים לגרום לתת-לחץ דם תנוחתי (Orthostatic hypotension) חריף. מתן בערב מפחית סיכון לסחרחורת ונפילות ביום בעת עמידה (להנחות לקום לאט).</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">סטטינים (Statins - כגון Simvastatin, Atorvastatin):</strong>
+              <p class="text-slate-700"><strong>היגיון קליני:</strong> ייצור הכולסטרול בכבד מגיע לשיאו בשעות הלילה, ולכן יעילות התרופות (בייחוד קצרות-טווח כגון סימבסטטין) גבוהה יותר בנטילה בערב.</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">נוגדי פסיכוזה ותרופות מרגיעות (Quetiapine/Seroquel, Olanzapine):</strong>
+              <p class="text-slate-700 leading-relaxed">
+                <strong>לפי קריטריוני בירס:</strong> יש להימנע ככל הניתן משימוש אלא בהתוויות ספציפיות (כמו פסיכוזה קשה או סכנה עצמית), בשל סיכון מוגבר לשבץ, נפילות ותמותה. אם אין ברירה ויש חובה לתת – <strong>יינתנו בערב בלבד</strong> בשל השפעתם המרדימה (סדציה).
+              </p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">חוסמי H2 (כגון Famotidine):</strong>
+              <p class="text-slate-700">במידה וניתן פעם ביום, עדיף בערב למניעת הפרשת חומצה לילית (יש להתאים מינון מופחת במקרה של אי-ספיקת כליות).</p>
+            </div>
+
+            <div class="bg-white p-2.5 rounded-lg border border-indigo-200">
+              <strong class="text-slate-900 font-bold block mb-0.5">משלשלים מעוררים (כגון Senna):</strong>
+              <p class="text-slate-700">נטילה בערב מעודדת פעילות מעיים טבעית בשעות הבוקר (זמן פעולה של כ-8 עד 12 שעות).</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3">
+        <button onclick="goToSlide(6)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; שמונת ה-Right</button>
+        <button onclick="goToSlide(8)" class="no-print bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">לאזהרות ואיסורים קריטיים &larr;</button>
+      </div>
+    </div>
+
+    <!-- SLIDE 8: Beers Critical Warnings & Red Flags -->
+    <div id="slide-8" class="slide-page bg-white rounded-2xl shadow-xl p-6 md:p-8 border border-slate-200 hidden">
+      <div class="border-b border-slate-200 pb-3 mb-5">
+        <span class="text-xs font-bold text-red-600 uppercase">אזהרות ואיסורים קריטיים בגיל השלישי</span>
+        <h3 class="text-2xl font-black text-slate-900">קבוצות תרופות בסיכון גבוה לפי Beers ומניעת אירועים חריגים</h3>
+        <p class="text-xs text-slate-600">דגשים קליניים מיוחדים למניעת דליריום, שברים, נפילות, דימומים ותמותה</p>
+      </div>
+
+      <!-- Critical 3 Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        
+        <!-- Red Card 1 -->
+        <div class="border-2 border-red-500 bg-red-50/70 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="p-1.5 bg-red-600 text-white rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            </span>
+            <h4 class="font-black text-red-950 text-sm">תרופות אנטי-כולינרגיות</h4>
+          </div>
+          <div class="text-[11px] text-red-800 font-bold mb-1.5">כגון: Amitriptyline, Diphenhydramine (בניל), Oxybutynin</div>
+          <div class="bg-white p-2.5 rounded-lg border border-red-200 text-xs text-slate-700 leading-relaxed">
+            <strong class="text-red-700 block mb-1">יש להימנע מהן לחלוטין!</strong>
+            תרופות אלו גורמות ליובש בפה, עצירות קשה, אצירת שתן, טשטוש ראייה, החמרה קוגניטיבית משמעותית והזיות.
+          </div>
+        </div>
+
+        <!-- Orange Card 2 -->
+        <div class="border-2 border-orange-500 bg-orange-50/70 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="p-1.5 bg-orange-600 text-white rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </span>
+            <h4 class="font-black text-orange-950 text-sm">בנזודיאזפינים ותרופות שינה</h4>
+          </div>
+          <div class="text-[11px] text-orange-800 font-bold mb-1.5">כגון: Brotizolam, Lorazepam, Zolpidem</div>
+          <div class="bg-white p-2.5 rounded-lg border border-orange-200 text-xs text-slate-700 leading-relaxed">
+            <strong class="text-orange-700 block mb-1">יש להימנע משימוש ככל הניתן!</strong>
+            קיים סיכון מוגבר מאוד לנפילות, שברים, דליריום (בלבול חריף) ותאונות. אם אין ברירה קלינית: מינון מינימלי, לטווח קצר בלבד, בשעות הערב, ותחת נוהל מניעת נפילות קפדני.
+          </div>
+        </div>
+
+        <!-- Amber Card 3 -->
+        <div class="border-2 border-amber-500 bg-amber-50/70 rounded-xl p-4 shadow-sm">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="p-1.5 bg-amber-600 text-white rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path></svg>
+            </span>
+            <h4 class="font-black text-amber-950 text-sm">נוגדי דלקת לא-סטרואידיים (NSAIDs)</h4>
+          </div>
+          <div class="text-[11px] text-amber-800 font-bold mb-1.5">כגון: Ibuprofen, Naproxen, Diclofenac</div>
+          <div class="bg-white p-2.5 rounded-lg border border-amber-200 text-xs text-slate-700 leading-relaxed">
+            <strong class="text-amber-700 block mb-1">יש להימנע משימוש כרוני!</strong>
+            קיים סיכון גבוה לדימומים במערכת העיכול, כיבים, פגיעה כלייתית חריפה והחמרה של אי-ספיקת לב ויתר לחץ דם.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Checklist Box -->
+      <div class="bg-slate-900 text-white rounded-xl p-5 shadow-lg">
+        <h4 class="text-sm font-black text-slate-100 mb-3 flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+          צ'ק-ליסט סיעודי ורפואי מהיר לכל חלוקת תרופות וביקורת:
+        </h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs text-slate-300">
+          <div class="flex items-start gap-2 bg-slate-800/80 p-2.5 rounded-lg">
+            <span class="text-emerald-400 font-black">✓</span>
+            <span><strong>קריטריוני בירס:</strong> האם נבדק שאין תרופות מקבוצת הסיכון (אנטי-כולינרגיות, סדטיביות, NSAIDs)?</span>
+          </div>
+          <div class="flex items-start gap-2 bg-slate-800/80 p-2.5 rounded-lg">
+            <span class="text-emerald-400 font-black">✓</span>
+            <span><strong>משתנים:</strong> האם פוסיד/הידרוכלורותיאזיד מתוזמנים ל-08:00 בבוקר בלבד כדי למנוע יקיצות ונפילות בלילה?</span>
+          </div>
+          <div class="flex items-start gap-2 bg-slate-800/80 p-2.5 rounded-lg">
+            <span class="text-emerald-400 font-black">✓</span>
+            <span><strong>מעבדה וסמ"ח:</strong> האם בוצעו אלקטרוליטים ב-3 חודשים אחרונים למשתנים, ודקסטרו למי שמקבל אינסולין?</span>
+          </div>
+          <div class="flex items-start gap-2 bg-slate-800/80 p-2.5 rounded-lg">
+            <span class="text-emerald-400 font-black">✓</span>
+            <span><strong>שני מזהים:</strong> האם וודאה זהות הדייר לפי שמונת ה-Right לפני כל מתן כדור, הזלפה או זריקה?</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center border-t border-slate-200 pt-3 mt-5">
+        <button onclick="goToSlide(7)" class="no-print text-xs font-bold text-slate-600 hover:text-slate-900">&rarr; קריטריוני בירס (בוקר/ערב)</button>
+        <button onclick="goToSlide(0)" class="no-print bg-slate-900 hover:bg-slate-800 text-white font-bold px-4 py-1.5 rounded-lg text-xs shadow transition">חזרה לתחילת המצגת</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Lightbox for Fullscreen Element / Image Display -->
+  <div id="image-modal" class="no-print fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md hidden flex flex-col items-center justify-between p-3 md:p-6">
+    <div class="max-w-6xl w-full flex justify-between items-center text-white pb-3 border-b border-slate-800">
+      <h3 id="modal-title" class="font-black text-sm md:text-base text-amber-300">צפייה בכרזה מקורית</h3>
+      <div class="flex items-center gap-3">
+        <button onclick="zoomModalContent(1.15)" class="bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded text-xs font-bold">זום +</button>
+        <button onclick="zoomModalContent(0.85)" class="bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded text-xs font-bold">זום -</button>
+        <button onclick="resetModalContentZoom()" class="bg-slate-800 hover:bg-slate-700 text-white px-2.5 py-1 rounded text-xs font-bold">איפוס</button>
+        <button onclick="closeModal()" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-xs font-bold transition flex items-center gap-1">
+          <span>סגור</span>
+          <span>✕</span>
+        </button>
+      </div>
+    </div>
+    <div id="modal-content" class="w-full flex-grow overflow-auto flex justify-center items-center p-2">
+      <div id="modal-inner-container" class="max-w-full transition-transform duration-200 shadow-2xl rounded-lg"></div>
+    </div>
+  </div>
+
+  <!-- Slide Switching and Controller Script -->
+  <script>
+    let currentSlide = 0;
+    const totalSlides = 9;
+    let currentZoom = 1;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      for (let i = 0; i < totalSlides; i++) {
+        const slide = document.getElementById(`slide-${i}`);
+        if (slide) {
+          if (i === index) {
+            slide.classList.remove('hidden');
+          } else {
+            slide.classList.add('hidden');
+          }
+        }
+      }
+
+      // Update Nav Tabs Active Class
+      const tabs = document.querySelectorAll('.tab-btn');
+      tabs.forEach((tab) => {
+        const tabIndex = parseInt(tab.getAttribute('data-index'));
+        if (tabIndex === index) {
+          tab.className = "tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-blue-600 text-white shadow";
         } else {
-            currentLine += word + ' ';
+          tab.className = "tab-btn px-3 py-1.5 rounded-lg text-xs md:text-sm font-semibold transition bg-slate-800 text-slate-300 hover:bg-slate-700";
         }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openModalElement(elementId, title) {
+      const modal = document.getElementById('image-modal');
+      const modalContainer = document.getElementById('modal-inner-container');
+      const modalTitle = document.getElementById('modal-title');
+      const sourceElement = document.getElementById(elementId);
+
+      if (modal && modalContainer && sourceElement) {
+        modalContainer.innerHTML = sourceElement.outerHTML;
+        if (modalTitle) modalTitle.textContent = title || 'צפייה בכרזה מוגדלת';
+        resetModalContentZoom();
+        modal.classList.remove('hidden');
+      }
+    }
+
+    function zoomModalContent(factor) {
+      currentZoom = Math.min(Math.max(0.5, currentZoom * factor), 2.5);
+      const container = document.getElementById('modal-inner-container');
+      if (container) container.style.transform = `scale(${currentZoom})`;
+    }
+
+    function resetModalContentZoom() {
+      currentZoom = 1;
+      const container = document.getElementById('modal-inner-container');
+      if (container) container.style.transform = 'scale(1)';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('image-modal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
     });
-    if (currentLine) lines.push(currentLine.trim());
-    return lines;
-}
 
-const tooltipConfig = {
-    tooltip: {
-        callbacks: {
-            title: function(tooltipItems) {
-                const item = tooltipItems[0];
-                let label = item.chart.data.labels[item.dataIndex];
-                if (Array.isArray(label)) {
-                    return label.join(' ');
-                } else {
-                    return label;
-                }
-            }
-        },
-        bodyFont: { family: 'Assistant', size: 14, weight: 'bold' },
-        titleFont: { family: 'Assistant', size: 16 }
-    }
-};
+    // Keyboard Arrow Keys (RTL Navigation)
+    document.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('image-modal');
+      if (modal && !modal.classList.contains('hidden')) return;
 
-Chart.defaults.font.family = "'Assistant', sans-serif";
+      if (e.key === 'ArrowLeft') {
+        if (currentSlide < totalSlides - 1) goToSlide(currentSlide + 1);
+      } else if (e.key === 'ArrowRight') {
+        if (currentSlide > 0) goToSlide(currentSlide - 1);
+      }
+    });
+  </script>
 
-const rawAlertLabels = ['התרעות שגרתיות המעמיסות על המערכת', 'שילובים קריטיים הדורשים התערבות (Hard Stops)'];
-const wrappedAlertLabels = rawAlertLabels.map(wrapLabel);
-
-const alertCtx = document.getElementById('alertFatigueChart').getContext('2d');
-new Chart(alertCtx, {
-    type: 'doughnut',
-    data: {
-        labels: wrappedAlertLabels,
-        datasets: [{
-            data: [85, 15],
-            backgroundColor: ['#cbd5e1', '#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 10
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '65%',
-        plugins: {
-            ...tooltipConfig,
-            title: {
-                display: true,
-                text: 'התפלגות התרעות מערכת',
-                font: { family: 'Heebo', size: 20, weight: 'bold' },
-                padding: { bottom: 20 }
-            },
-            legend: {
-                labels: { font: { family: 'Assistant', size: 14, weight: 'bold' } }
-            }
-        }
-    }
-});
-
-const rawSymptomsLabels = ['דליריום ובלבול חריף', 'יובש קיצוני בפה', 'עצירות קשה', 'אצירת שתן ממושכת', 'נפילות וחבלות'];
-const wrappedSymptomsLabels = rawSymptomsLabels.map(wrapLabel);
-
-const symptomsCtx = document.getElementById('anticholinergicChart').getContext('2d');
-new Chart(symptomsCtx, {
-    type: 'polarArea',
-    data: {
-        labels: wrappedSymptomsLabels,
-        datasets: [{
-            data: [90, 65, 80, 70, 85],
-            backgroundColor: [
-                'rgba(14, 165, 233, 0.7)',
-                'rgba(245, 158, 11, 0.7)',
-                'rgba(16, 185, 129, 0.7)',
-                'rgba(139, 92, 246, 0.7)',
-                'rgba(239, 68, 68, 0.7)'
-            ],
-            borderColor: '#ffffff',
-            borderWidth: 2
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            r: {
-                ticks: { display: false },
-                grid: { color: 'rgba(0,0,0,0.05)' }
-            }
-        },
-        plugins: {
-            ...tooltipConfig,
-            title: {
-                display: true,
-                text: 'חומרת תסמיני עומס אנטי-כולינרגי',
-                font: { family: 'Heebo', size: 20, weight: 'bold' },
-                padding: { bottom: 20 }
-            },
-            legend: {
-                labels: { font: { family: 'Assistant', size: 14, weight: 'bold' } },
-                position: 'right'
-            }
-        }
-    }
-});
-</script>
 </body>
 </html>
