@@ -113,6 +113,43 @@
 
     <div class="content">
 
+        <!-- AUTHENTIC ORIGINAL DOCUMENT VIEWER -->
+        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 14px; padding: 20px; margin-bottom: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); border: 1px solid #334155;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 26px;">📑</span>
+                    <div>
+                        <h2 style="font-size: 18px; font-weight: 800; margin: 0; color: #f8fafc;">מסמך מקור: סל חבישות מתקדמות ומקראה קלינית</h2>
+                        <p style="font-size: 12.5px; color: #94a3b8; margin: 2px 0 0 0;">פרוטוקול מוסדי מעודכן 12/2025 - תצוגה ישירה של מסמך המקור באיכות מלאה</p>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button onclick="setDocView('wound_care_protocol_full.jpg', this)" class="btn" style="background: #2563eb; color: white; padding: 6px 12px; font-size: 12px;">🖼️ כרזה מלאה משולבת</button>
+                    <button onclick="setDocView('wound_care_protocol_page1.jpg', this)" class="btn" style="background: #334155; color: white; padding: 6px 12px; font-size: 12px;">📄 עמוד 1 (סל פצעי לחץ)</button>
+                    <button onclick="setDocView('wound_care_protocol_page2.jpg', this)" class="btn" style="background: #334155; color: white; padding: 6px 12px; font-size: 12px;">📄 עמוד 2 (טראומטי ואטלס)</button>
+                    <a href="wound_care_protocol.pdf" download="פרוטוקול_טיפול_בפצעים_סל_חבישות.pdf" target="_blank" class="btn" style="background: #059669; color: white; padding: 6px 14px; font-size: 12px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">📥 הורד PDF מקורי</a>
+                </div>
+            </div>
+            
+            <div style="background: #020617; border-radius: 10px; overflow: hidden; display: flex; justify-content: center; align-items: center; padding: 12px; border: 1px solid #1e293b;">
+                <img id="orig-doc-img" src="wound_care_protocol_full.jpg" alt="פרוטוקול טיפולי בפצעים - מסמך מקור" style="max-width: 100%; max-height: 85vh; object-fit: contain; border-radius: 6px; cursor: zoom-in; transition: transform 0.2s;" onclick="this.style.maxHeight = this.style.maxHeight === 'none' ? '85vh' : 'none'; this.style.cursor = this.style.maxHeight === 'none' ? 'zoom-out' : 'zoom-in';" title="לחצו להגדלה מלאה">
+            </div>
+            <div style="margin-top: 10px; font-size: 11.5px; color: #94a3b8; text-align: center;">
+                💡 לחצו על התמונה להגדלה/הקטנה, או עברו בין העמודים באמצעות הכפתורים למעלה.
+            </div>
+        </div>
+
+        <script>
+            function setDocView(src, btn) {
+                const img = document.getElementById('orig-doc-img');
+                if (img) img.src = src;
+                if (btn && btn.parentElement) {
+                    btn.parentElement.querySelectorAll('button').forEach(b => b.style.background = '#334155');
+                    btn.style.background = '#2563eb';
+                }
+            }
+        </script>
+
         <!-- PART 1: WOUND STAGING GUIDE (1 to 6) -->
         <div class="section-title">
             <span>🔍</span> מקראה ודירוג פצעי לחץ (דרגות 1 עד 6 ופצע טראומטי)

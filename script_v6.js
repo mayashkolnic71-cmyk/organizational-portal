@@ -86,8 +86,19 @@ function initProtocolsDb() {
         }
     }
 
-    // 1. Wound Care Protocol ( סל חבישות 2024 ומקראה דירוג 1-6 )
-        upsertProtocol({
+    // 1. Wound Care Protocol Basket - Original Document ( סל חבישות מתקדמות - מסמך מקור )
+    upsertProtocol({
+        id: "proto_wound_care_basket_doc",
+        title: "פרוטוקול טיפול בפצעים סל חבישות (מסמך מקור)",
+        link: "wound_care_protocol_full.jpg",
+        category: "clinical",
+        type: "infographic",
+        author: "מאיה שקולניק גזית",
+        desc: "מסמך מקור רשמי: סל חבישות מתקדמות מעודכן (12/2025) לפצעי לחץ ופצע טראומטי, מקראת דירוג פצעי לחץ דרגות 1-6, והנחיות מפורטות לאומדן והצגת פצע לרופא/ה."
+    });
+
+    // 2. Wound Care Protocol ( סל חבישות 2024 ומקראה דירוג 1-6 )
+    upsertProtocol({
         id: "proto_wound_care_2024",
         title: "פרוטוקול טיפולי בפצעים - סל חבישות מתקדמות 2024 ומקראה דירוג פצעי לחץ",
         link: "wound_care_protocol.html",
@@ -2474,6 +2485,19 @@ function filterProtocolsSearch() {
     });
 }
 
+function switchWoundProtocolView(src, btn) {
+    const img = document.getElementById('protocol-modal-img');
+    const extLink = document.getElementById('protocol-modal-ext-link');
+    if (img) img.src = src;
+    if (extLink) extLink.href = src;
+    if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('button').forEach(b => {
+            b.style.background = '#334155';
+        });
+        btn.style.background = '#2563eb';
+    }
+}
+
 function openProtocolModal(imgSrc, title) {
     let modal = document.getElementById('protocol-image-modal');
     if (!modal) {
@@ -2488,27 +2512,39 @@ function openProtocolModal(imgSrc, title) {
         `;
         document.body.appendChild(modal);
     }
+
+    const isWoundProtocol = imgSrc.includes('wound_care_protocol');
+    const woundToolbar = isWoundProtocol ? `
+        <div style="background: #1e293b; padding: 10px 24px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <span style="color: #94a3b8; font-size: 13px; font-weight: 600;">×ª×¦×•×’×ª ×ž×¡×ž×š ×ž×§×•×¨:</span>
+            <button class="btn" id="btn-wound-full" style="padding: 5px 12px; font-size: 12px; border-radius: 6px; background: #2563eb; color: white;" onclick="switchWoundProtocolView('wound_care_protocol_full.jpg', this)">ðŸ–¼ï¸ ×›×¨×–×” ×ž×œ××” ×ž×©×•×œ×‘×ª</button>
+            <button class="btn" id="btn-wound-p1" style="padding: 5px 12px; font-size: 12px; border-radius: 6px; background: #334155; color: white;" onclick="switchWoundProtocolView('wound_care_protocol_page1.jpg', this)">ðŸ“„ ×¢×ž×•×“ 1 (×¡×œ ×—×‘×™×©×•×ª ×¤×¦×¢×™ ×œ×—×¥)</button>
+            <button class="btn" id="btn-wound-p2" style="padding: 5px 12px; font-size: 12px; border-radius: 6px; background: #334155; color: white;" onclick="switchWoundProtocolView('wound_care_protocol_page2.jpg', this)">ðŸ“„ ×¢×ž×•×“ 2 (×¤×¦×¢ ×˜×¨××•×ž×˜×™ ×•××˜×œ×¡ ×“×™×¨×•×’)</button>
+            <a href="wound_care_protocol.pdf" target="_blank" download="×¤×¨×•×˜×•×§×•×œ_×˜×™×¤×•×œ_×‘×¤×¦×¢×™×_×¡×œ_×—×‘×™×©×•×ª.pdf" class="btn" style="padding: 5px 12px; font-size: 12px; border-radius: 6px; background: #059669; color: white; text-decoration: none; margin-right: auto; display: inline-flex; align-items: center; gap: 5px;">ðŸ“¥ ×”×•×¨×“ ×§×•×‘×¥ PDF ×ž×§×•×¨×™ (Doc2)</a>
+        </div>
+    ` : '';
     
     modal.innerHTML = `
-        <div style="background: var(--surface-color); color: var(--text-primary); border-radius: 16px; max-width: 1100px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">
+        <div style="background: var(--surface-color); color: var(--text-primary); border-radius: 16px; max-width: 1250px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">
             <div style="padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); background: var(--bg-color);">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <span style="font-size: 24px;">🖼️</span>
+                    <span style="font-size: 24px;">ðŸ–¼ï¸</span>
                     <h3 style="margin: 0; font-size: 18px; font-weight: 700;">${title}</h3>
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
-                    <a href="${imgSrc}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="פתח בחלון חדש / הדפסה">
-                        <span>פתח בחלון נפרד ↗</span>
+                    <a id="protocol-modal-ext-link" href="${imgSrc}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="×¤×ª×— ×‘×—×œ×•×Ÿ ×—×“×© / ×”×“×¤×¡×”">
+                        <span>×¤×ª×— ×‘×—×œ×•×Ÿ × ×¤×¨×“ â†—</span>
                     </a>
-                    <button class="btn" style="background: var(--primary-color); padding: 6px 14px; font-size: 13px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="closeProtocolModal()" title="חזרה למסך הקודם">⬅ חזרה למסך הקודם</button>
-                    <button class="btn" style="background: var(--danger); padding: 6px 12px; font-size: 16px; border-radius: 8px;" onclick="closeProtocolModal()" title="סגור">✕</button>
+                    <button class="btn" style="background: var(--primary-color); padding: 6px 14px; font-size: 13px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="closeProtocolModal()" title="×—×–×¨×” ×œ×ž×¡×š ×”×§×•×“×">â¬… ×—×–×¨×” ×œ×ž×¡×š ×”×§×•×“×</button>
+                    <button class="btn" style="background: var(--danger); padding: 6px 12px; font-size: 16px; border-radius: 8px;" onclick="closeProtocolModal()" title="×¡×’×•×¨">âœ•</button>
                 </div>
             </div>
+            ${woundToolbar}
             <div style="flex: 1; overflow: auto; padding: 15px; display: flex; justify-content: center; align-items: center; background: #0b1120;">
-                <img src="${imgSrc}" alt="${title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: zoom-in;" onclick="this.style.maxHeight = this.style.maxHeight === 'none' ? '80vh' : 'none'; this.style.cursor = this.style.maxHeight === 'none' ? 'zoom-out' : 'zoom-in';" title="לחץ להגדלה/הקטנה">
+                <img id="protocol-modal-img" src="${imgSrc}" alt="${title}" style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: zoom-in;" onclick="this.style.maxHeight = this.style.maxHeight === 'none' ? '75vh' : 'none'; this.style.cursor = this.style.maxHeight === 'none' ? 'zoom-out' : 'zoom-in';" title="×œ×—×¥ ×œ×”×’×“×œ×”/×”×§×˜× ×”">
             </div>
             <div style="padding: 10px 20px; font-size: 12px; color: var(--text-secondary); text-align: center; border-top: 1px solid var(--border-color); background: var(--bg-color);">
-                💡 טיפ: ניתן ללחוץ על התמונה להגדלה מלאה, או על כפתור "פתח בחלון נפרד" להדפסה ותלייה במחלקה.
+                ${isWoundProtocol ? 'ðŸ’¡ ×ž×¡×ž×š ×ž×§×•×¨ ×¨×©×ž×™ ×ž×¢×•×“×›×Ÿ 12/2025. ×”×©×ª×ž×©×• ×‘×›×¤×ª×•×¨×™× ×œ×ž×¢×œ×” ×œ×ž×¢×‘×¨ ×‘×™×Ÿ ×”×¢×ž×•×“×™×, ×œ×—×¦×• ×¢×œ ×”×ª×ž×•× ×” ×œ×”×’×“×œ×” ×ž×œ××”, ××• ×”×•×¨×™×“×• ××ª ×”-PDF ×”×ž×§×•×¨×™.' : 'ðŸ’¡ ×˜×™×¤: × ×™×ª×Ÿ ×œ×œ×—×•×¥ ×¢×œ ×”×ª×ž×•× ×” ×œ×”×’×“×œ×” ×ž×œ××”, ××• ×¢×œ ×›×¤×ª×•×¨ "×¤×ª×— ×‘×—×œ×•×Ÿ × ×¤×¨×“" ×œ×”×“×¤×¡×” ×•×ª×œ×™×™×” ×‘×ž×—×œ×§×”.'}
             </div>
         </div>
     `;
