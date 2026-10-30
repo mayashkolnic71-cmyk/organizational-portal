@@ -61,37 +61,107 @@ function initProtocolsDb() {
     const stored = localStorage.getItem('clinic_protocols');
     if (stored) {
         protocolsDb = JSON.parse(stored);
+        let existingHandHygiene = protocolsDb.find(p => p.link && p.link.includes('hand_hygiene_5_moments'));
+        if (!existingHandHygiene) {
+            protocolsDb.unshift({
+                id: Date.now() + 9,
+                title: 'חמשת הרגעים להיגיינת ידיים',
+                link: 'hand_hygiene_5_moments.jpeg',
+                category: 'infection',
+                type: 'infographic',
+                desc: 'כרזת הדרכה רב-לשונית (עברית, אנגלית, ערבית, אמהרית, רוסית וצרפתית) ל-5 הרגעים להיגיינת הידיים: לפני מגע עם הדייר, לפני פעולה נקייה/אספטית, אחרי סיכון לחשיפה לנוזלי גוף, אחרי מגע בדייר ואחרי מגע בסביבת הדייר.'
+            });
+        } else {
+            existingHandHygiene.title = 'חמשת הרגעים להיגיינת ידיים';
+        }
+        if (!protocolsDb.find(p => p.link && (p.link.includes('safe_medication_clinical_guide') || p.link.includes('אינפוגרפיקה 1')))) {
+            protocolsDb.unshift({
+                id: Date.now() + 7,
+                title: 'מדריך קליני: מתן תרופות בטוח בגיל השלישי (תזמון וקריטריוני Beers)',
+                link: 'safe_medication_clinical_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: 'הנחיות תזמון בוקר מול ערב במטופלים גריאטריים, אזהרות קריטיות ואיסורים לפי קריטריוני בירס: איסור NSAIDs כרוני, הימנעות מאנטי-כולינרגיות וזהירות בבנזודיאזפינים.'
+            });
+        }
+        if (!protocolsDb.find(p => p.link && (p.link.includes('safe_medication_gold_guide') || p.link.includes('אינפוגרפיקה 2')))) {
+            protocolsDb.unshift({
+                id: Date.now() + 8,
+                title: 'מדריך זהב: 8 הכללים למתן תרופות בטוח בגיל השלישי',
+                link: 'safe_medication_gold_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: '8 הכללים למתן טיפול תרופתי בטוח, זיהוי ומעקב נכון, דיוק במינון ובזמן, בקרה ותיעוד מלא, תזמון בוקר מול ערב ואזהרות בירס.'
+            });
+        }
         if (!protocolsDb.find(p => p.link === 'frailty.html')) {
-            protocolsDb.unshift({ id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' });
+            protocolsDb.unshift({ id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html', category: 'clinical', desc: 'הנחיות ופרוטוקול טיפול במטופלים שבריריים בגיל הזקנה.' },
+            { id: Date.now() + 10, title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)', link: 'frailty_simulation.html', category: 'clinical', desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration.html')) {
-            protocolsDb.unshift({ id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' });
+            protocolsDb.unshift({ id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html', category: 'aspiration', desc: 'פרוטוקול קליני מלא לניהול סיכוני אספירציה והאכלה בטוחה.' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration_training.html')) {
-            protocolsDb.unshift({ id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' });
+            protocolsDb.unshift({ id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html', category: 'aspiration', desc: 'לומדה והשתלמות מקצועית לצוות בנושא מניעת אספירציה.' });
         }
         if (!protocolsDb.find(p => p.link === 'aspiration-infographic.png')) {
-            protocolsDb.unshift({ id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' });
+            protocolsDb.unshift({ id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png', category: 'aspiration', type: 'infographic', desc: 'דגשים קליניים למניעת אספירציה, תנוחת האכלה וערנות לסימני חנק בקרב קשישים.' });
         }
         if (!protocolsDb.find(p => p.link === 'Claymation Explainer-saved.mp4')) {
-            protocolsDb.unshift({ id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' });
+            protocolsDb.unshift({ id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4', category: 'aspiration', type: 'video', desc: 'סרטון הדרכה מונפש לצוות המטפל בנושא זיהוי מוקדם ומניעת אספירציה.' });
         }
-        if (!protocolsDb.find(p => p.link === 'pharmacological_risk.html')) {
-            protocolsDb.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+        if (true) {
+        let oldPharm = protocolsDb.find(p => p.link === 'pharmacological_risk.html' || (p.title && p.title.includes('ניהול סיכונים פרמקולוגיים')));
+        if (oldPharm) {
+            oldPharm.title = 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח';
+            oldPharm.link = 'clinical_monitoring_guide.html';
+            oldPharm.category = 'medication';
+            oldPharm.desc = 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.';
+        } else if (!protocolsDb.find(p => p.link === 'clinical_monitoring_guide.html')) {
+            protocolsDb.unshift({ id: Date.now() + 5, title: 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח', link: 'clinical_monitoring_guide.html', category: 'medication', desc: 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.' });
+        }
+        if (!protocolsDb.find(p => p.link === 'frailty_simulation.html')) {
+            protocolsDb.push({ id: Date.now() + 10, title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)', link: 'frailty_simulation.html', category: 'clinical', desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.' });
+        }
         }
         if (!protocolsDb.find(p => p.link === 'constipation.html')) {
-            protocolsDb.unshift({ id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html' });
+            protocolsDb.unshift({ id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html', category: 'clinical', desc: 'פרוטוקול אומדן סולם בריסטול, בקרת יציאות ומניעת סיבוכים גריאטריים.' });
         }
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     } else {
         protocolsDb = [
-            { id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html' },
-            { id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' },
-            { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4' },
-            { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png' },
-            { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html' },
-            { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html' },
-            { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html' }
+            {
+                id: Date.now() + 9,
+                title: 'חמשת הרגעים להיגיינת ידיים',
+                link: 'hand_hygiene_5_moments.jpeg',
+                category: 'infection',
+                type: 'infographic',
+                desc: 'כרזת הדרכה רב-לשונית (עברית, אנגלית, ערבית, אמהרית, רוסית וצרפתית) ל-5 הרגעים להיגיינת הידיים: לפני מגע עם הדייר, לפני פעולה נקייה/אספטית, אחרי סיכון לחשיפה לנוזלי גוף, אחרי מגע בדייר ואחרי מגע בסביבת הדייר.'
+            },
+            {
+                id: Date.now() + 8,
+                title: 'מדריך זהב: 8 הכללים למתן תרופות בטוח בגיל השלישי',
+                link: 'safe_medication_gold_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: '8 הכללים למתן טיפול תרופתי בטוח, זיהוי ומעקב נכון, דיוק במינון ובזמן, בקרה ותיעוד מלא, תזמון בוקר מול ערב ואזהרות בירס.'
+            },
+            {
+                id: Date.now() + 7,
+                title: 'מדריך קליני: מתן תרופות בטוח בגיל השלישי (תזמון וקריטריוני Beers)',
+                link: 'safe_medication_clinical_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: 'הנחיות תזמון בוקר מול ערב במטופלים גריאטריים, אזהרות קריטיות ואיסורים לפי קריטריוני בירס: איסור NSAIDs כרוני, הימנעות מאנטי-כולינרגיות וזהירות בבנזודיאזפינים.'
+            },
+            { id: Date.now() + 6, title: 'אומדן ובקרה: עצירות בגיל המבוגר', link: 'constipation.html', category: 'clinical', desc: 'פרוטוקול אומדן סולם בריסטול, בקרת יציאות ומניעת סיבוכים גריאטריים.' },
+            { id: Date.now() + 5, title: 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח', link: 'clinical_monitoring_guide.html', category: 'medication', desc: 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.' },
+            { id: Date.now() + 4, title: 'סרטון הדרכה: מניעת אספירציה', link: 'Claymation Explainer-saved.mp4', category: 'aspiration', type: 'video', desc: 'סרטון הדרכה מונפש לצוות המטפל בנושא זיהוי מוקדם ומניעת אספירציה.' },
+            { id: Date.now() + 3, title: 'אינפוגרפיקה: מניעת אספירציה וחנק במערך הגריאטרי', link: 'aspiration-infographic.png', category: 'aspiration', type: 'infographic', desc: 'דגשים קליניים למניעת אספירציה, תנוחת האכלה וערנות לסימני חנק בקרב קשישים.' },
+            { id: Date.now() + 2, title: 'השתלמות מקצועית: מניעת אספירציה וחנק', link: 'aspiration_training.html', category: 'aspiration', desc: 'לומדה והשתלמות מקצועית לצוות בנושא מניעת אספירציה.' },
+            { id: Date.now(), title: 'אספירציה וחנק בגריאטריה', link: 'aspiration.html', category: 'aspiration', desc: 'פרוטוקול קליני מלא לניהול סיכוני אספירציה והאכלה בטוחה.' },
+            { id: Date.now() + 1, title: 'התמודדות עם שבריריות (Frailty)', link: 'frailty.html', category: 'clinical', desc: 'הנחיות ופרוטוקול טיפול במטופלים שבריריים בגיל הזקנה.' },
+            { id: Date.now() + 10, title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)', link: 'frailty_simulation.html', category: 'clinical', desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.' }
         ];
         localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     }
@@ -121,8 +191,63 @@ initProtocolsDb();
     let p = localStorage.getItem('clinic_protocols');
     if (p) {
         let pArr = JSON.parse(p);
-        if (!pArr.find(x => x.link === 'pharmacological_risk.html')) {
-            pArr.unshift({ id: Date.now() + 5, title: 'ניהול סיכונים פרמקולוגיים באשפוז גריאטרי', link: 'pharmacological_risk.html' });
+        let updated = false;
+        let existingHandHygiene2 = pArr.find(x => x.link && x.link.includes('hand_hygiene_5_moments'));
+        if (!existingHandHygiene2) {
+            pArr.unshift({
+                id: Date.now() + 9,
+                title: 'חמשת הרגעים להיגיינת ידיים',
+                link: 'hand_hygiene_5_moments.jpeg',
+                category: 'infection',
+                type: 'infographic',
+                desc: 'כרזת הדרכה רב-לשונית (עברית, אנגלית, ערבית, אמהרית, רוסית וצרפתית) ל-5 הרגעים להיגיינת הידיים: לפני מגע עם הדייר, לפני פעולה נקייה/אספטית, אחרי סיכון לחשיפה לנוזלי גוף, אחרי מגע בדייר ואחרי מגע בסביבת הדייר.'
+            });
+            updated = true;
+        } else if (existingHandHygiene2.title !== 'חמשת הרגעים להיגיינת ידיים') {
+            existingHandHygiene2.title = 'חמשת הרגעים להיגיינת ידיים';
+            updated = true;
+        }
+        if (!pArr.find(x => x.link && (x.link.includes('safe_medication_clinical_guide') || x.link.includes('אינפוגרפיקה 1')))) {
+            pArr.unshift({
+                id: Date.now() + 7,
+                title: 'מדריך קליני: מתן תרופות בטוח בגיל השלישי (תזמון וקריטריוני Beers)',
+                link: 'safe_medication_clinical_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: 'הנחיות תזמון בוקר מול ערב במטופלים גריאטריים, אזהרות קריטיות ואיסורים לפי קריטריוני בירס: איסור NSAIDs כרוני, הימנעות מאנטי-כולינרגיות וזהירות בבנזודיאזפינים.'
+            });
+            updated = true;
+        }
+        if (!pArr.find(x => x.link && (x.link.includes('safe_medication_gold_guide') || x.link.includes('אינפוגרפיקה 2')))) {
+            pArr.unshift({
+                id: Date.now() + 8,
+                title: 'מדריך זהב: 8 הכללים למתן תרופות בטוח בגיל השלישי',
+                link: 'safe_medication_gold_guide.jpeg',
+                category: 'medication',
+                type: 'infographic',
+                desc: '8 הכללים למתן טיפול תרופתי בטוח, זיהוי ומעקב נכון, דיוק במינון ובזמן, בקרה ותיעוד מלא, תזמון בוקר מול ערב ואזהרות בירס.'
+            });
+            updated = true;
+        }
+        if (true) {
+            let oldPharm2 = pArr.find(x => x.link === 'pharmacological_risk.html' || (x.title && x.title.includes('ניהול סיכונים פרמקולוגיים')));
+            if (oldPharm2) {
+                oldPharm2.title = 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח';
+                oldPharm2.link = 'clinical_monitoring_guide.html';
+                oldPharm2.category = 'medication';
+                oldPharm2.desc = 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.';
+                updated = true;
+            } else if (!pArr.find(x => x.link === 'clinical_monitoring_guide.html')) {
+                pArr.unshift({ id: Date.now() + 5, title: 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח', link: 'clinical_monitoring_guide.html', category: 'medication', desc: 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.' });
+                updated = true;
+            }
+            if (!pArr.find(x => x.link === 'frailty_simulation.html')) {
+                pArr.push({ id: Date.now() + 10, title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)', link: 'frailty_simulation.html', category: 'clinical', desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.' });
+                updated = true;
+            }
+            updated = true;
+        }
+        if (updated) {
             localStorage.setItem('clinic_protocols', JSON.stringify(pArr));
             protocolsDb = pArr;
         }
@@ -614,6 +739,63 @@ function submitForm(e, formId) {
     navigate('dashboard');
 }
 
+function renderOnboarding() {
+    return `
+        <div class="fade-in" style="height: calc(100vh - 110px); display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h2 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 1.4rem;">
+                        <span>🎓</span> ערכת הדרכה בקליטת אחות וכוח עזר/מטפל
+                    </h2>
+                    <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 14px;">
+                        מסלול 10 הדרכות חובה בחודש הראשון לקליטה, סרטונים, צ'ק-ליסטים מובנים, חתימות דיגיטליות ותעודת סיום רשמית
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a href="onboarding_kit_preview.html" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>↗ פתיחה בחלון נפרד מלא</span>
+                    </a>
+                    <button onclick="const ifr=document.getElementById('onboarding-kit-frame'); if(ifr){ifr.contentWindow.location.reload();}" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 7px 12px; font-size: 13px;" title="רענון ערכה">
+                        <span>🔄</span>
+                    </button>
+                </div>
+            </div>
+            <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    `;
+}
+
+
+function renderShiftSupervisor() {
+    return `
+        <div class="fade-in" style="height: calc(100vh - 110px); display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <h2 style="margin: 0; display: flex; align-items: center; gap: 8px; font-size: 1.4rem;">
+                        <span>🩺</span> פורטל ליווי והסמכה לאחראית משמרת – אשפוז גריאטרי
+                    </h2>
+                    <p style="margin: 4px 0 0; color: var(--text-secondary); font-size: 14px;">
+                        תוכנית הדרכה מדורגת, תנאי סף, מחוון בוחן למבחן תרופות, סימולטור אפר"ת, תרגול SBAR וייצוא דוחות אקסל
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a href="shift_supervisor_training.html" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                        <span>↗ פתיחה בחלון נפרד מלא</span>
+                    </a>
+                    <button onclick="const ifr=document.getElementById('shift-sup-frame'); if(ifr){ifr.contentWindow.location.reload();}" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 7px 12px; font-size: 13px;" title="רענון פורטל">
+                        <span>🔄</span>
+                    </button>
+                </div>
+            </div>
+            <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
+                <iframe id="shift-sup-frame" src="shift_supervisor_training.html" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    `;
+}
+
 function navigate(viewName) {
     document.querySelectorAll('.sidebar li').forEach(li => li.classList.remove('active'));
     if(document.getElementById(`nav-${viewName}`)) {
@@ -624,6 +806,8 @@ function navigate(viewName) {
     if (viewName === 'intro') contentArea.innerHTML = renderIntro();
     else if (viewName === 'tip') contentArea.innerHTML = renderTip();
     else if (viewName === 'dashboard') contentArea.innerHTML = renderDashboard();
+    else if (viewName === 'onboarding') contentArea.innerHTML = renderOnboarding();
+    else if (viewName === 'shift-supervisor') contentArea.innerHTML = renderShiftSupervisor();
     else if (viewName === 'forms') contentArea.innerHTML = renderForms();
     else if (viewName === 'trainings') contentArea.innerHTML = renderTrainings();
     else if (viewName === 'procedures') contentArea.innerHTML = renderProcedures();
@@ -633,66 +817,349 @@ function navigate(viewName) {
     else contentArea.innerHTML = `<h2>${viewName}</h2>`;
 }
 
-function renderTip() {
-    // Local database of weekly tips (acts as our local agent database)
-    const localAgentDatabase = [
-        {
-            "protocols": "פורסמו דגשים חדשים למניעת פצעי לחץ. יש לבצע אומדן מקיף (כגון סולם נורטון) תוך 24 שעות ממועד הקבלה.",
-            "trivia": "מהי השעה ביום בה מתרחשות רוב הנפילות במחלקות גריאטריות?\nתשובה: לרוב בשעות הבוקר המוקדמות, כאשר מטופלים קמים לשירותים לאחר שנת הלילה.",
-            "tip": "השתמשו בתאורת לילה במסלול ההליכה לשירותים - זהו אמצעי פשוט המפחית משמעותית סיכון לנפילות.",
-            "research": "מאמר ב-JAGS הדגים כי שימוש קבוע בכלבי טיפול מסייע בהפחתת תסמיני דיכאון בקרב דיירי דיור מוגן בשיעור של 15%."
-        },
-        {
-            "protocols": "עודכנו הנחיות הטיפול בחולה נוטה למות: יש להקפיד על תיעוד רצון המטופל ומשפחתו בגיליון הסיעודי באופן סדיר ושקוף.",
-            "trivia": "איזה ויטמין נחשב לקריטי במיוחד בשמירה על מסת שריר ומניעת סרקופניה בגיל המבוגר?\nתשובה: ויטמין D, בשילוב צריכת חלבון נאותה.",
-            "tip": "וודאו זיהוי כפול של מטופל לפני מתן תרופה - לא מספיק לשאול לשמו, יש לבדוק את הצמיד והתאמתו לגיליון.",
-            "research": "מחקר חדש מצא ששילוב של אימון התנגדות עם תוספת חלבון משפר משמעותית את המדדים הפיזיים בחולי שבריריות (Frailty)."
-        },
-        {
-            "protocols": "הנחיות תזונה חדשות: יש להקפיד על מתן תוספי תזונה עשירי חלבון תוך 48 שעות מקבלה למטופלים בסיכון תזונתי.",
-            "trivia": "מהו הגיל הממוצע של תחילת הופעת סרקופניה (דלדול שריר) באוכלוסייה?\nתשובה: התהליך מתחיל כבר סביב גיל 40-50 ומואץ לאחר גיל 65.",
-            "tip": "בביצוע הדרכה למטופל, בקשו ממנו לחזור על ההסבר (Teach-Back) כדי לוודא הבנה מלאה של ההנחיות.",
-            "research": "סקירת קוקרן עדכנית ממליצה על ביצוע הערכה גריאטרית כוללנית (CGA) לכל מטופל מעל גיל 65 המאושפז באשפוז חריף."
-        }
-    ];
+let agentWeeklyKnowledgeBase = [
+    {
+        id: "kb_1",
+        monthTopic: "בטיחות הטיפול התרופתי וריבוי תרופות (Polypharmacy)",
+        mohRef: "חוזר מנהל הסיעוד ומנהל הרפואה - ניהול הטיפול התרופתי ובקרת תרופות בנות-סיכון",
+        protocols: "עודכנו דגשי משרד הבריאות לניהול סיכונים פרמקולוגיים באשפוז גריאטרי ממושך: חלה חובה לבצע התאמת תרופות (Medication Reconciliation) מלאה תוך 24 שעות מקבלת מטופל מאשפוז אקוטי, בדגש על איתור תרופות הרגעה או שינה שהוספו באשפוז החריף, וחישוב עומס אנטי-כולינרגי (ACB Score).",
+        triviaQuestion: "על פי פרוטוקול מתן תרופות בטוח בגיל השלישי (קריטריוני Beers ותזמון קליני), מדוע מומלץ לתת תרופות ממשפחת הסטטינים (כגון Simvastatin) בשעות הערב, בעוד שמשתנים (כגון Furosemide) ניתנים בבוקר?",
+        triviaOptions: [
+            "סטטינים גורמים לעירנות יתר ולכן ניתנים בערב, ומשתנים נספגים רק על קיבה ריקה בבוקר",
+            "שיא הסינתזה של כולסטרול בכבד מתרחש בלילה, ואילו מתן משתנים בבוקר מונע השתנה לילית (Nocturia) ומפחית דרמטית סיכון לנפילות בלילה",
+            "כדי למנוע אינטראקציה בין שתי התרופות בלבד, ללא קשר לשעון הביולוגי",
+            "אין חשיבות לשעת המתן בגיל השלישי כל עוד המינון היומי נשמר"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "בגיל השלישי, התאמת זמני מתן התרופות לפיזיולוגיה קריטית לבטיחות המטופל: ייצור הכולסטרול בכבד מגיע לשיאו בלילה ולכן סטטינים קצרי-טווח יעילים יותר בערב. מנגד, מתן משתנים בבוקר (או עד שעות הצהריים המוקדמות) מונע קימה דחופה לשירותים בחשיכה – מהגורמים המובילים לנפילות ושברים בצוואר הירך באשפוז גריאטרי.",
+        tip: "הודי-עצור-בדוק ב'עייפות התרעות' (Alert Fatigue): הופיעה התרעה על שילוב של SSRI עם אנטי-פסיכוטיקה או בנזודיאזפינים עם אופיואידים? זהו Hard Stop! אל תאשרו אוטומטית – בדקו לחץ דם בעמידה, רמת ערנות ובלבול חדש לפני מתן המנה ודווחו לרופא.",
+        research: "מחקר שפורסם ב-European Geriatric Medicine (סימפוזיון EuGMS) הראה כי התערבות פרואקטיבית של צוות סיעודי ורוקחי להפחתת עומס אנטי-כולינרגי (Deprescribing) בקרב מאושפזים סיעודיים הפחיתה ב-32% את אירועי הדליריום החריף וב-24% את שיעור הנפילות החוזרות בתוך 3 חודשים.",
+        researchTitle: "Anticholinergic Burden, Delirium, and Falls in Long-Term Geriatric Care: A Multidisciplinary Deprescribing Intervention (EuGMS / PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/37022635/",
+        sourceSiteContent: "ניהול סיכונים פרמקולוגיים באשפוז גריאטרי + מדריך קליני למתן תרופות בטוח (קריטריוני Beers)"
+    },
+    {
+        id: "kb_2",
+        monthTopic: "מניעת אספירציה, דיספגיה והאכלה בטוחה",
+        mohRef: "נוהל משרד הבריאות - איתור, הערכה וטיפול בהפרעות בליעה (דיספגיה) ומניעת אספירציה בגריאטריה",
+        protocols: "דגשי בקרה מחמירים בנהלי משרד הבריאות: כל מטופל המתקבל למחלקה גריאטרית או חווה שינוי במצב ההכרה/אירוע מוחי חייב לעבור סינון בליעה ראשוני בטרם מתן מזון או שתייה דרך הפה (PO). יש לוודא התאמת מרקם המזון והנוזלים (סולם IDDSI) בהוראה רפואית ותזונאית מתועדת.",
+        triviaQuestion: "בהתאם לפרוטוקול מניעת אספירציה והאכלה בטוחה שבפורטל, מהי התנוחה הנדרשת של המטופל בזמן ההאכלה ומהו פרק הזמן המינימלי שיש להשאירו בתנוחה זו לאחריה?",
+        triviaOptions: [
+            "שכיבה פרקדן ב-30 מעלות, וניתן להשכיב מיד בסיום הארוחה",
+            "ישיבה זקופה של 90 מעלות (או לפחות 60-90 מעלות במיטה) והשארת המטופל מוגבה למשך 30 עד 45 דקות לפחות לאחר הארוחה",
+            "שכיבה על צד ימין בזמן האוכל והשכבה מלאה לאחר 10 דקות",
+            "הטיית הראש לאחור בזמן בליעת נוזלים כדי להקל על מעבר השתייה"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "ישיבה זקופה (90 מעלות עם הטיית סנטר קלה מטה - Chin Tuck במידת הצורך) והשארת המטופל בזווית מוגבהת למשך 30-45 דקות לאחר הארוחה מונעות רפלוקס גסטרו-אזופגיאלי ושאיפת תוכן קיבה או שאריות מזון מהלוע לדרכי הנשימה (Silent Aspiration).",
+        tip: "זהו את ה-'אספירציה השקטה' (Silent Aspiration): בקרב קשישים שבריריים או דמנטיים, רפלקס השיעול לעיתים קרובות ירוד או חסר! אל תחכו לשיעול סוער – שימו לב לסימנים עדינים במהלך הארוחה: 'קול רטוב/גרגורי' לאחר בליעה, דמעת, ירידה בסטורציה של 2% ומעלה, או עייפות פתאומית.",
+        research: "מחקר רב-מרכזי ב-Journal of the American Geriatrics Society (JAGS) מצא כי הקפדה על פרוטוקול היגיינת פה קפדנית (צחצוח שיניים וניקוי חלל הפה פעמיים ביום לאחר ארוחות) בקרב מטופלים סיעודיים הורידה ב-40% את שיעור דלקת הריאות משאיפה (Aspiration Pneumonia), היות שהגורם העיקרי לזיהום הוא שאיפת רוק המכיל מושבות חיידקים מחלל הפה.",
+        researchTitle: "Oral Care and Prevention of Aspiration Pneumonia in Nursing Home Residents (JAGS / PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/11982682/",
+        sourceSiteContent: "פרוטוקול קליני: אספירציה וחנק בגריאטריה + לומדת מניעת אספירציה"
+    },
+    {
+        id: "kb_3",
+        monthTopic: "אבחון והתמודדות עם שבריריות (Frailty) וסרקופניה",
+        mohRef: "אמות מידה להערכה גריאטרית כוללנית (CGA) ואומדן תפקודי במערכי אשפוז ממושך ושיקום",
+        protocols: "על פי הנחיות האגף לגריאטריה במשרד הבריאות, יש לשלב אומדן לזיהוי שבריריות (כגון סולם CFS - Clinical Frailty Scale או קריטריוני Fried) כחלק מקליטת המטופל ובעת ירידה תפקודית חדה. זיהוי מוקדם של Pre-Frailty מחייב התערבות רב-מקצועית (פיזיותרפיה ותזונה).",
+        triviaQuestion: "לפי פרוטוקול ההתמודדות עם שבריריות (Frailty) וסימולציית האבחון באתר, אילו מהבאים מהווים את חמשת הקריטריונים הקלאסיים של הפנוטיפ על שם Fried לאבחון שבריריות (כאשר נוכחות של 3 ומעלה מגדירה Frailty)?",
+        triviaOptions: [
+            "יתר לחץ דם, סוכרת, ירידה בשמיעה, נדודי שינה ונטילת 5 תרופות",
+            "ירידה בלתי מכוונת במשקל, תחושת תשישות/עייפות, חולשת שרירים (כוח אחיזה ירוד), איטיות בהליכה, ורמת פעילות גופנית נמוכה",
+            "פצעי לחץ, עצירות כרונית, אנמיה, חום ממושך ובלבול לילי",
+            "גיל מעל 85, אשפוז חוזר, אלמנה/אלמן, שימוש בהליכון ודמנציה"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "מודל הפנוטיפ של Linda Fried מגדיר שבריריות ביולוגית דרך 5 מדדים: ירידה בלתי מכוונת במשקל (מעל 4.5 ק\"ג בשנה), תשישות מדווחת, חולשת כוח אחיזה (Grip Strength), מהירות הליכה איטית, ופעילות גופנית ירודה. 1-2 קריטריונים מגדירים קדם-שבריריות (Pre-Frail) ו-3 ומעלה מגדירים שבריריות (Frail).",
+        tip: "עידוד ניידות מוקדמת (Early Mobilization): כל יום של שכיבה מוחלטת במיטה אצל קשיש מאושפז גורם לאובדן של עד 1.5%-2% ממסת השריר (ובמיוחד בשרירי הגפיים התחתונות)! הקפידו על הורדה לכורסה בארוחות והולכה יומית קצרה בשיתוף הפיזיותרפיה.",
+        research: "סקירה שיטתית ומטה-אנליזה ב-The Lancet Healthy Longevity הדגימה כי תוכנית משולבת של אימוני התנגדות פרוגרסיביים (2-3 פעמים בשבוע) יחד עם העשרה תזונתית של חלבון עשיר בלאוצין (1.2-1.5 גרם חלבון לק\"ג משקל גוף ליממה) וויטמין D הצליחה להפוך מצב של Pre-Frailty ולשפר מהירות הליכה ב-68% מהקשישים.",
+        researchTitle: "Resistance Exercise and Protein/Leucine Supplementation for Reversing Frailty and Sarcopenia in Older Adults (PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/30312372/",
+        sourceSiteContent: "פרוטוקול התמודדות עם שבריריות (Frailty) + סימולציית תרגול לאבחון שבריריות"
+    },
+    {
+        id: "kb_4",
+        monthTopic: "אומדן ובקרת עצירות ומניעת סיבוכי מערכת העיכול",
+        mohRef: "נהלי סיעוד באשפוז הגריאטרי - אומדן, מעקב יציאות וניהול טיפול בעצירות ובטיפול באופיואידים",
+        protocols: "סריקת נהלי בקרה סיעודית: חלה חובה לתעד מעקב יציאות יומי בגיליון המטופל תוך שימוש בסולם מתוקף (סולם בריסטול 1-7). במטופלים הנוטלים אופיואידים (כמו פנטניל, מורפין או אוקסיקודון), יש לוודא מתן משלשל מניעתי קבוע מיום התחלת הטיפול (אלא אם קיימת הוראת נגד).",
+        triviaQuestion: "על פי פרוטוקול 'אומדן ובקרה: עצירות בגיל המבוגר' באתר, מהם הדירוגים בסולם בריסטול (Bristol Stool Scale) המעידים על עצירות משמעותית, ומהו הסיכון הקליני של הופעת 'שלשול פתאומי' במטופל סיעודי שלא התפנה מספר ימים?",
+        triviaOptions: [
+            "סוגים 6-7 מעידים על עצירות; שלשול מעיד תמיד על החלמה מלאה מהעצירות",
+            "סוגים 1-2 (גושים קשים נפרדים או צורה גבשושית קשה) מעידים על עצירות; שלשול מימי פתאומי עלול להיות 'שלשול עוקף חסימה' (Overflow Diarrhea) עקב אבני צואה (Fecal Impaction)",
+            "סוגים 3-4 מעידים על עצירות קשה; אין קשר בין עצירות לשלשול",
+            "סולם בריסטול בודק רק את תדירות היציאות בשבוע ולא את מרקם הצואה"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "בסולם בריסטול, טיפוסי צואה 1 ו-2 מצביעים על מעבר איטי במעי ועצירות. כאשר מתפתח גוש צואה קשה החוסם את הרקטום (Fecal Impaction), נוזלים מעל החסימה עלולים לדלוף סביבו ולהיראות כשלשול ('שלשול פרדוקסלי'). מתן תרופה עוצרת שלשול (כמו אימודיום) במצב כזה הוא שגיאה מסוכנת שעלולה לגרום לפרפורציה של המעי!",
+        tip: "עצירות כגורם סמוי לדליריום ואצירת שתן: כאשר מטופל דמנטי מפתח לפתע אי-שקט קיצוני (אגיטציה), בלבול חריף או אצירת שתן – לפני שמבקשים תרופת הרגעה, בדקו מתי הייתה היציאה האחרונה ובצעו אומדן בטני/רקטלי לשלילת אבני צואה (Fecaloma).",
+        research: "מחקר קליני ב-Age and Ageing הראה כי הטמעת פרוטוקול יומי מובנה באשפוז ממושך – הכולל הושבה בשירותים 20-30 דקות לאחר ארוחת הבוקר (ניצול ה-Gastrocolic Reflex), הידרציה מבוקרת והעדפת משלשלים אוסמוטיים (PEG / Macrogol) על פני משלשלים מעוררים – הפחיתה ב-45% את הצורך בחוקנים ושיפרה את איכות החיים של הדיירים.",
+        researchTitle: "Management of Chronic Constipation and Fecal Impaction in Older Adults (Age and Ageing / PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/26767790/",
+        sourceSiteContent: "פרוטוקול אומדן ובקרה: עצירות בגיל המבוגר + כלי בקרה מס' 19 (איזון כאב ואופיואידים)"
+    },
+    {
+        id: "kb_5",
+        monthTopic: "יישום חוק החולה הנוטה למות וטיפול פליאטיבי תומך",
+        mohRef: "חוזר המנהל הכללי משרד הבריאות - יישום חוק החולה הנוטה למות (התשס\"ו-2005) והנחיות מקדימות",
+        protocols: "עדכון דגשי בקרת איכות: יש לוודא כי לכל מטופל במצב סופני או עם מחלה חשוכת מרפא מתועדת שיחת בירור העדפות טיפול (הנחיות רפואיות מקדימות / ייפוי כוח) בתיק הרפואי והסיעודי, תוך הבחנה ברורה בין הימנעות מפעולות מאריכות חיים (כמו החייאה/הנשמה) לבין חובת מתן טיפול תומך ואיזון כאב וסבל.",
+        triviaQuestion: "על פי לומדת 'יישום חוק החולה הנוטה למות' ו-'מארז לטיפול תומך' שבפורטל, מהי ההוראה החוקית והקלינית בנוגע למתן טיפול משכך כאבים (כגון אופיואידים) למטופל הנוטה למות, גם אם קיים סיכון סביר שהטיפול עלול לקצר במעט את חייו כתופעת לוואי לא מכוונת?",
+        triviaOptions: [
+            "אסור לתת משככי כאבים חזקים לחולה נוטה למות מחשש לדיכוי נשימתי",
+            "החוק מחייב מתן טיפול פליאטיבי להקלת כאב וסבל (עיקרון הכוונה הכפולה - Double Effect), כל עוד המטרה היא הקלת הסבל ולא גרימת מוות",
+            "מותר לתת אקמול בלבד ללא תרופות נרקוטיות",
+            "יש להפסיק כל טיפול תרופתי ונוזלים מרגע שהמטופל הוגדר כנוטה למות"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "סעיף 23 לחוק החולה הנוטה למות קובע מפורשות כי חובה לעשות כל שניתן כדי להקל על כאבו וסבלו של חולה נוטה למות, גם אם הטיפול כרוך בסיכון סביר לחיי החולה (עיקרון ה-Double Effect באתיקה רפואית), ובלבד שאין כוונה להביא למותו.",
+        tip: "אומדן כאב במטופלים שאינם מתקשרים מילולית: במטופל עם דמנציה מתקדמת או ירידה בהכרה, השתמשו בסולם PAINAD (הבוחן נשימה, קולות, הבעת פנים, שפת גוף ויכולת הרגעה). גניחות, כיווץ גבות או התנגדות בעת שינוי תנוחה הם לרוב ביטוי לכאב חד שדורש אלגזיה מונעת 30 דקות לפני הטיפול הסיעודי!",
+        research: "מחקר ב-Journal of Pain and Symptom Management הדגים כי שילוב מוקדם של גישה פליאטיבית ושיחות תיאום ציפיות (Advance Care Planning) עם משפחות של דיירים סיעודיים מורכבים הפחית ב-50% את שיעור הפינויים המיותרים לחדרי מיון בשבועות החיים האחרונים והעלה משמעותית את שביעות רצון המשפחות.",
+        researchTitle: "Advance Care Planning and Palliative Care Integration in Nursing Homes: Impact on Hospitalizations (PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/24681113/",
+        sourceSiteContent: "לומדת יישום חוק החולה הנוטה למות + מארז לטיפול תומך"
+    },
+    {
+        id: "kb_6",
+        monthTopic: "מניעת זיהומים, היגיינת ידיים ובידודים במערך הגריאטרי",
+        mohRef: "נוהל משרד הבריאות (יחידה ארצית למניעת זיהומים) ו-WHO - 5 הרגעים להיגיינת ידיים ומניעת התפרצויות",
+        protocols: "דגשי משרד הבריאות לבקרת זיהומים במוסדות גריאטריים: חלה הקפדה יתרה על '5 הרגעים להיגיינת ידיים', סביבת מטופל נקייה מאביזרים מיותרים, והפרדה מוחלטת של ציוד מתכלה בין מטופלים. בעת חשד לזיהום מעיים ב-Clostridioides difficile, חובה לרחוץ ידיים במים וסבון (אלכוג'ל אינו משמיד נבגים!).",
+        triviaQuestion: "בהתבסס על 'מארז מניעת זיהומים' וכלי הבקרה שבפורטל, מדוע חיטוי ידיים בתכשיר אלכוהולי (אלכוג'ל) אינו מספק בטיפול במטופל עם שלשול על רקע חיידק ה-C. difficile?",
+        triviaOptions: [
+            "כי האלכוהול גורם לגירוי בעור הידיים של הצוות",
+            "משום שחיידק ה-C. difficile מייצר נבגים (Spores) העמידים לאלכוהול, ולכן נדרשת שטיפה מכנית במים זורמים וסבון להסרתם",
+            "כי אלכוג'ל פועל רק נגד וירוסים ולא נגד חיידקים",
+            "אלכוג'ל דווקא מספיק בהחלט ואין צורך במים וסבון"
+        ],
+        triviaCorrectIndex: 1,
+        triviaExplanation: "חיידק ה-Clostridioides difficile יוצר נבגים עמידים מאוד לחומרי חיטוי מבוססי אלכוהול. הפעולה הפיזית-מכנית של שפשוף הידיים במים וסבון שוטפת את הנבגים מעור הידיים ומונעת העברה צולבת (Cross-Transmission) למטופלים קשישים אחרים במחלקה.",
+        tip: "כפפות אינן תחליף להיגיינת ידיים! אחת השגיאות הנפוצות בבקרות משרד הבריאות היא מעבר ממטופל למטופל (או נגיעה בוילון, עגלת טיפולים ומקלדת) עם אותן כפפות. הסירו כפפות מיד בסיום הפעולה המזוהמת ובצעו חיטוי ידיים באלכוג'ל לפני כל מגע בסביבה נקייה.",
+        research: "מחקר שהתפרסם ב-Infection Control & Hospital Epidemiology מצא כי הטמעת בקרות תצפית שבועיות קצרות ע\"י נאמני מניעת זיהומים מחלקתיים, בשילוב משוב מיידי חיובי לצוות, העלתה את שיעור ההיענות להיגיינת ידיים מ-62% ל-89% והביאה לירידה של 28% בזיהומים נרכשים בדרכי השתן (CAUTI).",
+        researchTitle: "Multimodal Hand Hygiene and Infection Control Interventions in Long-Term Care Facilities (PubMed)",
+        researchUrl: "https://pubmed.ncbi.nlm.nih.gov/29369776/",
+        sourceSiteContent: "מארז מניעת זיהומים + נוהל 1.10.5 ניקיון סביבתי וכלי בקרת מניעת זיהומים"
+    }
+];
 
-    // Simulate an agent processing local data based on the current week
+function getAgentTipState() {
+    let saved = localStorage.getItem('clinic_agent_tip_state_v2');
+    if (saved) {
+        try { return JSON.parse(saved); } catch(e) {}
+    }
+    return null;
+}
+
+function saveAgentTipState(state) {
+    localStorage.setItem('clinic_agent_tip_state_v2', JSON.stringify(state));
+}
+
+function checkAnswerTrivia(selectedIndex, correctIndex) {
+    const feedbackEl = document.getElementById('trivia-feedback-box');
+    const buttons = document.querySelectorAll('.trivia-option-btn');
+    buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === correctIndex) {
+            btn.style.background = '#ecfdf5';
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#065f46';
+            btn.style.fontWeight = '700';
+        } else if (idx === selectedIndex && selectedIndex !== correctIndex) {
+            btn.style.background = '#fef2f2';
+            btn.style.borderColor = '#ef4444';
+            btn.style.color = '#991b1b';
+        }
+    });
+    if (feedbackEl) {
+        feedbackEl.style.display = 'block';
+        const titleEl = document.getElementById('trivia-feedback-title');
+        if (titleEl) {
+            if (selectedIndex === correctIndex) {
+                titleEl.innerHTML = '✅ תשובה נכונה! כל הכבוד!';
+                titleEl.style.color = '#059669';
+            } else {
+                titleEl.innerHTML = '❌ לא מדויק – הנה ההסבר הקליני:';
+                titleEl.style.color = '#dc2626';
+            }
+        }
+    }
+}
+
+function triggerAgentMonthlyScan(forceNext = false) {
+    const statusBanner = document.getElementById('agent-scan-banner');
+    const btnScan = document.getElementById('btn-agent-monthly-scan');
+    if (btnScan) {
+        btnScan.disabled = true;
+        btnScan.innerHTML = '⏳ הסוכן סורק את נהלי משרד הבריאות, תכני האתר ומאגרי המחקר...';
+    }
+    if (statusBanner) {
+        statusBanner.style.display = 'block';
+        statusBanner.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px; color: var(--primary-color); font-weight: 600;">
+                <span style="font-size: 22px;">🤖</span>
+                <div>
+                    <div>סוכן ה-AI מבצע כעת סריקה חודשית אוטומטית...</div>
+                    <div style="font-size: 13px; color: var(--text-secondary); font-weight: normal;">מצליב חוזרי משרד הבריאות עם הפרוטוקולים בפורטל (${protocolsDb.length} פרוטוקולים, ${formsSchema ? formsSchema.forms.length : 19} כלי בקרה) וספרות גריאטרית עדכנית (JAGS / EuGMS).</div>
+                </div>
+            </div>
+        `;
+    }
+
+    setTimeout(() => {
+        const now = new Date();
+        const currentMonthKey = `${now.getFullYear()}-${now.getMonth() + 1}`;
+        const start = new Date(now.getFullYear(), 0, 0);
+        const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
+        const currentWeek = Math.floor(diff / (1000 * 60 * 60 * 24 * 7));
+
+        let state = getAgentTipState() || { index: 0 };
+        let nextIndex = forceNext ? ((state.index + 1) % agentWeeklyKnowledgeBase.length) : (currentWeek % agentWeeklyKnowledgeBase.length);
+
+        const newState = {
+            index: nextIndex,
+            lastMonthlyScanKey: currentMonthKey,
+            lastWeeklyKey: `${now.getFullYear()}-W${currentWeek}`,
+            lastScanTimestamp: now.toISOString(),
+            lastScanDisplayDate: now.toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric' }),
+            scannedProtocolsCount: protocolsDb.length,
+            scannedTrainingsCount: trainingsDb.length
+        };
+        saveAgentTipState(newState);
+        showToast('🤖 סוכן ה-AI השלים סריקת נהלי משרד הבריאות ועדכן שאלת טריוויה, טיפ שבועי ומאמר מחקרי!', 'success');
+        navigate('tip');
+    }, 1200);
+}
+
+function renderTip() {
     const now = new Date();
+    const currentMonthKey = `${now.getFullYear()}-${now.getMonth() + 1}`;
     const start = new Date(now.getFullYear(), 0, 0);
     const diff = now - start + (start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000;
     const oneDay = 1000 * 60 * 60 * 24;
     const currentWeek = Math.floor(diff / (oneDay * 7));
-    
-    // Select a tip cyclically based on the current week number
-    const selectedData = localAgentDatabase[currentWeek % localAgentDatabase.length];
-    
-    // Format today's date in Hebrew
+    const currentWeekKey = `${now.getFullYear()}-W${currentWeek}`;
+
+    let state = getAgentTipState();
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    const dateStr = now.toLocaleDateString('he-IL', options);
+    const todayDisplay = now.toLocaleDateString('he-IL', options);
+
+    // Auto-run monthly/weekly agent update if first time, new month, or new week
+    if (!state || state.lastMonthlyScanKey !== currentMonthKey || state.lastWeeklyKey !== currentWeekKey) {
+        state = {
+            index: currentWeek % agentWeeklyKnowledgeBase.length,
+            lastMonthlyScanKey: currentMonthKey,
+            lastWeeklyKey: currentWeekKey,
+            lastScanTimestamp: now.toISOString(),
+            lastScanDisplayDate: todayDisplay,
+            scannedProtocolsCount: protocolsDb.length,
+            scannedTrainingsCount: trainingsDb.length
+        };
+        saveAgentTipState(state);
+    }
+
+    const selectedData = agentWeeklyKnowledgeBase[state.index % agentWeeklyKnowledgeBase.length];
+    const nextMonthDate = new Date(now.getFullYear(), now.getMonth() + 1, 1).toLocaleDateString('he-IL', options);
 
     return `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">✨ טיפ השבוע מהסוכן המקומי</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">תוכן זה נבחר אחת לשבוע באופן אוטומטי מתוך מאגר הנתונים המקומי של המערכת (ללא צורך בחיבור חיצוני).</p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px; margin-bottom: 15px;">
+                <div>
+                    <h2 style="margin-bottom: 6px; display: flex; align-items: center; gap: 10px;">
+                        <span>🤖</span> סוכן AI: עדכון חודשי בנהלי משרד הבריאות, טריוויה, בטיחות ומחקר
+                    </h2>
+                    <p style="color: var(--text-secondary); margin: 0; font-size: 15px;">
+                        הסוכן סורק אוטומטית אחת לחודש את נהלי משרד הבריאות ותכני האתר, ומייצר שאלת טריוויה גריאטרית, טיפ בטיחות שבועי ותקציר מאמר מחקרי עדכני.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="btn-agent-monthly-scan" class="btn" onclick="triggerAgentMonthlyScan(true)" style="background: var(--primary-color); display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-weight: 600;">
+                        <span>🔄 הפעל סריקת סוכן והפק תכנים חדשים</span>
+                    </button>
+                </div>
+            </div>
+
+            <div id="agent-scan-banner" class="card" style="display: none; margin-bottom: 20px; border: 2px dashed var(--primary-color); background: var(--bg-color);"></div>
+
+            <!-- סטטוס סוכן הסריקה האוטומטי -->
+            <div class="card" style="margin-bottom: 20px; border-right: 4px solid var(--primary-color); background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <span style="background: #dcfce7; color: #166534; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px; border: 1px solid #86efac;">● סוכן פעיל (סריקה חודשית ושבועית אוטומטית)</span>
+                            <span style="background: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 99px;">נושא החודש: ${selectedData.monthTopic}</span>
+                        </div>
+                        <h3 style="color: var(--primary-color); margin: 0; font-size: 18px;">📅 עדכון אחרון: ${state.lastScanDisplayDate || todayDisplay}</h3>
+                        <p style="font-size: 13px; color: var(--text-secondary); margin: 4px 0 0 0;">
+                            🔗 מבוסס על תכני הפורטל: <strong>${selectedData.sourceSiteContent}</strong> | סריקה חודשית הבאה: ${nextMonthDate}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div id="tip-container">
-                <div class="card" style="margin-bottom: 20px; border-left: 4px solid var(--primary-color);">
-                    <h3 style="color: var(--primary-color);">📅 עדכון אחרון: ${dateStr}</h3>
-                </div>
+                <!-- 1. נהלי משרד הבריאות -->
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #10b981;">
-                    <h3>📋 נהלי משרד הבריאות</h3>
-                    <p style="white-space: pre-wrap;">${selectedData.protocols}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                        <h3 style="margin: 0;">📋 נהלי משרד הבריאות (סריקה חודשית)</h3>
+                        <span style="font-size: 12px; background: #ecfdf5; color: #047857; padding: 4px 10px; border-radius: 6px; font-weight: 600;">${selectedData.mohRef}</span>
+                    </div>
+                    <p style="white-space: pre-wrap; line-height: 1.7; font-size: 15.5px; margin: 0;">${selectedData.protocols}</p>
                 </div>
+
+                <!-- 2. שאלת טריוויה אינטראקטיבית -->
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #f59e0b;">
-                    <h3>🎯 שאלת טריוויה</h3>
-                    <p style="white-space: pre-wrap;">${selectedData.trivia}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                        <h3 style="margin: 0;">🎯 שאלת טריוויה (מבוססת תכני האתר וספרות גריאטרית)</h3>
+                        <span style="font-size: 12px; background: #fffbeb; color: #b45309; padding: 4px 10px; border-radius: 6px; font-weight: 600;">בחן את עצמך</span>
+                    </div>
+                    <p style="font-weight: 700; font-size: 16px; margin-bottom: 14px; line-height: 1.6; color: var(--text-primary);">${selectedData.triviaQuestion}</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                        ${selectedData.triviaOptions.map((opt, idx) => `
+                            <button class="trivia-option-btn" onclick="checkAnswerTrivia(${idx}, ${selectedData.triviaCorrectIndex})" style="text-align: right; padding: 12px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-family: inherit; font-size: 14.5px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px;">
+                                <span style="font-weight: 700; color: var(--primary-color); min-width: 22px;">${idx + 1}.</span>
+                                <span>${opt}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="trivia-feedback-box" style="display: none; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 14px 16px; margin-top: 12px;">
+                        <div id="trivia-feedback-title" style="font-weight: 700; font-size: 15px; margin-bottom: 6px;"></div>
+                        <p style="margin: 0; font-size: 14.5px; line-height: 1.6; color: #1e293b;">${selectedData.triviaExplanation}</p>
+                    </div>
+
+                    <details style="margin-top: 10px; font-size: 14px; color: var(--text-secondary); cursor: pointer;">
+                        <summary style="font-weight: 600; color: #d97706;">הצג תשובה מלאה והסבר ישירות</summary>
+                        <div style="margin-top: 8px; padding: 10px; background: var(--bg-color); border-radius: 8px; color: var(--text-primary); line-height: 1.6;">
+                            <strong>תשובה נכונה:</strong> ${selectedData.triviaOptions[selectedData.triviaCorrectIndex]}<br>
+                            <strong>הסבר קליני:</strong> ${selectedData.triviaExplanation}
+                        </div>
+                    </details>
                 </div>
+
+                <!-- 3. טיפ שבועי (בטיחות הטיפול) -->
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #3b82f6;">
-                    <h3>💡 טיפ שבועי (בטיחות הטיפול)</h3>
-                    <p style="white-space: pre-wrap;">${selectedData.tip}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                        <h3 style="margin: 0;">💡 טיפ שבועי (בטיחות הטיפול בגיל השלישי)</h3>
+                        <span style="font-size: 12px; background: #eff6ff; color: #1d4ed8; padding: 4px 10px; border-radius: 6px; font-weight: 600;">דגש קליני לצוות</span>
+                    </div>
+                    <p style="white-space: pre-wrap; line-height: 1.7; font-size: 15.5px; margin: 0;">${selectedData.tip}</p>
                 </div>
+
+                <!-- 4. מאמר מחקרי חדש -->
                 <div class="card" style="margin-bottom: 20px; border-right: 4px solid #8b5cf6;">
-                    <h3>📚 מאמר מחקרי חדש</h3>
-                    <p style="white-space: pre-wrap;">${selectedData.research}</p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                        <h3 style="margin: 0;">📚 מאמר מחקרי חדש (ספרות גריאטרית עדכנית)</h3>
+                        <span style="font-size: 12px; background: #f5f3ff; color: #6d28d9; padding: 4px 10px; border-radius: 6px; font-weight: 600;">Evidence-Based Nursing</span>
+                    </div>
+                    <p style="white-space: pre-wrap; line-height: 1.7; font-size: 15.5px; margin: 0 0 14px 0;">${selectedData.research}</p>
+                    ${selectedData.researchUrl ? `
+                    <div style="padding-top: 12px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <span style="font-size: 13.5px; color: var(--text-secondary); font-weight: 600;">📄 ${selectedData.researchTitle || 'קישור למאמר המלא'}</span>
+                        <a href="${selectedData.researchUrl}" target="_blank" rel="noopener noreferrer" class="btn" style="background: #8b5cf6; color: white; padding: 8px 16px; font-size: 13.5px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;">
+                            <span>לקריאת המאמר המלא (PubMed)</span>
+                            <span>↗</span>
+                        </a>
+                    </div>
+                    ` : ''}
                 </div>
             </div>
         </div>
@@ -840,8 +1307,8 @@ function renderProcedures() {
                     let userReadRecord = p.readBy.find(r => r.name === currentUser.name);
                     let hasReadRecently = userReadRecord && userReadRecord.date > oneYearAgo;
                     
-                    let linkHtml = p.link.startsWith('http') ? 
-                        '<a href="' + p.link + '" target="_blank" style="color: var(--primary-color); display: inline-block; margin-bottom: 15px;">צפה במסמך / בנוהל המלא ↗</a>' : 
+                    let linkHtml = (p.link.startsWith('http') || p.link.endsWith('.html')) ? 
+                        '<a href="' + p.link + '" target="_blank" style="color: var(--primary-color); font-weight: bold; display: inline-block; margin-bottom: 15px;">צפה במסמך / בנוהל המלא ↗</a>' : 
                         '<p style="margin-bottom: 15px;">' + p.link + '</p>';
 
                     let readHtml = hasReadRecently ? 
@@ -1371,6 +1838,15 @@ function renderIntro() {
             <div class="card" style="border-right: 4px solid var(--primary-color); padding: 30px;">
                 <h2 style="margin-bottom: 20px;">הדרכת מבוא: משמעות הפורטל הארגוני</h2>
                 <h3 style="margin-bottom: 20px; color: var(--primary-color);">חשיבות האתר לארגונים במערכת הבריאות הגריאטרית</h3>
+
+                <!-- סרטון מבוא והדרכה -->
+                <div style="margin-bottom: 25px; background: #0f172a; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.12); border: 1px solid var(--border-color);">
+                    <video controls preload="metadata" style="width: 100%; max-height: 480px; display: block; margin: 0 auto; background: #000;">
+                        <source src="intro_video.mp4" type="video/mp4">
+                        הדפדפן שלך אינו תומך בניגון וידאו.
+                    </video>
+                </div>
+
                 <p style="margin-bottom: 15px; line-height: 1.8; font-size: 16px;">
                     ניהול סיכונים ובקרת איכות הם נדבכים מרכזיים בטיפול באוכלוסייה הגריאטרית. אוכלוסייה זו מאופיינת ברגישות גבוהה, ריבוי מחלות רקע (מולטי-מורבידיות), ופגיעות יתר לזיהומים ולטעויות בטיפול התרופתי.
                     <br><br>
@@ -1422,22 +1898,223 @@ function submitIntroFeedback(e) {
     navigate('intro');
 }
 
-function renderProtocols() {
-    let html = `
-        <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">טפסים ופרוטוקולים טיפוליים</h2>
-            <div class="forms-list">
-                ${protocolsDb.map(p => `
-                    <div class="card" style="margin-bottom: 15px;">
-                        <h3 style="margin-bottom: 10px;">${p.title}</h3>
-                        ${p.link.startsWith('http') || p.link.match(/\.(html|png|jpg|jpeg|mp4)$/i) ? `<a href="${p.link}" target="_blank" style="color: var(--primary-color);">צפה במסמך / תמונה / סרטון ↗</a>` : `<p>${p.link}</p>`}
-                    </div>
-                `).join('')}
-                ${protocolsDb.length === 0 ? '<p>לא הוגדרו פרוטוקולים במערכת.</p>' : ''}
+let currentProtocolCategory = 'all';
+
+function setProtocolFilter(category) {
+    currentProtocolCategory = category;
+    const contentArea = document.getElementById('content-area');
+    if (contentArea) contentArea.innerHTML = renderProtocols();
+}
+
+function filterProtocolsSearch() {
+    const q = (document.getElementById('protocol-search')?.value || '').toLowerCase().trim();
+    document.querySelectorAll('.protocol-card-item').forEach(el => {
+        const text = el.innerText.toLowerCase();
+        if (!q || text.includes(q)) {
+            el.style.display = 'flex';
+        } else {
+            el.style.display = 'none';
+        }
+    });
+}
+
+function openProtocolModal(imgSrc, title) {
+    let modal = document.getElementById('protocol-image-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'protocol-image-modal';
+        modal.style.cssText = `
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px);
+            z-index: 99999; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px;
+            animation: fadeIn 0.25s ease-out;
+        `;
+        document.body.appendChild(modal);
+    }
+    
+    modal.innerHTML = `
+        <div style="background: var(--surface-color); color: var(--text-primary); border-radius: 16px; max-width: 1100px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border-color);">
+            <div style="padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); background: var(--bg-color);">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 24px;">🖼️</span>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 700;">${title}</h3>
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a href="${imgSrc}" target="_blank" class="btn" style="padding: 6px 14px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;" title="פתח בחלון חדש / הדפסה">
+                        <span>פתח בחלון נפרד ↗</span>
+                    </a>
+                    <button class="btn" style="background: var(--primary-color); padding: 6px 14px; font-size: 13px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="closeProtocolModal()" title="חזרה למסך הקודם">⬅ חזרה למסך הקודם</button>
+                    <button class="btn" style="background: var(--danger); padding: 6px 12px; font-size: 16px; border-radius: 8px;" onclick="closeProtocolModal()" title="סגור">✕</button>
+                </div>
+            </div>
+            <div style="flex: 1; overflow: auto; padding: 15px; display: flex; justify-content: center; align-items: center; background: #0b1120;">
+                <img src="${imgSrc}" alt="${title}" style="max-width: 100%; max-height: 80vh; object-fit: contain; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); cursor: zoom-in;" onclick="this.style.maxHeight = this.style.maxHeight === 'none' ? '80vh' : 'none'; this.style.cursor = this.style.maxHeight === 'none' ? 'zoom-out' : 'zoom-in';" title="לחץ להגדלה/הקטנה">
+            </div>
+            <div style="padding: 10px 20px; font-size: 12px; color: var(--text-secondary); text-align: center; border-top: 1px solid var(--border-color); background: var(--bg-color);">
+                💡 טיפ: ניתן ללחוץ על התמונה להגדלה מלאה, או על כפתור "פתח בחלון נפרד" להדפסה ותלייה במחלקה.
             </div>
         </div>
     `;
-    return html;
+    modal.style.display = 'flex';
+    modal.onclick = (e) => {
+        if (e.target === modal) closeProtocolModal();
+    };
+    
+    document.addEventListener('keydown', handleProtocolModalEsc);
+}
+
+function closeProtocolModal() {
+    const modal = document.getElementById('protocol-image-modal');
+    if (modal) { const vid = modal.querySelector('video'); if (vid) vid.pause(); modal.style.display = 'none'; }
+    document.removeEventListener('keydown', handleProtocolModalEsc);
+}
+
+function handleProtocolModalEsc(e) { if (e.key === 'Escape') closeProtocolModal(); }
+function openProtocolVideoModal(videoSrc, title) {
+    let modal = document.getElementById('protocol-image-modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'protocol-image-modal';
+        modal.style.cssText = 'position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.25s ease-out;';
+        document.body.appendChild(modal);
+    }
+    modal.innerHTML = `<div style="background: var(--surface-color); color: var(--text-primary); border-radius: 16px; max-width: 1000px; width: 95%; max-height: 92vh; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid var(--border-color);"><div style="padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); background: var(--bg-color);"><div style="display: flex; align-items: center; gap: 10px;"><span style="font-size: 24px;">🎥</span><h3 style="margin: 0; font-size: 18px; font-weight: 700;">${title}</h3></div><div style="display: flex; gap: 10px; align-items: center;"><button class="btn" style="background: var(--primary-color); padding: 6px 14px; font-size: 13px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;" onclick="closeProtocolModal()">⬅ חזרה למסך הקודם</button><button class="btn" style="background: var(--danger); padding: 6px 12px; font-size: 16px; border-radius: 8px;" onclick="closeProtocolModal()" title="סגור">✕</button></div></div><div style="flex: 1; overflow: auto; padding: 15px; display: flex; justify-content: center; align-items: center; background: #000;"><video src="${videoSrc}" controls autoplay style="max-width: 100%; max-height: 75vh; border-radius: 8px;"></video></div></div>`;
+    modal.style.display = 'flex';
+    modal.onclick = (e) => { if (e.target === modal) closeProtocolModal(); };
+    document.addEventListener('keydown', handleProtocolModalEsc);
+}
+function handleProtocolModalEscUnused(e) {
+    if (e.key === 'Escape') closeProtocolModal();
+}
+
+function renderProtocols() {
+    protocolsDb.forEach(p => {
+        if (p.link === 'pharmacological_risk.html' || (p.title && p.title.includes('ניהול סיכונים פרמקולוגיים'))) {
+            p.title = 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח';
+            p.link = 'clinical_monitoring_guide.html';
+            p.category = 'medication';
+            p.desc = 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.';
+        }
+    });
+    if (!protocolsDb.find(p => p.link === 'frailty_simulation.html')) {
+        protocolsDb.push({
+            id: Date.now() + 10,
+            title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)',
+            link: 'frailty_simulation.html',
+            category: 'clinical',
+            desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.'
+        });
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
+    }
+    const filter = currentProtocolCategory || 'all';
+    const filteredList = protocolsDb.filter(p => {
+        if (filter === 'all') return true;
+        if (filter === 'medication') return p.category === 'medication' || (p.title && (p.title.includes('תרופות') || p.title.includes('פרמקולוגיים')));
+        if (filter === 'aspiration') return p.category === 'aspiration' || (p.title && p.title.includes('אספירציה'));
+        if (filter === 'clinical') return p.category === 'clinical' || (p.title && (p.title.includes('שבריריות') || p.title.includes('עצירות')));
+        if (filter === 'infographic') return p.type === 'infographic' || p.link.match(/\.(png|jpg|jpeg|webp)$/i);
+        return true;
+    });
+
+    return `
+        <div class="fade-in">
+            <div style="margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h2 style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                            <span>📑</span> טפסים ופרוטוקולים טיפוליים
+                        </h2>
+                        <p style="color: var(--text-secondary); font-size: 15px; margin: 0;">
+                            מאגר פרוטוקולים קליניים, כרזות ואינפוגרפיקות מקצועיות להטמעה, הדרכה ובקרה במחלקה.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Search and Categories -->
+                <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-items: center;">
+                    <div style="flex: 1; min-width: 250px;">
+                        <input type="text" id="protocol-search" placeholder="🔍 חיפוש פרוטוקול, נושא או אינפוגרפיקה..." oninput="filterProtocolsSearch()" style="width: 100%; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-primary); font-size: 14px;">
+                    </div>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'all' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'all' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('all')">הכל (${protocolsDb.length})</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'medication' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'medication' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('medication')">💊 בטיחות תרופתית</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'infographic' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'infographic' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('infographic')">🖼️ אינפוגרפיקות וכרזות</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'aspiration' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'aspiration' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('aspiration')">🫁 מניעת אספירציה</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'clinical' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'clinical' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('clinical')">📋 שבריריות ועצירות</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="forms-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                ${filteredList.map(p => {
+                    const isImg = p.link.match(/\.(png|jpg|jpeg|webp)$/i) || p.type === 'infographic';
+                    const isVid = p.link.match(/\.(mp4|webm)$/i) || p.type === 'video';
+                    const isHtml = p.link.match(/\.html$/i);
+                    const safeTitle = (p.title || '').replace(/'/g, "\\'");
+                    
+                    let badgeBg = '#3b82f6';
+                    let badgeText = 'פרוטוקול';
+                    let icon = '📄';
+                    
+                    if (isImg) {
+                        badgeBg = '#8b5cf6';
+                        badgeText = 'אינפוגרפיקה קלינית';
+                        icon = '🖼️';
+                    } else if (isVid) {
+                        badgeBg = '#ef4444';
+                        badgeText = 'סרטון הדרכה';
+                        icon = '🎥';
+                    } else if (p.category === 'medication') {
+                        badgeBg = '#0284c7';
+                        badgeText = 'בטיחות תרופתית';
+                        icon = '💊';
+                    }
+
+                    return `
+                        <div class="card protocol-card-item" style="display: flex; flex-direction: column; justify-content: space-between; border-radius: 12px; padding: 20px; transition: transform 0.2s, box-shadow 0.2s; position: relative;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; gap: 8px;">
+                                    <span style="background: ${badgeBg}18; color: ${badgeBg}; font-weight: 700; font-size: 12px; padding: 4px 10px; border-radius: 20px; border: 1px solid ${badgeBg}40; display: inline-flex; align-items: center; gap: 4px;">
+                                        ${icon} ${badgeText}
+                                    </span>
+                                </div>
+
+                                ${isImg ? `
+                                    <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 14px; background: #0f172a; cursor: pointer; border: 1px solid var(--border-color);" onclick="openProtocolModal('${p.link}', '${safeTitle}')">
+                                        <img src="${p.link}" alt="${p.title}" style="width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0.95; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 10px;">
+                                            <span style="color: white; font-size: 12px; background: rgba(0,0,0,0.5); padding: 3px 8px; border-radius: 6px; backdrop-filter: blur(4px);">🔍 לחץ להגדלה</span>
+                                        </div>
+                                    </div>
+                                ` : ''}
+
+                                <h3 style="margin-bottom: 8px; font-size: 17px; line-height: 1.4; color: var(--text-primary); font-weight: 700;">${p.title}</h3>
+                                ${p.desc ? `<p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5; margin-bottom: 16px;">${p.desc}</p>` : '<div style="margin-bottom: 16px;"></div>'}
+                            </div>
+
+                            <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-color);">
+                                ${isImg ? `
+                                    <button class="btn" style="flex: 1; padding: 9px 12px; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;" onclick="openProtocolModal('${p.link}', '${safeTitle}')">
+                                        <span>🔍 תצוגה מוגדלת</span>
+                                    </button>
+                                    <a href="${p.link}" target="_blank" class="btn" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 9px 12px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="פתיחה בחלון נפרד / הדפסה">
+                                        <span>↗ פתח</span>
+                                    </a>
+                                ` : `
+                                    <a href="${isVid ? 'javascript:void(0)' : p.link}" ${isVid ? `onclick="openProtocolVideoModal('${p.link}', '${safeTitle}')"` : ''} class="btn" style="width: 100%; padding: 9px 12px; font-size: 13px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
+                                        <span>${isVid ? '▶ צפה בסרטון' : (isHtml ? '🩺 כניסה לפרוטוקול' : 'צפה במסמך')}</span>
+                                        <span>↗</span>
+                                    </a>
+                                `}
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+                ${filteredList.length === 0 ? '<div class="card" style="grid-column: 1/-1; text-align: center; padding: 40px;"><p style="color: var(--text-secondary); margin: 0;">לא נמצאו פרוטוקולים התואמים את החיפוש או הסינון שנבחר.</p></div>' : ''}
+            </div>
+        </div>
+    `;
 }
 
 function filterProcedures() {
@@ -1548,7 +2225,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(typeof loadForms === 'function') {
         loadForms().then(() => {
-            if(typeof navigate === 'function') navigate('dashboard');
+            const initialView = window.location.hash ? window.location.hash.replace('#', '') : 'dashboard';
+            if(typeof navigate === 'function') navigate(['protocols', 'trainings', 'procedures', 'forms', 'tip', 'intro', 'agent', 'settings'].includes(initialView) ? initialView : 'dashboard');
         });
     } else {
         if(typeof navigate === 'function') navigate('dashboard');
