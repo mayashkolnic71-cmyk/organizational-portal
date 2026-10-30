@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>זיהוי ואבחנת דליריום בקבלה רפואית ובאשפוז גריאטרי</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --danger: #dc2626;
+            --danger-bg: #fef2f2;
+            --warning: #d97706;
+            --warning-bg: #fffbeb;
+            --success: #16a34a;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Heebo', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); line-height: 1.5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+        
+        .header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 24px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-title h1 { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+        .header-title p { font-size: 13px; opacity: 0.92; }
+        .header-actions { display: flex; gap: 10px; }
+        .btn { padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: none; transition: all 0.2s; }
+        .btn-white { background: white; color: var(--primary-dark); }
+        .btn-white:hover { background: #f0fdf4; }
+        .btn-back { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .btn-back:hover { background: rgba(255,255,255,0.3); }
+
+        .creator-stamp-bar { background: #eff6ff; border-bottom: 2px solid #bfdbfe; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: #1e3a8a; font-weight: 600; flex-wrap: wrap; gap: 10px; }
+        .stamp-badge { background: #2563eb; color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+
+        .content { padding: 26px 30px; }
+        
+        .grid-2col { display: grid; grid-template-columns: 1fr 1.35fr; gap: 24px; margin-bottom: 28px; }
+        
+        /* Flowchart styling */
+        .flowchart-box { background: #ffffff; border: 1px solid var(--border); border-radius: 14px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+        .flow-step { background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 10px; padding: 12px 16px; text-align: center; margin-bottom: 12px; position: relative; font-weight: 700; font-size: 13.5px; color: #1e293b; }
+        .flow-step.entry { background: #eff6ff; border-color: #93c5fd; color: #1e40af; border-radius: 25px; }
+        .flow-step.decision { background: #fff; border-color: #3b82f6; border-width: 2px; }
+        .flow-step.alert { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        .flow-arrow { text-align: center; color: #3b82f6; font-size: 18px; font-weight: 900; margin-top: -6px; margin-bottom: 6px; }
+        .flow-cond { display: inline-block; background: #dbeafe; color: #1e40af; font-size: 11px; padding: 1px 7px; border-radius: 10px; margin-bottom: 6px; font-weight: bold; }
+
+        /* Left Side Cards */
+        .card-red-flags { background: #fff5f5; border: 1.5px solid #fecaca; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .card-mnemonic { background: #f0fdf4; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .card-tips { background: #fefce8; border: 1.5px solid #fef08a; border-radius: 12px; padding: 16px; }
+
+        .list-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px; font-size: 13px; color: #334155; }
+        .list-item:last-child { margin-bottom: 0; }
+        .bullet-red { color: #dc2626; font-weight: 900; }
+        .bullet-green { color: #16a34a; font-weight: 900; }
+
+        /* Differential 3 D's Table */
+        .table-responsive { overflow-x: auto; margin-top: 15px; border-radius: 10px; border: 1px solid var(--border); }
+        .diff-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; background: white; }
+        .diff-table th { background: #f1f5f9; padding: 10px 12px; font-weight: 800; border-bottom: 2px solid var(--border); }
+        .diff-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+        .diff-table tr:hover { background: #f8fafc; }
+
+        /* Risk Factors Balancer */
+        .balancer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 15px; }
+        .balancer-box { padding: 16px; border-radius: 12px; border: 1px solid var(--border); }
+        .balancer-box.predisposing { background: #f8fafc; border-right: 5px solid #3b82f6; }
+        .balancer-box.precipitating { background: #fffbeb; border-right: 5px solid #f59e0b; }
+
+        .footer-stamp { margin-top: 35px; padding: 18px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 12px; color: var(--text-muted); }
+
+        @media (max-width: 850px) {
+            .grid-2col { grid-template-columns: 1fr; }
+            .balancer-grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            body { padding: 0; background: white; }
+            .container { border: none; box-shadow: none; max-width: 100%; }
+            .header-actions, .btn-back { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; margin-bottom: 2px;">
+                פורטל לניהול איכות ובטיחות ארגונית | מערך הסיעוד והרפואה
+            </div>
+            <h1>זיהוי ואבחנת דליריום בקבלה רפואית ובאשפוז גריאטרי</h1>
+            <p>תרשים זרימה מעשי, אלגוריתם CAM, סימנים אדומים, אבחנה מבדלת ומניעה מצילת חיים</p>
+        </div>
+        <div class="header-actions">
+            <button onclick="window.print()" class="btn btn-white">🖨️ הדפס תרשים A4</button>
+            <a href="index.html#protocols" class="btn btn-back">➜ חזרה לפורטל</a>
+        </div>
+    </div>
+
+    <!-- Official Creator Stamp -->
+    <div class="creator-stamp-bar">
+        <div>
+            ✍️ <strong>נוצר על ידי:</strong> מאיה שקולניק גזית | R.N, BA, M.H.A, Policy Management Specialist
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span class="stamp-badge">כלי קליני מבוסס CAM & חוזרי משרד הבריאות</span>
+            <span style="font-size: 11px; color: #64748b;">עדכון מהדורה 2026</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Main Flowchart & Clinical Admission Assessment -->
+        <div class="grid-2col">
+            
+            <!-- RIGHT: ALGORITHMIC FLOWCHART (From Admission to Action) -->
+            <div class="flowchart-box">
+                <h3 style="font-size: 16px; font-weight: 800; color: #1e3a8a; margin-bottom: 14px; text-align: center;">
+                    ⚡ תרשים זרימה אלגוריתמי אבחוני בקבלה
+                </h3>
+
+                <div class="flow-step entry">
+                    👤 מטופל מתקבל למחלקה (או שינוי במחלקה)
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-step decision">
+                    האם יש <strong>שינוי חריף</strong> במצב ההכרתי או ההתנהגותי?<br>
+                    <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(דיווח משפחה, מוסד מעביר, תיעוד התרשמות ראשונית של הצוות)</span>
+                </div>
+
+                <div style="text-align: center;"><span class="flow-cond">אם כן</span></div>
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-step decision">
+                    <strong>בדיקת קשב וריכוז (Inattention):</strong><br>
+                    <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">ספירת חודשי השנה לאחור (דצמבר, נובמבר...), ספרות לאחור, איות מילים</span>
+                </div>
+
+                <div style="text-align: center;"><span class="flow-cond">אם יש פגיעה בקשב</span></div>
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-step decision">
+                    האם המצב <strong>תנודתי (Fluctuating)</strong> במהלך היממה?<br>
+                    <span style="font-size: 11px; color: var(--text-muted); font-weight: normal;">(צלול בבוקר, מחמיר משמעותית בשעות הערב והלילה - Sundowning)</span>
+                </div>
+
+                <div style="text-align: center;"><span class="flow-cond">אם כן</span></div>
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-step" style="background:#fef3c7; border-color:#f59e0b;">
+                    <strong>הערכת חשיבה ותודעה (שלב 3 או שלב 4):</strong>
+                    <ul style="text-align: right; margin-top: 6px; padding-right: 20px; font-size: 12px; font-weight: 500;">
+                        <li><strong>חשיבה לא מאורגנת:</strong> דיבור לא לעניין, מבולבל, אסוציאציות רופפות</li>
+                        <li><strong>שינוי ברמת ההכרה:</strong> ישנוניות חריגה, סדציה, או עוררות יתר קיצונית ואי-שקט</li>
+                    </ul>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-step alert" style="font-size: 15px;">
+                    🚨 <strong>חשד גבוה לדליריום! (נוסחת CAM חיובית)</strong><br>
+                    <span style="font-size: 11.5px; font-weight: normal;">התחלה חריפה + פגיעה בקשב + (חשיבה לא מאורגנת ו/או שינוי בהכרה)</span>
+                </div>
+
+                <div style="background: #1e293b; color: white; border-radius: 10px; padding: 14px; margin-top: 14px;">
+                    <div style="font-weight: 800; font-size: 13.5px; margin-bottom: 8px; color: #93c5fd;">
+                        📋 4 פעולות מיידיות מצילות חיים:
+                    </div>
+                    <ol style="margin-right: 20px; font-size: 12.5px; line-height: 1.6;">
+                        <li><strong>דיווח דחוף לרופא המחלקה:</strong> דליריום הינו מצב חירום רפואי!</li>
+                        <li><strong>ביצוע אומדן CAM מלא ותיעוד ברשומה.</strong></li>
+                        <li><strong>חיפוש גורם הפיך (Mnemonic: DELIRIUM)</strong>: בדיקת סוכר, חום, סטורציה, בדיקת שתן לצמיחה, שלילת עצירות, התייבשות וסקירת תרופות.</li>
+                        <li><strong>התחלת תוכנית מניעה והתערבות (HELP):</strong> החזרת משקפיים ומכשירי שמיעה, שתייה מרובה, נוכחות בני משפחה והימנעות מקשירות.</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- LEFT: RED FLAGS, MNEMONIC & GOLD TIPS -->
+            <div>
+                <!-- Red Flags -->
+                <div class="card-red-flags">
+                    <h4 style="font-size: 14.5px; font-weight: 800; color: #991b1b; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                        <span>🚩</span> סימנים אדומים בקבלת מטופל
+                    </h4>
+                    <div class="list-item"><span class="bullet-red">•</span> <strong>בלבול חדש:</strong> שינוי פתאומי ממצב הבסיס המוכר.</div>
+                    <div class="list-item"><span class="bullet-red">•</span> <strong>אי-שקט מוטורי או אפאתיה קיצונית:</strong> נטייה להסרת צנתרים ועירויים.</div>
+                    <div class="list-item"><span class="bullet-red">•</span> <strong>ישנוניות חריגה:</strong> קושי משמעותי להעיר את המטופל לארוחות (דליריום שקט).</div>
+                    <div class="list-item"><span class="bullet-red">•</span> <strong>הזיות (Hallucinations):</strong> ראיית דמויות, שמיעת קולות או פחד קיצוני.</div>
+                    <div class="list-item"><span class="bullet-red">•</span> <strong>החמרה בשעות הערב והשקיעה ("סאנדאונינג"):</strong> בלבול המחמיר בחשיכה.</div>
+                </div>
+
+                <!-- DELIRIUM Mnemonic -->
+                <div class="card-mnemonic">
+                    <h4 style="font-size: 14.5px; font-weight: 800; color: #166534; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                        <span>🔍</span> גורמים שכיחים לחיפוש (MNEMONIC: DELIRIUM)
+                    </h4>
+                    <div style="font-size: 12.5px; line-height: 1.7;">
+                        <div><strong>D - Drugs:</strong> תרופות חדשות (בנזודיאזפינים, אופיואידים, אנטי-כולינרגיות).</div>
+                        <div><strong>E - Electrolytes:</strong> הפרעות אלקטרוליטים (נתרן, סידן), התייבשות, היפוגליקמיה.</div>
+                        <div><strong>L - Lack of drugs:</strong> תסמונת גמילה (אלכוהול, תרופות שינה, מעכבי כאב).</div>
+                        <div><strong>I - Infection:</strong> דלקת בדרכי השתן (UTI), דלקת ריאות (Pneumonia), ספסיס.</div>
+                        <div><strong>R - Reduced sensory input:</strong> ליקויי ראייה ושמיעה (חוסר משקפיים / מכשיר שמיעה).</div>
+                        <div><strong>I - Intracranial:</strong> אירוע מוחי חדש (CVA), דימום סובדורלי לאחר נפילה, חבלת ראש.</div>
+                        <div><strong>U - Urinary / fecal retention:</strong> עצירת שתן חריפה (אצירת שתן), אימפקציה של צואה (Fecaloma).</div>
+                        <div><strong>M - Myocardial / metabolic:</strong> אוטם שקט, אי-ספיקת לב, היפוקסיה, הפרעה כבדית/כלייתית.</div>
+                    </div>
+                </div>
+
+                <!-- Golden Tips -->
+                <div class="card-tips">
+                    <h4 style="font-size: 14px; font-weight: 800; color: #854d0e; margin-bottom: 8px;">
+                        💡 טיפ זהב לצוות המטפל
+                    </h4>
+                    <ul style="padding-right: 18px; font-size: 12.5px; color: #713f12; line-height: 1.6;">
+                        <li><strong>כל בלבול חריף הינו דליריום</strong> עד שלא הוכח אחרת!</li>
+                        <li><strong>דמנציה</strong> הינה כרונית ומתקדמת לאט; <strong>דליריום</strong> הינו חריף, תנודתי והפיך ברובו.</li>
+                        <li><strong>קשב הוא המפתח:</strong> אם המטופל אינו מסוגל להתמקד בשיחה או למנות חודשים לאחור - החשד לדליריום כמעט ודאי.</li>
+                        <li><strong>היזהרו מדליריום היפואקטיבי (שקט):</strong> המטופל אינו צועק או משתולל, אלא שוכב שקט וישנוני - זהו הסוג המסוכן ביותר עם שיעור תמותה גבוה!</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DIFFERENTIAL DIAGNOSIS: 3 D's -->
+        <div style="margin-top: 30px;">
+            <h3 style="font-size: 16px; font-weight: 800; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span>⚖️</span> אבחנה מבדלת בגיל השלישי: שלושת ה-D's
+            </h3>
+            <div class="table-responsive">
+                <table class="diff-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">מאפיין</th>
+                            <th style="width: 26%; background: #fee2e2; color: #991b1b;">דליריום (חירום רפואי)</th>
+                            <th style="width: 27%; background: #e0f2fe; color: #075985;">דמנציה (מצב כרוני)</th>
+                            <th style="width: 27%; background: #fef9c3; color: #854d0e;">דיכאון (הפרעת מצב רוח)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>הופעה וקצב</strong></td>
+                            <td style="font-weight: 700; color: #b91c1c;">פתאומית וחריפה (שעות עד ימים)</td>
+                            <td>הדרגתית ואיטית (חודשים עד שנים)</td>
+                            <td>הדרגתית (שבועות עד חודשים)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>מהלך ביממה</strong></td>
+                            <td style="font-weight: 700; color: #b91c1c;">תנודתי מאוד (החמרה בערב)</td>
+                            <td>יציב יחסית, הידרדרות אטית</td>
+                            <td>משתנה (לרוב קשה יותר בבוקר)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>קשב וריכוז</strong></td>
+                            <td style="font-weight: 700; color: #b91c1c;">פגוע מאוד ומפוזר (Inattention)</td>
+                            <td>תקין בשלבים מוקדמים ובינוניים</td>
+                            <td>ירידה קלה בריכוז עקב חוסר מוטיבציה</td>
+                        </tr>
+                        <tr>
+                            <td><strong>רמת הכרה</strong></td>
+                            <td style="font-weight: 700; color: #b91c1c;">משתנה (מנמנום עמוק ועד עוררות-יתר)</td>
+                            <td>תקינה לחלוטין (עד שלבים סופיים)</td>
+                            <td>תקינה וערנית</td>
+                        </tr>
+                        <tr>
+                            <td><strong>הפיכות</strong></td>
+                            <td style="font-weight: 700; color: #b91c1c;">הפיך בטיפול מוקדם בגורם!</td>
+                            <td>לרוב בלתי הפיך (פרוגרסיבי)</td>
+                            <td>הפיך בטיפול תרופתי ופסיכולוגי</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- RISK FACTORS BALANCER (Notebook Model) -->
+        <div style="margin-top: 30px;">
+            <h3 style="font-size: 16px; font-weight: 800; color: #1e293b; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span>⚖️</span> מודל מאזני הסיכון: יחסי גומלין בין פגיעות רקע לטריגרים מזרזים
+            </h3>
+            <div class="balancer-grid">
+                <div class="balancer-box predisposing">
+                    <h4 style="color: #1d4ed8; font-size: 14.5px; font-weight: 800; margin-bottom: 8px;">
+                        🏋️ גורמי רקע ופגיעות (Predisposing Factors)
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        ככל שגורמי הפגיעות רבים יותר - מספיק טריגר קל ביותר כדי להצית דליריום חריף:
+                    </p>
+                    <ul style="padding-right: 18px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+                        <li>גיל מעל 65 (ובפרט מעל 80)</li>
+                        <li>דמנציה או ירידה קוגניטיבית קיימת</li>
+                        <li>ליקויי ראייה ושמיעה משמעותיים</li>
+                        <li>תחלואה מרובה וריבוי תרופות (Polypharmacy)</li>
+                        <li>תלות תפקודית ושבריריות (Frailty)</li>
+                    </ul>
+                </div>
+
+                <div class="balancer-box precipitating">
+                    <h4 style="color: #b45309; font-size: 14.5px; font-weight: 800; margin-bottom: 8px;">
+                        ⚡ גורמים מזרזים וטריגרים (Precipitating Triggers)
+                    </h4>
+                    <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">
+                        אירועים חריפים הפועלים כמפסק המפעיל את המשבר המוחי:
+                    </p>
+                    <ul style="padding-right: 18px; font-size: 12.5px; color: #334155; line-height: 1.6;">
+                        <li>התחלת תרופה חדשה (סדטיביים, אנטי-פסיכוטיים, אופיואידים)</li>
+                        <li>זיהום אקוטי (דלקת ריאות, UTI, צלוליטיס)</li>
+                        <li>כאב חריף שאינו מטופל כיאות</li>
+                        <li>התייבשות וחוסר איזון אלקטרוליטרי</li>
+                        <li>צנתר שתן, עירוי ממושך או קשירות פיזיות</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- PREVENTION: HELP PROGRAM -->
+        <div style="margin-top: 30px; background: #f0fdf4; border: 1.5px solid #86efac; border-radius: 12px; padding: 20px;">
+            <h3 style="font-size: 16px; font-weight: 800; color: #166534; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                <span>🛡️</span> מניעה היא הטיפול הטוב ביותר: עקרונות תוכנית HELP
+            </h3>
+            <p style="font-size: 12.5px; color: #14532d; margin-bottom: 12px;">
+                התערבות מוקדמת מפחיתה עד 40% ממקרי הדליריום באשפוז גריאטרי:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; font-size: 12.5px;">
+                <div style="background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                    <strong>🚶 ניידות מוקדמת:</strong> ירידה מהמיטה לכורסה, הליכה בליווי, הפחתת ריתוק למיטה.
+                </div>
+                <div style="background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                    <strong>😴 שמירה על מחזור שינה:</strong> עמעום אורות בלילה, הימנעות מהערת המטופל למדידות לא דחופות.
+                </div>
+                <div style="background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                    <strong>🧭 אוריינטציה רציפה:</strong> שעון קיר גדול, לוח תאריכים, משקפיים ומכשירי שמיעה תקינים.
+                </div>
+                <div style="background: white; padding: 10px 14px; border-radius: 8px; border: 1px solid #bbf7d0;">
+                    <strong>💧 הידרציה ותזונה:</strong> הצעת נוזלים תכופה, התאמת מרקמים (IDDSI) ומניעת עצירות.
+                </div>
+            </div>
+        </div>
+
+        <!-- Official Stamp Footer -->
+        <div class="footer-stamp">
+            <div style="font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px;">
+                © נוצר על ידי מאיה שקולניק גזית | R.N, BA, M.H.A, Policy Management Specialist
+            </div>
+            <div>
+                פורטל לניהול איכות ובטיחות ארגונית | מערך הסיעוד והגריאטריה | מבוסס אלגוריתם CAM וסטנדרטים בינלאומיים למניעת דליריום
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

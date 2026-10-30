@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פרוטוקול טיפולי בפצעים - סל חבישות מתקדמות 2024 ומקראה דירוג פצעים</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --primary-light: #e0f2fe;
+            --success: #16a34a;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Heebo', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); line-height: 1.5; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: var(--surface); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+        
+        .header { background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 24px 30px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .header-title h1 { font-size: 22px; font-weight: 900; margin-bottom: 4px; }
+        .header-title p { font-size: 13px; opacity: 0.92; }
+        .header-actions { display: flex; gap: 10px; }
+        .btn { padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border: none; transition: all 0.2s; }
+        .btn-white { background: white; color: var(--primary-dark); }
+        .btn-white:hover { background: #f0fdf4; }
+        .btn-back { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.4); }
+        .btn-back:hover { background: rgba(255,255,255,0.3); }
+
+        .creator-stamp-bar { background: #eff6ff; border-bottom: 2px solid #bfdbfe; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: #1e3a8a; font-weight: 600; flex-wrap: wrap; gap: 10px; }
+        .stamp-badge { background: #2563eb; color: white; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+
+        .content { padding: 26px 30px; }
+        
+        .section-title { font-size: 18px; font-weight: 800; color: #1e293b; margin: 25px 0 15px 0; display: flex; align-items: center; gap: 10px; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
+        .section-title:first-of-type { margin-top: 0; }
+        
+        /* Grid Cards for Wound Stages */
+        .stage-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-bottom: 25px; }
+        .stage-card { border-radius: 12px; border: 1px solid var(--border); padding: 16px; background: #ffffff; transition: transform 0.2s, box-shadow 0.2s; position: relative; border-right-width: 6px; }
+        .stage-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .stage-1 { border-right-color: #f59e0b; }
+        .stage-2 { border-right-color: #ea580c; }
+        .stage-3 { border-right-color: #dc2626; }
+        .stage-4 { border-right-color: #7f1d1d; }
+        .stage-5 { border-right-color: #475569; }
+        .stage-6 { border-right-color: #701a75; }
+        .stage-t { border-right-color: #0284c7; }
+
+        .stage-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .stage-name { font-size: 15px; font-weight: 800; color: #0f172a; }
+        .stage-tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        .stage-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.5; margin-bottom: 8px; }
+        .stage-treatment { font-size: 12px; background: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px dashed var(--border); color: #334155; }
+
+        /* Basket Table */
+        .table-responsive { overflow-x: auto; margin-bottom: 30px; border-radius: 10px; border: 1px solid var(--border); }
+        .basket-table { width: 100%; border-collapse: collapse; font-size: 13px; text-align: right; background: white; }
+        .basket-table th { background: #f1f5f9; color: #1e293b; padding: 12px 14px; font-weight: 800; border-bottom: 2px solid var(--border); }
+        .basket-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        .basket-table tr:hover { background: #f8fafc; }
+        
+        .pill-brand { display: inline-block; background: #e0f2fe; color: #0369a1; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; margin: 2px; }
+        .pill-exudate { display: inline-block; background: #fef3c7; color: #92400e; padding: 2px 7px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+        
+        .footer-stamp { margin-top: 35px; padding: 18px; background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; text-align: center; font-size: 12px; color: var(--text-muted); }
+
+        @media print {
+            body { padding: 0; background: white; }
+            .container { border: none; box-shadow: none; max-width: 100%; }
+            .header-actions, .btn-back { display: none !important; }
+            .stage-card { break-inside: avoid; }
+            .basket-table tr { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-title">
+            <div style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85; margin-bottom: 2px;">
+                פורטל לניהול איכות ובטיחות ארגונית | מערך הסיעוד
+            </div>
+            <h1>פרוטוקול טיפולי בפצעים - סל חבישות מתקדמות 2024</h1>
+            <p>הנחיות קליניות לטיפול, התאמת חבישות ומקראה מקיפה לדירוג פצעי לחץ (דרגות 1-6 ופצע טראומטי)</p>
+        </div>
+        <div class="header-actions">
+            <button onclick="window.print()" class="btn btn-white">🖨️ הדפס פרוטוקול A4</button>
+            <a href="index.html#protocols" class="btn btn-back">➜ חזרה לפורטל</a>
+        </div>
+    </div>
+
+    <!-- Official Creator Stamp -->
+    <div class="creator-stamp-bar">
+        <div>
+            ✍️ <strong>נערך ועודכן מקצועית:</strong> נוצר על ידי מאיה שקולניק גזית | R.N, BA, M.H.A, Policy Management Specialist
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <span class="stamp-badge">חוזר מינהל הסיעוד 203/2023</span>
+            <span style="font-size: 11px; color: #64748b;">מתעדכן אחת לשנה | מהדורת 2024-2026</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- PART 1: WOUND STAGING GUIDE (1 to 6) -->
+        <div class="section-title">
+            <span>🔍</span> מקראה ודירוג פצעי לחץ (דרגות 1 עד 6 ופצע טראומטי)
+        </div>
+        <div class="stage-grid">
+            
+            <!-- Stage 1 -->
+            <div class="stage-card stage-1">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 1: אדמומיות שאינה נעלמת</span>
+                    <span class="stage-tag" style="background:#fef3c7; color:#b45309;">Non-blanchable</span>
+                </div>
+                <div class="stage-desc">
+                    עור שלם עם אדמומיות מקומית שאינה מלבינה בלחיצה, בדרך כלל מעל בליטה גרמית. חום מקומי, בצקת או שינוי במרקם הרקמה ביחס לעור סמוך.
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> שחרור לחץ מוחלט (שינוי תנוחה כל שעתיים), חבישת סיליקון/ספוג דקה להגנה (Mepilex Lite, Allevyn), משחת הגנה Cavilon, ללא עיסוי על האזור.
+                </div>
+            </div>
+
+            <!-- Stage 2 -->
+            <div class="stage-card stage-2">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 2: אובדן חלקי של הדרמיס</span>
+                    <span class="stage-tag" style="background:#ffedd5; color:#c2410c;">Partial Thickness</span>
+                </div>
+                <div class="stage-desc">
+                    אובדן חלקי של עובי העור הכולל אפידרמיס ו/או דרמיס. הפצע שטחי ומתבטא כשפשוף, שלפוחית סגורה עם נוזל סרוזי או שלפוחית פקועה. מיטת פצע ורודה-אדומה ללא Slough.
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> ניקוי ב-NaCl 0.9%, חבישת הידרוקולואיד (Hydrocoll / Granuflex) או ספוג סיליקון (Permafoam), מניעת חיכוך וגזירה.
+                </div>
+            </div>
+
+            <!-- Stage 3 -->
+            <div class="stage-card stage-3">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 3: אובדן מלא של רקמת עור</span>
+                    <span class="stage-tag" style="background:#fee2e2; color:#b91c1c;">Full Thickness Skin Loss</span>
+                </div>
+                <div class="stage-desc">
+                    אובדן עובי עור מלא; רקמת שומן תת-עורית (Subcutaneous fat) עשויה להיראות, אך עצם, גיד או שריר אינם חשופים. ייתכן Slough או תעלות תת-עוריות (Undermining).
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> הטרייה במידת הצורך (Flaminal / Dermagran), מילוי חללים באלגינט (Silvercel / Sorbalgon), חבישת ספוג משנית וקיבוע בטוח.
+                </div>
+            </div>
+
+            <!-- Stage 4 -->
+            <div class="stage-card stage-4">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 4: אובדן רקמות בעובי מלא</span>
+                    <span class="stage-tag" style="background:#fecdd3; color:#881337;">Full Thickness Tissue Loss</span>
+                </div>
+                <div class="stage-desc">
+                    אובדן רקמה בעובי מלא עם עצם, גיד או שריר חשופים וניתנים למישוש. לעיתים קרובות מלווה ב-Slough או גלד נמקי (Eschar), תעלות ומנהרות (Tunneling). סיכון גבוה לאוסטאומיאליטיס.
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> הטרייה כירורגית / שמרנית, שטיפה בלחץ Prontosan, חבישות אנטי-מיקרוביאליות יוניות (Aquacel Ag), חבישות לחץ שלילי (VAC) באישור רופא.
+                </div>
+            </div>
+
+            <!-- Stage 5: Unstageable -->
+            <div class="stage-card stage-5">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 5: בלתי ניתן לדירוג</span>
+                    <span class="stage-tag" style="background:#f1f5f9; color:#475569;">Unstageable (Slough / Eschar)</span>
+                </div>
+                <div class="stage-desc">
+                    אובדן רקמה מלא שבו עומק הפצע מכוסה במלואו על ידי רקמת Slough (צהובה, חומה, אפורה) ו/או גלד נמקי יבש ושחור (Eschar). לא ניתן לקבוע דרגה עד להסרת הרקמה הנמקית.
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> אם הגלד יבש ויציב בעקבים ללא אודם/חום - <em>אין לקלף (הגנה ביולוגית)</em>; בשאר המקומות: הטרייה אוטוליטית בהידרוג'ל (Dermagran) או Flaminal Forte.
+                </div>
+            </div>
+
+            <!-- Stage 6: Suspected DTI -->
+            <div class="stage-card stage-6">
+                <div class="stage-header">
+                    <span class="stage-name">דרגה 6: חשד לפגיעה ברקמה עמוקה</span>
+                    <span class="stage-tag" style="background:#f5d0fe; color:#701a75;">Suspected DTI</span>
+                </div>
+                <div class="stage-desc">
+                    אזור מקומי של עור שלם בגוון סגול כהה, ארגמני או שלפוחית דמית עקב נזק לרקמות רכות מתחת לעור שנגרם מלחץ וכוחות גזירה עזים. הפצע עשוי להיפתח במהירות לשכבות עמוקות.
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> פריקת לחץ מוחלטת ומיידית, שימון עדין ללא שפשוף, הגנה בחבישת סיליקון רב-שכבתית עבה, מעקב יומיומי הדוק של אחות נאמנת פצעים.
+                </div>
+            </div>
+
+            <!-- Traumatic Wound -->
+            <div class="stage-card stage-t">
+                <div class="stage-header">
+                    <span class="stage-name">פצע טראומטי / קרע עור (Skin Tear)</span>
+                    <span class="stage-tag" style="background:#e0f2fe; color:#0369a1;">Trauma & Skin Tears</span>
+                </div>
+                <div class="stage-desc">
+                    קרע עורי כתוצאה מחיכוך, נפילה או משיכה בקשישים בעלי עור שביר (Paper skin). כולל קרעים מסוג ISTAP Type 1-3 (ללא חסר רקמה, חסר חלקי, חסר מלא).
+                </div>
+                <div class="stage-treatment">
+                    <strong>טיפול מומלץ:</strong> החזרת דש העור (Skin flap) למקומו בעדינות, קיבוע באמצעות פסי דבק ביולוגי Steri-Strip (ללא תפרים), חבישת סיליקון רכה שאינה נדבקת, סימון חץ כיוון ההסרה.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- PART 2: BASKET OF ADVANCED DRESSINGS 2024 -->
+        <div class="section-title">
+            <span>🩹</span> סל חבישות מתקדמות 2024 - התאמה קלינית לפי מטרות והפרשה
+        </div>
+        <div class="table-responsive">
+            <table class="basket-table">
+                <thead>
+                    <tr>
+                        <th style="width: 17%;">קבוצת חבישות</th>
+                        <th style="width: 20%;">שמות מסחריים נפוצים</th>
+                        <th style="width: 18%;">רמת הפרשה מתאימה</th>
+                        <th style="width: 25%;">מטרות טיפוליות ויתרונות קליניים</th>
+                        <th style="width: 20%;">הנחיות ותדירות החלפה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>חבישות ספוג FOAM</strong></td>
+                        <td>
+                            <span class="pill-brand">Permafoam</span>
+                            <span class="pill-brand">Tielle</span>
+                            <span class="pill-brand">Hydrotac</span>
+                            <span class="pill-brand">Mepilex Border</span>
+                        </td>
+                        <td><span class="pill-exudate">בינונית עד גבוהה</span></td>
+                        <td>ספיגת הפרשות אנכית, הגנה על שולי הפצע מפני מסרציה (Maceration), ריפוד והפחתת לחץ על בליטות גרמיות.</td>
+                        <td>החלפה כל 3-5 ימים או כאשר ההפרשה מגיעה ל-1 ס"מ משולי החבישה.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות שאינן נדבקות (Low Adherent)</strong></td>
+                        <td>
+                            <span class="pill-brand">Vazeline Gaza</span>
+                            <span class="pill-brand">Paranet</span>
+                            <span class="pill-brand">Actilite (דבש)</span>
+                            <span class="pill-brand">Inadine (יוד)</span>
+                        </td>
+                        <td><span class="pill-exudate">מינימלית עד בינונית</span></td>
+                        <td>מניעת הידבקות החבישה המשנית למיטת הפצע, שמירה על רקמת גרעון צעירה, הפחתת כאב בטיפול, מניעת טראומה.</td>
+                        <td>החלפה כל 1-3 ימים, דורש חבישה משנית סופגת מעל.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות שקופות FILM</strong></td>
+                        <td>
+                            <span class="pill-brand">Op-site</span>
+                            <span class="pill-brand">Tegaderm</span>
+                            <span class="pill-brand">Biofilm</span>
+                        </td>
+                        <td><span class="pill-exudate">ללא הפרשה / אפסית</span></td>
+                        <td>איטום והגנה מפני חדירת חיידקים, שתן וצואה; ניטור חזותי רציף של העור; קיבוע עירויים וצנתרים.</td>
+                        <td>החלפה כל 5-7 ימים או כאשר האיטום נפגע. <em>אסור בפצעים מפרישים!</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות הידרוקולואידיות</strong></td>
+                        <td>
+                            <span class="pill-brand">Hydrocoll</span>
+                            <span class="pill-brand">Granuflex</span>
+                            <span class="pill-brand">Comfeel</span>
+                        </td>
+                        <td><span class="pill-exudate">קלה עד בינונית</span></td>
+                        <td>יצירת ג'ל לח במגע עם נוזלי הפצע, עידוד הטרייה אוטוליטית, שמירה על חום גוף מקומי וסביבה לחה אופטימלית.</td>
+                        <td>החלפה כל 3-5 ימים או כשיש בועת ג'ל גלויה. ריח אופייני בהסרה אינו מעיד על זיהום.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות אצות ים (Alginates) וג'ל אלגינט</strong></td>
+                        <td>
+                            <span class="pill-brand">Sorbalgon</span>
+                            <span class="pill-brand">Silvercel Ag</span>
+                            <span class="pill-brand">Flaminal Hydro</span>
+                            <span class="pill-brand">Flaminal Forte</span>
+                        </td>
+                        <td><span class="pill-exudate">גבוהה עד גבוהה מאוד</span></td>
+                        <td>ספיגת נפח נוזלים עצום (עד פי 20 ממשקלן), עצירת דימום קל (פעילות המוסטטית), מילוי חללים עמוקים ותעלות.</td>
+                        <td>Flaminal Hydro: להפרשה קלה-בינונית (3-4 ימים). Flaminal Forte: להפרשה בינונית-גבוהה (1-2 ימים).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות פחם פעיל (Odor Control)</strong></td>
+                        <td>
+                            <span class="pill-brand">Actisorb Plus</span>
+                            <span class="pill-brand">CarboFlex</span>
+                        </td>
+                        <td><span class="pill-exudate">כל רמות ההפרשה (עם ריח)</span></td>
+                        <td>ספיגת מולקולות ריח רע וחיידקים בפצעים מזוהמים, פצעים אונקולוגיים או פצעי לחץ נמקיים. שיפור איכות חיי המטופל.</td>
+                        <td>החלפה כל 2-3 ימים בהתאם לחבישה המשנית. <em>אין לגזור את חבישת הפחם!</em></td>
+                    </tr>
+                    <tr>
+                        <td><strong>חבישות אנטימיקרוביאליות וכסף (Antimicrobial)</strong></td>
+                        <td>
+                            <span class="pill-brand">Aquacel Ag+ Extra</span>
+                            <span class="pill-brand">Silverol Cream</span>
+                            <span class="pill-brand">K SEPT Solution</span>
+                            <span class="pill-brand">Prontosan Gel/Sol</span>
+                        </td>
+                        <td><span class="pill-exudate">מזוהמים / עומס בקטריאלי</span></td>
+                        <td>שחרור מושהה של יוני כסף פעילים (Ag+), קטילת חיידקים רחבת טווח (MRSA, Pseudomonas), פירוק ביופילם עקשן.</td>
+                        <td>שטיפה רציפה ב-Prontosan / K SEPT למשך 10 דקות; החלפת חבישות כסף כל 2-4 ימים.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>הידרוג'ל (Hydrogel) לריכוך גלד</strong></td>
+                        <td>
+                            <span class="pill-brand">Dermagran Zinc Gel</span>
+                            <span class="pill-brand">Promogran</span>
+                            <span class="pill-brand">Normlgel</span>
+                        </td>
+                        <td><span class="pill-exudate">פצע יבש / נמק שחור יבש</span></td>
+                        <td>החדרת לחות לרקמה נמקית יבשה (Eschar), ריכוך הגלד והטרייה אוטוליטית ללא גרימת כאב למטופל.</td>
+                        <td>מריחה בשכבה של 3-4 מ"מ מעל הגלד, כיסוי בפילם שקוף או ספוג. החלפה כל 1-2 ימים.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>משחות הגנה ותרסיסי חיץ (Barrier Creams)</strong></td>
+                        <td>
+                            <span class="pill-brand">Cavilon Barrier Spray</span>
+                            <span class="pill-brand">Biafine Cream</span>
+                            <span class="pill-brand">Zincod / Inotiol</span>
+                        </td>
+                        <td><span class="pill-exudate">סביב הפצע / עור פריאנלי</span></td>
+                        <td>הגנה מוחלטת מפני מסרציה (Maceration) ופגיעות לחות (IAD), יצירת שכבת פולימר נושמת החוצצת מפני שתן וצואה.</td>
+                        <td>תרסיס Cavilon כל 48-72 שעות (עמיד ברחצה); משחות אבץ/אינוטיול לאחר כל ניקוי והחלפת סופגנים.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>טכנולוגיות מתקדמות (VAC & Magnocare)</strong></td>
+                        <td>
+                            <span class="pill-brand">VAC Therapy (לחץ שלילי)</span>
+                            <span class="pill-brand">Magnocare קומפרסים</span>
+                            <span class="pill-brand">הטרייה כירורגית (חוזר 203)</span>
+                        </td>
+                        <td><span class="pill-exudate">פצעים עמוקים, בצקות קשות</span></td>
+                        <td>האצת גרעון באמצעות שאיבת נוזלים בלחץ שלילי רציף/מקטעי (80-125 mmHg), פינוי בצקות לימפתיות קשות.</td>
+                        <td>החלפת ערכת VAC כל 48-72 שעות על ידי צוות מוסמך; שימוש במגנוקר לבצקות גפיים לפי הוראת רופא.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Official Stamp Footer -->
+        <div class="footer-stamp">
+            <div style="font-size: 13px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px;">
+                © נוצר ונערך מקצועית על ידי מאיה שקולניק גזית | R.N, BA, M.H.A, Policy Management Specialist
+            </div>
+            <div>
+                פורטל לניהול איכות ובטיחות ארגונית | כל הזכויות שמורות למערך הסיעוד | מבוסס חוזר מנהל הסיעוד 203/2023 וסל הבריאות 2024
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
