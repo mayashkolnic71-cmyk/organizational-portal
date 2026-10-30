@@ -406,284 +406,43 @@ function renderNativeQuiz(quizId, lang = 'he', containerId = 'quizContainer') {
     container.innerHTML = html;
 }
 
-
-// Mapping of correct answers and educational corrective explanations for Knowledge Quizzes
-const quizAnswerKeys = {
-    'infections': {
-        'entry.q1': {
-            correct: 'הגיינת ידיים לפני ואחרי כל טיפול בחולה',
-            rationale: 'היגיינת ידיים לפני ואחרי כל מגע עם המטופל וסביבתו היא הפעולה החשובה ביותר לקטיעת שרשרת ההדבקה ומניעת זיהומים צולבים במחלקות אשפוז.'
-        },
-        'entry.q2': {
-            correct: 'כשיש לכלוך נראה לעין חובה לשטוף במים וסבון',
-            rationale: 'כאשר הידיים מזוהמות בלכלוך נראה לעין או לאחר מגע עם הפרשות, חובה לשטוף במים וסבון. חיטוי באלכוהול אינו יעיל בנוכחות לכלוך פיזי.'
-        },
-        'entry.q3': {
-            correct: 'תשובה 1 ו 2 נכונות',
-            rationale: 'כפפות אינן חלופה להיגיינת ידיים. מיד לאחר הסרתן יש לחטא בתכשיר אלכוהולי או לשטוף במים וסבון (אם יש לכלוך נראה לעין).'
-        },
-        'entry.q4': {
-            correct: '20-40 שניות',
-            rationale: 'על פי פרוטוקול WHO ומשרד הבריאות, משך חיטוי יסודי באלכוהול הוא 20-30 שניות עד לייבוש מלא, ושטיפת ידיים במים וסבון 40-60 שניות (20-40 שניות שפשוף פעיל).'
-        },
-        'entry.q5': {
-            correct: '1000ppm לליטר מים',
-            rationale: 'ריכוז הכלור השגרתי הנדרש לניקיון וחיטוי סביבתי יומי של חדר מטופל הוא 1,000 PPM (חלקים למיליון).'
-        },
-        'entry.q6': {
-            correct: 'מניעת העברת זיהומים ושבירת רצף ההדבקה בין מטופלים צוות ומבקרים',
-            rationale: 'ניקיון וחיטוי שגרתיים קוטעים את שרשרת ההדבקה ממשטחים משותפים אל המטופלים ואנשי הצוות.'
-        },
-        'entry.q7': {
-            correct: 'דרכי העברת המחולל הזיהומי',
-            rationale: 'סוג הבידוד הנדרש (מגע, טיפתי, אווירני) נקבע בראש ובראשונה על פי מנגנון העברת הפתוגן הספציפי.'
-        },
-        'entry.q8': {
-            correct: 'רופא, אחות, נאמן מחלקתי או ועדת זיהומים',
-            rationale: 'כל גורם טיפולי מוסמך, כולל אחות המחלקה ונאמן זיהומים, מוסמך להפעיל בידוד מיידי למניעת התפשטות עד להערכה כוללת.'
-        },
-        'entry.q9': {
-            correct: 'הקצאת ציוד אישי או חד-פעמי למטופל',
-            rationale: 'בחדר בידוד יש לייעד ציוד רפואי אישי (מד לחץ דם, סטטוסקופ, מדחום) או ציוד חד-פעמי שנשאר בחדר המטופל למניעת העברה צולבת.'
-        },
-        'entry.q10': {
-            correct: 'להסביר את ההשלכות ולתעד סירוב חתום',
-            rationale: 'עובד המסרב להתחסן זכאי להסבר מפורט על השלכות הסירוב, וחובה להחתימו על טופס סירוב רשמי שיתועד בתיקו האישי.'
-        }
-    },
-    'supportive_care': {
-        'entry.1264765965': {
-            correct: 'לשפר את איכות החיים של המטופל ובני משפחתו באמצעות הקלה על סבל וסימפטומים',
-            rationale: 'מטרת הטיפול התומך/פליאטיבי אינה הארכת חיים בכל מחיר אלא מניעה והקלה על סבל גופני, נפשי ורוחני ושיפור איכות החיים.'
-        },
-        'entry.1661314556': {
-            correct: 'רופא אחראי',
-            rationale: 'על פי חוק החולה הנוטה למות (2005), הקביעה הרפואית כי מטופל מוגדר כחולה נוטה למות תיעשה בסמכות רופא מומחה אחראי בלבד.'
-        },
-        'entry.2002496322': {
-            correct: 'שילוב היבטים פיזיים, נפשיים ורוחניים בטיפול',
-            rationale: 'הטיפול הפליאטיבי הוא הוליסטי ומקיף, ומעניק מענה משולב לצרכים פיזיים (כאב, קוצר נשימה), נפשיים, רגשיים ורוחניים.'
-        },
-        'entry.212725873': {
-            correct: 'לברר קיום הנחיות מקדימות ולכבד את רצון המטופל',
-            rationale: 'בעת קבלת חולה נוטה למות חובה לברר האם קיימות הנחיות רפואיות מקדימות או ייפוי כוח רפואי ולכבד את רצון המטופל.'
-        },
-        'entry.1821630031': {
-            correct: 'ייעוץ, הכוונה, הטמעה והכשרת צוותים בטיפול תומך',
-            rationale: 'מערך הטיפול התומך הארגוני אמון על ייעוץ מומחה, ליווי המחלקות, הכשרת צוותים וסיוע בקבלת החלטות מורכבות בסוף החיים.'
-        }
-    }
-};
-
-function renderQuizResults(quiz, finalScore, correctCount, totalQuestions, resultsList, userName, userDept, containerId) {
-    const container = document.getElementById(containerId || 'quizContainer');
-    if (!container) return;
-
-    const isPassed = finalScore >= 80;
-    const scoreColor = isPassed ? '#198754' : '#dc3545';
-    const scoreBg = isPassed ? 'rgba(25, 135, 84, 0.1)' : 'rgba(220, 53, 69, 0.1)';
-    const statusText = isPassed ? 'עבר/ה בהצלחה' : 'נדרש חיזוק ידע וביצוע חוזר';
-    const statusIcon = isPassed ? '🎉' : '⚠️';
-    const cleanTitle = (quiz.title[currentLanguage] || quiz.title['he'] || '').replace(/<[^>]+>/g, ' ').substring(0, 60);
-    const currentDate = new Date().toLocaleDateString('he-IL', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-
-    const deficientItems = resultsList.filter(r => !r.correct);
-
-    let html = `
-        <div class="quiz-results-container fade-in" style="direction: rtl; text-align: right; background: #ffffff; padding: 25px; border-radius: 12px; border: 1px solid var(--border-color, #dee2e6); box-shadow: 0 4px 20px rgba(0,0,0,0.06); max-width: 900px; margin: 0 auto;">
-            <!-- Header Badge -->
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e9ecef; padding-bottom: 18px; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <span style="display: inline-block; padding: 4px 12px; background: #e3f2fd; color: #0d6efd; font-weight: bold; border-radius: 20px; font-size: 13px; margin-bottom: 6px;">דוח תוצאות מבדק ידע וממצאים מסכמים לתיקון</span>
-                    <h2 style="margin: 0; font-size: 22px; color: #212529;">${cleanTitle}</h2>
-                    <div style="color: #6c757d; font-size: 14px; margin-top: 4px;">
-                        <span>👤 <strong>שם:</strong> ${userName}</span> | 
-                        <span>🏢 <strong>מחלקה:</strong> ${userDept}</span> | 
-                        <span>📅 <strong>מועד ביצוע:</strong> ${currentDate}</span>
-                    </div>
-                </div>
-                <!-- Score Circle -->
-                <div style="background: ${scoreBg}; border: 3px solid ${scoreColor}; border-radius: 16px; padding: 15px 25px; text-align: center; min-width: 130px;">
-                    <div style="font-size: 12px; font-weight: bold; color: ${scoreColor}; text-transform: uppercase;">ציון מבדק</div>
-                    <div style="font-size: 34px; font-weight: 900; color: ${scoreColor}; line-height: 1.1;">${finalScore}%</div>
-                    <div style="font-size: 13px; font-weight: bold; color: ${scoreColor}; margin-top: 4px;">${statusIcon} ${statusText}</div>
-                </div>
-            </div>
-
-            <!-- Stats Bar -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 25px;">
-                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px 16px; text-align: center;">
-                    <div style="font-size: 13px; color: #6c757d;">שאלות במבדק</div>
-                    <div style="font-size: 20px; font-weight: bold; color: #212529;">${totalQuestions}</div>
-                </div>
-                <div style="background: rgba(25, 135, 84, 0.08); border: 1px solid rgba(25, 135, 84, 0.2); border-radius: 8px; padding: 12px 16px; text-align: center;">
-                    <div style="font-size: 13px; color: #198754;">תשובות נכונות</div>
-                    <div style="font-size: 20px; font-weight: bold; color: #198754;">${correctCount} (${Math.round((correctCount/totalQuestions)*100)}%)</div>
-                </div>
-                <div style="background: ${deficientItems.length > 0 ? 'rgba(220, 53, 69, 0.08)' : '#f8f9fa'}; border: 1px solid ${deficientItems.length > 0 ? 'rgba(220, 53, 69, 0.2)' : '#e9ecef'}; border-radius: 8px; padding: 12px 16px; text-align: center;">
-                    <div style="font-size: 13px; color: ${deficientItems.length > 0 ? '#dc3545' : '#6c757d'};">ממצאי ידע לתיקון</div>
-                    <div style="font-size: 20px; font-weight: bold; color: ${deficientItems.length > 0 ? '#dc3545' : '#6c757d'};">${deficientItems.length}</div>
-                </div>
-                <div style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px 16px; text-align: center;">
-                    <div style="font-size: 13px; color: #6c757d;">סף מעבר נדרש</div>
-                    <div style="font-size: 20px; font-weight: bold; color: #495057;">80%</div>
-                </div>
-            </div>
-
-            <!-- Findings for Correction Section -->
-            <div style="margin-bottom: 25px;">
-                <h3 style="margin-bottom: 12px; font-size: 17px; display: flex; align-items: center; gap: 8px; color: #212529;">
-                    <span>📌</span> ממצאים מסכמים, פערים והנחיות לתיקון הידע
-                </h3>
-                
-                ${deficientItems.length === 0 ? `
-                    <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 10px; padding: 20px; text-align: center; color: #2e7d32;">
-                        <div style="font-size: 24px; margin-bottom: 6px;">🌟</div>
-                        <strong style="font-size: 16px;">מצוין! כל השאלות נענו בהצלחה מלאה</strong>
-                        <p style="margin: 6px 0 0; font-size: 14px;">הפגנת שליטה מלאה בנהלים, בפרוטוקולים ובהנחיות המקצועיות המחייבות.</p>
-                    </div>
-                ` : `
-                    <div style="background: #fff8e1; border: 1px solid #ffe082; border-radius: 8px; padding: 12px 16px; margin-bottom: 15px; font-size: 14px; color: #856404;">
-                        <strong>שים/י לב:</strong> נמצאו ${deficientItems.length} שאלות שנענו באופן שגוי. להלן ניתוח הפערים, התשובות הנכונות וההסברים הלימודיים לסגירת הפער.
-                    </div>
-                    <div style="display: flex; flex-direction: column; gap: 14px;">
-                        ${deficientItems.map((item, idx) => `
-                            <div style="background: #ffffff; border: 1px solid #f5c6cb; border-right: 5px solid #dc3545; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);">
-                                <div style="font-weight: bold; font-size: 15px; color: #212529; margin-bottom: 8px;">
-                                    ${idx + 1}. ${item.question}
-                                </div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 14px; margin-bottom: 10px; background: #fdfdfd; padding: 10px; border-radius: 6px; border: 1px dashed #dee2e6;">
-                                    <div style="color: #dc3545;">
-                                        <strong>❌ התשובה שסומנה:</strong> ${item.userAns || 'לא נענה'}
-                                    </div>
-                                    <div style="color: #198754;">
-                                        <strong>✔️ התשובה התקנית לפי הנוהל:</strong> ${item.expected}
-                                    </div>
-                                </div>
-                                ${item.rationale ? `
-                                    <div style="background: #eef6fc; border-right: 3px solid #0d6efd; padding: 10px 12px; border-radius: 4px; font-size: 13.5px; color: #0c5460; line-height: 1.5;">
-                                        <strong>💡 דגש לימודי והנחיה לתיקון:</strong> ${item.rationale}
-                                    </div>
-                                ` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                `}
-            </div>
-
-            <!-- Full Review Accordion / Toggle -->
-            <details style="background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 12px 16px; margin-bottom: 25px;">
-                <summary style="font-weight: bold; cursor: pointer; color: #0d6efd; font-size: 14px;">
-                    👁️ לחץ כאן לצפייה בפירוט כל ${totalQuestions} שאלות המבדק
-                </summary>
-                <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
-                    ${resultsList.map((item, idx) => `
-                        <div style="padding: 10px 14px; border-radius: 6px; border: 1px solid ${item.correct ? '#c3e6cb' : '#f5c6cb'}; background: ${item.correct ? '#f4faf6' : '#fff5f5'}; font-size: 13.5px;">
-                            <div style="font-weight: bold; margin-bottom: 4px;">
-                                ${item.correct ? '✔️' : '❌'} שאלה ${idx + 1}: ${item.question}
-                            </div>
-                            <div style="color: ${item.correct ? '#155724' : '#721c24'};">
-                                תשובתך: <strong>${item.userAns}</strong> ${item.correct ? '(נכון)' : `| התשובה הנכונה: <strong>${item.expected}</strong>`}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            </details>
-
-            <!-- Action Buttons Toolbar -->
-            <div class="btn-no-print" style="display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap; border-top: 1px solid #dee2e6; padding-top: 18px;">
-                <button type="button" onclick="window.print()" class="btn" style="background: #0d6efd; color: white; border: none; padding: 10px 20px; font-size: 14px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: bold;">
-                    <span>🖨️</span> הדפסת תעודת מבדק ודוח ממצאים
-                </button>
-                <button type="button" onclick="window.renderNativeQuiz('${currentQuizId}', '${currentLanguage}', '${container.id}')" class="btn" style="background: #f8f9fa; color: #495057; border: 1px solid #ced4da; padding: 10px 18px; font-size: 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">
-                    <span>🔄</span> ביצוע חוזר של המבדק
-                </button>
-                <button type="button" onclick="if(window.closeTraining){window.closeTraining();}else{navigate('trainings');}" class="btn" style="background: #6c757d; color: white; border: none; padding: 10px 18px; font-size: 14px; border-radius: 6px; cursor: pointer; font-weight: bold;">
-                    <span>↩️</span> סיום וחזרה ללומדות
-                </button>
-            </div>
-        </div>
-    `;
-
-    container.innerHTML = html;
-    window.scrollTo({ top: container.offsetTop - 50, behavior: 'smooth' });
-}
-
-
 function submitNativeQuiz(event) {
     event.preventDefault();
     const btn = document.getElementById('quizSubmitBtn');
-    if (btn) {
-        btn.disabled = true;
-        btn.innerText = tStrings[currentLanguage].processing;
-        btn.style.background = '#6c757d';
-    }
+    btn.disabled = true;
+    btn.innerText = tStrings[currentLanguage].processing;
+    btn.style.background = '#6c757d';
     
     const quiz = quizzesData[currentQuizId];
     const form = event.target;
     const formData = new FormData(form);
     
     let userName = 'עובד (לא צוין שם)';
-    let userDept = 'כללי';
     if (typeof currentUser !== 'undefined' && currentUser && currentUser.name) {
         userName = currentUser.name;
     }
     
+    // Try to get name from form fields (e.g., 'entry.2128698376')
     for (let [key, value] of formData.entries()) {
-        if ((key === 'entry.2128698376' || key === 'entry.888565256') && value.trim() !== '') {
+        if (key === 'entry.2128698376' && value.trim() !== '') {
             userName = value.trim();
         }
-        if ((key.includes('482346055') || key.toLowerCase().includes('dept')) && value.trim() !== '') {
-            userDept = value.trim();
-        }
     }
-
-    // Evaluate answers
-    const answerKey = quizAnswerKeys[currentQuizId] || {};
-    let totalQuestions = 0;
-    let correctCount = 0;
-    let resultsList = [];
-    
-    quiz.fields.forEach(field => {
-        if (field.type === 'radio' || (field.type === 'select' && answerKey[field.id])) {
-            totalQuestions++;
-            const userAns = formData.get(field.id) || '';
-            const keyInfo = answerKey[field.id];
-            const isCorrect = keyInfo ? (userAns.trim() === keyInfo.correct.trim()) : true;
-            
-            if (isCorrect) correctCount++;
-            
-            resultsList.push({
-                id: field.id,
-                question: field.label[currentLanguage] || field.label['he'],
-                userAns: userAns,
-                correct: isCorrect,
-                expected: keyInfo ? keyInfo.correct : '',
-                rationale: keyInfo ? keyInfo.rationale : ''
-            });
-        }
-    });
-
-    const finalScore = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 100;
-    const isPassed = finalScore >= 80;
 
     if (typeof trainingsAnswersDb !== 'undefined') {
         trainingsAnswersDb.push({
             title: quiz.title[currentLanguage] || quiz.title['he'],
             user: userName,
-            dept: userDept,
-            score: finalScore,
-            correctCount: correctCount,
-            totalQuestions: totalQuestions,
-            isPassed: isPassed,
             date: new Date().toLocaleString('he-IL')
         });
         localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
     }
     
+    // Simulate slight delay for processing UI feedback
     setTimeout(() => {
-        renderQuizResults(quiz, finalScore, correctCount, totalQuestions, resultsList, userName, userDept, 'quizContainer');
-    }, 400);
+        alert(tStrings[currentLanguage].success);
+        if (typeof closeTraining === 'function') closeTraining();
+    }, 800);
 }
 
 function createHidden(name, value) {

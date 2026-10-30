@@ -451,25 +451,18 @@ function renderDashboard() {
     let recentFormsHtml = recentForms.length === 0 ? '<p>אין בקרות שהוגשו עדיין.</p>' : 
         `<table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
             <tr style="border-bottom: 1px solid var(--border-color); text-align: right;">
-                <th style="padding: 10px;">טופס בקרה</th><th style="padding: 10px;">מחלקה</th><th style="padding: 10px;">תאריך</th><th style="padding: 10px;">מבצע/ת</th><th style="padding: 10px;">ציון</th><th style="padding: 10px;">דוח מסכם</th>
+                <th style="padding: 10px;">טופס</th><th style="padding: 10px;">מחלקה</th><th style="padding: 10px;">תאריך</th><th style="padding: 10px;">מגיש</th><th style="padding: 10px;">ציון</th>
             </tr>
             ${recentForms.map(f => {
-                let color = f.score >= 85 ? 'var(--success)' : f.score >= 70 ? 'orange' : 'var(--danger)';
-                let deptKey = f.data ? Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department')) : null;
+                let color = f.score >= 80 ? 'var(--success)' : f.score >= 60 ? 'orange' : 'var(--danger)';
+                let deptKey = Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department'));
                 let dept = deptKey ? f.data[deptKey] : 'לא צוין';
-                let fCount = f.findingsCount !== undefined ? f.findingsCount : (f.findings ? f.findings.length : 0);
-                let findingsBadge = fCount > 0 ? `<span class="badge-critical" style="font-size: 11px; margin-right: 6px;">${fCount} ליקויים</span>` : `<span class="badge-ok" style="font-size: 11px; margin-right: 6px;">תקין</span>`;
                 return `<tr style="border-bottom: 1px solid var(--border-color);">
-                    <td style="padding: 10px;">${f.formTitle} ${findingsBadge}</td>
+                    <td style="padding: 10px;">${f.formTitle}</td>
                     <td style="padding: 10px;">${dept}</td>
                     <td style="padding: 10px;">${f.dateFilled}</td>
                     <td style="padding: 10px;">${f.user}</td>
                     <td style="padding: 10px; font-weight: bold; color: ${color}">${f.score}%</td>
-                    <td style="padding: 10px;">
-                        <button class="btn" style="padding: 4px 10px; font-size: 12px; font-weight: bold; display: inline-flex; align-items: center; gap: 4px;" onclick="viewSavedFormFindings(${f.id})">
-                            <span>📋</span> דוח ממצאים
-                        </button>
-                    </td>
                 </tr>`;
             }).join('')}
         </table>`;
@@ -701,446 +694,49 @@ function openForm(id) {
     `;
 }
 
-
-// CAPA and Corrective Recommendations Generator for Clinical & Knowledge Audits
-function generateAuditCapaRecommendation(formId, field, val, formObj) {
-    let lbl = field.label || '';
-    let id = field.id || '';
-
-    // Form 18: Knowledge Quiz on Defibrillator
-    if (formId === 'form_18') {
-        const defibRationales = {
-            'f18_q1': 'בטיחות הצוות והמטופל: חובה לוודא נתק מוחלט של כל אנשי הצוות מהמיטה והציוד לפני מתן שוק (קריאת "אני מתרחק, כולם מתרחקים") למניעת התחשמלות.',
-            'f18_q2': 'פרוטוקול שוקים: אם עוצמת המכשיר אינה ידועה יש לפרוק בעוצמה מקסימלית (200J+ במכשיר ביפאזי). שוקים עוקבים יינתנו בעוצמה זהה או גבוהה יותר.',
-            'f18_q3': 'היפוך מסונכרן ב-SVT / Atrial Flutter: עוצמת שוק התחלתית נמוכה של 50-100 ג\'אול במכשיר ביפאזי.',
-            'f18_q4': 'היפוך מסונכרן בטכיקרדיה רחבה סדירה (Monomorphic VT עם דופק): עוצמת שוק התחלתית של 100 ג\'אול במכשיר ביפאזי.',
-            'f18_q5': 'היפוך מסונכרן בפרפור עליות (AFib): עוצמת שוק התחלתית גבוהה של 120-200 ג\'אול במכשיר ביפאזי.'
-        };
-        return defibRationales[id] || 'ריענון נוהל החייאה והפעלת דיפיברילטור, ותרגול מעשי בעמדת ההחייאה המחלקתית.';
-    }
-
-    // Form 16: Knowledge Assessment on Pain
-    if (formId === 'form_16') {
-        const pain16Rationales = {
-            'f16_q1': 'מינוי ופרסום נאמן כאב: יש לפרסם את שם ותמונת נאמן הכאב המחלקתי בלוח המודעות ולהציגו בפני כלל אנשי הצוות בהעברות משמרת.',
-            'f16_q2': 'איתור נוהל כאב: יש לבצע הדרכה מעשית לצוות הסיעודי לאיתור מהיר של תיקיית הנהלים והנחיות הטיפול בכאב במחשבי המחלקה.',
-            'f16_q3': 'תדירות אומדן כאב: חובה לבצע אומדן כאב בכל משמרת (בוקר, ערב, לילה) למטופל עם טיפול תרופתי קבוע, וכן שעה לאחר מתן טיפול SOS.',
-            'f16_q4': 'אומדן בקבלה: אומדן כאב ראשוני בקבלת מטופל למוסד יתבצע תוך שעתיים מהקבלה, ובכל שינוי במצב קליני.',
-            'f16_q5': 'כלי אומדן מותאמים: ריענון השימוש בסולם NRS/VAS למטופלים מתקשרים, ובסולם התנהגותי (PAINAD/Abbey) למטופלים עם דמנציה או ירידה קוגניטיבית.',
-            'f16_q6': 'פרוטוקול וחוברת הנחיות: הפצת חוברת ההנחיות המקצועיות לניהול כאב לכלל הצוות וקיום מפגש שאלות ותשובות מחלקתי.',
-            'f16_q7': 'הגדרת כאב אקוטי וכרוני: חידוד ההבדלים הקליניים: כאב אקוטי מחייב בירור סיבתי מיידי, וכאב כרוני מחייב תוכנית ניהול רב-מקצועית מתמשכת.',
-            'f16_q9': 'אישור קריאת נוהל: השלמת החתמת כלל אנשי הצוות הסיעודי במחלקה על אישור קריאת נוהל כאב המעודכן בתוך 7 ימים.'
-        };
-        return pain16Rationales[id] || 'קיום הדרכת ריענון מחלקתית בנושא ניהול הטיפול בכאב והערכת יעילות משככים.';
-    }
-
-    // General Clinical Topics
-    if (lbl.includes('נורטון') || lbl.includes('פצע') || lbl.includes('עור') || lbl.includes('מזרן')) {
-        return 'ביצוע אומדן נורטון חוזר, עדכון תוכנית שינויי תנוחה ברשומה כל שעתיים, בדיקת תקינות מזרן מפחית לחץ (ויסקו/דינמי), וייעוץ תזונתי להעשרת חלבון.';
-    }
-    if (lbl.includes('כאב') || lbl.includes('אנלגט')) {
-        return 'ביצוע אומדן כאב חוזר בכלי מתאים (NRS/PAINAD), דיווח לרופא המחלקה להתאמת משככי כאבים, ובדיקת יעילות התערבות 60 דקות לאחר מתן.';
-    }
-    if (lbl.includes('בידוד') || lbl.includes('זיהום') || lbl.includes('מיגון') || lbl.includes('כלור') || lbl.includes('ידיים')) {
-        return 'הצבת שילוט בידוד תקני, אספקת ציוד מיגון אישי (PPE) ייעודי בכניסה לחדר, ביצוע חיטוי בכלור בריכוז 1,000 PPM, וריענון 5 רגעי היגיינת ידיים.';
-    }
-    if (lbl.includes('קטטר') || lbl.includes('שתן') || lbl.includes('CAUTI')) {
-        return 'בחינה יומית של אינדיקציה רפואית להמשך קטטר שתן, שמירה על שקית שתן מתחת לגובה שלפוחית, וביצוע שטיפות/היגיינה פרינאלית פעמיים ביום.';
-    }
-    if (lbl.includes('עצירות') || lbl.includes('יציאות')) {
-        return 'מעקב יומן יציאות ממוחשב, וידוא תנועתיות ושתייה מספקת, והפעלת פרוטוקול טיפול בעצירות (מרככי צואה/נרות) לאחר 48 שעות ללא יציאה.';
-    }
-    if (lbl.includes('הזנה') || lbl.includes('בליעה') || lbl.includes('אספירציה') || lbl.includes('זונדה') || lbl.includes('PEG')) {
-        return 'הושבה ב-90 מעלות בעת האכלה ובמשך 45 דקות לאחריה, בדיקת שייר ומיקום צינור לפני כל הזנה, וקריאה דחופה לקלינאית תקשורת להערכת מרקם.';
-    }
-    if (lbl.includes('תרופ') || lbl.includes('מינון') || lbl.includes('מרשם')) {
-        return 'הקפדה קפדנית על שמונת ה-Right, בדיקת זיהוי כפול ליד מיטת המטופל, תיעוד מתן בזמן אמת ודיווח אירוע חריג במידה ונמצאה סטייה.';
-    }
-    if (lbl.includes('החייאה') || lbl.includes('עגלת החייאה') || lbl.includes('חמצן')) {
-        return 'השלמת בדיקת תקינות יומית של עגלת ההחייאה, וידוא תוקף תרופות ובלון חמצן מלא (מעל 100 אטמוספרות), ונעילת העגלה בחבק ממוספר.';
-    }
-    if (lbl.includes('הגבלה') || lbl.includes('נפיל') || lbl.includes('בטיחות')) {
-        return 'בדיקת חלופות להגבלה (מיטה נמוכה, השגחה, פעמון מצוקה נגיש), חידוש הוראה רפואית כל 24 שעות ומעקב ניטור סיעודי כל שעתיים.';
-    }
-    if (lbl.includes('נוהל') || lbl.includes('אישור קריאה') || lbl.includes('הדרכה')) {
-        return 'החתמת כלל עובדי הצוות על קריאת הנוהל המעודכן וקיום תדריך ריענון מחלקתי ממוקד תוך 7 ימי עבודה.';
-    }
-    return 'קיום תדריך צוות ממוקד לסגירת הפער שנמצא, עדכון הרשומה הסיעודית, וביצוע בקרת מעקב חוזרת בתוך 14 ימים.';
-}
-
-// Evaluate Form Findings & Score
-function evaluateFormAudit(form, formObj) {
-    let totalScoreable = 0;
-    let earned = 0;
-    let findings = [];
-    let compliantCount = 0;
-
-    const form18Keys = {
-        'f18_q1': 'להרחיק אנשי הצוות ממיטת המטופל',
-        'f18_q2': 'תשובה א\' וג\' נכונות',
-        'f18_q3': '50-100 J',
-        'f18_q4': '100 J',
-        'f18_q5': '120-200 J'
-    };
-
-    form.fields.forEach(field => {
-        let val = formObj[field.id];
-        if (!val || val === 'לא רלוונטי' || val === 'לא נבדק') return;
-
-        // Skip purely personal / meta fields
-        if (field.id.includes('date') || field.id.includes('name') || field.id.includes('participants') || field.id.includes('id') || field.id.includes('notes') || field.id.includes('seniority')) {
-            return;
-        }
-
-        if (form.id === 'form_18' && form18Keys[field.id]) {
-            totalScoreable++;
-            let expected = form18Keys[field.id];
-            if (val.trim() === expected.trim()) {
-                earned++;
-                compliantCount++;
-            } else {
-                let noteKey = field.id + '_notes';
-                let inspectorNotes = formObj[noteKey] || '';
-                findings.push({
-                    id: field.id,
-                    label: field.label,
-                    val: val,
-                    expected: expected,
-                    status: 'תשובה שגויה במבדק ידע',
-                    isCritical: true,
-                    notes: inspectorNotes,
-                    capa: generateAuditCapaRecommendation(form.id, field, val, formObj)
-                });
-            }
-            return;
-        }
-
-        if (form.id === 'form_16' && field.type === 'select') {
-            totalScoreable++;
-            let isFull = val.includes('כולם ידעו') || val === 'כן';
-            let isPartial = val.includes('חלק') || val.includes('חלקי');
-            if (isFull) {
-                earned += 1;
-                compliantCount++;
-            } else if (isPartial) {
-                earned += 0.5;
-                let noteKey = field.id + '_notes';
-                let inspectorNotes = formObj[noteKey] || '';
-                findings.push({
-                    id: field.id,
-                    label: field.label,
-                    val: val,
-                    status: 'שליטה חלקית בידע',
-                    isCritical: field.is_critical || false,
-                    notes: inspectorNotes,
-                    capa: generateAuditCapaRecommendation(form.id, field, val, formObj)
-                });
-            } else {
-                let noteKey = field.id + '_notes';
-                let inspectorNotes = formObj[noteKey] || '';
-                findings.push({
-                    id: field.id,
-                    label: field.label,
-                    val: val,
-                    status: 'פער ידע המחייב הדרכה',
-                    isCritical: field.is_critical || false,
-                    notes: inspectorNotes,
-                    capa: generateAuditCapaRecommendation(form.id, field, val, formObj)
-                });
-            }
-            return;
-        }
-
-        if (field.type === 'select') {
-            totalScoreable++;
-            if (val === 'כן' || val === 'תואם לחלוטין' || val === 'תואם' || val === 'מלא' || val === 'בוצע' || val === 'קיים') {
-                earned += 1;
-                compliantCount++;
-            } else if (val === 'חלקי' || val === 'תואם חלקית' || val === 'טעון שיפור' || val === 'ביצוע חלקי') {
-                earned += 0.5;
-                let noteKey = field.id + '_notes';
-                let inspectorNotes = formObj[noteKey] || '';
-                findings.push({
-                    id: field.id,
-                    label: field.label,
-                    val: val,
-                    status: 'עמידה חלקית',
-                    isCritical: field.is_critical || false,
-                    notes: inspectorNotes,
-                    capa: generateAuditCapaRecommendation(form.id, field, val, formObj)
-                });
-            } else if (val === 'לא' || val === 'לא תואם' || val === 'לא בוצע' || val === 'חסר' || val === 'ליקוי') {
-                let noteKey = field.id + '_notes';
-                let inspectorNotes = formObj[noteKey] || '';
-                findings.push({
-                    id: field.id,
-                    label: field.label,
-                    val: val,
-                    status: 'אי עמידה / ליקוי',
-                    isCritical: field.is_critical || false,
-                    notes: inspectorNotes,
-                    capa: generateAuditCapaRecommendation(form.id, field, val, formObj)
-                });
-            }
-        }
-    });
-
-    let finalScore = totalScoreable > 0 ? Math.round((earned / totalScoreable) * 100) : 100;
-    return {
-        finalScore,
-        totalScoreable,
-        compliantCount,
-        findings
-    };
-}
-
-// Render Comprehensive Audit Findings & Corrective Action Summary
-function renderAuditSummaryResult(form, finalScore, findings, formObj, submitDate, recordId) {
-    const contentArea = document.getElementById('content-area');
-    if (!contentArea) return;
-
-    let dept = 'כללי';
-    for (let k in formObj) {
-        if (k.toLowerCase().includes('dept') || k.toLowerCase().includes('department')) {
-            dept = formObj[k];
-            break;
-        }
-    }
-
-    let isExcellent = finalScore >= 90;
-    let isWarning = finalScore >= 75 && finalScore < 90;
-    let isCritical = finalScore < 75;
-
-    let scoreColor = isExcellent ? '#198754' : isWarning ? '#fd7e14' : '#dc3545';
-    let scoreBg = isExcellent ? 'rgba(25, 135, 84, 0.08)' : isWarning ? 'rgba(253, 126, 20, 0.08)' : 'rgba(220, 53, 69, 0.08)';
-    let statusText = isExcellent ? 'עמידה מלאה בתקני האיכות והבטיחות' : isWarning ? 'עמידה חלקית – נדרש מעקב ותיקון ליקויים' : 'אי עמידה – דורש תוכנית התערבות מיידית (CAPA)';
-    let statusBadgeClass = isExcellent ? 'badge-ok' : isWarning ? 'badge-warning' : 'badge-critical';
-
-    let totalChecked = (findings.length + (formObj ? Object.keys(formObj).filter(k => formObj[k] === 'כן' || formObj[k] === 'תואם לחלוטין' || formObj[k] === 'כולם ידעו לענות').length : 0));
-    if (totalChecked === 0) totalChecked = findings.length > 0 ? findings.length : 10;
-
-    let html = `
-        <div class="fade-in" style="max-width: 1000px; margin: 0 auto; direction: rtl; text-align: right;">
-            <!-- Top Navigation & Print Bar -->
-            <div class="btn-no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
-                <button class="btn" style="background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); padding: 8px 16px; font-size: 14px;" onclick="navigate('forms')">
-                    ← חזרה לרשימת כלי הבקרה
-                </button>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn" style="background: #0d6efd; color: white; border: none; padding: 8px 18px; font-size: 14px; font-weight: bold; display: inline-flex; align-items: center; gap: 6px;" onclick="window.print()">
-                        <span>🖨️</span> הדפסת דוח ממצאים מסכם
-                    </button>
-                    <button class="btn" style="background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 16px; font-size: 14px;" onclick="navigate('dashboard')">
-                        📊 מעבר לדשבורד
-                    </button>
-                </div>
-            </div>
-
-            <!-- Main Findings Card -->
-            <div class="card" style="padding: 30px; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid var(--border-color); background: var(--surface-color);">
-                <!-- Header Banner -->
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid var(--border-color); padding-bottom: 20px; margin-bottom: 25px; flex-wrap: wrap; gap: 20px;">
-                    <div style="flex: 1; min-width: 280px;">
-                        <span style="display: inline-block; padding: 4px 12px; background: rgba(13, 110, 253, 0.1); color: var(--primary-color); font-weight: bold; border-radius: 20px; font-size: 13px; margin-bottom: 8px;">
-                            📋 דוח סיכום ממצאים ותוכנית תיקון ליקויים (CAPA)
-                        </span>
-                        <h2 style="margin: 0; font-size: 24px; color: var(--text-primary);">${form.title}</h2>
-                        <div style="color: var(--text-secondary); font-size: 14px; margin-top: 8px; line-height: 1.6;">
-                            <span>🏢 <strong>מחלקה:</strong> ${dept}</span> &nbsp;|&nbsp;
-                            <span>📅 <strong>תאריך בקרה:</strong> ${submitDate}</span> &nbsp;|&nbsp;
-                            <span>👤 <strong>מבצע/ת הבקרה:</strong> ${currentUser ? currentUser.name : 'צוות איכות ובקרה'}</span>
-                        </div>
-                    </div>
-
-                    <!-- Score Card -->
-                    <div style="background: ${scoreBg}; border: 3px solid ${scoreColor}; border-radius: 16px; padding: 18px 28px; text-align: center; min-width: 160px; box-shadow: 0 2px 10px rgba(0,0,0,0.04);">
-                        <div style="font-size: 13px; font-weight: bold; color: ${scoreColor}; letter-spacing: 0.5px;">ציון בקרה מסכם</div>
-                        <div style="font-size: 42px; font-weight: 900; color: ${scoreColor}; line-height: 1.1; margin: 4px 0;">${finalScore}%</div>
-                        <div class="${statusBadgeClass}" style="margin-top: 4px; font-size: 12px;">${statusText}</div>
-                    </div>
-                </div>
-
-                <!-- KPI Quick Bar -->
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px;">
-                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 13px; color: var(--text-secondary);">סך סעיפים שנבחנו</div>
-                        <div style="font-size: 24px; font-weight: bold; color: var(--text-primary);">${totalChecked}</div>
-                    </div>
-                    <div style="background: rgba(25, 135, 84, 0.08); border: 1px solid rgba(25, 135, 84, 0.2); border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 13px; color: #198754;">סעיפים תקינים לחלוטין</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #198754;">${Math.max(0, totalChecked - findings.length)}</div>
-                    </div>
-                    <div style="background: ${findings.length > 0 ? 'rgba(220, 53, 69, 0.08)' : 'var(--bg-color)'}; border: 1px solid ${findings.length > 0 ? 'rgba(220, 53, 69, 0.2)' : var(--border-color)}; border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 13px; color: ${findings.length > 0 ? '#dc3545' : 'var(--text-secondary)'};">ממצאים הדורשים תיקון</div>
-                        <div style="font-size: 24px; font-weight: bold; color: ${findings.length > 0 ? '#dc3545' : 'var(--text-secondary)'};">${findings.length}</div>
-                    </div>
-                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 15px; text-align: center;">
-                        <div style="font-size: 13px; color: var(--text-secondary);">יעד איכות ארגוני</div>
-                        <div style="font-size: 24px; font-weight: bold; color: #0d6efd;">85%+</div>
-                    </div>
-                </div>
-
-                <!-- Findings Requiring Correction Table -->
-                <div style="margin-bottom: 30px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="margin: 0; font-size: 18px; display: flex; align-items: center; gap: 8px;">
-                            <span>⚠️</span> ממצאים מסכמים הדורשים תיקון ותוכנית פעולה (CAPA)
-                        </h3>
-                        <span style="font-size: 13px; color: var(--text-secondary);">סה"כ ${findings.length} ליקויים/פערים לאיתור וטיפול</span>
-                    </div>
-
-                    ${findings.length === 0 ? `
-                        <div style="background: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 10px; padding: 25px; text-align: center; color: #2e7d32;">
-                            <div style="font-size: 32px; margin-bottom: 8px;">🌟</div>
-                            <h4 style="margin: 0 0 6px; font-size: 18px;">מצוין! הבקרה הושלמה ללא ממצאי ליקוי</h4>
-                            <p style="margin: 0; font-size: 14px;">כל הסעיפים והפרמטרים שנבדקו עומדים במלואם בנהלים, בפרוטוקולים ובסטנדרטים הארגוניים.</p>
-                        </div>
-                    ` : `
-                        <div style="overflow-x: auto;">
-                            <table class="audit-findings-table">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 5%;">#</th>
-                                        <th style="width: 32%;">סעיף הבקרה / נושא שנבדק</th>
-                                        <th style="width: 20%;">הממצא שנצפה בשטח</th>
-                                        <th style="width: 13%;">סיווג חומרה</th>
-                                        <th style="width: 30%;">הנחיה ופעולה מתקנת נדרשת (CAPA)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${findings.map((f, idx) => `
-                                        <tr>
-                                            <td style="font-weight: bold; color: var(--text-secondary); text-align: center;">${idx + 1}</td>
-                                            <td>
-                                                <div style="font-weight: bold; color: var(--text-primary); margin-bottom: 4px;">${f.label}</div>
-                                                ${f.notes ? `<div style="font-size: 12.5px; color: #6c757d; background: rgba(0,0,0,0.03); padding: 4px 8px; border-radius: 4px; margin-top: 4px;"><strong>הערת שטח:</strong> ${f.notes}</div>` : ''}
-                                            </td>
-                                            <td>
-                                                <div style="font-weight: bold; color: #dc3545;">${f.val}</div>
-                                                ${f.expected ? `<div style="font-size: 12px; color: #198754; margin-top: 2px;">תשובה תקינה: <strong>${f.expected}</strong></div>` : ''}
-                                            </td>
-                                            <td>
-                                                <span class="${f.isCritical ? 'badge-critical' : 'badge-warning'}">
-                                                    ${f.isCritical ? '🔴 קריטי / בטיחות' : '🟡 שיפור איכות'}
-                                                </span>
-                                            </td>
-                                            <td style="background: rgba(13, 110, 253, 0.02); border-right: 3px solid #0d6efd;">
-                                                <div style="color: #0d6efd; font-weight: 500; font-size: 13.5px; line-height: 1.4;">
-                                                    ${f.capa}
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
-                        </div>
-                    `}
-                </div>
-
-                <!-- Detailed Form Audit Drawer -->
-                <details style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px 18px; margin-bottom: 25px;">
-                    <summary style="font-weight: bold; cursor: pointer; color: var(--primary-color); font-size: 14px;">
-                        👁️ לחץ כאן לצפייה במלוא הנתונים והשדות שהוזנו בטופס הבקרה
-                    </summary>
-                    <div style="margin-top: 15px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px;">
-                        ${form.fields.map(field => {
-                            let val = formObj[field.id];
-                            if (!val) return '';
-                            let isProblem = val === 'לא' || val === 'חלקי' || (form.id === 'form_18' && val !== '50-100 J' && val !== '100 J' && val !== '120-200 J' && val !== 'להרחיק אנשי הצוות ממיטת המטופל' && val !== 'תשובה א\' וג\' נכונות' && !field.id.includes('seniority'));
-                            return `
-                                <div style="padding: 8px 12px; background: var(--surface-color); border: 1px solid ${isProblem ? '#f5c6cb' : 'var(--border-color)'}; border-radius: 6px; font-size: 13px;">
-                                    <div style="color: var(--text-secondary); font-size: 12px; margin-bottom: 2px;">${field.label}</div>
-                                    <div style="font-weight: bold; color: ${isProblem ? '#dc3545' : 'var(--text-primary)'};">${val}</div>
-                                </div>
-                            `;
-                        }).join('')}
-                    </div>
-                </details>
-
-                <!-- Footer Signatures (For Official Print) -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; border-top: 1px dashed var(--border-color); padding-top: 25px; margin-top: 25px; text-align: center; font-size: 13px;">
-                    <div>
-                        <div style="border-bottom: 1px solid #000; height: 35px; margin-bottom: 6px;"></div>
-                        <strong>חתימת מבצע/ת הבקרה</strong>
-                    </div>
-                    <div>
-                        <div style="border-bottom: 1px solid #000; height: 35px; margin-bottom: 6px;"></div>
-                        <strong>חתימת אחות אחראית מחלקה</strong>
-                    </div>
-                    <div>
-                        <div style="border-bottom: 1px solid #000; height: 35px; margin-bottom: 6px;"></div>
-                        <strong>אישור רכזת איכות ובקרה ארגונית</strong>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    contentArea.innerHTML = html;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-// Function to view summary and findings of any previously submitted form
-function viewSavedFormFindings(recordId) {
-    const record = filledFormsDb.find(f => f.id === Number(recordId));
-    if (!record) {
-        showToast('רשומת בקרה לא נמצאה', 'error');
-        return;
-    }
-
-    const form = formsSchema.forms.find(f => f.id === record.formId) || {
-        id: record.formId,
-        title: record.formTitle || 'כלי בקרה',
-        fields: []
-    };
-
-    let findings = record.findings;
-    let finalScore = record.score;
-
-    if (!findings || findings.length === 0) {
-        // Evaluate dynamically if missing in older record
-        let evalResult = evaluateFormAudit(form, record.data || {});
-        findings = evalResult.findings;
-        finalScore = record.score !== undefined ? record.score : evalResult.finalScore;
-    }
-
-    renderAuditSummaryResult(form, finalScore, findings, record.data || {}, record.dateFilled || '', record.id);
-}
-window.viewSavedFormFindings = viewSavedFormFindings;
-
 function submitForm(e, formId) {
     e.preventDefault();
     const form = formsSchema.forms.find(f => f.id === formId);
     const formData = new FormData(e.target);
     const formObj = Object.fromEntries(formData.entries());
     
-    // Evaluate Score & Detailed Deficiencies/Findings
-    const evalResult = evaluateFormAudit(form, formObj);
-    const finalScore = evalResult.finalScore;
-    const findings = evalResult.findings;
-
-    let today = new Date().toISOString().split('T')[0];
-    let submitDate = formObj.w_date || formObj.f5_date || formObj.f16_date || formObj.f18_date || formObj.date_field || today;
+    // Calculate Score
+    let totalScoreable = 0;
+    let earned = 0;
     
-    let newRecord = {
+    for (let key in formObj) {
+        let val = formObj[key];
+        if (val === 'לא רלוונטי') continue;
+        
+        let fieldSchema = form.fields.find(f => f.id === key);
+        if (fieldSchema && fieldSchema.type === 'select') {
+            totalScoreable++;
+            if (val === 'כן' || val === 'תואם לחלוטין') {
+                earned++;
+            } else if (val === 'חלקי' || val === 'תואם חלקית') {
+                earned += 0.5;
+            }
+        }
+    }
+    
+    let finalScore = totalScoreable > 0 ? Math.round((earned / totalScoreable) * 100) : 100;
+    let today = new Date().toISOString().split('T')[0];
+    let submitDate = formObj.w_date || formObj.date_field || today;
+    
+    filledFormsDb.push({
         id: Date.now(),
         formId: formId,
         formTitle: form.title,
         dateFilled: submitDate,
         score: finalScore,
-        user: (currentUser && currentUser.name) ? currentUser.name : 'צוות איכות',
-        findingsCount: findings.length,
-        findings: findings,
+        user: currentUser.name,
         data: formObj
-    };
-
-    filledFormsDb.push(newRecord);
+    });
+    
     localStorage.setItem('clinic_filled_forms', JSON.stringify(filledFormsDb));
     
-    showToast('הבקרה נשמרה בהצלחה! ציון: ' + finalScore + '% (' + findings.length + ' ממצאים לתיקון)', findings.length > 0 ? 'warning' : 'success');
-    
-    // Render the comprehensive findings summary report immediately
-    renderAuditSummaryResult(form, finalScore, findings, formObj, submitDate, newRecord.id);
+    showToast('הטופס הוגש בהצלחה עם ציון ' + finalScore + '%', 'success');
+    navigate('dashboard');
 }
 
 function renderOnboarding() {
