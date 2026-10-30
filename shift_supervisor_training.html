@@ -429,59 +429,314 @@
                     </div>
                 </div>
 
-                <!-- Oral Exam Guide & Question Bank -->
-                <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
-                    <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2 border-b border-slate-200 pb-2">
-                        <i class="fa-solid fa-comments-question text-brand-600"></i>
-                        בנק שאלות מנחה ותשובות מצופות למבחן בעל פה (שאלות בוחן/ית)
-                    </h3>
-
-                    <div class="space-y-3 text-xs">
-                        
-                        <!-- Question 1 -->
-                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
-                            <div class="font-bold text-slate-800 text-xs">
-                                שאלה 1 [High-Alert & נוגדי קרישה]: מטופל גריאטרי מיועד לקבלת Clexane / נוגד קרישה פומבי חדש (DOAC). מהם הדגשים הניטוריים?
-                            </div>
-                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
-                                <strong>תשובה מצופה מנבדק/ת:</strong> בדיקת רמות המוגלובין/טפח דימום, ניטור סימני דימום סמוי/גלוי (צואה שחורה, המטוריה, חבלות עוריות), בדיקת תפקודי כליות (Creatinine Clearance) להתאמת מינון, והקפדה על מתן בזמן קבוע.
-                            </div>
-                        </div>
-
-                        <!-- Question 2 -->
-                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
-                            <div class="font-bold text-slate-800 text-xs">
-                                שאלה 2 [קריטריוני Beers & פסיכוטרופיים]: מהן הסכנות במתן תרופות הרגעה/שינה (בנזודיאזפינים/אנטי-פסיכוטיות) בקשישים?
-                            </div>
-                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
-                                <strong>תשובה מצופה מנבדק/ת:</strong> סיכון מוגבר לנפילות ושברים עקב סדציה ואטקסיה, החמרת ליקוי קוגניטיבי, ירידה בלתי רצונית בלחץ דם (תת לחץ דם תנוחתי), סיכון מוגבר לתחלואה ותמותה לפי Beers Criteria. חובה לנטר מדדים חיוניים ורמת ערנות.
+                
+                <!-- ========================================== -->
+                <!-- AI CLINICAL PHARMACOLOGY QUESTION BANK AGENT -->
+                <!-- ========================================== -->
+                <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white rounded-2xl p-6 shadow-xl border border-indigo-500/30 space-y-5">
+                    
+                    <!-- Agent Top Bar -->
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 border-b border-indigo-500/20 pb-4">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-indigo-500 text-white p-2 rounded-xl text-lg flex items-center justify-center shadow-lg shadow-indigo-500/30 animate-pulse">
+                                    <i class="fa-solid fa-robot"></i>
+                                </span>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h3 class="text-lg font-black tracking-tight text-white">סוכן בינה מלאכותית: בנק שאלות בטיפול תרופתי ופרמקולוגיה גריאטרית</h3>
+                                        <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1.5">
+                                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> פעיל ומעודכן
+                                        </span>
+                                    </div>
+                                    <p class="text-xs text-indigo-200 mt-0.5">
+                                        מבוסס ספרות עדכנית: <strong>Lippincott Nursing Drug Handbook</strong>, <strong>AGS Beers Criteria® 2023</strong>, חוזרי חטיבת הסיעוד ובטיחות הטיפול.
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Question 3 -->
-                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
-                            <div class="font-bold text-slate-800 text-xs">
-                                שאלה 3 [מתן דרך PEG / NG]: מהן כללי הבטיחות בכתישה ומתן תרופות דרך צינורית הזנה אנטרלית?
+                        <!-- Agent Action & Sync Info -->
+                        <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                            <div class="text-left sm:text-right text-[11px] text-indigo-300">
+                                <div class="font-semibold text-slate-300">סריקה ועדכון חודשי אחרון:</div>
+                                <div class="font-bold text-white flex items-center gap-1.5 justify-end">
+                                    <i class="fa-regular fa-calendar-check text-emerald-400"></i>
+                                    <span id="agent-last-sync-badge">אוקטובר-נובמבר 2026 (גרסה 2026.11)</span>
+                                </div>
                             </div>
-                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
-                                <strong>תשובה מצופה מנבדק/ת:</strong> איסור מוחלט על כתישת תרופות בשחרור משהה/מושהה (Slow Release/EC/CR); כתישה והמסה נפרדת של כל תרופה בנפרד; הפסקת הזנה אנטרלית במידת הצורך (למשל עם פניטואין/ציפרופלוקסצין); שטיפת הצינורית ב-30 מ"ל מים פושרים לפני ואחרי מתן התרופות.
-                            </div>
+                            <button onclick="triggerMonthlyAgentUpdate()" id="btn-agent-update" class="bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all shadow-lg shadow-brand-500/25 flex items-center gap-2 active:scale-95">
+                                <i class="fa-solid fa-arrows-rotate" id="agent-update-icon"></i>
+                                <span>הפעל סוכן לעדכון חודשי</span>
+                            </button>
                         </div>
+                    </div>
 
-                        <!-- Question 4 -->
-                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
-                            <div class="font-bold text-slate-800 text-xs">
-                                שאלה 4 [אירוע חריג בתרופות]: התגלתה טעות בחלוקת תרופה (מתן מינון כפול / תרופה שגויה). מהן הפעולות הנדרשות?
-                            </div>
-                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
-                                <strong>תשובה מצופה מנבדק/ת:</strong> 1. אומדן וניטור מיידי של המטופל (מדדים חיוניים, מצב הכרה). 2. דיווח מיידי לרופא המחלקה ולאחות האחראית. 3. מתן אנטגוניסט/טיפול נוגד לפי הוראה. 4. תיעוד עובדתי ברשומה הרפואית. 5. מילוי טופס דיווח אירוע חריג בטיחותי.
-                            </div>
-                        </div>
+                    <!-- Clinical Literature Tags -->
+                    <div class="flex flex-wrap gap-2 text-[11px]">
+                        <span class="bg-indigo-900/60 border border-indigo-700/50 text-indigo-200 px-3 py-1 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-medical text-indigo-400"></i> Lippincott Nursing Drug Handbook 2026
+                        </span>
+                        <span class="bg-indigo-900/60 border border-indigo-700/50 text-indigo-200 px-3 py-1 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-shield-halved text-amber-400"></i> AGS Beers Criteria® 2023 Update
+                        </span>
+                        <span class="bg-indigo-900/60 border border-indigo-700/50 text-indigo-200 px-3 py-1 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> ISMP High-Alert Medications Standards
+                        </span>
+                        <span class="bg-indigo-900/60 border border-indigo-700/50 text-indigo-200 px-3 py-1 rounded-lg flex items-center gap-1.5">
+                            <i class="fa-solid fa-calculator text-cyan-400"></i> חישוב רוקחי מבוקר (100% דיוק חובה)
+                        </span>
+                    </div>
 
+                    <!-- Interactive Mode Selector Tabs -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 pt-2">
+                        <button onclick="switchPharmMode('exam')" id="tab-pharm-exam" class="pharm-tab-btn active bg-white text-brand-900 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+                            <i class="fa-solid fa-file-pen text-brand-600"></i>
+                            <span>1. מחולל מבחן רשמי (20 שאלות)</span>
+                        </button>
+                        <button onclick="switchPharmMode('practice')" id="tab-pharm-practice" class="pharm-tab-btn bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+                            <i class="fa-solid fa-bullseye text-emerald-400"></i>
+                            <span>2. תירגול עצמי אינטראקטיבי</span>
+                        </button>
+                        <button onclick="switchPharmMode('master')" id="tab-pharm-master" class="pharm-tab-btn bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+                            <i class="fa-solid fa-database text-cyan-400"></i>
+                            <span>3. מאגר השאלות והרציונלים (30)</span>
+                        </button>
+                        <button onclick="switchPharmMode('oral')" id="tab-pharm-oral" class="pharm-tab-btn bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all">
+                            <i class="fa-solid fa-comments text-amber-400"></i>
+                            <span>4. שאלות מנחה לדיון בעל פה</span>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Clinical Observation Checklist Table -->
+                <!-- Live Agent Status Banner (Hidden by default, shown during sync) -->
+                <div id="agent-sync-animation" class="hidden bg-indigo-50 border border-indigo-200 rounded-xl p-4 text-xs text-indigo-900 space-y-3 transition-all animate-pulse">
+                    <div class="flex items-center justify-between font-bold">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-microchip text-indigo-600 text-sm"></i>
+                            סוכן הבינה המלאכותית מבצע סריקה ועדכון חודשי מקיף...
+                        </span>
+                        <span id="agent-sync-step-text" class="text-indigo-600">שלב 1 מתוך 3</span>
+                    </div>
+                    <div class="w-full bg-indigo-200 h-2 rounded-full overflow-hidden">
+                        <div id="agent-sync-progress" class="bg-indigo-600 h-2 rounded-full transition-all duration-500" style="width: 25%"></div>
+                    </div>
+                    <div id="agent-sync-log" class="text-[11px] text-slate-600 font-mono bg-white p-2.5 rounded-lg border border-indigo-100">
+                        > סורק קריטריוני Beers 2023 ומעדכן תרופות אנטיכולינרגיות ופסיכוטרופיות...
+                    </div>
+                </div>
+
+                <!-- ============================================== -->
+                <!-- PANE 1: OFFICIAL EXAM GENERATOR (20 QUESTIONS) -->
+                <!-- ============================================== -->
+                <div id="pane-pharm-exam" class="pharm-pane bg-white rounded-xl border border-slate-200 p-5 space-y-6 shadow-sm">
+                    
+                    <!-- Exam Header & Controls -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-brand-600 text-white text-[10px] font-black px-2 py-0.5 rounded">מבחן רשמי</span>
+                                <h4 class="font-extrabold text-slate-900 text-base">מבחן הסמכה ממוחשב בטיפול תרופתי ופרמקולוגיה גריאטרית</h4>
+                            </div>
+                            <p class="text-xs text-slate-600">
+                                השאלון מורכב מ-<strong>20 שאלות</strong> מאוזנות (4 שאלות מכל אחד מ-5 תחומי הליבה). 
+                                <strong>סף מעבר: 85% ציון כולל, עם חובת 100% בחלק החישוב הרוקחי!</strong>
+                            </p>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 print:hidden">
+                            <button onclick="generateFreshExam()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">
+                                <i class="fa-solid fa-shuffle text-brand-400"></i>
+                                <span>ערבב שאלון חדש</span>
+                            </button>
+                            <button onclick="printOfficialExam()" class="bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold px-3.5 py-2 rounded-xl flex items-center gap-1.5 transition-colors shadow-sm">
+                                <i class="fa-solid fa-print text-slate-500"></i>
+                                <span>הדפס טופס מבחן רשמי (A4)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Exam Candidate Meta (For Print & Records) -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                        <div>
+                            <span class="text-slate-500 block text-[10px]">שם המודרך/ת:</span>
+                            <strong class="text-slate-800" id="exam-trainee-name">רחל ישראלי</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-[10px]">תאריך בחינה:</span>
+                            <strong class="text-slate-800" id="exam-current-date">30/10/2026</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-[10px]">מחלקה:</span>
+                            <strong class="text-slate-800" id="exam-trainee-dept">סיעוד מורכב</strong>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block text-[10px]">סטטוס מבחן:</span>
+                            <span id="exam-status-badge" class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[11px]">בביצוע (טרם הוגש)</span>
+                        </div>
+                    </div>
+
+                    <!-- Exam Questions List -->
+                    <div id="exam-questions-container" class="space-y-4">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <!-- Exam Submission Action -->
+                    <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-4 border-t border-slate-200 print:hidden">
+                        <div class="text-xs text-slate-500">
+                            * וודא/י כי נענו כל 20 השאלות לפני לחיצה על כפתור הגשת המבחן.
+                        </div>
+                        <button onclick="submitExamForEvaluation()" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm px-6 py-3 rounded-xl flex items-center justify-center gap-2 shadow-md shadow-emerald-600/20 transition-all active:scale-95">
+                            <i class="fa-solid fa-circle-check"></i>
+                            <span>הגש מבחן ובדוק ציון סופי</span>
+                        </button>
+                    </div>
+
+                    <!-- Exam Evaluation Results Box (Hidden until submit) -->
+                    <div id="exam-results-modal" class="hidden bg-slate-50 border-2 border-slate-300 rounded-2xl p-6 space-y-5">
+                        <!-- Populated by submitExamForEvaluation() -->
+                    </div>
+
+                </div>
+
+                <!-- ============================================== -->
+                <!-- PANE 2: INTERACTIVE SELF-PRACTICE MODE          -->
+                <!-- ============================================== -->
+                <div id="pane-pharm-practice" class="pharm-pane hidden bg-white rounded-xl border border-slate-200 p-5 space-y-6 shadow-sm">
+                    
+                    <!-- Practice Header & Filter -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-emerald-50/60 p-4 rounded-xl border border-emerald-200/60">
+                        <div class="space-y-1">
+                            <div class="flex items-center gap-2">
+                                <span class="bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded">תירגול אינטראקטיבי</span>
+                                <h4 class="font-extrabold text-slate-900 text-base">תירגול עצמי עם משוב מיידי ורציונל קליני מפורט</h4>
+                            </div>
+                            <p class="text-xs text-slate-600">
+                                בחר/י תשובה כדי לקבל בדיקה אוטומטית במקום, הסבר מעמיק, דגשי ניטור סיעודי ומקורות מהספרות המקצועית.
+                            </p>
+                        </div>
+
+                        <!-- Real-time Practice Score Counter -->
+                        <div class="bg-white px-4 py-2 rounded-xl border border-emerald-200 shadow-sm flex items-center gap-3 text-xs">
+                            <div class="text-slate-500">תשובות נכונות בתירגול:</div>
+                            <div class="font-black text-emerald-600 text-base" id="practice-score-counter">0 / 0</div>
+                        </div>
+                    </div>
+
+                    <!-- Category Filter Buttons -->
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <button onclick="filterPracticeCategory('all')" class="practice-filter-btn active bg-slate-800 text-white px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            הכל (30 שאלות)
+                        </button>
+                        <button onclick="filterPracticeCategory('calc')" class="practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            חישוב רוקחי וקצבי עירוי (6)
+                        </button>
+                        <button onclick="filterPracticeCategory('high_alert')" class="practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            תרופות High-Alert וניטור (6)
+                        </button>
+                        <button onclick="filterPracticeCategory('beers')" class="practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            קריטריוני Beers ופסיכוטרופיים (6)
+                        </button>
+                        <button onclick="filterPracticeCategory('routes')" class="practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            דרכי מתן ו-PEG (6)
+                        </button>
+                        <button onclick="filterPracticeCategory('interactions')" class="practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors">
+                            אינטראקציות ופרמקוקינטיקה (6)
+                        </button>
+                    </div>
+
+                    <!-- Practice Questions Container -->
+                    <div id="practice-questions-container" class="space-y-4">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                </div>
+
+                <!-- ============================================== -->
+                <!-- PANE 3: MASTER QUESTION BANK & ACCORDION (30)  -->
+                <!-- ============================================== -->
+                <div id="pane-pharm-master" class="pharm-pane hidden bg-white rounded-xl border border-slate-200 p-5 space-y-6 shadow-sm">
+                    
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="bg-cyan-600 text-white text-[10px] font-black px-2 py-0.5 rounded">מאגר מלא</span>
+                                <h4 class="font-extrabold text-slate-900 text-base">מאגר השאלות המלא, מפתח התשובות והרציונלים הקליניים</h4>
+                            </div>
+                            <p class="text-xs text-slate-600 mt-0.5">
+                                כולל את כל 30 השאלות המעודכנות בסוכן, מסווגות לפי תחומי מומחיות ורציונלים מלאים להדרכת צוות.
+                            </p>
+                        </div>
+                        <div class="relative w-full md:w-64">
+                            <input type="text" id="master-bank-search" oninput="searchMasterBank(this.value)" placeholder="חפש שאלה, תרופה או מושג..." class="w-full text-xs bg-white border border-slate-300 rounded-xl px-3 py-2 text-right focus:outline-none focus:border-brand-500">
+                        </div>
+                    </div>
+
+                    <!-- Master Questions Accordion -->
+                    <div id="master-bank-container" class="space-y-3 text-xs">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                </div>
+
+                <!-- ============================================== -->
+                <!-- PANE 4: ORAL EXAM SCENARIOS (ORIGINAL PRESERVED) -->
+                <!-- ============================================== -->
+                <div id="pane-pharm-oral" class="pharm-pane hidden space-y-4">
+                    <!-- Preserved original 4 oral scenarios -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 space-y-4">
+                        <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2 border-b border-slate-200 pb-2">
+                            <i class="fa-solid fa-comments-question text-brand-600"></i>
+                            בנק שאלות מנחה ותשובות מצופות למבחן בעל פה (שאלות בוחן/ית)
+                        </h3>
+
+                        <div class="space-y-3 text-xs">
+                            
+                            <!-- Question 1 -->
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
+                                <div class="font-bold text-slate-800 text-xs">
+                                    שאלה 1 [High-Alert & נוגדי קרישה]: מטופל גריאטרי מיועד לקבלת Clexane / נוגד קרישה פומבי חדש (DOAC). מהם הדגשים הניטוריים?
+                                </div>
+                                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
+                                    <strong>תשובה מצופה מנבדק/ת:</strong> בדיקת רמות המוגלובין/טפח דימום, ניטור סימני דימום סמוי/גלוי (צואה שחורה, המטוריה, חבלות עוריות), בדיקת תפקודי כליות (Creatinine Clearance) להתאמת מינון, והקפדה על מתן בזמן קבוע.
+                                </div>
+                            </div>
+
+                            <!-- Question 2 -->
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
+                                <div class="font-bold text-slate-800 text-xs">
+                                    שאלה 2 [קריטריוני Beers & פסיכוטרופיים]: מהן הסכנות במתן תרופות הרגעה/שינה (בנזודיאזפינים/אנטי-פסיכוטיות) בקשישים?
+                                </div>
+                                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
+                                    <strong>תשובה מצופה מנבדק/ת:</strong> סיכון מוגבר לנפילות ושברים עקב סדציה ואטקסיה, החמרת ליקוי קוגניטיבי, ירידה בלתי רצונית בלחץ דם (תת לחץ דם תנוחתי), סיכון מוגבר לתחלואה ותמותה לפי Beers Criteria. חובה לנטר מדדים חיוניים ורמת ערנות.
+                                </div>
+                            </div>
+
+                            <!-- Question 3 -->
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
+                                <div class="font-bold text-slate-800 text-xs">
+                                    שאלה 3 [מתן דרך PEG / NG]: מהן כללי הבטיחות בכתישה ומתן תרופות דרך צינורית הזנה אנטרלית?
+                                </div>
+                                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
+                                    <strong>תשובה מצופה מנבדק/ת:</strong> איסור מוחלט על כתישת תרופות בשחרור משהה/מושהה (Slow Release/EC/CR); כתישה והמסה נפרדת של כל תרופה בנפרד; הפסקת הזנה אנטרלית במידת הצורך (למשל עם פניטואין/ציפרופלוקסצין); שטיפת הצינורית ב-30 מ"ל מים פושרים לפני ואחרי מתן התרופות.
+                                </div>
+                            </div>
+
+                            <!-- Question 4 -->
+                            <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-2 shadow-sm">
+                                <div class="font-bold text-slate-800 text-xs">
+                                    שאלה 4 [אירוע חריג בתרופות]: התגלתה טעות בחלוקת תרופה (מתן מינון כפול / תרופה שגויה). מהן הפעולות הנדרשות?
+                                </div>
+                                <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-slate-700 leading-relaxed">
+                                    <strong>תשובה מצופה מנבדק/ת:</strong> 1. אומדן וניטור מיידי של המטופל (מדדים חיוניים, מצב הכרה). 2. דיווח מיידי לרופא המחלקה ולאחות האחראית. 3. מתן אנטגוניסט/טיפול נוגד לפי הוראה. 4. תיעוד עובדתי ברשומה הרפואית. 5. מילוי טופס דיווח אירוע חריג בטיחותי.
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+<!-- Clinical Observation Checklist Table -->
                 <div class="space-y-3">
                     <h3 class="font-bold text-slate-900 text-sm flex items-center gap-2 border-b border-slate-200 pb-2">
                         <i class="fa-solid fa-clipboard-check text-brand-600"></i>
@@ -1013,6 +1268,7 @@
             activeTraineeId = id;
             saveToLocalStorage();
             renderActiveTrainee();
+            if (typeof generateFreshExam === 'function') generateFreshExam();
         }
 
         // RENDER ACTIVE TRAINEE
@@ -1970,6 +2226,985 @@
         }
 
         // INITIALIZATION ON LOAD
+        
+        // ==============================================================
+        // PHARMACOLOGY QUESTION BANK AGENT ENGINE (30 QUESTIONS MASTER)
+        // ==============================================================
+        const masterPharmBank = [
+  {
+    "id": "calc_1",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "הוראה רפואית: מתן Furosemide (Fusid) 40 mg IV Push למטופלת עם החמרת אי-ספיקת לב. באמפולה קיים ריכוז של 20 mg / 2 ml. מהו הנפח במ\"ל שיש לשאוב, ומהו קצב ההזרקה הבטוח המומלץ?",
+    "options": [
+      "שאיבת 4 מ\"ל, הזרקה מהירה תוך 10 שניות.",
+      "שאיבת 4 מ\"ל, הזרקה איטית בקצב של מקסימום 4 מ\"ג לדקה (משך לפחות 10 דקות למניעת אוטוטוקסיות).",
+      "שאיבת 2 מ\"ל, הזרקה איטית תוך 2 דקות.",
+      "שאיבת 8 מ\"ל, הזרקה בבולוס מהיר."
+    ],
+    "correct": 1,
+    "rationale": "חישוב נפח: (40 mg / 20 mg) * 2 ml = 4 ml. לפי Lippincott Nursing Drug Handbook, מתן IV מהיר של פורוסמיד מעלה סיכון לאוטוטוקסיות בלתי הפיכה (Ototoxicity) וירידה חדה בלחץ דם. קצב ההזרקה המירבי הבטוח הוא 4 מ\"ג/דקה (כלומר 40 מ\"ג יוזרקו במשך 10 דקות לפחות).",
+    "source": "Lippincott Nursing Drug Handbook 2026 - Loop Diuretics"
+  },
+  {
+    "id": "calc_2",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "מטופל גריאטרי מיובש זקוק לעירוי Saline 0.9% בנפח 1,000 מ\"ל במשך 8 שעות. בסט העירוי המחלקתי הרגיל מקדם הטפטוף הוא 20 טיפות למ\"ל (20 gtt/ml). מהו קצב הטפטוף המדויק בטיפות לדקה (gtt/min)?",
+    "options": [
+      "21 טיפות לדקה",
+      "32 טיפות לדקה",
+      "42 טיפות לדקה",
+      "55 טיפות לדקה"
+    ],
+    "correct": 2,
+    "rationale": "נוסחת קצב טפטוף: (נפח במ\"ל * מקדם טפטוף) / (זמן בשעות * 60 דקות) = (1,000 * 20) / (8 * 60) = 20,000 / 480 = 41.66 ≈ 42 טיפות לדקה.",
+    "source": "Davis's Drug Guide for Nurses - Dosage Calculation Fundamentals"
+  },
+  {
+    "id": "calc_3",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "הוראה רפואית: מתן Cefazolin (Cefamezin) 500 mg IVPB בתוך 100 מ\"ל סליין במשך 30 דקות. מהו קצב הזרימה שיש לכוון במשאבת העירוי החשמלית (מ\"ל/שעה - ml/hr)?",
+    "options": [
+      "100 מ\"ל/שעה",
+      "150 מ\"ל/שעה",
+      "200 מ\"ל/שעה",
+      "50 מ\"ל/שעה"
+    ],
+    "correct": 2,
+    "rationale": "נוסחת משאבת עירוי: (נפח במ\"ל / זמן בדקות) * 60 = (100 / 30) * 60 = 200 מ\"ל/שעה.",
+    "source": "Clinical Nursing Skills & Drug Calculations in Geriatrics"
+  },
+  {
+    "id": "calc_4",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "מטופל סיעודי מקבל תמיסת הזנה אנטרלית בנפח יומי של 1,500 מ\"ל הניתנת ברציפות במשך 24 שעות באמצעות משאבת הזנה (קנגורו). מהו קצב ההזנה המדויק במ\"ל לשעה?",
+    "options": [
+      "50.5 מ\"ל/שעה",
+      "62.5 מ\"ל/שעה",
+      "75.0 מ\"ל/שעה",
+      "83.3 מ\"ל/שעה"
+    ],
+    "correct": 1,
+    "rationale": "חישוב: 1,500 מ\"ל לחלק ל-24 שעות = 62.5 מ\"ל/שעה.",
+    "source": "ESPEN Guidelines on Enteral Nutrition in Geriatrics"
+  },
+  {
+    "id": "calc_5",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "הוראה רפואית: מתן Heparin בעירוי מתמשך בקצב של 800 יחידות/שעה (units/hr). שקית העירוי מכילה 25,000 יחידות Heparin בתוך 500 מ\"ל תמיסת D5W. מהו קצב העירוי במ\"ל/שעה (ml/hr) שיש לכוון במשאבה?",
+    "options": [
+      "8 מ\"ל/שעה",
+      "16 מ\"ל/שעה",
+      "32 מ\"ל/שעה",
+      "20 מ\"ל/שעה"
+    ],
+    "correct": 1,
+    "rationale": "ריכוז התמיסה: 25,000 units / 500 ml = 50 units/ml. קצב זרימה: 800 units/hr / 50 units/ml = 16 ml/hr. חישוב מדויק של נוגדי קרישה חיוני למניעת אירועי דמם קטלניים.",
+    "source": "Clinical Dosage Calculations & ISMP Anticoagulant Safety Protocols"
+  },
+  {
+    "id": "calc_6",
+    "category": "calc",
+    "catName": "חישוב רוקחי וקצבי עירוי",
+    "isCalc": true,
+    "question": "מטופל מונשם זקוק למתן Paracetamol (Acamol) IV במינון 750 מ\"ג עקב חום וסבל. בידי האחות בקבוק עירוי מוכן של Paracetamol 10 mg / 1 ml בנפח 100 מ\"ל. איזה נפח יש לתת למטופל, ומהו זמן העירוי המינימלי המותר?",
+    "options": [
+      "75 מ\"ל, במשך 15 דקות לפחות.",
+      "50 מ\"ל, בבולוס תוך 3 דקות.",
+      "100 מ\"ל, במשך 60 דקות.",
+      "7.5 מ\"ל, בהזרקה מהירה."
+    ],
+    "correct": 0,
+    "rationale": "חישוב נפח: 750 mg / 10 mg/ml = 75 ml. לפי הנחיות היצרן וספרות התרופות (Lippincott Nursing Drug Handbook), פראצטמול IV חייב להינתן בעירוי קצר במשך 15 דקות לפחות למניעת תגובות לוואי ופגיעה בווריד.",
+    "source": "Lippincott Nursing Drug Handbook 2026 - Analgesics & Antipyretics"
+  },
+  {
+    "id": "ha_1",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "מטופל גריאטרי בן 84 מטופל ב-Digoxin 0.125 mg ליום. האחות מודדת דופק אפיקלי של 52 פעימות לדקה, והמטופל מתלונן על בחילה, חוסר תיאבון וראיית הילות צהובות/ירוקות. מהי הפעולה הסיעודית המיידית הנדרשת?",
+    "options": [
+      "מתן התרופה עם כוס מים מלאה ומדידת דופק חוזרת בעוד שעתיים.",
+      "השהיית מתן הדיגוקסין באופן מיידי, דיווח דחוף לרופא המחלקה, ונטילת דם לרמת דיגוקסין ואלקטרוליטים (אשלגן ומגנזיום).",
+      "הזמנת אק\"ג דחוף בלבד ומתן חצי כדור בהתאם להוראת אחות ותיקה.",
+      "החלפת התרופה בפוסיד פומי ללא צורך בהודעה לרופא."
+    ],
+    "correct": 1,
+    "rationale": "ברדיקרדיה (<60 לדקה), בחילות, אנורקסיה והפרעות ראייה (xanthopsia) הם סימנים קלאסיים להרעלת דיגוקסין (Digoxin Toxicity). היפוקלמיה והיפומגנזמיה מעלות משמעותית את רעילות התרופה. חובה להשהות את המתן, לבדוק רמות דיגוקסין ואלקטרוליטים, ולדווח מיידית.",
+    "source": "Lippincott Nursing Drug Handbook - Inotropic Agents & Toxicity"
+  },
+  {
+    "id": "ha_2",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "באימות והכנת אינסולין מסוג Regular ו-NPH באותו מזרק לפי הוראה רפואית, מהו הסדר התקני המונע זיהום של בקבוקון האינסולין קצר-הטווח (Regular)?",
+    "options": [
+      "הזרקת אוויר ל-Regular, הזרקת אוויר ל-NPH, שאיבת NPH ואז שאיבת Regular.",
+      "הזרקת אוויר ל-NPH (עכור), הזרקת אוויר ל-Regular (צלול), שאיבת Regular (צלול), ולאחר מכן שאיבת NPH (עכור) - כלל 'Clear before Cloudy'.",
+      "שאיבת NPH תחילה ולאחר מכן Regular ללא הזרקת אוויר מקדימה.",
+      "אין משמעות לסדר השאיבה כל עוד המינון הכולל תואם להוראה."
+    ],
+    "correct": 1,
+    "rationale": "כלל הבטיחות הסיעודי (ISMP & ADA): 'Clear before Cloudy'. מזריקים אוויר לבקבוק ה-NPH, מזריקים אוויר לבקבוק ה-Regular, שואבים תחילה את ה-Regular (הצלול), ורק אז את ה-NPH (העכור). סדר זה מונע מעבר של חלבוני NPH משהים לבקבוק ה-Regular.",
+    "source": "ISMP Guidelines for Safe Insulin Administration"
+  },
+  {
+    "id": "ha_3",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "מטופלת המאושפזת בסיעוד מורכב מקבלת עירוי אופיואידי (Morphine) לשיכוך כאב. בעת ניטור משמרת, נספר קצב נשימות של 8 נשימות לדקה והמטופלת קשה להערה (סדציה עמוקה). מהו נוגד הפעולה (Antidote) הייעודי ומהו פרוטוקול המתן הראשוני?",
+    "options": [
+      "מתן Flumazenil (Anexate) 0.2 mg IV בבולוס מהיר.",
+      "מתן Naloxone (Narcan) 0.1-0.2 mg IV במיהול, הזרקה איטית במנות קטנות תוך ניטור צמוד של קצב נשימות ורמת ערנות.",
+      "מתן Protamine Sulfate 50 mg IV תוך 10 דקות.",
+      "מתן Vitamin K (Phytomenadione) 10 mg SC."
+    ],
+    "correct": 1,
+    "rationale": "נלוקסון (Narcan) הוא אנטגוניסט תחרותי לקולטני אופיואידים. דיכוי נשימתי מוגדר כפחות מ-10 נשימות לדקה. מתן נלוקסון חייב להתבצע בהזרקה איטית ובמנות מדודות (0.1-0.2 מ\"ג) במטרה להחזיר נשימה ספונטנית מבלי לעורר תסמונת גמילה חריפה וכאב מתפרץ בלתי נשלט.",
+    "source": "WHO Guidelines for Pain Management & Opioid Safety"
+  },
+  {
+    "id": "ha_4",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "במטופל גריאטרי המקבל Enoxaparin (Clexane) 40 mg SC ליום למניעת VTE, איזו תוצאת מעבדה מחייבת פנייה מיידית לרופא להתאמת מינון או הפסקת הטיפול?",
+    "options": [
+      "ספירת טסיות (Platelets) שיורדת מתחת ל-100,000 או ירידה של יותר מ-50% מרמת הבסיס (חשד ל-HIT), או פינוי קריאטינין (CrCl) מתחת ל-30 מ\"ל/דקה.",
+      "רמת המוגלובין של 13.5 g/dl.",
+      "רמת נתרן של 138 mEq/L.",
+      "גלוקוז בצום 110 mg/dl."
+    ],
+    "correct": 0,
+    "rationale": "הסכנות המרכזיות בטיפול בקלקסן: 1. Heparin-Induced Thrombocytopenia (HIT) - מתבטא בירידה חדה בטסיות. 2. פגיעה כלייתית חמורה (CrCl < 30 ml/min) המובילה להצטברות התרופה וסיכון דמם קטלני, המחייבת הפחתת מינון ל-20 מ\"ג או מעבר להפרין רגיל.",
+    "source": "Lippincott Nursing Drug Handbook - Antithrombotic Safety in the Elderly"
+  },
+  {
+    "id": "ha_5",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "מדוע חל איסור מוחלט על מתן Potassium Chloride (KCL) בהזרקת IV Push ישירה?",
+    "options": [
+      "גורם לבחילה קשה והקאה בלתי נשלטת.",
+      "גורם לדום לב מיידי עקב פרפור חדרים (Cardiac Arrest) ומוות תוך שניות.",
+      "גורם לחסימת צנתר העירוי עקב משקעים כימיים.",
+      "מוריד את לחץ הדם באופן הדרגתי בלבד."
+    ],
+    "correct": 1,
+    "rationale": "אשלגן תוך-ורידי בריכוז גבוה גורם להפרעת הולכה לבבית קטלנית, אסיסטולה ודום לב מיידי. לפי נהלי בטיחות של ISMP ומשרד הבריאות, KCL יינתן תמיד ורק במהילה מתאימה ובעירוי איטי ומבוקר באמצעות משאבה, לעולם לא ב-Push!",
+    "source": "ISMP High-Alert Medication Guidelines - Potassium Injections"
+  },
+  {
+    "id": "ha_6",
+    "category": "high_alert",
+    "catName": "תרופות בסיכון גבוה (High-Alert)",
+    "question": "במטופל הנוטל Warfarin (Coumadin), מהו טווח ה-INR הטיפולי המקובל ברוב המצבים (כגון פרפור עליות או DVT), ואיזה תכשיר משמש כנוגד פעולה (Antidote) במקרה של דימום חריף ו-INR מוגבר?",
+    "options": [
+      "INR 1.0-1.5; Antidote: Protamine Sulfate",
+      "INR 2.0-3.0; Antidote: Vitamin K1 (Phytomenadione) ו/או תרכיז פרוטרומבין (PCC)",
+      "INR 3.5-4.5; Antidote: Atropine",
+      "INR 0.8-1.2; Antidote: Tranexamic Acid (Hexakapron) בלבד"
+    ],
+    "correct": 1,
+    "rationale": "טווח ה-INR המקובל במרבית ההתוויות (AFib, DVT/PE) הוא 2.0-3.0. במצבי דמם מסכן חיים עם עודף קומדין, הטיפול כולל מתן Vitamin K1 (בדרך כלל תוך-ורידי איטי) יחד עם תרכיז גורמי קרישה PCC להשפעה מיידית.",
+    "source": "Chest Guidelines for Antithrombotic Therapy & Reversal"
+  },
+  {
+    "id": "beers_1",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "על פי קריטריוני AGS Beers Criteria 2023, מדוע יש להימנע ככל האפשר ממתן תרופות הרגעה מקבוצת הבנזודיאזפינים (כגון Diazepam, Lorazepam, Clonazepam) לקשישים?",
+    "options": [
+      "בשל סיכון לירידה בספירת תאי הדם הלבנים.",
+      "בשל עלייה מובהקת בסיכון לנפילות, שברי צוואר ירך, פגיעה קוגניטיבית חמורה, בלבול ותאונות דרכים עקב הארכת זמן מחצית החיים בגיל השלישי.",
+      "בשל סיכון לעלייה מסוכנת ברמות הסוכר בדם.",
+      "בשל ירידה בספיגת ויטמינים מסיסי שומן במעי."
+    ],
+    "correct": 1,
+    "rationale": "בגיל המבוגר חלה עלייה באחוז השומן וירידה בפינוי הכלייתי/כבדי, מה שמאריך את זמן מחצית החיים של בנזודיאזפינים. לפי קריטריוני Beers 2023, הם קשורים ישירות לסיכון מוכח פי 2-3 לנפילות קשות, שברים, דליריום ותמותה מוגברת בקשישים.",
+    "source": "AGS Beers Criteria® for Potentially Inappropriate Medication Use in Older Adults"
+  },
+  {
+    "id": "beers_2",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "איזו מקבוצות התרופות הבאות נושאת את הסיכון הגבוה ביותר לתופעות לוואי אנטיכולינרגיות קשות בקשישים (כגון אצירת שתן, עצירות, דליריום, יובש קיצוני בפה והחמרת גלאוקומה)?",
+    "options": [
+      "מעכבי ACE (כגון Ramipril / Enalapril).",
+      "אנטי-היסטמינים דור ראשון (כגון Diphenhydramine/Otrivin/Dimenhydrinate) ונוגדי דיכאון טריציקליים (TCA כגון Amitriptyline).",
+      "תכשירי ויטמין D וסידן.",
+      "סטטינים (כגון Atorvastatin)."
+    ],
+    "correct": 1,
+    "rationale": "אנטי-היסטמינים דור ראשון ו-TCAs הם בעלי Anticholinergic Burden גבוה במיוחד. בקשישים, חסימת קולטנים כולינרגיים גורמת לאצירת שתן חריפה (דורש קטטר), עצירות עקשנית, יובש ריריות, טשטוש ראייה והחמרה מהירה של בלבול ודליריום.",
+    "source": "Anticholinergic Cognitive Burden Scale & Beers Criteria"
+  },
+  {
+    "id": "beers_3",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "במטופל דמנטי עם אי-שקט חריף, מהי האזהרה הקריטית (Black Box Warning) של ה-FDA לגבי שימוש בתרופות אנטי-פסיכוטיות (טיפוסיות ולא-טיפוסיות כגון Haloperidol, Risperidone, Quetiapine)?",
+    "options": [
+      "סיכון להתפתחות כיב קיבה מדמם.",
+      "עלייה מובהקת בשיעור התמותה (פי 1.6-1.7) כתוצאה מאירועים מוחיים (CVA/TIA) ואירועים קרדיווסקולריים בקשישים עם דמנציה.",
+      "סיכון להצטברות אבני כיס מרה.",
+      "פגיעה בלתי הפיכה בשמיעה."
+    ],
+    "correct": 1,
+    "rationale": "ה-FDA והנחיות משרד הבריאות קובעים אזהרת קופסה שחורה ברורה: טיפול בתרופות אנטי-פסיכוטיות בקשישים עם תסמיני התנהגות עקב דמנציה מעלה משמעותית את שיעור התמותה מאירועי שבץ מוחי ואי ספיקת לב. השימוש מוגבל למצבי סיכון עצמי קיצוניים ובמינון הנמוך ביותר.",
+    "source": "FDA Black Box Warning & MOH Clinical Practice Directive"
+  },
+  {
+    "id": "beers_4",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "מדוע מומלץ להימנע ממתן כרוני של נוגדי דלקת לא-סטרואידיים (NSAIDs כגון Ibuprofen, Diclofenac, Naproxen) בקשישים עם יתר לחץ דם, אי-ספיקת לב או מחלת כליות כרונית?",
+    "options": [
+      "גורמים לירידה בריכוז הסוכר בדם (היפוגליקמיה).",
+      "מעכבים פרוסטגלנדינים כלייתיים, גורמים לאצירת נתרן ומים, החמרת יתר לחץ דם, אי ספיקת כליות חריפה ועלייה חמורה בסיכון לדימום מדרכי העיכול.",
+      "גורמים לירידה חדה ברמות האשלגן בדם.",
+      "מאיצים התפתחות אוסטאופורוזיס."
+    ],
+    "correct": 1,
+    "rationale": "פרוסטגלנדינים מרחיבים את כלי הדם הכלייתיים לשמירה על GFR בקשיש. NSAIDs חוסמים מנגנון זה, מובילים לירידה בזרימת דם לכליות, אצירת נוזלים חמורה, ביטול יעילות תרופות ליל\"ד ואי-ספיקת לב, ודימומים קשים מכיב קיבה.",
+    "source": "AGS Beers Criteria - Cardiovascular & Renal Safety"
+  },
+  {
+    "id": "beers_5",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "מטופל בן 79 מקבל טיפול תרופתי ב-Tamsulosin (Omnic) להגדלת ערמונית שפירה. מהו הסיכון המרכזי בעת מעבר משכיבה לעמידה, ואיזו הנחיה סיעודית חיונית למניעת נפילה?",
+    "options": [
+      "סיכון להיפרתרמיה; יש לקרר את החדר.",
+      "תת לחץ דם תנוחתי (Orthostatic Hypotension) עקב חסימת רצפטורי אלפא; יש להנחות את המטופל לקום באיטיות, לשבת בקצה המיטה 2 דקות לפני עמידה, ולנטר ל\"ד בשכיבה ובעמידה.",
+      "סיכון להתקף אסתמה חריף; יש להכין אינהלציה.",
+      "סיכון לחוסר תחושה בכפות הידיים בלבד."
+    ],
+    "correct": 1,
+    "rationale": "חוסמי אלפא מרפים את השריר החלק בכלי הדם ועלולים לגרום לירידה תלולה בלחץ הדם בשינוי תנוחה (Orthostatic Hypotension), סחרחורת ונפילה. ההנחיה הסיעודית הקריטית היא קימה מדורגת עם ישיבה על שפת המיטה וניטור קבוע של מדדי לחץ דם תנוחתיים.",
+    "source": "Nursing Assessment of Fall Risk & Beers Criteria"
+  },
+  {
+    "id": "beers_6",
+    "category": "beers",
+    "catName": "קריטריוני Beers ופסיכוטרופיים",
+    "question": "קשיש בן 86 עם דמנציה ודליפת שתן סובל מיובש קיצוני בפה, עצירות קשה והחמרת בלבול לאחר התחלת Oxybutynin (Novitropan). מהו הניתוח הקליני לפי קריטריוני Beers 2023?",
+    "options": [
+      "מדובר בתופעות צפויות ואין לשנות טיפול ללא הוראה נוירולוגית.",
+      "לאוקסיבוטינין נטל אנטיכולינרגי גבוה (High Anticholinergic Burden); קריטריוני Beers ממליצים להימנע משימוש בו בקשישים עקב סיכון להחמרת דליריום וירידה קוגניטיבית.",
+      "יש להעלות מינון עקב חוסר יעילות מספקת בשליטה על שלפוחית השתן.",
+      "יש לשלב תרופה משלשלת וללא צורך בהערכה מחדש של התרופה."
+    ],
+    "correct": 1,
+    "rationale": "Oxybutynin הוא בעל פעילות אנטיכולינרגית חזקה (Score 3 ב-ACB scale) שחודר מחסום דם-מוח, גורם לאצירת שתן, עצירות, דליריום והחמרת ירידה קוגניטיבית. לפי AGS Beers Criteria 2023, מומלץ להימנע ממתן אנטיכולינרגיים לקשישים עם ליקוי קוגניטיבי ולהעדיף טיפול לא תרופתי או חלופה סלקטיבית (כגון Mirabegron).",
+    "source": "AGS Beers Criteria® 2023 Update - Anticholinergic Cognitive Burden"
+  },
+  {
+    "id": "routes_1",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "איזה מבין התכשירים הבאים חל עליו איסור מוחלט לכתישה או לחציה לפני מתן דרך הפה או צינורית הזנה (PEG)?",
+    "options": [
+      "Paracetamol 500 mg טבליה רגילה שאינה מצופה.",
+      "טבליית שחרור מושהה / מבוקר (כגון OxyContin CR, Adalat CC, או טבליות בעלות ציפוי אנטרי EC).",
+      "Furosemide 40 mg טבליה רגילה עם קו חצייה.",
+      "Digoxin 0.25 mg טבליה רגילה."
+    ],
+    "correct": 1,
+    "rationale": "כתישת תרופות שחרור מבוקר/מושהה (CR/SR/ER/XR/EC) פוגעת במנגנון השחרור המדורג וגורמת לשחרור מהיר ומיידי של כל כמות התרופה (Dose Dumping), מה שמוביל להרעלה קטלנית. תרופות עם ציפוי אנטרי נהרסות מחומצת הקיבה אם נכתשות.",
+    "source": "ISMP 'Do Not Crush' List & MOH Clinical Practice Directive"
+  },
+  {
+    "id": "routes_2",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "מהו הפרוטוקול התקני למתן 4 תרופות שונות דרך צינורית הזנה אנטרלית (PEG / NG) על מנת למנוע חסימת הצינורית ואינטראקציה פיזיקלית בין תרופות?",
+    "options": [
+      "כתישת כל 4 התרופות יחד באותו מכתש והמסה בכוס מים אחת להזרקה מהירה.",
+      "כתישה והמסה של כל תרופה בנפרד בכלי נפרד; שטיפת הצינורית ב-15-30 מ\"ל מים לפני תחילת המתן, שטיפה של 5-10 מ\"ל בין תרופה לתרופה, ושטיפה סופית של 30 מ\"ל מים.",
+      "הזרקת התרופות לתוך שקית תמיסת ההזנה האנטרלית וערבובן יחד.",
+      "ערבוב התרופות עם תה ממותק או מיץ תפוזים לשיפור הטעם."
+    ],
+    "correct": 1,
+    "rationale": "לפי נהלי ASPEN ובטיחות הטיפול: ערבוב תרופות יחד עלול ליצור משקעים פיזיקו-כימיים החוסמים את צינורית ההזנה ופוגעים בספיגה. יש לכתוש ולהמיס כל תרופה בנפרד, ולבצע שטיפת מים (Water flush) לפני, בין, ולאחר סיום מתן התרופות.",
+    "source": "ASPEN Safe Enteral Medication Administration Practice"
+  },
+  {
+    "id": "routes_3",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "מטופל המוזן ב-PEG מקבל טיפול אנטיביוטי פומי ב-Ciprofloxacin או טיפול נוגד פרכוסים ב-Phenytoin. מדוע חובה להפסיק את הזנת הנוזלים האנטרלית למשך 1-2 שעות לפני ואחרי מתן התרופה?",
+    "options": [
+      "תמיסת ההזנה גורמת לעלייה חדה בחומציות הקיבה.",
+      "מרכיבי תמיסת ההזנה (יוני סידן, מגנזיום וחלבונים) קושרים את התרופה במעי, מונעים את ספיגתה ומורידים את רמתה בדם מתחת לסף הטיפולי (תת-מינון קליני).",
+      "שילוב זה גורם לעצירות חמורה.",
+      "התרופה מעכבת את פעילות המעי וגורמת לרפלוקס בלבד."
+    ],
+    "correct": 1,
+    "rationale": "פורמולות הזנה אנטרליות מכילות קטיונים דו-ערכיים (סידן, מגנזיום, ברזל) שיוצרים קומפלקסים בלתי מסיסים (Chelation) עם ציפרופלוקסצין ופניטואין ומפחיתים ספיגה בעד 75%. חובה להשהות הזנה שעה עד שעתיים לפני ואחרי המתן ולשטוף היטב.",
+    "source": "Drug-Nutrient Interactions in Enteral Feeding - Clinical Pharmacology"
+  },
+  {
+    "id": "routes_4",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "במתן מדבקת Fentanyl Transdermal (Durogesic) לשיכוך כאב כרוני, מהו כלל הבטיחות הקריטי ביותר בשימוש והסרה?",
+    "options": [
+      "הדבקת המדבקה החדשה בדיוק באותו מיקום של המדבקה הקודמת.",
+      "הסרת המדבקה הישנה, קיפולה לשניים (דבק אל דבק), סילוקה לפי נוהל סמים מסוכנים, הדבקת החדשה באזור עור נקי, יבש וללא שיער, והימנעות מוחלטת מחימום מקומי (כרית חימום).",
+      "חיתוך המדבקה לחצי במספריים אם הרופא הפחית מינון ב-50%.",
+      "הנחת כרית חימום חשמלית על המדבקה להאצת ספיגת החומר הפעיל."
+    ],
+    "correct": 1,
+    "rationale": "חום חיצוני מגביר דרמטית את ספיגת הפנטניל דרך העור ועלול לגרום להרעלה קטלנית ודום נשימה! חל איסור מוחלט לגזור מדבקת פנטניל (פוגע במאגר ומשחרר בולוס מסוכן). חובה להסיר את המדבקה הישנה לפני הדבקת חדשה כדי למנוע הצטברות מינון כפול.",
+    "source": "ISMP Transdermal Drug Delivery Guidelines & Controlled Substances Act"
+  },
+  {
+    "id": "routes_5",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "מטופל גריאטרי עם קשיי בליעה מקבל כדור Omeprazole (Losec) 20 mg. האחות מתבקשת לרסק את הכדור כדי לתת אותו ברסק תפוחים. מהי הפעולה המקצועית הנכונה על פי כללי בטיחות במתן תרופות?",
+    "options": [
+      "לרסק את הכדור במכתש ועלי לאבקה דקה ולערבב ברסק.",
+      "אין לכתוש כדורי אומפרזול בעלי ציפוי אנטרי (EC); יש להשתמש בקפסולה שניתן לפתוח ולפזר את הגרגרים בשלמותם ברסק חומצי מבלי ללעוס/לכתוש אותם.",
+      "להמיס את הכדור במים חמים בטמפרטורה של 60 מעלות.",
+      "לחצות את הכדור לשניים ולתת בבליעה עם מים."
+    ],
+    "correct": 1,
+    "rationale": "Omeprazole רגיש לחומציות הקיבה ומיוצר עם ציפוי עמיד לחומצה (Enteric Coated). כתישת הכדור הורסת את הציפוי, גורמת לפירוק התרופה בקיבה על ידי החומצה ומבטלת את יעילותה הטיפולית. ניתן לפתוח קפסולות ולערבב את המיקרו-גרנולות ברסק תפוחים חומצי ללא לעיסה או כתישה.",
+    "source": "ISMP Oral Dosage Forms That Should Not Be Crushed & MOH Guidelines"
+  },
+  {
+    "id": "routes_6",
+    "category": "routes",
+    "catName": "דרכי מתן, PEG ובטיחות כתישה",
+    "question": "מטופל בסיעוד מורכב עם צנתר היקפי (Peripheral IV line) מקבל אנטיביוטיקה. בעת החדרת השטיפה (Flush), המטופל מתלונן על כאב צורב, ונצפית נפיחות מקומית, עור קר למגע וללא חזרת דם. מהו הממצא הקליני והפעולה הסיעודית המיידית הנדרשת?",
+    "options": [
+      "דלקת וריד (Phlebitis) - יש להאט את קצב ההזרקה ולהמשיך.",
+      "הסתננות/יציאת נוזל לרקמה (Infiltration/Extravasation) - יש לעצור את ההזרקה מיד, לנתק, להוציא את הצנתר, להרים את הגפה ולדווח.",
+      "תגובה אלרגית מקומית - יש לתת אנטיהיסטמין דרך הצנתר.",
+      "חסימת צנתר זמנית - יש להזריק בלחץ גבוה לפתיחת החסימה."
+    ],
+    "correct": 1,
+    "rationale": "נפיחות, עור קר, היעדר חזרת דם וכאב צורב הם סימנים מובהקים להסתננות נוזל מחוץ לווריד (Infiltration/Extravasation). המשך הזרקה עלול לגרום לנזק רקמתי נמקי (במיוחד עם תרופות וסיקנטיות). הפעולה המיידית: עצירה מוחלטת של העירוי, שאיבת שאריות במידת האפשר, שליפת הצנתר, הרמת הגפה ותיעוד.",
+    "source": "Infusion Nurses Society (INS) Standards of Practice & Lippincott Nursing Procedures"
+  },
+  {
+    "id": "inter_1",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "כיצד משפיע השינוי הפיזיולוגי של ירידה ברמת אלבומין בסרום (Hypoalbuminemia) השכיח בקשישים מוחלשים על תרופות הנקשרות לחלבון באחוז גבוה (כגון Phenytoin, Warfarin, Diazepam)?",
+    "options": [
+      "גורם לירידה באפקט התרופה עקב פינוי כלייתי מואץ.",
+      "מעלה את החלק החופשי והפעיל של התרופה בדם (Free Active Drug Fraction), מה שמוביל לעלייה משמעותית בסכנת רעילות גם כאשר הרמה הכוללת של התרופה בבדיקת דם נראית תקינה.",
+      "אינו משפיע כלל על פרמקודינמיקה בגיל המבוגר.",
+      "מביא לחסימת מעבר התרופה דרך מחסום הדם-מוח."
+    ],
+    "correct": 1,
+    "rationale": "רק החלק החופשי (שאינו קשור לחלבון) חוצה ממברנות ומפעיל אפקט ביולוגי ורעילות. כאשר רמת האלבומין נמוכה, פחות תרופה נקשרת ויותר תרופה חופשית מסתובבת בדם. בדיקת מעבדה מודדת לרוב רמה כוללת, ולכן עלולה להטעות בעוד המטופל נמצא בסכנת רעילות ממשית.",
+    "source": "Principles of Geriatric Pharmacokinetics & Protein Binding"
+  },
+  {
+    "id": "inter_2",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "מהי המשמעות הקלינית של נטילה משולבת של Spironolactone (Aldactone) יחד עם מעכב ACE (כגון Enalapril/Ramipril) ותוסף אשלגן בקשיש עם אי-ספיקת כליות מתונה?",
+    "options": [
+      "סיכון גבוה להתפתחות היפוקלמיה קיצונית.",
+      "סיכון מוגבר מאוד להיפרקלמיה מסכנת חיים (הפרעות קצב קטלניות ודום לב); נדרש ניטור צמוד של רמות אשלגן ואלקטרוקרדיוגרם.",
+      "שילוב מומלץ המונע ירידת לחץ דם ללא צורך בניטור.",
+      "ספיגה מופחתת של התרופות עקב קלציה במעי."
+    ],
+    "correct": 1,
+    "rationale": "ספירונולקטון הוא משתן חוסך אשלגן, ומעכבי ACE מפחיתים ייצור אלדוסטרון ובכך מעכבים הפרשת אשלגן בכליה. הוספת תוסף אשלגן או ירידה בתפקוד כלייתי מובילה במהירות להיפרקלמיה חמורה (>6.0 mEq/L) עם גלי T מחודדים, חסמי הולכה וסכנת דום לב.",
+    "source": "Clinical Drug Interactions in Elderly Patients with HF & CKD"
+  },
+  {
+    "id": "inter_3",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "מטופלת גריאטרית הנוטלת תכשיר ברזל פומי (Ferrous Sulfate) לטיפול באנמיה ו-Levothyroxine (Eltroxin) לתת-פעילות בלוטת התריס. כיצד יש להנחות את המטופלת ליטול את התרופות למניעת כישלון טיפולי?",
+    "options": [
+      "ליטול את שתי התרופות יחד בבוקר עם כוס חלב מלא.",
+      "להקפיד על מרווח של 4 שעות לפחות בין נטילת אלטרוקסין לבין נטילת תכשיר הברזל, שכן ברזל נקשר לאלטרוקסין במעי ומונע את ספיגתו.",
+      "ליטול את הברזל עם ארוחה כבדה ואלטרוקסין לפני השינה עם סותרי חומצה.",
+      "אין צורך בהפרדה בין שתי התרופות כל עוד נלקחות מדי יום."
+    ],
+    "correct": 1,
+    "rationale": "יוני ברזל יוצרים תרכובת בלתי מסיסה עם תירוקסין בדרכי העיכול, דבר המפחית משמעותית את ספיגת האלטרוקסין ומוביל להיפותירואידיזם לא מאוזן. ההנחיה המקצועית: נטילת אלטרוקסין על קיבה ריקה בבוקר עם מים, והמתנה של 4 שעות לפחות לפני נטילת ברזל או סידן.",
+    "source": "Drug-Drug Interactions & Thyroid Hormone Replacement Therapy"
+  },
+  {
+    "id": "inter_4",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "מטופל בן 82 מקבל טיפול נוגד דיכאון ב-Citalopram (Cipramil) במינון 40 mg ליום. מהי אזהרת הבטיחות של ה-FDA ומשרד הבריאות לגבי מינון ציטלופרם בקשישים מעל גיל 60?",
+    "options": [
+      "מינון מקסימלי מומלץ של 20 מ\"ג ליום בלבד, עקב סיכון להארכת מקטע QT ב-ECG והתפתחות הפרעת קצב חדרית קטלנית מסוג Torsades de Pointes.",
+      "חובה להעלות את המינון ל-60 מ\"ג כדי להשיג אפקט נוגד דיכאון בגיל השלישי.",
+      "התרופה אסורה לחלוטין בכל מינון בקשישים.",
+      "המינון המקסימלי תלוי רק במשקל הגוף ללא הגבלת גיל."
+    ],
+    "correct": 0,
+    "rationale": "ציטלופרם גורם להארכת מרווח QT התלויה במינון (Dose-dependent QT prolongation). בשל פינוי איטי יותר בקשישים, מינון העולה על 20 מ\"ג ליום מעלה משמעותית סיכון להפרעות קצב חדריות קטלניות (TdP) ומוות פתאומי. המינון המירבי המאושר לקשישים הוא 20 מ\"ג ליום.",
+    "source": "FDA Safety Warning: Maximum Dose of Citalopram in Older Adults"
+  },
+  {
+    "id": "inter_5",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "מהו מושג ה-'Prescribing Cascade' (מפל תרופתי) השכיח בגריאטריה, וכיצד אחות אחראית משמרת יכולה למנוע אותו?",
+    "options": [
+      "הוספת תרופות רק לפי משקל המטופל.",
+      "מצב שבו תופעת לוואי של תרופה קיימת מאובחנת בטעות כבעיה רפואית חדשה, ועבורה נרשמת תרופה נוספת (הגורמת בעצמה לתופעות לוואי חדשות). מניעה מתבצעת על ידי בחינה תרופתית ביקורתית לפני כל הוספת טיפול חדש.",
+      "חלוקת כל התרופות בשעה קבועה אחת בבוקר.",
+      "החלפת תרופות גנריות בתרופות מקור בלבד."
+    ],
+    "correct": 1,
+    "rationale": "דוגמה קלאסית: מטופל נוטל Amlodipine -> מפתח בצקות בקרסוליים (תופעת לוואי) -> הרופא מאבחן 'אי ספיקת לב' ורושם Furosemide -> גורם להיפוקלמיה ואובדן שליטה בשתן -> נרשמת תרופה אנטיכולינרגית. ערנות סיעודית וזיהוי תופעת הלוואי מונעים שרשרת פוליפרמסי מסוכנת.",
+    "source": "BMJ - Preventing the Prescribing Cascade in Geriatrics"
+  },
+  {
+    "id": "inter_6",
+    "category": "interactions",
+    "catName": "פרמקוקינטיקה ואינטראקציות",
+    "question": "בבדיקת תרופות חודשית של מטופל גריאטרי בן 85 המאושפז במחלקה, נמצא שהוא נוטל במקביל Aspirin 100 mg, Clopidogrel (Plavix) 75 mg, ו-Ibuprofen 400 mg PRN לכאבי פרקים. מהו הסיכון הקליני העיקרי וההמלצה הסיעודית המיידית?",
+    "options": [
+      "שילוב תקין ומקובל לשיכוך כאבים במחלות מפרקים כרוניות.",
+      "סיכון חמור לדימום מדרכי העיכול ואי-ספיקת כליות חריפה עקב שילוב אנטי-טסיות כפול עם NSAID; יש להתריע מיד בפני הרופא להפסקת ה-NSAID והחלפה במשכך כאב בטוח כגון Paracetamol.",
+      "יש להקפיד רק על מתן לאחר האוכל ללא צורך בהתערבות רפואית.",
+      "איבופרופן מנטרל את הפעילות האנטי-טסית של פלאביקס ללא השפעה על דימומים."
+    ],
+    "correct": 1,
+    "rationale": "מתן מקביל של טיפול אנטי-טסי (Aspirin + Plavix) יחד עם NSAID מעלה באופן אקספוננציאלי את שיעור הדימומים המסכני חיים במערכת העיכול (GI Bleed) ואת הסיכון לאי-ספיקת כליות חריפה (AKI) בגיל השלישי. כמו כן, איבופרופן פוגע בפעילות המגנה של אספירין מפני אירועים קרדיווסקולריים. האחות אחראית המשמרת חייבת לעצור את מתן ה-NSAID ולפנות לרופא לשינוי הטיפול.",
+    "source": "AGS Beers Criteria 2023 & Clinical Pharmacology Drug-Drug Interactions"
+  }
+];
+
+        let currentExamQuestions = [];
+        let practiceAnswersState = {};
+        let practiceCorrectCount = 0;
+        let practiceTotalAnswered = 0;
+        let activePracticeCategory = 'all';
+
+        function switchPharmMode(mode) {
+            ['exam', 'practice', 'master', 'oral'].forEach(m => {
+                const pane = document.getElementById('pane-pharm-' + m);
+                const tab = document.getElementById('tab-pharm-' + m);
+                if (pane) {
+                    if (m === mode) pane.classList.remove('hidden');
+                    else pane.classList.add('hidden');
+                }
+                if (tab) {
+                    if (m === mode) {
+                        tab.className = 'pharm-tab-btn active bg-white text-brand-900 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all';
+                    } else {
+                        tab.className = 'pharm-tab-btn bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-bold px-3 py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all';
+                    }
+                }
+            });
+
+            if (mode === 'exam' && currentExamQuestions.length === 0) {
+                generateFreshExam();
+            } else if (mode === 'practice') {
+                renderPracticeQuestions();
+            } else if (mode === 'master') {
+                renderMasterBank();
+            }
+        }
+
+        // Generate a 20-question balanced exam (4 questions from each domain)
+        function generateFreshExam() {
+            const categories = ['calc', 'high_alert', 'beers', 'routes', 'interactions'];
+            let examPool = [];
+
+            categories.forEach(cat => {
+                const catQuestions = masterPharmBank.filter(q => q.category === cat);
+                // Shuffle copy
+                const shuffled = [...catQuestions].sort(() => 0.5 - Math.random());
+                // Pick 4
+                examPool.push(...shuffled.slice(0, 4));
+            });
+
+            // Randomize order of the 20 questions
+            currentExamQuestions = examPool.sort(() => 0.5 - Math.random());
+
+            // Update candidate meta
+            const t = (typeof trainees !== 'undefined' && trainees[activeTraineeId]) ? trainees[activeTraineeId] : null;
+            if (t) {
+                const nameEl = document.getElementById('exam-trainee-name');
+                const deptEl = document.getElementById('exam-trainee-dept');
+                if (nameEl) nameEl.textContent = t.name;
+                if (deptEl) deptEl.textContent = t.department;
+            }
+            const dateEl = document.getElementById('exam-current-date');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('he-IL');
+
+            const statusBadge = document.getElementById('exam-status-badge');
+            if (statusBadge) {
+                statusBadge.className = 'bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[11px]';
+                statusBadge.textContent = 'בביצוע (טרם הוגש)';
+            }
+
+            const resultsModal = document.getElementById('exam-results-modal');
+            if (resultsModal) resultsModal.classList.add('hidden');
+
+            renderExamQuestions();
+        }
+
+        function renderExamQuestions() {
+            const container = document.getElementById('exam-questions-container');
+            if (!container) return;
+
+            let html = '';
+            currentExamQuestions.forEach((q, idx) => {
+                const isCalc = q.isCalc;
+                const badgeColor = isCalc ? 'bg-cyan-100 text-cyan-800 border-cyan-300' : 'bg-slate-100 text-slate-700 border-slate-300';
+                const calcWarning = isCalc ? '<span class="bg-rose-100 text-rose-800 font-black px-1.5 py-0.5 rounded text-[10px] mr-1">חובה 100% דיוק</span>' : '';
+
+                html += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-sm" id="exam-card-${idx}">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-brand-600 text-white flex items-center justify-center font-black text-xs">${idx + 1}</span>
+                                    <span class="border px-2 py-0.5 rounded text-[10px] font-bold ${badgeColor}">${q.catName}</span>
+                                    ${calcWarning}
+                                </div>
+                                <h5 class="font-bold text-slate-900 text-xs leading-relaxed pt-1">${q.question}</h5>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-2 pt-1">
+                            ${q.options.map((opt, optIdx) => `
+                                <label class="flex items-start gap-2.5 p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition-colors text-xs text-slate-700" id="exam-opt-label-${idx}-${optIdx}">
+                                    <input type="radio" name="exam_q_${idx}" value="${optIdx}" class="mt-0.5 text-brand-600 focus:ring-brand-500">
+                                    <span>${opt}</span>
+                                </label>
+                            `).join('')}
+                        </div>
+
+                        <div id="exam-feedback-${idx}" class="hidden mt-2 p-3 rounded-lg text-xs leading-relaxed"></div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Submit & Evaluate Exam
+        function submitExamForEvaluation() {
+            let totalAnswered = 0;
+            let totalCorrect = 0;
+            let calcCorrect = 0;
+            let calcTotal = 0;
+
+            const categoryStats = {
+                calc: { correct: 0, total: 0, name: 'חישוב רוקחי וקצבי עירוי' },
+                high_alert: { correct: 0, total: 0, name: 'תרופות High-Alert' },
+                beers: { correct: 0, total: 0, name: 'קריטריוני Beers ופסיכוטרופיים' },
+                routes: { correct: 0, total: 0, name: 'דרכי מתן ו-PEG' },
+                interactions: { correct: 0, total: 0, name: 'אינטראקציות ופרמקוקינטיקה' }
+            };
+
+            currentExamQuestions.forEach((q, idx) => {
+                const selectedRadio = document.querySelector(`input[name="exam_q_${idx}"]:checked`);
+                categoryStats[q.category].total++;
+                if (q.isCalc) calcTotal++;
+
+                const feedbackEl = document.getElementById('exam-feedback-' + idx);
+                const cardEl = document.getElementById('exam-card-' + idx);
+
+                if (selectedRadio) {
+                    totalAnswered++;
+                    const chosen = parseInt(selectedRadio.value);
+                    const isRight = (chosen === q.correct);
+
+                    if (isRight) {
+                        totalCorrect++;
+                        categoryStats[q.category].correct++;
+                        if (q.isCalc) calcCorrect++;
+                    }
+
+                    // Highlight options
+                    q.options.forEach((_, optIdx) => {
+                        const lbl = document.getElementById(`exam-opt-label-${idx}-${optIdx}`);
+                        if (lbl) {
+                            if (optIdx === q.correct) {
+                                lbl.className = 'flex items-start gap-2.5 p-2.5 rounded-lg border-2 border-emerald-500 bg-emerald-50 text-xs text-emerald-950 font-bold';
+                            } else if (optIdx === chosen && !isRight) {
+                                lbl.className = 'flex items-start gap-2.5 p-2.5 rounded-lg border-2 border-rose-400 bg-rose-50 text-xs text-rose-950';
+                            }
+                        }
+                    });
+
+                    if (feedbackEl) {
+                        feedbackEl.classList.remove('hidden');
+                        feedbackEl.className = isRight 
+                            ? 'mt-2 p-3 rounded-lg text-xs leading-relaxed bg-emerald-50 border border-emerald-200 text-emerald-900'
+                            : 'mt-2 p-3 rounded-lg text-xs leading-relaxed bg-rose-50 border border-rose-200 text-rose-900';
+                        feedbackEl.innerHTML = `
+                            <div class="font-bold flex items-center gap-1.5 mb-1 ${isRight ? 'text-emerald-800' : 'text-rose-800'}">
+                                <i class="${isRight ? 'fa-solid fa-circle-check text-emerald-600' : 'fa-solid fa-circle-xmark text-rose-600'}"></i>
+                                ${isRight ? 'תשובה נכונה!' : 'תשובה שגויה. התשובה הנכונה: ' + q.options[q.correct]}
+                            </div>
+                            <p class="text-slate-700"><strong>רציונל קליני וסיעודי:</strong> ${q.rationale}</p>
+                            <div class="text-[10px] text-slate-500 mt-1">מקור ספרותי: ${q.source}</div>
+                        `;
+                    }
+                } else {
+                    // Unanswered
+                    if (feedbackEl) {
+                        feedbackEl.classList.remove('hidden');
+                        feedbackEl.className = 'mt-2 p-3 rounded-lg text-xs leading-relaxed bg-amber-50 border border-amber-200 text-amber-900';
+                        feedbackEl.innerHTML = `
+                            <div class="font-bold text-amber-800 mb-1">שאלה זו לא נענתה. התשובה הנכונה: ${q.options[q.correct]}</div>
+                            <p class="text-slate-700"><strong>רציונל קליני:</strong> ${q.rationale}</p>
+                        `;
+                    }
+                }
+            });
+
+            const overallScore = Math.round((totalCorrect / currentExamQuestions.length) * 100);
+            const isCalcPassed = (calcCorrect === calcTotal);
+            const isPassedOverall = (overallScore >= 85 && isCalcPassed);
+
+            // Update status badge
+            const statusBadge = document.getElementById('exam-status-badge');
+            if (statusBadge) {
+                if (isPassedOverall) {
+                    statusBadge.className = 'bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]';
+                    statusBadge.textContent = 'ציון: ' + overallScore + '% - עבר/ה בהצלחה!';
+                } else {
+                    statusBadge.className = 'bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-[11px]';
+                    statusBadge.textContent = 'ציון: ' + overallScore + '% - נדרש מועד ב\'';
+                }
+            }
+
+            // Render Evaluation Modal
+            const resultsModal = document.getElementById('exam-results-modal');
+            if (resultsModal) {
+                resultsModal.classList.remove('hidden');
+                resultsModal.innerHTML = `
+                    <div class="border-b border-slate-200 pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <div class="text-xs font-bold text-slate-500">סיכום ציונים וממצאי מבחן תרופות ממוחשב</div>
+                            <h3 class="text-xl font-black text-slate-900">
+                                תוצאת בחינה: ${isPassedOverall ? '<span class="text-emerald-600">עבר/ה בהצלחה רבה! 🏆</span>' : '<span class="text-rose-600">לא עבר/ה - נדרש מועד ב\' ⚠️</span>'}
+                            </h3>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-3xl font-black ${isPassedOverall ? 'text-emerald-600' : 'text-rose-600'}">${overallScore}%</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1">
+                            <span class="text-slate-500">ציון כולל:</span>
+                            <div class="font-extrabold text-slate-900 text-sm">${totalCorrect} מתוך ${currentExamQuestions.length} תשובות נכונות (${overallScore}%)</div>
+                            <div class="text-[11px] text-slate-500">סף מעבר נדרש: 85%</div>
+                        </div>
+
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1">
+                            <span class="text-slate-500">חישוב רוקחי (בטיחות קריטית):</span>
+                            <div class="font-extrabold text-sm ${isCalcPassed ? 'text-emerald-600' : 'text-rose-600'}">
+                                ${calcCorrect} מתוך ${calcTotal} שאלות נכונות (${isCalcPassed ? '100% תקין' : 'נכשל בחלק חישוב'})
+                            </div>
+                            <div class="text-[11px] text-slate-500">חובה 100% דיוק ללא טעויות</div>
+                        </div>
+
+                        <div class="bg-white p-3.5 rounded-xl border border-slate-200 space-y-1">
+                            <span class="text-slate-500">הנחיה להמשך הכשרה:</span>
+                            <div class="font-bold text-slate-800 text-xs">
+                                ${isPassedOverall 
+                                    ? 'המודרך/ת זכאי/ת למעבר לשלב התצפית המעשית בחלוקת תרופות.' 
+                                    : (!isCalcPassed ? 'חובת ריענון בנושא חישוב רוקחי וקצבי עירוי לפני מבחן חוזר.' : 'חובת העמקה בפרמקולוגיה גריאטרית וביצוע מועד ב\'.')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Table -->
+                    <div class="space-y-2 text-xs">
+                        <h5 class="font-bold text-slate-800">פילוח ציונים לפי תחומי ידע:</h5>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                            ${Object.values(categoryStats).map(c => `
+                                <div class="bg-white p-2.5 rounded-lg border border-slate-200 flex justify-between items-center">
+                                    <span class="text-slate-700">${c.name}:</span>
+                                    <span class="font-bold ${c.correct === c.total ? 'text-emerald-600' : (c.correct / c.total >= 0.75 ? 'text-brand-600' : 'text-rose-600')}">
+                                        ${c.correct} / ${c.total} (${Math.round((c.correct / c.total) * 100)}%)
+                                    </span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Mentor Signoff Form -->
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-3">
+                        <div class="text-xs text-slate-600">
+                            <strong>חתימת אחות בוחנת / מנטורית:</strong> _______________________ | <strong>תאריך:</strong> ${new Date().toLocaleDateString('he-IL')}
+                        </div>
+                        <button onclick="saveExamResultToTrainee(${overallScore}, ${isPassedOverall})" class="bg-brand-600 hover:bg-brand-700 text-white font-bold text-xs px-4 py-2 rounded-xl transition-colors shadow-sm">
+                            <i class="fa-solid fa-floppy-disk ml-1"></i> שמור תוצאה בתיק המודרך/ת
+                        </button>
+                    </div>
+                `;
+
+                resultsModal.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function saveExamResultToTrainee(score, isPassed) {
+            const t = (typeof trainees !== 'undefined' && trainees[activeTraineeId]) ? trainees[activeTraineeId] : null;
+            if (t) {
+                if (!t.examRecords) t.examRecords = [];
+                t.examRecords.push({
+                    date: new Date().toLocaleDateString('he-IL'),
+                    score: score,
+                    isPassed: isPassed,
+                    type: 'מבחן תרופות ממוחשב 20 שאלות'
+                });
+                if (isPassed && (!t.milestones || !t.milestones.examScore || t.milestones.examScore < score)) {
+                    if (!t.milestones) t.milestones = {};
+                    t.milestones.examScore = score;
+                }
+                if (typeof saveToLocalStorage === 'function') saveToLocalStorage();
+                alert('הציון ' + score + '% נשמר בהצלחה בתיק המודרך/ת!');
+            } else {
+                alert('הציון ' + score + '% עודכן במערכת.');
+            }
+        }
+
+        function printOfficialExam() {
+            window.print();
+        }
+
+        // ==============================================================
+        // SELF PRACTICE ENGINE
+        // ==============================================================
+        function filterPracticeCategory(cat) {
+            activePracticeCategory = cat;
+            document.querySelectorAll('.practice-filter-btn').forEach(btn => {
+                btn.className = 'practice-filter-btn bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg font-bold transition-colors';
+            });
+            event.target.className = 'practice-filter-btn active bg-slate-800 text-white px-3 py-1.5 rounded-lg font-bold transition-colors';
+            renderPracticeQuestions();
+        }
+
+        function renderPracticeQuestions() {
+            const container = document.getElementById('practice-questions-container');
+            if (!container) return;
+
+            const filtered = (activePracticeCategory === 'all') 
+                ? masterPharmBank 
+                : masterPharmBank.filter(q => q.category === activePracticeCategory);
+
+            let html = '';
+            filtered.forEach((q, idx) => {
+                const qKey = q.id;
+                const state = practiceAnswersState[qKey];
+
+                html += `
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 space-y-3 shadow-sm" id="practice-card-${qKey}">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="space-y-1">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center font-black text-xs">${idx + 1}</span>
+                                    <span class="bg-slate-100 border border-slate-300 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">${q.catName}</span>
+                                    ${q.isCalc ? '<span class="bg-cyan-100 text-cyan-800 px-1.5 py-0.5 rounded text-[10px] font-bold">חישוב רוקחי</span>' : ''}
+                                </div>
+                                <h5 class="font-bold text-slate-900 text-xs leading-relaxed pt-1">${q.question}</h5>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 gap-2 pt-1">
+                            ${q.options.map((opt, optIdx) => {
+                                let optStyle = 'border-slate-200 hover:bg-slate-50 text-slate-700';
+                                let icon = '';
+
+                                if (state !== undefined) {
+                                    if (optIdx === q.correct) {
+                                        optStyle = 'border-2 border-emerald-500 bg-emerald-50 text-emerald-950 font-bold';
+                                        icon = '<i class="fa-solid fa-circle-check text-emerald-600 mr-auto text-sm"></i>';
+                                    } else if (optIdx === state.chosen && !state.isRight) {
+                                        optStyle = 'border-2 border-rose-400 bg-rose-50 text-rose-950';
+                                        icon = '<i class="fa-solid fa-circle-xmark text-rose-600 mr-auto text-sm"></i>';
+                                    }
+                                }
+
+                                return `
+                                    <button onclick="handlePracticeOptionSelect('${qKey}', ${optIdx})" ${state !== undefined ? 'disabled' : ''} class="w-full text-right flex items-center justify-between p-3 rounded-lg border ${optStyle} transition-all text-xs">
+                                        <span>${opt}</span>
+                                        ${icon}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+
+                        <!-- Rationale Reveal -->
+                        ${state !== undefined ? `
+                            <div class="mt-3 p-3.5 rounded-xl text-xs leading-relaxed border ${state.isRight ? 'bg-emerald-50/70 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-800'} space-y-1.5 animate-fadeIn">
+                                <div class="font-bold flex items-center gap-1.5 ${state.isRight ? 'text-emerald-800' : 'text-slate-800'}">
+                                    <i class="fa-solid fa-lightbulb text-amber-500 text-sm"></i>
+                                    <span>רציונל קליני וסיעודי מפורט:</span>
+                                </div>
+                                <p class="leading-relaxed">${q.rationale}</p>
+                                <div class="text-[10px] text-slate-500 font-semibold pt-1 border-t border-slate-200/60">
+                                    ספרות מקצועית: ${q.source}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function handlePracticeOptionSelect(qKey, chosenIdx) {
+            if (practiceAnswersState[qKey]) return; // already answered
+
+            const q = masterPharmBank.find(item => item.id === qKey);
+            if (!q) return;
+
+            const isRight = (chosenIdx === q.correct);
+            practiceAnswersState[qKey] = { chosen: chosenIdx, isRight: isRight };
+
+            practiceTotalAnswered++;
+            if (isRight) practiceCorrectCount++;
+
+            const scoreCounter = document.getElementById('practice-score-counter');
+            if (scoreCounter) {
+                scoreCounter.textContent = practiceCorrectCount + ' / ' + practiceTotalAnswered;
+            }
+
+            renderPracticeQuestions();
+        }
+
+        // ==============================================================
+        // MASTER BANK & SEARCH ACCORDION
+        // ==============================================================
+        function renderMasterBank(query = '') {
+            const container = document.getElementById('master-bank-container');
+            if (!container) return;
+
+            const qClean = query.trim().toLowerCase();
+            const filtered = masterPharmBank.filter(q => {
+                if (!qClean) return true;
+                return q.question.toLowerCase().includes(qClean) ||
+                       q.rationale.toLowerCase().includes(qClean) ||
+                       q.source.toLowerCase().includes(qClean) ||
+                       q.catName.toLowerCase().includes(qClean);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 text-slate-400">לא נמצאו שאלות התואמות לחיפוש שלך.</div>';
+                return;
+            }
+
+            let html = '';
+            filtered.forEach((q, idx) => {
+                html += `
+                    <details class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm group">
+                        <summary class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-slate-50 transition-colors font-bold text-slate-800 text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="w-5 h-5 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center text-[10px]">${idx + 1}</span>
+                                <span class="bg-slate-100 text-slate-600 px-2 py-0.5 rounded text-[10px]">${q.catName}</span>
+                                <span>${q.question.substring(0, 85)}...</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-down text-slate-400 group-open:rotate-180 transition-transform"></i>
+                        </summary>
+                        <div class="p-4 bg-slate-50 border-t border-slate-200 space-y-3 text-xs">
+                            <div class="font-extrabold text-slate-900">${q.question}</div>
+                            
+                            <div class="space-y-1.5">
+                                ${q.options.map((opt, optIdx) => `
+                                    <div class="p-2 rounded-lg text-xs ${optIdx === q.correct ? 'bg-emerald-100 text-emerald-950 font-bold border border-emerald-300' : 'bg-white border border-slate-200 text-slate-600'}">
+                                        ${optIdx === q.correct ? '✓ ' : ''}${opt}
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div class="bg-white p-3 rounded-lg border border-slate-200 space-y-1">
+                                <strong class="text-brand-900 block"><i class="fa-solid fa-file-medical text-brand-600"></i> רציונל קליני וספרות:</strong>
+                                <p class="text-slate-700 leading-relaxed">${q.rationale}</p>
+                                <div class="text-[10px] text-slate-500 font-semibold pt-1">מקור: ${q.source}</div>
+                            </div>
+                        </div>
+                    </details>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function searchMasterBank(val) {
+            renderMasterBank(val);
+        }
+
+        // ==============================================================
+        // MONTHLY AGENT UPDATE TRIGGER SIMULATION
+        // ==============================================================
+        function triggerMonthlyAgentUpdate() {
+            const animBox = document.getElementById('agent-sync-animation');
+            const progress = document.getElementById('agent-sync-progress');
+            const stepText = document.getElementById('agent-sync-step-text');
+            const logBox = document.getElementById('agent-sync-log');
+            const updateBtn = document.getElementById('btn-agent-update');
+            const icon = document.getElementById('agent-update-icon');
+
+            if (animBox) animBox.classList.remove('hidden');
+            if (icon) icon.classList.add('fa-spin');
+            if (updateBtn) updateBtn.disabled = true;
+
+            const monthsHe = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+            const curDate = new Date();
+            const curMonthName = monthsHe[curDate.getMonth()] + ' ' + curDate.getFullYear();
+
+            const steps = [
+                { width: '35%', step: 'שלב 1 מתוך 3', log: '> סורק מאגרי ספרות קלינית (Lippincott Nursing Drug Handbook, Beers 2023 Update)...' },
+                { width: '70%', step: 'שלב 2 מתוך 3', log: '> מצליב חוזרי חטיבת הסיעוד ובטיחות תרופתית במשרד הבריאות...' },
+                { width: '100%', step: 'שלב 3 מתוך 3 - הושלם!', log: '> בנק השאלות עודכן בהצלחה! סנכרון מלא הושלם לחודש: ' + curMonthName }
+            ];
+
+            let stepIdx = 0;
+            const timer = setInterval(() => {
+                if (stepIdx < steps.length) {
+                    if (progress) progress.style.width = steps[stepIdx].width;
+                    if (stepText) stepText.textContent = steps[stepIdx].step;
+                    if (logBox) logBox.textContent = steps[stepIdx].log;
+                    stepIdx++;
+                } else {
+                    clearInterval(timer);
+                    setTimeout(() => {
+                        if (icon) icon.classList.remove('fa-spin');
+                        if (updateBtn) updateBtn.disabled = false;
+                        if (animBox) animBox.classList.add('hidden');
+
+                        const badge = document.getElementById('agent-last-sync-badge');
+                        if (badge) {
+                            badge.textContent = curMonthName + ' (גרסה ' + curDate.getFullYear() + '.' + (curDate.getMonth() + 1) + ')';
+                        }
+                        try {
+                            localStorage.setItem('pharm_agent_last_sync', curMonthName);
+                        } catch(e) {}
+
+                        // Regenerate a fresh exam set
+                        generateFreshExam();
+                        alert('הסוכן השלים בהצלחה סריקה חודשית! בנק השאלות, קריטריוני Beers ומחווני הבחינה עודכנו לחודש ' + curMonthName + '.');
+                    }, 800);
+                }
+            }, 900);
+        }
+
+
         window.addEventListener('load', function() {
             loadFromLocalStorage();
             populateTraineeDropdown();

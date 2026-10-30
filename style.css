@@ -255,3 +255,89 @@ body { font-family: 'Heebo', sans-serif; background-color: var(--bg-color); colo
         page-break-inside: avoid;
     }
 }
+
+
+/* ========================================= */
+/* MESSAGING MODAL & NOTIFICATIONS DROPDOWN  */
+/* ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+.modal-card {
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    width: 92%;
+    max-width: 620px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+    padding: 24px;
+    box-sizing: border-box;
+    animation: modalCardAnim 0.25s ease-out;
+}
+@keyframes modalCardAnim {
+    from { opacity: 0; transform: scale(0.96) translateY(-10px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0 4px;
+}
+.modal-close-btn:hover {
+    color: var(--danger);
+}
+.notifications-dropdown {
+    position: absolute;
+    top: 48px;
+    left: 0;
+    width: 340px;
+    max-height: 420px;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    z-index: 9999;
+    padding: 12px;
+    animation: modalCardAnim 0.2s ease-out;
+}
+.notif-item {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 12.5px;
+    line-height: 1.4;
+    transition: background 0.15s;
+    border-radius: 6px;
+}
+.notif-item:last-child {
+    border-bottom: none;
+}
+.notif-item:hover {
+    background: var(--bg-color);
+}
+.notif-item .notif-time {
+    font-size: 10.5px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}

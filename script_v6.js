@@ -2642,3 +2642,214 @@ document.addEventListener('DOMContentLoaded', () => {
         if(typeof navigate === 'function') navigate('dashboard');
     }
 });
+
+
+// ==============================================================
+// TEAM MESSAGING & EMAIL CENTER + NOTIFICATIONS SYSTEM
+// ==============================================================
+let portalNotifications = [
+    {
+        id: "notif_1",
+        title: "תזכורת: השלמת ביצוע בקרות",
+        body: "יש להשלים בקרות חודשיות במחלקת סיעוד מורכב עד סוף השבוע.",
+        channel: "internal",
+        time: "היום, 09:30",
+        read: false
+    },
+    {
+        id: "notif_2",
+        title: "עדכון פרמקולוגיה גריאטרית",
+        body: "בנק שאלות מעודכן וקריטריוני Beers 2023 זמינים בהכשרת אחראית משמרת.",
+        channel: "internal",
+        time: "אתמול, 14:15",
+        read: false
+    },
+    {
+        id: "notif_3",
+        title: "הדרכת קליטה לאחיות",
+        body: "4 אחיות חדשות שובצו לערכת הדרכה בקליטה לחודש הנוכחי.",
+        channel: "internal",
+        time: "28/10/2026",
+        read: true
+    }
+];
+
+try {
+    const saved = localStorage.getItem('portal_notifications');
+    if (saved) portalNotifications = JSON.parse(saved);
+} catch(e) {}
+
+function savePortalNotifications() {
+    try {
+        localStorage.setItem('portal_notifications', JSON.stringify(portalNotifications));
+    } catch(e) {}
+    updateNotifBadge();
+}
+
+function updateNotifBadge() {
+    const badge = document.getElementById('notif-badge');
+    if (!badge) return;
+    const unread = portalNotifications.filter(n => !n.read).length;
+    badge.textContent = unread;
+    badge.style.display = unread > 0 ? 'inline-flex' : 'none';
+}
+
+function toggleNotifications() {
+    const dropdown = document.getElementById('notifications-dropdown');
+    if (!dropdown) return;
+    if (dropdown.style.display === 'block') {
+        dropdown.style.display = 'none';
+    } else {
+        renderNotificationsDropdown();
+        dropdown.style.display = 'block';
+    }
+}
+
+function renderNotificationsDropdown() {
+    const dropdown = document.getElementById('notifications-dropdown');
+    if (!dropdown) return;
+
+    let html = `
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:8px; margin-bottom:8px;">
+            <strong style="font-size:13px; color:var(--text-primary);">התראות מערכת והודעות</strong>
+            <button onclick="markAllNotificationsAsRead()" class="btn" style="font-size:11px; padding:3px 8px; background:transparent; color:var(--primary-color); border:1px solid var(--border-color); border-radius:6px; cursor:pointer;">סמן הכל כנקרא</button>
+        </div>
+    `;
+
+    if (portalNotifications.length === 0) {
+        html += '<div style="text-align:center; padding:15px; color:var(--text-secondary); font-size:12px;">אין התראות חדשות</div>';
+    } else {
+        html += '<div style="display:flex; flex-direction:column; gap:4px;">';
+        portalNotifications.forEach(n => {
+            html += `
+                <div class="notif-item" style="${!n.read ? 'background:rgba(2, 132, 199, 0.08); font-weight:600;' : ''}">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <span style="color:var(--text-primary); font-size:12px;">${n.title}</span>
+                        <span class="notif-time">${n.time}</span>
+                    </div>
+                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${n.body}</div>
+                </div>
+            `;
+        });
+        html += '</div>';
+    }
+
+    dropdown.innerHTML = html;
+}
+
+function markAllNotificationsAsRead() {
+    portalNotifications.forEach(n => n.read = true);
+    savePortalNotifications();
+    renderNotificationsDropdown();
+}
+
+function openMessagingModal() {
+    const modal = document.getElementById('messaging-modal');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeMessagingModal() {
+    const modal = document.getElementById('messaging-modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function handleChannelChange() {
+    const channel = document.querySelector('input[name="msg_channel"]:checked')?.value || 'email';
+    const subjGroup = document.getElementById('group-subject');
+    if (subjGroup) {
+        subjGroup.style.display = (channel === 'whatsapp') ? 'none' : 'block';
+    }
+}
+
+function handleRecipientChange(val) {
+    const customInp = document.getElementById('msg-custom-recipient');
+    if (customInp) {
+        customInp.style.display = (val === 'custom') ? 'block' : 'none';
+        if (val === 'custom') customInp.focus();
+    }
+}
+
+function applyMessageTemplate(key) {
+    const subj = document.getElementById('msg-subject');
+    const body = document.getElementById('msg-body');
+    if (!subj || !body) return;
+
+    const templates = {
+        audit_reminder: {
+            subject: 'תזכורת: השלמת ביצוע בקרות חודשיות במחלקה',
+            body: 'שלום לכולם,\nנא לוודא השלמת כל כלי הבקרה החודשיים (בטיחות הטיפול, מניעת זיהומים, מבדקי ידע) עד לתאריך היעד.\nלכל שאלה או תמיכה פנו למנהלת האיכות.'
+        },
+        med_safety: {
+            subject: 'עדכון בטיחות: חידוד נהלי טיפול תרופתי וקריטריוני Beers 2023',
+            body: 'צוות יקר,\nפורסם עדכון דגשי בטיחות בחלוקת תרופות וקריטריוני Beers 2023 למניעת נפילות ואינטראקציות בקשישים.\nחובה על כל אחראית משמרת לעבור על דף ההנחיות בפורטל.'
+        },
+        training_invite: {
+            subject: 'זימון: הדרכת קליטה לאחיות חדשות והכשרת אחראית משמרת',
+            body: 'הנכם מוזמנים למפגש הדרכה מרוכז בנושא ערכת קליטה ופיתוח מיומנויות ניהול משמרת.\nהמפגש יתקיים ביום רביעי הקרוב בחדר ההדרכה המחלקתי.'
+        },
+        urgent_inspection: {
+            subject: 'דחוף: היערכות לביקורת משרד הבריאות',
+            body: 'צוותים נכבדים,\nביקורת משרד הבריאות מתוכננת לשבוע הקרוב. נא לוודא סדר בתיקי המטופלים, שלמות טפסי בקרה ותקינות עגלות החייאה וטיפול תרופתי.'
+        }
+    };
+
+    if (templates[key]) {
+        subj.value = templates[key].subject;
+        body.value = templates[key].body;
+    }
+}
+
+function sendTeamMessage(e) {
+    if (e) e.preventDefault();
+
+    const channel = document.querySelector('input[name="msg_channel"]:checked')?.value || 'email';
+    const recipientType = document.getElementById('msg-recipients')?.value || 'all';
+    const customRecipient = document.getElementById('msg-custom-recipient')?.value?.trim();
+    const subject = document.getElementById('msg-subject')?.value?.trim() || 'הודעה ממערכת האיכות';
+    const body = document.getElementById('msg-body')?.value?.trim();
+
+    if (!body) {
+        showToast('נא להזין תוכן להודעה', 'warning');
+        return;
+    }
+
+    const emailMap = {
+        all: 'all-staff@hospital.org.il',
+        head_nurses: 'head-nurses@hospital.org.il',
+        complex_care: 'complex-care@hospital.org.il',
+        vent_care: 'vent-care@hospital.org.il',
+        rehab: 'rehab-geriatric@hospital.org.il',
+        physicians: 'physicians@hospital.org.il'
+    };
+
+    const targetEmail = (recipientType === 'custom' && customRecipient) ? customRecipient : (emailMap[recipientType] || 'all-staff@hospital.org.il');
+
+    if (channel === 'email') {
+        const mailtoUrl = `mailto:${encodeURIComponent(targetEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = mailtoUrl;
+        showToast('פותח את לקוח הדוא"ל לשליחה...', 'success');
+    } else if (channel === 'whatsapp') {
+        const waText = encodeURIComponent(`*${subject}*\n\n${body}`);
+        const waPhone = (recipientType === 'custom' && customRecipient && /^[0-9+]+$/.test(customRecipient)) ? customRecipient.replace(/[^0-9]/g, '') : '';
+        const waUrl = waPhone ? `https://api.whatsapp.com/send?phone=${waPhone}&text=${waText}` : `https://api.whatsapp.com/send?text=${waText}`;
+        window.open(waUrl, '_blank');
+        showToast('פותח את WhatsApp לשליחה...', 'success');
+    } else {
+        showToast('ההתראה נשמרה ונשלחה לכל משתמשי המערכת!', 'success');
+    }
+
+    // Add to internal portal notifications
+    portalNotifications.unshift({
+        id: 'msg_' + Date.now(),
+        title: subject,
+        body: body.length > 80 ? body.substring(0, 80) + '...' : body,
+        channel: channel,
+        time: 'עכשיו',
+        read: false
+    });
+    savePortalNotifications();
+
+    closeMessagingModal();
+}
+
+window.simulateNotifications = openMessagingModal;

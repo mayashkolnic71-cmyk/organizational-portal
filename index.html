@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>פורטל לניהול איכות ובטיחות ארגונית</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=35">
+    <link rel="stylesheet" href="style.css?v=36">
     <meta name="description" content="מערכת לניהול כלי בקרה קליניים">
 </head>
 <body>
@@ -133,7 +133,7 @@
                     <li onclick="window.open('https://www.health.gov.il/Services/educ/Pages/default.aspx', '_blank')">
                         <span class="nav-icon">🌍</span> לומדות משרד הבריאות
                     </li>
-                    <li onclick="window.open('https://geriatric-cdss-calculator2.vercel.app/', '_blank')">
+                    <li id="nav-cdss" onclick="navigate('cdss')">
                         <span class="nav-icon">🩺</span> מערכת תומכת החלטה קלינית (CDSS) המותאמת לאוכלוסייה הגריאטרית
                     </li>
 
@@ -146,7 +146,7 @@
                     <li id="nav-forms" onclick="navigate('forms')">
                         <span class="nav-icon">📝</span> כלי בקרה
                     </li>
-                    <li onclick="window.open('https://organizational-nurse-management-wor.vercel.app/', '_blank')">
+                    <li id="nav-manager-portal" onclick="navigate('manager-portal')">
                         <span class="nav-icon">📊</span> פורטל מעקב ובקרה למנהל
                     </li>
                     <li id="nav-agent" onclick="navigate('agent')" class="admin-only">
@@ -175,22 +175,101 @@
                         <span id="user-role" class="user-role">מנהל איכות</span>
                     </div>
                 </div>
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <button class="btn" style="background-color: var(--danger); padding: 5px 10px; font-size: 12px;" onclick="simulateNotifications()">הדגם תזכורות (SMS/Email)</button>
-                    <div class="notifications" onclick="toggleNotifications()">
-                        <span class="bell">🔔</span>
-                        <span class="badge" id="notif-badge">0</span>
+                <div style="display: flex; gap: 12px; align-items: center; position: relative;">
+                    <button class="btn" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 7px 14px; font-size: 12px; font-weight: 700; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(2,132,199,0.25);" onclick="openMessagingModal()">
+                        <span>✉️</span> שליחת הודעה / אימייל לצוות
+                    </button>
+                    <div class="notifications" onclick="toggleNotifications()" style="cursor: pointer; position: relative;" title="התראות מערכת">
+                        <span class="bell" style="font-size: 18px;">🔔</span>
+                        <span class="badge" id="notif-badge">3</span>
                     </div>
-                    <button onclick="logout()" class="btn" style="background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 5px 10px;">התנתק</button>
+                    <div id="notifications-dropdown" class="notifications-dropdown" style="display: none;"></div>
+                    <button onclick="logout()" class="btn" style="background-color: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 6px 12px; font-size: 12px; border-radius: 8px;">התנתק</button>
                 </div>
             </header>
 
             <div id="content-area" class="content-area"></div>
+        
+    <!-- Modal for Team Messaging & Email -->
+    <div id="messaging-modal" class="modal-overlay" style="display: none;" onclick="if(event.target === this) closeMessagingModal()">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:20px;">✉️</span>
+                    <h3 style="margin:0; font-size:16px; font-weight:bold; color:var(--text-primary);">מרכז שליחת הודעות ואימייל לצוות</h3>
+                </div>
+                <button type="button" class="modal-close-btn" onclick="closeMessagingModal()">&times;</button>
+            </div>
+            
+            <form id="team-messaging-form" onsubmit="sendTeamMessage(event)" style="display:flex; flex-direction:column; gap:14px; margin-top:15px;">
+                <div class="form-group">
+                    <label style="font-weight:600; font-size:13px; color:var(--text-primary); margin-bottom:5px; display:block;">ערוץ שליחה:</label>
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                        <label style="display:flex; align-items:center; gap:6px; background:var(--bg-color); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-size:12px;">
+                            <input type="radio" name="msg_channel" value="email" checked onchange="handleChannelChange()">
+                            <strong>✉️ אימייל רשמי</strong>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:6px; background:var(--bg-color); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-size:12px;">
+                            <input type="radio" name="msg_channel" value="whatsapp" onchange="handleChannelChange()">
+                            <strong>💬 ווטסאפ (WhatsApp)</strong>
+                        </label>
+                        <label style="display:flex; align-items:center; gap:6px; background:var(--bg-color); padding:10px; border-radius:8px; border:1px solid var(--border-color); cursor:pointer; font-size:12px;">
+                            <input type="radio" name="msg_channel" value="internal" onchange="handleChannelChange()">
+                            <strong>🔔 התראה במערכת</strong>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight:600; font-size:13px; color:var(--text-primary); margin-bottom:5px; display:block;">נמענים:</label>
+                    <select id="msg-recipients" class="form-control" style="width:100%; padding:9px; border-radius:8px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-primary); font-size:13px;" onchange="handleRecipientChange(this.value)">
+                        <option value="all">כלל אנשי הצוות (כל המחלקות)</option>
+                        <option value="head_nurses">אחיות אחראיות מחלקה</option>
+                        <option value="complex_care">צוות מחלקת סיעוד מורכב</option>
+                        <option value="vent_care">צוות מחלקת מונשמים</option>
+                        <option value="rehab">צוות מחלקת שיקום גריאטרי</option>
+                        <option value="physicians">רופאים ומנהלי מחלקות</option>
+                        <option value="custom">נמען מותאם אישית (הזנת כתובת / טלפון ידנית)</option>
+                    </select>
+                    <input type="text" id="msg-custom-recipient" placeholder="הכנס כתובת אימייל או מספר טלפון..." style="display:none; width:100%; margin-top:8px; padding:8px; border-radius:8px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-primary); font-size:13px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight:600; font-size:13px; color:var(--text-primary); margin-bottom:5px; display:block;">תבנית מהירה (Quick Template):</label>
+                    <select id="msg-template" class="form-control" style="width:100%; padding:9px; border-radius:8px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-primary); font-size:13px;" onchange="applyMessageTemplate(this.value)">
+                        <option value="none">-- בחר תבנית מובנית או כתוב חופשי --</option>
+                        <option value="audit_reminder">📋 תזכורת: השלמת ביצוע בקרות חודשיות במחלקה</option>
+                        <option value="med_safety">💊 עדכון בטיחות: חידוד נהלי טיפול תרופתי וקריטריוני Beers 2023</option>
+                        <option value="training_invite">🎓 זימון: הדרכת קליטה לאחיות חדשות והכשרת אחראית משמרת</option>
+                        <option value="urgent_inspection">🚨 התראה דחופה: היערכות לביקורת משרד הבריאות</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="group-subject">
+                    <label style="font-weight:600; font-size:13px; color:var(--text-primary); margin-bottom:5px; display:block;">נושא ההודעה:</label>
+                    <input type="text" id="msg-subject" required class="form-control" placeholder="נושא ההודעה..." style="width:100%; padding:9px; border-radius:8px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-primary); font-size:13px;">
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight:600; font-size:13px; color:var(--text-primary); margin-bottom:5px; display:block;">תוכן ההודעה:</label>
+                    <textarea id="msg-body" rows="4" required class="form-control" placeholder="כתוב כאן את פרטי ההודעה או ההנחיה לצוות..." style="width:100%; padding:9px; border-radius:8px; border:1px solid var(--border-color); background:var(--surface); color:var(--text-primary); font-size:13px; resize:vertical;"></textarea>
+                </div>
+
+                <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px;">
+                    <button type="button" class="btn" onclick="closeMessagingModal()" style="background:transparent; border:1px solid var(--border-color); color:var(--text-secondary); padding:8px 16px; border-radius:8px;">ביטול</button>
+                    <button type="submit" class="btn" style="background:var(--primary-color); color:white; font-weight:bold; padding:8px 20px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                        <span>🚀</span> שלח כעת לצוות
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
         </main>
     </div>
-    <script src="forms.js?v=35"></script>
-    <script src="quizzes.js?v=35"></script>
-    <script src="script_v6.js?v=35"></script>
+    <script src="forms.js?v=36"></script>
+    <script src="quizzes.js?v=36"></script>
+    <script src="script_v6.js?v=36"></script>
 </body>
 </html>
 
