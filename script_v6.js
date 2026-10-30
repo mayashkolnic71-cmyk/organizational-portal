@@ -462,7 +462,7 @@ function renderDashboard() {
             </tr>
             ${recentForms.map(f => {
                 let color = f.score >= 80 ? 'var(--success)' : f.score >= 60 ? 'orange' : 'var(--danger)';
-                let deptKey = Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department'));
+                let deptKey = (f && f.data) ? Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department')) : null;
                 let dept = deptKey ? f.data[deptKey] : 'לא צוין';
                 return `<tr style="border-bottom: 1px solid var(--border-color);">
                     <td style="padding: 10px;">${f.formTitle}</td>
@@ -563,7 +563,7 @@ function renderDashboard() {
             ${(function() {
                 let deptStats = {};
                 filledFormsDb.forEach(f => {
-                    let deptKey = Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department'));
+                    let deptKey = (f && f.data) ? Object.keys(f.data).find(k => k.toLowerCase().includes('dept') || k.toLowerCase().includes('department')) : null;
                     let dept = deptKey ? f.data[deptKey] : 'לא צוין';
                     deptStats[dept] = (deptStats[dept] || 0) + 1;
                 });
@@ -974,7 +974,7 @@ function renderAuditSummaryResult(form, finalScore, findings, formObj, submitDat
                         <div style="font-size: 13px; color: #198754;">סעיפים תקינים לחלוטין</div>
                         <div style="font-size: 24px; font-weight: bold; color: #198754;">${Math.max(0, totalChecked - findings.length)}</div>
                     </div>
-                    <div style="background: ${findings.length > 0 ? 'rgba(220, 53, 69, 0.08)' : 'var(--bg-color)'}; border: 1px solid ${findings.length > 0 ? 'rgba(220, 53, 69, 0.2)' : var(--border-color)}; border-radius: 10px; padding: 15px; text-align: center;">
+                    <div style="background: ${findings.length > 0 ? 'rgba(220, 53, 69, 0.08)' : 'var(--bg-color)'}; border: 1px solid ${findings.length > 0 ? 'rgba(220, 53, 69, 0.2)' : 'var(--border-color)'}; border-radius: 10px; padding: 15px; text-align: center;">
                         <div style="font-size: 13px; color: ${findings.length > 0 ? '#dc3545' : 'var(--text-secondary)'};">ממצאים הדורשים תיקון</div>
                         <div style="font-size: 24px; font-weight: bold; color: ${findings.length > 0 ? '#dc3545' : 'var(--text-secondary)'};">${findings.length}</div>
                     </div>
@@ -1714,7 +1714,7 @@ function renderProcedures() {
             <div class="forms-list">
                 ${proceduresDb.map(p => {
                     let oneYearAgo = Date.now() - (365 * 24 * 60 * 60 * 1000);
-                    let userReadRecord = p.readBy.find(r => r.name === currentUser.name);
+                    let userReadRecord = (p.readBy && currentUser) ? p.readBy.find(r => r.name === currentUser.name) : null;
                     let hasReadRecently = userReadRecord && userReadRecord.date > oneYearAgo;
                     
                     let linkHtml = (p.link.startsWith('http') || p.link.endsWith('.html')) ? 
@@ -2213,7 +2213,7 @@ function toggleTheme() {
 }
 
 function renderIntro() {
-    let hasAnswered = introFeedbackDb.find(f => f.user === currentUser.name);
+    let curName = (currentUser && currentUser.name) ? currentUser.name : "מנהל מערכת"; let hasAnswered = introFeedbackDb.find(f => f.user === curName);
     let feedbackForm = hasAnswered ? `<div class="card" style="margin-top: 20px; background: var(--success); color: white;">תודה שענית על המשוב!</div>` : `
     <div class="card" style="margin-top: 30px; border-top: 4px solid var(--primary-color);">
         <h3 style="margin-bottom: 15px;">משוב על הפורטל הארגוני</h3>
