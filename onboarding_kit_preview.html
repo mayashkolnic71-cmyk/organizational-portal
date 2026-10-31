@@ -1500,14 +1500,6 @@
                         type: "youtube",
                         url: "https://www.youtube.com/watch?v=Ycg3LXuXgKA",
                         desc: "עקרונות התערבות ממוקדת להרגעת חרדה ודחק אצל מטופלים ואנשי צוות."
-                    },
-                    {
-                        id: "m_3_9",
-                        code: "3.9",
-                        title: "סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר",
-                        type: "local_video",
-                        url: "emotional_distress_elderly.mp4",
-                        desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש."
                     }
                 ],
                 checklist: [
@@ -1515,8 +1507,7 @@
                     { text: "נוהל ירי טילים והכרת המרחבים המוגנים ('הכי מוגן שיש')", url: "https://www.youtube.com/watch?v=9BMH_58WOEI" },
                     { text: "נוהל שריפה, תפעול מטף ופינוי מחלקה (דחוף / מתוכנן)", url: "https://www.youtube.com/watch?v=j4tdIsAzpbg" },
                     { text: "נוהל רעידת אדמה, אירוע ביולוגי חריג וחומרים כימיים מסוכנים", url: "https://www.youtube.com/watch?v=EisMOTLrB54" },
-                    { text: "עזרה ראשונה, הזרקת גלוקגון, החייאה ותמיכה נפשית בחירום", url: "https://www.youtube.com/watch?v=UhliDp32nYY" },
-                    { text: "המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר (30 דק')", url: "emotional_distress_elderly.mp4" }
+                    { text: "עזרה ראשונה, הזרקת גלוקגון, החייאה ותמיכה נפשית בחירום", url: "https://www.youtube.com/watch?v=UhliDp32nYY" }
                 ]
             },
             {
@@ -1579,12 +1570,21 @@
                         type: "drive_video",
                         url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link",
                         desc: "פירוט 12 העקרונות המחייבים לשמירה על כבוד, פרטיות וחיסיון רפואי."
+                    },
+                    {
+                        id: "m_5_3",
+                        code: "5.3",
+                        title: "סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר",
+                        type: "local_video",
+                        url: "emotional_distress_elderly.mp4",
+                        desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש כחלק מכבוד האדם ואיכות חייו."
                     }
                 ],
                 checklist: [
                     { text: "ערכים ואתיקה, שמירה על פרטיות ובטיחות (30 דק')", url: "https://drive.google.com/file/d/1S-ieNxCMuMLcJSEZkwWvOKZvRGhK698Y/view?usp=drive_link" },
                     { text: "חוק זכויות החולה – 12 העקרונות (30 דק')", url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link" },
-                    { text: "חיסיון רפואי ושמירה על סודיות (30 דק')", url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link" }
+                    { text: "חיסיון רפואי ושמירה על סודיות (30 דק')", url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link" },
+                    { text: "סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר (30 דק')", url: "emotional_distress_elderly.mp4" }
                 ]
             },
             {
@@ -1898,7 +1898,7 @@
     </script>
 
     <script>
-        const STORAGE_TOPICS_KEY = "onboarding_kit_topics_v9";
+        const STORAGE_TOPICS_KEY = "onboarding_kit_topics_v60";
         const STORAGE_PROGRESS_KEY = "onboarding_kit_progress_v9";
         const STORAGE_DEPTS_KEY = "onboarding_kit_departments_v9";
 
@@ -2079,9 +2079,29 @@
                 kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
             }
 
-            // Ensure 10 topics and separation of Topic 9 (palliative) and Topic 10 (night shift)
+            // Ensure 10 topics and synchronization of all default items
             if (!kitTopics || kitTopics.length < 10 || kitTopics.some(t => t.title && t.title.includes('והכנה למשמרת לילה'))) {
                 kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
+                localStorage.setItem(STORAGE_TOPICS_KEY, JSON.stringify(kitTopics));
+            } else {
+                DEFAULT_KIT_TOPICS.forEach(defTopic => {
+                    const curTopic = kitTopics.find(t => t.id === defTopic.id);
+                    if (curTopic) {
+                        defTopic.mediaItems.forEach(defItem => {
+                            if (!curTopic.mediaItems.some(m => m.id === defItem.id || m.url === defItem.url)) {
+                                curTopic.mediaItems.push(defItem);
+                            }
+                        });
+                        if (defTopic.checklist) {
+                            if (!curTopic.checklist) curTopic.checklist = [];
+                            defTopic.checklist.forEach(defCheck => {
+                                if (!curTopic.checklist.some(c => c.text === defCheck.text || c.url === defCheck.url)) {
+                                    curTopic.checklist.push(defCheck);
+                                }
+                            });
+                        }
+                    }
+                });
                 localStorage.setItem(STORAGE_TOPICS_KEY, JSON.stringify(kitTopics));
             }
 

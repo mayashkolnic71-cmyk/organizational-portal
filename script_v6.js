@@ -1,4 +1,4 @@
-﻿let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
+let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
 try {
     const savedUser = localStorage.getItem('clinic_current_user');
     if (savedUser) {
@@ -54,29 +54,9 @@ function initTrainingsDb() {
         changed = true;
     }
 
-    if (!trainingsDb.find(t => t.url === 'aspiration_prevention_video.mp4' || (t.title && t.title.includes('אספירציה וחנק')))) {
-        trainingsDb.push({
-            id: 'train_aspiration_video',
-            title: 'סרטון הדרכה מונפש: מניעת אספירציה וחנק בהאכלת קשישים',
-            url: 'aspiration_prevention_video.mp4',
-            icon: '🫁',
-            external: true,
-            isVideo: true
-        });
-        changed = true;
-    }
-
-    if (!trainingsDb.find(t => t.url === 'emotional_distress_elderly.mp4' || (t.title && t.title.includes('המצוקה הרגשית בגיל השלישי')))) {
-        trainingsDb.push({
-            id: 'train_emotional_distress_video',
-            title: 'סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית',
-            url: 'emotional_distress_elderly.mp4',
-            icon: '❤️‍🩹',
-            external: true,
-            isVideo: true
-        });
-        changed = true;
-    }
+    const beforeCount = trainingsDb.length;
+    trainingsDb = trainingsDb.filter(t => !t.url || (!t.url.includes('aspiration_prevention') && !t.url.includes('emotional_distress') && !t.url.includes('Claymation') && !t.url.includes('המצוקה_הרגשית')));
+    if (trainingsDb.length !== beforeCount) changed = true;
 
     if (changed || !stored) {
         localStorage.setItem('clinic_trainings', JSON.stringify(trainingsDb));
@@ -231,7 +211,7 @@ function initProtocolsDb() {
         category: "clinical",
         type: "video",
         author: "צוות סיעוד ואיכות",
-        desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש."
+        desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש כחלק מכבוד האדם ואיכות חייו."
     });
 
     // Clean old protocols of any Beit Hadar mention
@@ -1354,7 +1334,7 @@ function renderOnboarding() {
                     <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background: #059669; color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה רשמי על הדרכות קליטה לתיוק בתיק עובד במשאבי אנוש">
                         <span>📋</span> נספח א': טופס החתמה (A4)
                     </a>
-                    <a href="onboarding_kit_preview.html?v=58" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    <a href="onboarding_kit_preview.html?v=60" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                         <span>↗ פתיחה בחלון נפרד מלא</span>
                     </a>
                     <button onclick="const ifr=document.getElementById('onboarding-kit-frame'); if(ifr){ifr.contentWindow.location.reload();}" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 7px 12px; font-size: 13px;" title="רענון ערכה">
@@ -1363,7 +1343,7 @@ function renderOnboarding() {
                 </div>
             </div>
             <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
-                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=58" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=60" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     `;
@@ -1803,43 +1783,24 @@ function renderTrainings() {
 
     return `
         <div class="fade-in">
-            <h2 style="margin-bottom: 20px;">×œ×•×ž×“×•×ª ×œ×§×œ×™×˜×ª ×¢×•×‘×“ ×—×“×©</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 20px;">×ž××’×¨ ×”×œ×•×ž×“×•×ª ×•×”×”×“×¨×›×•×ª ×”×§×œ×™× ×™×•×ª ×¢×‘×•×¨ ×× ×©×™ ×¦×•×•×ª ×•×§×œ×™×˜×ª ×¢×•×‘×“×™×.</p>
-            ${currentUser.isAdmin ? '<div style="margin-bottom: 20px;"><button class="btn" onclick="exportTrainingsExcel()" style="background: var(--success);">×™×™×¦× ×“×•×— ×‘×™×¦×•×¢ ×”×“×¨×›×•×ª ×œ××§×¡×œ ðŸ“¥</button></div>' : ''}
+            <h2 style="margin-bottom: 20px;">לומדות לקליטת עובד חדש</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">מאגר הלומדות וההדרכות הקליניות עבור אנשי צוות וקליטת עובדים.</p>
+            ${currentUser.isAdmin ? '<div style="margin-bottom: 20px;"><button class="btn" onclick="exportTrainingsExcel()" style="background: var(--success);">ייצא דוח ביצוע הדרכות לאקסל 📥</button></div>' : ''}
             
             <div class="forms-list">
-                ${trainingsDb.map(t => {
-                    const isVid = t.isVideo || (t.url && t.url.match(/\.(mp4|webm)$/i));
-                    const safeTitle = (t.title || '').replace(/'/g, "\\'");
-                    return `
-                    <div class="form-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; min-height: 160px; padding: 18px; border-radius: 12px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 40px; margin-bottom: 8px;">${t.icon}</div>
-                        <h4 style="margin-bottom: 12px; font-size: 15px; line-height: 1.4;">${t.title}</h4>
-                        <div style="margin-top:auto; width: 100%; display: flex; gap: 8px; justify-content: center;">
-                            <button class="btn" onclick="openTraining('${t.url}', '${safeTitle}', ${t.external ? 'true' : 'false'})" style="${isVid ? 'background:#ef4444; color:white; font-weight:700;' : ''} flex: 1;">
-                                ${isVid ? 'â–¶ ×¦×¤×” ×‘×¡×¨×˜×•×Ÿ' : '×¤×ª×— ×œ×•×ž×“×”'}
-                            </button>
-                            ${isVid ? `<a href="${t.url}" target="_blank" class="btn" style="background:var(--surface-color); color:var(--text-primary); border:1px solid var(--border-color); padding:8px 12px;" title="×¤×ª×— ×‘×—×œ×•×Ÿ × ×¤×¨×“">â†—</a>` : ''}
-                        </div>
+                ${trainingsDb.map(t => `
+                    <div class="form-card" style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 150px;">
+                        <div style="font-size: 40px; margin-bottom: 10px;">${t.icon}</div>
+                        <h4 style="margin-bottom: 15px;">${t.title}</h4>
+                        <button class="btn" onclick="openTraining('${t.url}', '${t.title}', ${t.external ? 'true' : 'false'})" style="margin-top:auto;">פתח לומדה</button>
                     </div>
-                `;}).join('')}
+                `).join('')}
             </div>
         </div>
     `;
 }
 
 function openTraining(url, title, isExternal = false) {
-    if (/\.(mp4|webm)$/i.test(url)) {
-        trainingsAnswersDb.push({
-            title: title,
-            user: currentUser.name,
-            date: new Date().toLocaleString('he-IL')
-        });
-        localStorage.setItem('clinic_trainings_answers', JSON.stringify(trainingsAnswersDb));
-        showToast('צפייה בסרטון נרשמה בהצלחה במערכת.', 'info');
-        openProtocolVideoModal(url, title);
-        return;
-    }
     // Intercept based on title to guarantee native quiz routing
     if (title.includes('טיפול תומך') || (url && url.includes('1FAIpQLSdfndGfTLOLGo_yU8ZBlJeOt6MrTTA39LE-OyeBKmI3_2FJ6Q'))) {
         url = 'native_supportive_care';
@@ -2788,58 +2749,54 @@ function handleProtocolModalEscUnused(e) {
 
 function renderProtocols() {
     protocolsDb.forEach(p => {
-        if (p.link === 'pharmacological_risk.html' || (p.title && p.title.includes('× ×™×”×•×œ ×¡×™×›×•× ×™× ×¤×¨×ž×§×•×œ×•×’×™×™×'))) {
-            p.title = '×ž×“×¨×™×š ×§×œ×™× ×™ ×ž××•×—×“: × ×™×”×•×œ ×¨×©×•×ž×ª ×ž×˜×•×¤×œ 2026, ×ž×¢×§×‘ ×¨×¤×•××™ ×•×ž×ª×Ÿ ×ª×¨×•×¤×•×ª ×‘×˜×•×—';
+        if (p.link === 'pharmacological_risk.html' || (p.title && p.title.includes('ניהול סיכונים פרמקולוגיים'))) {
+            p.title = 'מדריך קליני מאוחד: ניהול רשומת מטופל 2026, מעקב רפואי ומתן תרופות בטוח';
             p.link = 'clinical_monitoring_guide.html';
             p.category = 'medication';
-            p.desc = '××ž×•×ª ×ž×™×“×” ×œ× ×™×”×•×œ ×¨×©×•×ž×ª ×ž×˜×•×¤×œ 2026 (×’×¨×™××˜×¨×™×” ×›×¨×•× ×™×ª ×•×’×¨×™××˜×¨×™×” ×¤×¢×™×œ×”), ×ž×©×˜×¨×™ ×ž×™× ×•×Ÿ ×•×¡×ž"×—, ×©×ž×•× ×ª ×”-Right ×•×§×¨×™×˜×¨×™×•× ×™ Beers.';
+            p.desc = 'אמות מידה לניהול רשומת מטופל 2026 (גריאטריה כרונית וגריאטריה פעילה), משטרי מינון וסמ"ח, שמונת ה-Right וקריטריוני Beers.';
         }
     });
-    let protocolsChanged = false;
     if (!protocolsDb.find(p => p.link === 'frailty_simulation.html')) {
         protocolsDb.push({
             id: Date.now() + 10,
-            title: '×¡×™×ž×•×œ×¦×™×” ×§×œ×™× ×™×ª: ×§×‘×œ×ª ×ž×˜×•×¤×œ×ª ×•××•×ž×“×Ÿ ×©×‘×¨×™×¨×™×•×ª (Frailty)',
+            title: 'סימולציה קלינית: קבלת מטופלת ואומדן שבריריות (Frailty)',
             link: 'frailty_simulation.html',
             category: 'clinical',
-            desc: '×œ×•×ž×“×ª ×ª×¡×¨×™×˜ ×”×ž×“×’×™×ž×” ×™×™×©×•× × ×›×•×Ÿ ×©×œ ×›×œ×™ ××•×ž×“×Ÿ ×©×‘×¨×™×¨×™×•×ª (CFS ×•×ž×•×“×œ Fried) ×‘×ž×—×œ×§×ª ×©×™×§×•×, ×“×™×•×§ ×§×œ×™× ×™ ×•×ª×§×©×•×¨×ª ××ž×¤×ª×™×ª.'
+            desc: 'לומדת תסריט המדגימה יישום נכון של כלי אומדן שבריריות (CFS ומודל Fried) במחלקת שיקום, דיוק קליני ותקשורת אמפתית.'
         });
-        protocolsChanged = true;
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     }
     if (!protocolsDb.find(p => p.link === 'aspiration_prevention_video.mp4')) {
         protocolsDb.unshift({
             id: "proto_aspiration_video_claymation",
-            title: "×¡×¨×˜×•×Ÿ ×”×“×¨×›×” ×ž×•× ×¤×©: ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×•×—× ×§ ×‘×”××›×œ×ª ×§×©×™×©×™×",
+            title: "סרטון הדרכה מונפש: מניעת אספירציה וחנק בהאכלת קשישים",
             link: "aspiration_prevention_video.mp4",
             category: "aspiration",
             type: "video",
-            author: "×¦×•×•×ª ×§×œ×™× ×™",
-            desc: "×¡×¨×˜×•×Ÿ ×”×“×¨×›×” ×ž×•× ×¤×© (Claymation) ×œ×¦×•×•×ª ×”×ž×˜×¤×œ ×‘× ×•×©× ×–×™×”×•×™ ×ž×•×§×“× ×©×œ ×§×©×™×™ ×‘×œ×™×¢×”, ×ª× ×•×—×ª ×”××›×œ×” ×‘×˜×•×—×”, ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×” ×©×§×˜×” ×•×¢×¨× ×•×ª ×œ×¡×™×ž× ×™ ×—× ×§ ×‘×’×™×œ ×”×©×œ×™×©×™."
+            author: "צוות קליני",
+            desc: "סרטון הדרכה מונפש (Claymation) לצוות המטפל בנושא זיהוי מוקדם של קשיי בליעה, תנוחת האכלה בטוחה, מניעת אספירציה שקטה וערנות לסימני חנק בגיל השלישי."
         });
-        protocolsChanged = true;
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     }
     if (!protocolsDb.find(p => p.link === 'emotional_distress_elderly.mp4')) {
         protocolsDb.unshift({
             id: "proto_emotional_distress_video",
-            title: "×¡×¨×˜×•×Ÿ ×”×“×¨×›×”: ×”×ž×¦×•×§×” ×”×¨×’×©×™×ª ×‘×’×™×œ ×”×©×œ×™×©×™ ×•×ª×ž×™×›×” × ×¤×©×™×ª ×‘×“×™×™×¨",
+            title: "סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר",
             link: "emotional_distress_elderly.mp4",
             category: "clinical",
             type: "video",
-            author: "×¦×•×•×ª ×¡×™×¢×•×“ ×•××™×›×•×ª",
-            desc: "×¡×¨×˜×•×Ÿ ×”×“×¨×›×” ×ž×§×¦×•×¢×™ ×œ×¦×•×•×ª×™ ×”×˜×™×¤×•×œ ×•×”×Ö²×—Ö¸×™×•Ö¼×ª ×¢×œ ×–×™×”×•×™ ×ž×¦×•×§×” × ×¤×©×™×ª, ×‘×“×™×“×•×ª, ×“×™×›××•×Ÿ, ×—×¨×“×” ×•×ž×ª×Ÿ ×ª×ž×™×›×” ×¨×’×©×™×ª ×œ×“×™×™×¨ ×”×§×©×™×©."
+            author: "צוות סיעוד ואיכות",
+            desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש כחלק מכבוד האדם ואיכות חייו."
         });
-        protocolsChanged = true;
-    }
-    if (protocolsChanged) {
-        try { localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb)); } catch(e) {}
+        localStorage.setItem('clinic_protocols', JSON.stringify(protocolsDb));
     }
     const filter = currentProtocolCategory || 'all';
     const filteredList = protocolsDb.filter(p => {
         if (filter === 'all') return true;
         if (filter === 'video') return p.type === 'video' || (p.link && p.link.match(/\.(mp4|webm)$/i));
-        if (filter === 'medication') return p.category === 'medication' || (p.title && (p.title.includes('×ª×¨×•×¤×•×ª') || p.title.includes('×¤×¨×ž×§×•×œ×•×’×™×™×')));
-        if (filter === 'aspiration') return p.category === 'aspiration' || (p.title && p.title.includes('××¡×¤×™×¨×¦×™×”'));
-        if (filter === 'clinical') return p.category === 'clinical' || (p.title && (p.title.includes('×©×‘×¨×™×¨×™×•×ª') || p.title.includes('×¢×¦×™×¨×•×ª')));
+        if (filter === 'medication') return p.category === 'medication' || (p.title && (p.title.includes('תרופות') || p.title.includes('פרמקולוגיים')));
+        if (filter === 'aspiration') return p.category === 'aspiration' || (p.title && p.title.includes('אספירציה'));
+        if (filter === 'clinical') return p.category === 'clinical' || (p.title && (p.title.includes('שבריריות') || p.title.includes('עצירות')));
         if (filter === 'infographic') return p.type === 'infographic' || p.link.match(/\.(png|jpg|jpeg|webp)$/i);
         return true;
     });
@@ -2850,10 +2807,10 @@ function renderProtocols() {
                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;">
                     <div>
                         <h2 style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
-                            <span>ðŸ“‘</span> ×˜×¤×¡×™× ×•×¤×¨×•×˜×•×§×•×œ×™× ×˜×™×¤×•×œ×™×™×
+                            <span>📑</span> טפסים ופרוטוקולים טיפוליים
                         </h2>
                         <p style="color: var(--text-secondary); font-size: 15px; margin: 0;">
-                            ×ž××’×¨ ×¤×¨×•×˜×•×§×•×œ×™× ×§×œ×™× ×™×™×, ×›×¨×–×•×ª, ××™× ×¤×•×’×¨×¤×™×§×•×ª ×•×¡×¨×˜×•× ×™ ×”×“×¨×›×” ×ž×§×¦×•×¢×™×™× ×œ×”×˜×ž×¢×” ×•×‘×§×¨×” ×‘×ž×—×œ×§×”.
+                            מאגר פרוטוקולים קליניים, כרזות ואינפוגרפיקות מקצועיות להטמעה, הדרכה ובקרה במחלקה.
                         </p>
                     </div>
                 </div>
@@ -2861,15 +2818,15 @@ function renderProtocols() {
                 <!-- Search and Categories -->
                 <div style="display: flex; gap: 15px; margin-top: 20px; flex-wrap: wrap; align-items: center;">
                     <div style="flex: 1; min-width: 250px;">
-                        <input type="text" id="protocol-search" placeholder="ðŸ” ×—×™×¤×•×© ×¤×¨×•×˜×•×§×•×œ, × ×•×©×, ×¡×¨×˜×•×Ÿ ××• ××™× ×¤×•×’×¨×¤×™×§×”..." oninput="filterProtocolsSearch()" style="width: 100%; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-primary); font-size: 14px;">
+                        <input type="text" id="protocol-search" placeholder="🔍 חיפוש פרוטוקול, נושא או אינפוגרפיקה..." oninput="filterProtocolsSearch()" style="width: 100%; padding: 10px 16px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--surface-color); color: var(--text-primary); font-size: 14px;">
                     </div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'all' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'all' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('all')">×”×›×œ (${protocolsDb.length})</button>
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'video' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'video' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('video')">ðŸŽ¥ ×¡×¨×˜×•× ×™ ×”×“×¨×›×”</button>
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'medication' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'medication' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('medication')">ðŸ’Š ×‘×˜×™×—×•×ª ×ª×¨×•×¤×ª×™×ª</button>
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'infographic' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'infographic' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('infographic')">ðŸ–¼ï¸ ××™× ×¤×•×’×¨×¤×™×§×•×ª ×•×›×¨×–×•×ª</button>
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'aspiration' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'aspiration' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('aspiration')">ðŸ« ×ž× ×™×¢×ª ××¡×¤×™×¨×¦×™×”</button>
-                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'clinical' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'clinical' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('clinical')">ðŸ“‹ ×©×‘×¨×™×¨×™×•×ª ×•×¢×¦×™×¨×•×ª</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'all' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'all' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('all')">הכל (${protocolsDb.length})</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'video' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'video' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('video')">🎥 סרטוני הדרכה</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'medication' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'medication' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('medication')">💊 בטיחות תרופתית</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'infographic' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'infographic' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('infographic')">🖼️ אינפוגרפיקות וכרזות</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'aspiration' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'aspiration' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('aspiration')">🫁 מניעת אספירציה</button>
+                        <button class="btn" style="padding: 8px 14px; font-size: 13px; border-radius: 8px; background: ${filter === 'clinical' ? 'var(--primary-color)' : 'var(--surface-color)'}; color: ${filter === 'clinical' ? '#fff' : 'var(--text-primary)'}; border: 1px solid var(--border-color);" onclick="setProtocolFilter('clinical')">📋 שבריריות ועצירות</button>
                     </div>
                 </div>
             </div>
@@ -2882,21 +2839,21 @@ function renderProtocols() {
                     const safeTitle = (p.title || '').replace(/'/g, "\\'");
                     
                     let badgeBg = '#3b82f6';
-                    let badgeText = '×¤×¨×•×˜×•×§×•×œ';
-                    let icon = 'ðŸ“„';
+                    let badgeText = 'פרוטוקול';
+                    let icon = '📄';
                     
                     if (isImg) {
                         badgeBg = '#8b5cf6';
-                        badgeText = '××™× ×¤×•×’×¨×¤×™×§×” ×§×œ×™× ×™×ª';
-                        icon = 'ðŸ–¼ï¸';
+                        badgeText = 'אינפוגרפיקה קלינית';
+                        icon = '🖼️';
                     } else if (isVid) {
                         badgeBg = '#ef4444';
-                        badgeText = '×¡×¨×˜×•×Ÿ ×”×“×¨×›×” MP4';
-                        icon = 'ðŸŽ¥';
+                        badgeText = 'סרטון הדרכה';
+                        icon = '🎥';
                     } else if (p.category === 'medication') {
                         badgeBg = '#0284c7';
-                        badgeText = '×‘×˜×™×—×•×ª ×ª×¨×•×¤×ª×™×ª';
-                        icon = 'ðŸ’Š';
+                        badgeText = 'בטיחות תרופתית';
+                        icon = '💊';
                     }
 
                     return `
@@ -2912,15 +2869,15 @@ function renderProtocols() {
                                     <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 14px; background: #0f172a; cursor: pointer; border: 1px solid var(--border-color);" onclick="openProtocolModal('${p.link}', '${safeTitle}')">
                                         <img src="${p.link}" alt="${p.title}" style="width: 100%; height: 100%; object-fit: cover; object-position: top; opacity: 0.95; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
                                         <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%); display: flex; align-items: flex-end; padding: 10px;">
-                                            <span style="color: white; font-size: 12px; background: rgba(0,0,0,0.5); padding: 3px 8px; border-radius: 6px; backdrop-filter: blur(4px);">ðŸ” ×œ×—×¥ ×œ×”×’×“×œ×”</span>
+                                            <span style="color: white; font-size: 12px; background: rgba(0,0,0,0.5); padding: 3px 8px; border-radius: 6px; backdrop-filter: blur(4px);">🔍 לחץ להגדלה</span>
                                         </div>
                                     </div>
                                 ` : (isVid ? `
                                     <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 14px; background: #0f172a; cursor: pointer; border: 1px solid var(--border-color); display: flex; align-items: center; justify-content: center;" onclick="openProtocolVideoModal('${p.link}', '${safeTitle}')">
                                         <video src="${p.link}" preload="metadata" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.82; pointer-events: none; background: #000;"></video>
                                         <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.15) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;">
-                                            <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(239,68,68,0.92); color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 15px rgba(239,68,68,0.5);">â–¶</div>
-                                            <span style="color: white; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.7); padding: 3px 10px; border-radius: 20px;">×¦×¤×” ×‘×¡×¨×˜×•×Ÿ ×™×©×™×¨×•×ª</span>
+                                            <div style="width: 52px; height: 52px; border-radius: 50%; background: rgba(239,68,68,0.92); color: white; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 15px rgba(239,68,68,0.5);">▶</div>
+                                            <span style="color: white; font-size: 12px; font-weight: 700; background: rgba(0,0,0,0.7); padding: 3px 10px; border-radius: 20px;">צפה בסרטון ישירות</span>
                                         </div>
                                     </div>
                                 ` : '')}
@@ -2932,29 +2889,27 @@ function renderProtocols() {
                             <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border-color);">
                                 ${isImg ? `
                                     <button class="btn" style="flex: 1; padding: 9px 12px; font-size: 13px; display: inline-flex; align-items: center; justify-content: center; gap: 6px;" onclick="openProtocolModal('${p.link}', '${safeTitle}')">
-                                        <span>ðŸ” ×ª×¦×•×’×” ×ž×•×’×“×œ×ª</span>
+                                        <span>🔍 תצוגה מוגדלת</span>
                                     </button>
-                                    <a href="${p.link}" target="_blank" class="btn" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 9px 12px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="×¤×ª×™×—×” ×‘×—×œ×•×Ÿ × ×¤×¨×“ / ×”×“×¤×¡×”">
-                                        <span>â†— ×¤×ª×—</span>
-                                    </a>
-                                ` : (isVid ? `
-                                    <button type="button" class="btn" style="flex: 1; background: #ef4444; color: white; border: none; padding: 9px 12px; font-size: 13px; font-weight: 700; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; box-shadow: 0 2px 8px rgba(239,68,68,0.3);" onclick="openProtocolVideoModal('${p.link}', '${safeTitle}')">
-                                        <span>â–¶ ×¦×¤×” ×‘×¡×¨×˜×•×Ÿ ×™×©×™×¨×•×ª</span>
-                                    </button>
-                                    <a href="${p.link}" target="_blank" class="btn" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 9px 12px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="×¤×ª×— ×‘×—×œ×•×Ÿ × ×¤×¨×“ / ×”×•×¨×“×”">
-                                        <span>â†— ×¤×ª×—</span>
+                                    <a href="${p.link}" target="_blank" class="btn" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 9px 12px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="פתיחה בחלון נפרד / הדפסה">
+                                        <span>↗ פתח</span>
                                     </a>
                                 ` : `
-                                    <a href="${p.link}" ${isHtml ? '' : 'target="_blank"'} class="btn" style="width: 100%; padding: 9px 12px; font-size: 13px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px;">
-                                        <span>${isHtml ? 'ðŸ©º ×›× ×™×¡×” ×œ×¤×¨×•×˜×•×§×•×œ' : '×¦×¤×” ×‘×ž×¡×ž×š'}</span>
-                                        <span>â†—</span>
+                                    <a href="${isVid ? 'javascript:void(0)' : p.link}" ${isVid ? `onclick="openProtocolVideoModal('${p.link}', '${safeTitle}')"` : ''} class="btn" style="flex: 1; padding: 9px 12px; font-size: 13px; text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 6px; ${isVid ? 'background: #ef4444; color: white; border: none; font-weight: 700;' : ''}">
+                                        <span>${isVid ? '▶ צפה בסרטון ישירות' : (isHtml ? '🩺 כניסה לפרוטוקול' : 'צפה במסמך')}</span>
+                                        <span>↗</span>
                                     </a>
-                                `)}
+                                    ${isVid ? `
+                                        <a href="${p.link}" target="_blank" class="btn" style="background: var(--surface-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 9px 12px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;" title="פתח בחלון נפרד / הורדה">
+                                            <span>↗ פתח</span>
+                                        </a>
+                                    ` : ''}
+                                `}
                             </div>
                         </div>
                     `;
                 }).join('')}
-                ${filteredList.length === 0 ? '<div class="card" style="grid-column: 1/-1; text-align: center; padding: 40px;"><p style="color: var(--text-secondary); margin: 0;">×œ× × ×ž×¦××• ×¤×¨×•×˜×•×§×•×œ×™× ×”×ª×•××ž×™× ××ª ×”×—×™×¤×•×© ××• ×”×¡×™× ×•×Ÿ ×©× ×‘×—×¨.</p></div>' : ''}
+                ${filteredList.length === 0 ? '<div class="card" style="grid-column: 1/-1; text-align: center; padding: 40px;"><p style="color: var(--text-secondary); margin: 0;">לא נמצאו פרוטוקולים התואמים את החיפוש או הסינון שנבחר.</p></div>' : ''}
             </div>
         </div>
     `;
