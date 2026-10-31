@@ -2699,14 +2699,6 @@ function closeProtocolModal() {
     if (modal) modal.style.display = 'none';
     document.removeEventListener('keydown', handleProtocolModalEsc);
 }
-
-
-
-
-    document.removeEventListener('keydown', handleProtocolModalEsc);
-}
-
-function handleProtocolModalEsc(e) { if (e.key === 'Escape') closeProtocolModal(); }
 function openProtocolVideoModal(videoSrc, title) {
     let modal = document.getElementById('protocol-image-modal');
     if (!modal) {
