@@ -1318,7 +1318,7 @@ function renderOnboarding() {
                 </div>
             </div>
             <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
-                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=56" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=57" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     `;
@@ -3482,170 +3482,305 @@ function renderInterprofessionalDashboard() {
             <!-- ============================================================== -->
             <!-- תוכנית השתלמות שנתית שוטפת לצוות ותיק (20 שעות) – מודל הבקרה האחודה (MDT) -->
             <!-- ============================================================== -->
-            <div class="interprof-card" style="margin-top:28px; padding:24px; border-top: 4px solid var(--primary-color);">
+            <!-- תוכנית השתלמות שנתית שוטפת לצוות ותיק (20 שעות חובה) – הצוות הרב-מקצועי -->
+            <!-- ============================================================== -->
+            <div class="interprof-card" style="margin-top:28px; padding:26px; border-top: 4px solid var(--primary-color);">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px; margin-bottom:18px;">
                     <div>
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <span style="font-size:24px;">📅</span>
-                            <h3 style="margin:0; font-size:18px; font-weight:800; color:var(--text-primary);">
-                                תוכנית השתלמות שנתית שוטפת לצוות ותיק (20 שעות) – פריסה חודשית רב-מקצועית MDT
+                            <span style="font-size:26px;">📅</span>
+                            <h3 style="margin:0; font-size:19px; font-weight:800; color:var(--text-primary);">
+                                תוכנית השתלמות שנתית שוטפת לצוות ותיק (20 שעות חובה) – פריסה חודשית של הצוות הרב-מקצועי
                             </h3>
                         </div>
-                        <p style="margin:5px 0 0 0; font-size:13px; color:var(--text-secondary);">
-                            התאמת מערך ההדרכה המוסדי לדרישות כלי הבקרה האחוד (משרד הבריאות) – יעד בסיס 100% כשירות שנתית לצוותי הסיעוד וה-MDT
+                        <p style="margin:6px 0 0 0; font-size:13.5px; color:var(--text-secondary); line-height:1.5;">
+                            התאמת מערך ההדרכה המוסדי לדרישות כלי הבקרה האחוד (משרד הבריאות) – יעד בסיס של <strong>100% כשירות שנתית</strong> לצוותי הסיעוד, הרפואה, מקצועות הבריאות והעבודה הסוציאלית.
                         </p>
                     </div>
                     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                        <a href="geriatric_training_policy_62h.pdf" target="_blank" class="btn" style="background:var(--primary-color); color:white; padding:7px 15px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.25);" title="מסמך הצעת מדיניות מלא (PDF)">
+                        <a href="geriatric_training_policy_62h.pdf" target="_blank" class="btn" style="background:var(--primary-color); color:white; padding:8px 16px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.25);" title="מסמך הצעת מדיניות מלא (PDF)">
                             <span>📄</span> מסמך המדיניות המלא (PDF)
                         </a>
-                        <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background:#059669; color:white; padding:7px 15px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה נספח א'">
+                        <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background:#059669; color:white; padding:8px 16px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה נספח א'">
                             <span>📋</span> טופס החתמה (נספח א')
                         </a>
-                        <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); padding:7px 14px; font-size:13px; border-radius:8px; cursor:pointer;" title="הדפסת תוכנית שנתית">
+                        <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); padding:8px 14px; font-size:13px; border-radius:8px; cursor:pointer;" title="הדפסת תוכנית שנתית">
                             <span>🖨️</span> הדפס
                         </button>
                     </div>
                 </div>
 
-                <!-- Regulatory Pillars 20h Breakdown -->
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-bottom:22px;">
-                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
-                        <div style="font-size:11px; font-weight:700; color:var(--primary-color); text-transform:uppercase; letter-spacing:0.5px;">נתיב שנתי שוטף</div>
-                        <div style="font-size:22px; font-weight:900; color:var(--text-primary); margin:2px 0;">20 שעות חובה</div>
-                        <div style="font-size:12px; color:var(--text-secondary);">עמידה ב-100% ביעד כשירות בקרת משה"ב</div>
+                <!-- באנר מודגש: נוסחת 20 שעות חובה שנתיות (12 + 4 + 4) -->
+                <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #ffffff; border-radius: 12px; padding: 18px 22px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 4px 16px rgba(15,23,42,0.25);">
+                    <div style="display: flex; align-items: center; gap: 14px;">
+                        <span style="font-size: 34px;">🎯</span>
+                        <div>
+                            <div style="font-size: 12.5px; font-weight: 700; color: #93c5fd; text-transform: uppercase; letter-spacing: 0.5px;">חובת כשירות וריענון שנתי שוטף – כלי הבקרה האחוד (משרד הבריאות)</div>
+                            <div style="font-size: 21px; font-weight: 900; color: #ffffff; margin-top: 2px;">סה"כ 20 שעות חובה שנתיות לכל איש צוות</div>
+                        </div>
                     </div>
-                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
-                        <div style="font-size:11px; font-weight:700; color:#0284c7; text-transform:uppercase; letter-spacing:0.5px;">לומדות דיגיטליות</div>
-                        <div style="font-size:22px; font-weight:900; color:#0284c7; margin:2px 0;">4 שעות</div>
-                        <div style="font-size:12px; color:var(--text-secondary);">מניעת זיהומים, בטיחות הטיפול, סייבר, חירום</div>
-                    </div>
-                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
-                        <div style="font-size:11px; font-weight:700; color:#d97706; text-transform:uppercase; letter-spacing:0.5px;">תרגילים ומעשי</div>
-                        <div style="font-size:22px; font-weight:900; color:#d97706; margin:2px 0;">4 שעות</div>
-                        <div style="font-size:12px; color:var(--text-secondary);">סדנת החייאה מעשית (BLS), כיבוי אש, מל"ח</div>
-                    </div>
-                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
-                        <div style="font-size:11px; font-weight:700; color:#16a34a; text-transform:uppercase; letter-spacing:0.5px;">הדרכה מחלקתית חודשית</div>
-                        <div style="font-size:22px; font-weight:900; color:#16a34a; margin:2px 0;">12 שעות (MDT)</div>
-                        <div style="font-size:12px; color:var(--text-secondary);">פריסה של 12 מפגשים (60 דק' כל מפגש)</div>
+                    <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: rgba(255,255,255,0.08); padding: 8px 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.18);">
+                        <span style="font-size: 13.5px; font-weight: 800; color: #93c5fd; margin-left: 4px;">נוסחת 20 השעות:</span>
+                        <span style="background: #16a34a; color: #ffffff; padding: 5px 12px; border-radius: 6px; font-weight: 900; font-size: 13.5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">12 שעות הדרכה מחלקתית (בטבלה)</span>
+                        <span style="font-weight: 900; color: #93c5fd; font-size: 16px;">+</span>
+                        <span style="background: #0284c7; color: #ffffff; padding: 5px 12px; border-radius: 6px; font-weight: 900; font-size: 13.5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">4 שעות לומדות דיגיטליות</span>
+                        <span style="font-weight: 900; color: #93c5fd; font-size: 16px;">+</span>
+                        <span style="background: #d97706; color: #ffffff; padding: 5px 12px; border-radius: 6px; font-weight: 900; font-size: 13.5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">4 שעות תרגול מעשי והחייאה</span>
+                        <span style="font-weight: 900; color: #ffffff; font-size: 16px;">=</span>
+                        <span style="background: #dc2626; color: #ffffff; padding: 5px 14px; border-radius: 6px; font-weight: 900; font-size: 14.5px; box-shadow: 0 2px 8px rgba(220,38,38,0.35);">20 שעות חובה</span>
                     </div>
                 </div>
 
-                <!-- 12-Month Detailed MDT Schedule Table -->
+                <!-- כרטיסי פירוט מרכיבי שעות החובה -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-bottom:20px;">
+                    <div style="background:#f0fdf4; border:2px solid #86efac; border-radius:10px; padding:14px 16px;">
+                        <div style="font-size:11.5px; font-weight:800; color:#15803d; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                            <span>🟢</span> מוצג בטבלה להלן
+                        </div>
+                        <div style="font-size:22px; font-weight:900; color:#166534; margin:4px 0 2px;">12 שעות הדרכה מחלקתית</div>
+                        <div style="font-size:12.5px; color:#15803d; font-weight:700;">12 מפגשים חודשיים של הצוות הרב-מקצועי (שעה אחת בכל חודש)</div>
+                    </div>
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
+                        <div style="font-size:11.5px; font-weight:700; color:#0284c7; text-transform:uppercase; letter-spacing:0.5px;">לומדות דיגיטליות ממוחשבות</div>
+                        <div style="font-size:22px; font-weight:900; color:#0284c7; margin:4px 0 2px;">4 שעות</div>
+                        <div style="font-size:12px; color:var(--text-secondary);">מניעת זיהומים, בטיחות הטיפול התרופתי, סייבר וחירום</div>
+                    </div>
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
+                        <div style="font-size:11.5px; font-weight:700; color:#d97706; text-transform:uppercase; letter-spacing:0.5px;">תרגולים מעשיים וסדנאות</div>
+                        <div style="font-size:22px; font-weight:900; color:#d97706; margin:4px 0 2px;">4 שעות</div>
+                        <div style="font-size:12px; color:var(--text-secondary);">סדנת החייאה מעשית (BLS), כיבוי אש, מיל"ח ומצבי קיצון</div>
+                    </div>
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px 16px;">
+                        <div style="font-size:11.5px; font-weight:700; color:var(--primary-color); text-transform:uppercase; letter-spacing:0.5px;">סה"כ נתיב שוטף שנתי</div>
+                        <div style="font-size:22px; font-weight:900; color:var(--text-primary); margin:4px 0 2px;">20 שעות חובה</div>
+                        <div style="font-size:12px; color:var(--text-secondary);">עמידה ב-100% ביעד כשירות בקרת משרד הבריאות</div>
+                    </div>
+                </div>
+
+                <!-- באנר הסבר מודגש מעל הטבלה: מציגים 12 שעות הדרכה מחלקתית חודשית -->
+                <div style="background: #eff6ff; border: 2px solid #3b82f6; border-radius: 10px; padding: 12px 18px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 22px;">📌</span>
+                        <div>
+                            <strong style="color: #1e40af; font-size: 14.5px;">הטבלה שלהלן מציגה את 12 שעות ההדרכה המחלקתית החודשית של הצוות הרב-מקצועי</strong>
+                            <div style="color: #1d4ed8; font-size: 12.5px; margin-top: 2px;">
+                                פריסה מובנית של <strong>12 מפגשים קליניים רב-מקצועיים (60 דק' / שעה אחת לכל מפגש חודשי)</strong> לאורך כל 12 חודשי השנה, המהווים 12 מתוך 20 שעות החובה השנתיות.
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: #2563eb; color: #ffffff; padding: 6px 14px; border-radius: 8px; font-weight: 800; font-size: 13px; white-space: nowrap; box-shadow: 0 2px 6px rgba(37,99,235,0.3);">
+                        12 שעות מתוך 20 שעות החובה
+                    </div>
+                </div>
+
+                <!-- טבלת 12 החודשים: עם סקטור מנחה גלוי ומודגש לכל שורה -->
                 <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:12px; overflow:hidden;">
-                    <div style="padding:12px 18px; background:var(--surface); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                    <div style="padding:12px 18px; background:var(--surface); border-bottom:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
                         <strong style="font-size:14px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
-                            <span>📋</span> פריסה שנתית חודשית: 12 מפגשים קליניים רב-מקצועיים (60 דק' כ"א)
+                            <span>📋</span> פריסה שנתית חודשית: 12 מפגשים קליניים של הצוות הרב-מקצועי (שעה אחת בכל חודש)
                         </strong>
-                        <span style="font-size:12px; color:var(--text-secondary);">מבוסס על מערך הלמידה של העמותה לקידום האחיוּת הגריאטרית</span>
+                        <span style="font-size:12px; color:var(--text-secondary);">מבוסס על מערך הלמידה המוסדי של העמותה לקידום האחיוּת הגריאטרית</span>
                     </div>
                     <div style="overflow-x:auto;">
                         <table style="width:100%; border-collapse:collapse; font-size:12.5px; text-align:right;">
                             <thead>
                                 <tr style="background:var(--surface); border-bottom:2px solid var(--border-color); font-weight:800; color:var(--text-primary);">
-                                    <th style="padding:11px 14px; width:70px; text-align:center;">חודש</th>
-                                    <th style="padding:11px 14px; width:22%;">פרק ממערך ההדרכה</th>
-                                    <th style="padding:11px 14px; width:22%;">נושא בקרה / נוהל</th>
-                                    <th style="padding:11px 14px; width:20%;">סקטור מנחה (MDT)</th>
+                                    <th style="padding:11px 12px; width:95px; text-align:center;">חודש / היקף</th>
+                                    <th style="padding:11px 14px; width:19%;">פרק ממערך ההדרכה</th>
+                                    <th style="padding:11px 14px; width:21%;">נושא בקרה / נוהל</th>
+                                    <th style="padding:11px 14px; width:24%;">סקטור מנחה (הצוות הרב-מקצועי)</th>
                                     <th style="padding:11px 14px;">מיקוד קליני במפגש (60 דק')</th>
                                 </tr>
                             </thead>
                             <tbody style="divide-y:1px solid var(--border-color);">
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">1</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 1</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
                                     <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">היכרות עם עולם הזקנה</td>
                                     <td style="padding:10px 14px;">תפיסות הזקנה, ציפיות והתאמת טיפול</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:6px; font-weight:700;">אחות הדרכה / עו"ס</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">פערים תפיסתיים ותיעוד העדפות אישיות בתיק</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            אחות הדרכה קלינית + עובדת סוציאלית
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">פערים תפיסתיים ותיעוד העדפות אישיות ברשומת הדייר</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">2</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 2</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
                                     <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">תקשורת מכבדת</td>
                                     <td style="padding:10px 14px;">איכות חיים וכבוד המטופל הקשיש</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fce7f3; color:#be185d; padding:3px 8px; border-radius:6px; font-weight:700;">מנהלת סיעוד / קלינאית תקשורת</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">הנגשה שפתית, יחס הולם, שמירה על פרטיות הדייר</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#fce7f3; color:#9d174d; border:1px solid #fbcfe8; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            קלינאית תקשורת + מנהלת סיעוד
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">הנגשה שפתית, יחס הולם, פנייה מכבדת ושמירה על פרטיות הדייר</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">3</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">זכויות הדייר</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 3</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">זכויות הדייר והסכמה מדעת</td>
                                     <td style="padding:10px 14px;">אפוטרופסות, הסכמה מדעת ורצון הדייר</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fef3c7; color:#b45309; padding:3px 8px; border-radius:6px; font-weight:700;">עו"ס / קב"ט</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">תהליכי מינוי אפוטרופוס, ניהול קונפליקטים ותיעוד ברשומה</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#fef3c7; color:#92400e; border:1px solid #fde68a; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            עובדת סוציאלית ראשית + הנהלה
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">תהליכי מינוי אפוטרופוס, ייפוי כוח מתמשך, ניהול קונפליקטים ותיעוד ברשומה</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">4</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">לתת טיפול בטוח</td>
-                                    <td style="padding:10px 14px;">נוהל נפילות, אומדן מורס והתאמת סביבה</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:6px; font-weight:700;">פיזיותרפיסט</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">התאמת אביזרי עזר, תחקור נפילה ותוכנית מניעה אישית</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 4</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">טיפול בטוח ומניעת נפילות</td>
+                                    <td style="padding:10px 14px;">נוהל נפילות, אומדן מורס (Morse) והתאמת סביבה</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#dcfce7; color:#166534; border:1px solid #bbf7d0; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            פיזיותרפיסט ראשי + מרפאה בעיסוק
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">התאמת אביזרי עזר, מעברים בטוחים, תחקור נפילה ותוכנית מניעה מותאמת אישית</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">5</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">עבודת צוות</td>
-                                    <td style="padding:10px 14px;">רצף טיפולי, ישיבות משמרת וצוות MDT</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#e0e7ff; color:#4338ca; padding:3px 8px; border-radius:6px; font-weight:700;">אחות אחראית</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">תקשורת בעומס (מודל SBAR), ישיבות צוות רב-מקצועיות</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 5</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">עבודת צוות ורצף טיפולי</td>
+                                    <td style="padding:10px 14px;">רצף טיפולי, ישיבות משמרת וסנכרון רב-מקצועי</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#ede9fe; color:#5b21b6; border:1px solid #ddd6fe; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            רופא מחלקה + אחות אחראית
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">תקשורת בשפה קלינית אחידה (מודל SBAR), העברת משמרת ומפגש רב-מקצועי מחלקתי</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">6</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">הגדרת תפקיד המטפל</td>
-                                    <td style="padding:10px 14px;">אצילת סמכויות, גבולות אחריות ונוהל 1.2.1.2</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#f3e8ff; color:#7e22ce; padding:3px 8px; border-radius:6px; font-weight:700;">מפקחת קלינית</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">סמכויות כוח עזר ואחריות אחות מוסמכת בביצוע פעולות</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 6</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">הגדרת תפקיד המטפל וסמכויות</td>
+                                    <td style="padding:10px 14px;">אצילת סמכויות, גבולות אחריות ונוהל משה"ב 1.2.1.2</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#ffedd5; color:#9a3412; border:1px solid #fed7aa; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            מנהלת הסיעוד + אחות מוסמכת חונכת
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">סמכויות כוח עזר ומטפלים, פעולות המחייבות אחות מוסמכת ודיווח על שינוי במצב דייר</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">7</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">טיפול אישי בסיסי</td>
-                                    <td style="padding:10px 14px;">רחצה, פצעי לחץ, מניעת זיהומים וסל חבישות</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fee2e2; color:#b91c1c; padding:3px 8px; border-radius:6px; font-weight:700;">מומחית פצע / רכזת זיהומים</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">מניעת זיהומים צולבים, דירוג פצעי לחץ 1-6 וסל חבישות</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 7</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">טיפול אישי בסיסי ושלמות העור</td>
+                                    <td style="padding:10px 14px;">רחצה בטוחה, מניעת פצעי לחץ, תפרחת IAD וסל חבישות</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#ccfbf1; color:#115e59; border:1px solid #99f6e4; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            מרכזת תחום פצעים ושלמות עור + דיאטנית
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">פרוטוקול 3 השלבים לעור (Cleanse-Moisturize-Protect), זיהוי IAD מול דרגות פצע 1-4, תזונה מעשירה</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">8</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">התנהגות מאתגרת</td>
-                                    <td style="padding:10px 14px;">דמנציה, חלופות הגבלה פיזית וסביבה מותאמת</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fef3c7; color:#b45309; padding:3px 8px; border-radius:6px; font-weight:700;">פסיכוגריאטר / מרפאה בעיסוק</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">איתור טריגרים לאגיטציה, חלופות לקשירה וסביבה בטוחה</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 8</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">התמודדות עם התנהגות מאתגרת</td>
+                                    <td style="padding:10px 14px;">דמנציה, דליריום, מניעת אגיטציה וחלופות לקשירה</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#fae8ff; color:#86198f; border:1px solid #f5d0fe; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            פסיכוגריאטר / רופא + מרפאה בעיסוק
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">איתור טריגרים לאי-שקט, תיקוף רגשי, פעילויות הרגעה, סביבה מותאמת ואפס סובלנות לקשירה</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">9</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">טיפול פליאטיבי</td>
-                                    <td style="padding:10px 14px;">נוהל פליאציה, חוק החולה הנוטה למות</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#e0f2fe; color:#0369a1; padding:3px 8px; border-radius:6px; font-weight:700;">רופא פליאטיבי / אחות מומחית</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">הנחיות מקדימות, פרוטוקול נוחות, איזון כאב וסוף חיים</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 9</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">טיפול פליאטיבי וסוף חיים</td>
+                                    <td style="padding:10px 14px;">נוהל פליאציה מוסדי, חוק החולה הנוטה למות ואיזון כאב</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#fee2e2; color:#991b1b; border:1px solid #fecaca; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            רופא פליאטיבי + אחות מומחית + עו"ס
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">הנחיות מקדימות, פרוטוקול נוחות, איזון כאב ותסמינים, ליווי רגשי לדייר ולבני המשפחה</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">10</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">התעמרות בצוות וחסרי ישע</td>
-                                    <td style="padding:10px 14px;">חוק העונשין, חשד להתעללות ומוגנות חסרי ישע</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fee2e2; color:#b91c1c; padding:3px 8px; border-radius:6px; font-weight:700;">מנהל סיכונים / עו"ס</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">סימני אזהרה, חובת דיווח חוקית, מוגנות מטופלים ועובדים</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 10</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">הגנה על חסרי ישע ומניעת התעמרות</td>
+                                    <td style="padding:10px 14px;">חוק העונשין (פגיעה בחסרי ישע), מניעת התעמרות בצוות</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#fef9c3; color:#854d0e; border:1px solid #fef08a; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            מנהל משאבי אנוש + עו"ס ראשית
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">זיהוי סימני אזהרה להזנחה ופגיעה, חובת דיווח חוקית, הגנה על עובדים ומניעת שחיקה</td>
                                 </tr>
                                 <tr style="border-bottom:1px solid var(--border-color);">
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">11</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">בקרה וניהול סיכונים</td>
-                                    <td style="padding:10px 14px;">ניתוח כמעט-טעות, למידה והפקת לקחים</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:6px; font-weight:700;">מנהל איכות / מנהל סיכונים</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">ניתוח אירועים חריגים, הפקת לקחים מעשית לצוות המחלקה</td>
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 11</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">בקרת איכות וניהול סיכונים</td>
+                                    <td style="padding:10px 14px;">דיווח ותחקור כמעט-טעות (Near Miss), למידה והפקת לקחים</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#e0e7ff; color:#3730a3; border:1px solid #c7d2fe; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            ממונה בטיחות ואיכות + מנהלת סיעוד
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">ניתוח אירועים חריגים מחלקתיים ללא אשם, הפקת לקחים מעשית ושיפור תהליכי עבודה</td>
                                 </tr>
-                                <tr>
-                                    <td style="padding:10px 14px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">12</td>
-                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">מעקב רפואי, תרופות ותזונה</td>
-                                    <td style="padding:10px 14px;">סקר רוקחי, אומדן תזונה MNA, בליעה ורב-תרופתיות</td>
-                                    <td style="padding:10px 14px;"><span class="badge" style="background:#fce7f3; color:#be185d; padding:3px 8px; border-radius:6px; font-weight:700;">דיאטנית / רוקח / קלינאית</span></td>
-                                    <td style="padding:10px 14px; color:var(--text-secondary);">מניעת תת-תזונה, פוליפרמסי (Beers), קשיי בליעה והתאמת דיאטה</td>
+                                <tr style="border-bottom:1px solid var(--border-color);">
+                                    <td style="padding:10px 12px; text-align:center; font-weight:800; background:rgba(2,132,199,0.06); color:#0284c7;">
+                                        <div>חודש 12</div>
+                                        <div style="font-size:11px; color:#0369a1; font-weight:700;">1 שעה (60 דק')</div>
+                                    </td>
+                                    <td style="padding:10px 14px; font-weight:700; color:var(--text-primary);">מניעת זיהומים והיגיינת ידיים</td>
+                                    <td style="padding:10px 14px;">חוזר מנכ"ל מניעת זיהומים, 5 הרגעים, תרביות ובידוד</td>
+                                    <td style="padding:10px 14px;">
+                                        <span style="display:inline-block; background:#e0f2fe; color:#0369a1; border:1px solid #bae6fd; padding:4px 10px; border-radius:6px; font-weight:800; font-size:12px;">
+                                            נאמנת מניעת זיהומים + רוקח קליני
+                                        </span>
+                                    </td>
+                                    <td style="padding:10px 14px; color:var(--text-secondary);">שבירת שרשרת ההדבקה, שימוש מושכל באנטיביוטיקה, ניקיון סביבתי וסיכום כשירות שנתית</td>
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr style="background:#f8fafc; border-top:2px solid var(--border-color); font-weight:800;">
+                                    <td style="padding:12px 14px; text-align:center; color:#16a34a; font-size:13px;">סה"כ: 12 שעות</td>
+                                    <td colspan="4" style="padding:12px 16px; color:#1e3a8a; font-size:13px;">
+                                        <span>📊</span> <strong>סיכום שעות בטבלה זו:</strong> 12 מפגשים חודשיים = 12 שעות הדרכה מחלקתית של הצוות הרב-מקצועי.
+                                        יחד עם <strong>4 שעות לומדות דיגיטליות</strong> ו-<strong>4 שעות תרגול מעשי והחייאה</strong> — מושלמות במלואן <strong>20 שעות חובה שנתיות לכל עובד</strong>.
+                                    </td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
 
-                <div style="margin-top:14px; padding:12px 16px; background:rgba(22,163,74,0.06); border-right:4px solid #16a34a; border-radius:0 8px 8px 0; font-size:12.5px; color:var(--text-primary); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                <!-- Footer Summary Regulatory Compliance Note -->
+                <div style="margin-top:16px; padding:12px 16px; background:var(--surface); border:1px solid var(--border-color); border-radius:8px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; font-size:12px; color:var(--text-secondary);">
                     <div>
-                        <strong>🎯 החזר השקעה בבקרה (ROI):</strong> תיק עובד חסין ביקורת עם אסמכתאות דיגיטליות מתועדות, חדשנות בהדרכה וחיזוק מעורבות ה-MDT המעלה משמעותית את ציוני בקרת האיכות המוסדיים.
+                        <strong>מעקב מנהל / אחראית משמרת:</strong> כל מפגש חודשי מתועד ברשומת ההדרכה המחלקתית ומדווח למשאבי אנוש לעמידה בבקרת משרד הבריאות.
                     </div>
-                    <span style="font-weight:700; color:#16a34a;">מודל בקרה אחודה 2026</span>
+                    <span style="font-weight:700; color:#16a34a;">עמידה ב-100% בדרישות מודל הבקרה האחודה 2026</span>
                 </div>
             </div>
 
