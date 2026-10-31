@@ -1,0 +1,2950 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ערכת הדרכה בקליטת אחות וכוח עזר/מטפל</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f4c81;
+            --primary-light: #1e6bb8;
+            --primary-soft: #eef5fc;
+            --accent: #0d9488;
+            --accent-soft: #f0fdfa;
+            --success: #16a34a;
+            --success-soft: #dcfce7;
+            --warning: #d97706;
+            --warning-soft: #fef3c7;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #475569;
+            --border: #e2e8f0;
+            --shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Assistant', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: #ffffff;
+            padding: 0.9rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-back-portal {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.14);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            padding: 0.5rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back-portal:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+
+        .brand-title h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .brand-title p {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin: 0;
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit-mode {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+            border: 1px solid rgba(251, 191, 36, 0.45);
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-edit-mode.active {
+            background: #f59e0b;
+            color: #0f172a;
+            border-color: #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+
+        .creator-badge {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.4rem 0.95rem;
+            border-radius: 10px;
+            text-align: right;
+            line-height: 1.25;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        .creator-badge .name {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #334155;
+        }
+
+        .creator-badge .role {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #64748b;
+        }
+
+        /* Overall Progress Header */
+        .progress-banner {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .progress-stats {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-pill {
+            background: var(--primary-soft);
+            color: var(--primary);
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .progress-bar-wrap {
+            flex: 1;
+            min-width: 240px;
+            max-width: 460px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #0ea5e9, #10b981);
+            width: 0%;
+            transition: width 0.4s ease;
+            border-radius: 999px;
+        }
+
+        .progress-pct {
+            font-weight: 800;
+            color: var(--primary);
+            min-width: 45px;
+        }
+
+        /* Edit Mode Toolbar */
+        .edit-toolbar {
+            display: none;
+            background: #fffbeb;
+            border-bottom: 2px solid #f59e0b;
+            padding: 0.85rem 2rem;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .edit-toolbar.visible {
+            display: flex;
+        }
+
+        .edit-toolbar-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: #92400e;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .edit-toolbar-actions {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        /* Permanent Top Employee Details Card */
+        .emp-top-wrapper {
+            max-width: 1440px;
+            width: 100%;
+            margin: 1.25rem auto 0;
+            padding: 0 1.5rem;
+        }
+
+        .emp-top-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%);
+            border: 2px solid #93c5fd;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.25rem 1.5rem;
+        }
+
+        .emp-top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #bfdbfe;
+        }
+
+        .emp-top-header h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-toggle-emp {
+            background: #dbeafe;
+            color: var(--primary);
+            border: 1px solid #93c5fd;
+            padding: 0.35rem 0.9rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        /* Main Layout */
+        .app-layout {
+            max-width: 1440px;
+            width: 100%;
+            margin: 1.25rem auto 2rem;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 310px 1fr;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        @media (max-width: 1024px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Sidebar Stepper */
+        .sidebar-nav {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 1.25rem;
+            height: fit-content;
+            position: sticky;
+            top: 85px;
+        }
+
+        .sidebar-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+            padding-bottom: 0.65rem;
+            border-bottom: 2px solid var(--bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .step-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .step-btn {
+            width: 100%;
+            text-align: right;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.7rem 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text-dark);
+        }
+
+        .step-btn:hover {
+            background: var(--primary-soft);
+            border-color: #93c5fd;
+        }
+
+        .step-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            border-color: var(--primary);
+            box-shadow: 0 6px 15px rgba(15, 76, 129, 0.25);
+        }
+
+        .step-btn.completed:not(.active) {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #334155;
+            font-weight: 800;
+            font-size: 0.88rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .step-btn.active .step-num {
+            background: rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+        }
+
+        .step-btn.completed .step-num {
+            background: var(--success);
+            color: #ffffff;
+        }
+
+        .step-meta {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .step-meta .title {
+            font-weight: 700;
+            font-size: 0.92rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .step-meta .sub {
+            font-size: 0.76rem;
+            opacity: 0.8;
+        }
+
+        /* Content Area */
+        .content-panel {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            min-height: 650px;
+        }
+
+        .topic-header {
+            border-bottom: 2px solid var(--bg);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .topic-badge {
+            display: inline-block;
+            background: var(--primary-soft);
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 0.3rem 0.85rem;
+            border-radius: 999px;
+            margin-bottom: 0.5rem;
+        }
+
+        .topic-header h2 {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .topic-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Form Inputs Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 0.9rem;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .field-group label {
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #1e293b;
+        }
+
+        .field-group input,
+        .field-group select,
+        .field-group textarea {
+            padding: 0.6rem 0.85rem;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            background: #ffffff;
+            color: var(--text-dark);
+            transition: all 0.2s;
+        }
+
+        .field-group input:focus,
+        .field-group select:focus,
+        .field-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(30, 107, 184, 0.12);
+        }
+
+        /* Separate Video / Resource Cards */
+        .section-subtitle {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin: 1.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .media-card {
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            background: #ffffff;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+        }
+
+        .media-card:hover {
+            border-color: #60a5fa;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(15, 76, 129, 0.12);
+        }
+
+        .media-card.watched {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .media-card-header {
+            padding: 0.85rem 1.1rem;
+            background: #f8fafc;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .media-card.watched .media-card-header {
+            background: #dcfce7;
+        }
+
+        .media-num-badge {
+            background: var(--primary);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            flex-shrink: 0;
+        }
+
+        .media-card-title {
+            font-weight: 800;
+            font-size: 1.02rem;
+            color: var(--primary);
+            flex: 1;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        .media-embed-box {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .media-embed-box iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .yt-thumb-link {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: #ffffff;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .yt-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.38);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .yt-thumb-link:hover .yt-thumb-overlay {
+            background: rgba(15, 23, 42, 0.18);
+        }
+
+        .play-circle-btn {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: #dc2626;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.55);
+            transition: transform 0.2s;
+        }
+
+        .yt-thumb-link:hover .play-circle-btn {
+            transform: scale(1.1);
+        }
+
+        .external-resource-box {
+            padding: 1.35rem 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.65rem;
+            min-height: 175px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .external-resource-box:hover {
+            background: linear-gradient(135deg, #dbeafe 0%, #bae6fd 100%);
+        }
+
+        .external-resource-icon {
+            font-size: 2.6rem;
+        }
+
+        .media-card-body {
+            padding: 1rem 1.1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            flex: 1;
+            justify-content: space-between;
+        }
+
+        .media-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .media-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            padding-top: 0.65rem;
+            border-top: 1px dashed var(--border);
+        }
+
+        .btn-watch-main {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            background: var(--primary);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.55rem 1rem;
+            border-radius: 9px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .btn-watch-main:hover {
+            background: var(--primary-light);
+        }
+
+        .btn-inline-embed {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #e0f2fe;
+            color: #0369a1;
+            border: 1px solid #7dd3fc;
+            padding: 0.5rem 0.75rem;
+            border-radius: 9px;
+            font-weight: 700;
+            font-size: 0.84rem;
+            cursor: pointer;
+        }
+
+        .btn-mark-watched {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: #f1f5f9;
+            color: #334155;
+            border: 1.5px solid #cbd5e1;
+            padding: 0.5rem 0.85rem;
+            border-radius: 9px;
+            font-weight: 800;
+            font-size: 0.86rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-mark-watched.done {
+            background: var(--success);
+            color: #ffffff;
+            border-color: var(--success);
+        }
+
+        /* Edit Controls inside Media Card */
+        .item-edit-controls {
+            display: none;
+            gap: 0.4rem;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #fde68a;
+        }
+
+        body.edit-mode .item-edit-controls {
+            display: flex;
+        }
+
+        .btn-small-edit {
+            background: #fef3c7;
+            color: #92400e;
+            border: 1px solid #f59e0b;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .btn-small-delete {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        /* Sub-topics Checklist */
+        .checklist-box {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding: 0.75rem 0.9rem;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 0.55rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            flex-wrap: wrap;
+        }
+
+        .checklist-item:hover {
+            border-color: #93c5fd;
+        }
+
+        .checklist-item.checked {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+
+        .checklist-item label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-weight: 700;
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .checklist-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--success);
+            cursor: pointer;
+        }
+
+        /* Topic Sign-off Box */
+        .signoff-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #f0fdfa 100%);
+            border: 2px solid #93c5fd;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .signoff-box.signed {
+            border-color: var(--success);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .signoff-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-footer-btns {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            border: none;
+            padding: 0.8rem 1.6rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #ffffff;
+            border: none;
+            padding: 0.85rem 1.75rem;
+            border-radius: 12px;
+            font-size: 1.02rem;
+            font-weight: 800;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-success:hover {
+            background: #15803d;
+        }
+
+        .btn-outline {
+            background: #ffffff;
+            color: var(--text-dark);
+            border: 1.5px solid #cbd5e1;
+            padding: 0.75rem 1.4rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Signature Canvas */
+        .sig-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .sig-card {
+            background: #f8fafc;
+            border: 1.5px solid var(--border);
+            border-radius: 14px;
+            padding: 1.25rem;
+        }
+
+        .sig-canvas-wrap {
+            background: #ffffff;
+            border: 2px dashed #94a3b8;
+            border-radius: 10px;
+            margin-top: 0.6rem;
+            position: relative;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .sig-canvas-wrap canvas {
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        /* Certificate Preview */
+        .certificate-container {
+            margin-top: 2rem;
+            background: #ffffff;
+            border: 8px double #0f4c81;
+            border-radius: 18px;
+            padding: 2.5rem;
+            position: relative;
+            box-shadow: 0 15px 40px rgba(15, 76, 129, 0.12);
+        }
+
+        .cert-header {
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-header h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .cert-header p {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .cert-emp-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.85rem;
+            background: #f8fafc;
+            padding: 1.1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .cert-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.92rem;
+        }
+
+        .cert-table th,
+        .cert-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.6rem 0.8rem;
+            text-align: right;
+        }
+
+        .cert-table th {
+            background: #eff6ff;
+            color: var(--primary);
+            font-weight: 800;
+        }
+
+        .cert-signatures-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1.25rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .cert-sig-box {
+            text-align: center;
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .cert-sig-box img {
+            max-height: 75px;
+            max-width: 220px;
+            object-fit: contain;
+            margin: 0.4rem auto;
+            display: block;
+        }
+
+        /* Modal for Editing / Adding Video */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.65);
+            z-index: 999;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            max-width: 560px;
+            width: 100%;
+            padding: 1.75rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printableCertificate,
+            #printableCertificate * {
+                visibility: visible;
+            }
+
+            #printableCertificate {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border: 4px double #0f4c81;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Top Navigation Bar -->
+    <header class="top-bar">
+        <div class="top-bar-right">
+            <a href="index.html" class="btn-back-portal"
+                onclick="if(history.length > 1){ history.back(); return false; }">
+                <span>➡️</span>
+                <span>חזרה למסך הקודם</span>
+            </a>
+            <div class="brand-title">
+                <h1>🎓 ערכת הדרכה בקליטת אחות וכוח עזר/מטפל</h1>
+                <p>מסלול הדרכה אינטראקטיבי ממוספר, קישורים ישירים לכל הסרטונים והפקת תעודה אישית חתומה דיגיטלית</p>
+            </div>
+        </div>
+        <div class="top-bar-left">
+            <button type="button" id="toggleEditModeBtn" class="btn-edit-mode" onclick="toggleEditMode()">
+                <span>⚙️</span>
+                <span id="editModeBtnLabel">מצב עריכת סרטונים ותכנים</span>
+            </button>
+            <div class="creator-badge">
+                <div class="name">נוצר על ידי: מאיה שקולניק גזית</div>
+                <div class="role">R.N, BA, M.H.A, Policy Management Specialist</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Edit Mode Banner -->
+    <div id="editToolbar" class="edit-toolbar">
+        <div class="edit-toolbar-info">
+            <span>🛠️</span>
+            <span>מצב עריכה פעיל: ניתן לערוך כל סרטון/קישור, להוסיף סרטון חדש לכל נושא, או לשמור קובץ מעודכן לצמיתות.</span>
+        </div>
+        <div class="edit-toolbar-actions">
+            <button type="button" class="btn-small-edit" onclick="openDeptModal()">🏥 עריכת רשימת מחלקות</button>
+            <button type="button" class="btn-small-edit" onclick="downloadUpdatedHtmlFile()">💾 הורד קובץ HTML מעודכן עם השינויים</button>
+            <button type="button" class="btn-small-delete" onclick="resetKitContentToDefault()">🔄 איפוס תכנים לברירת מחדל</button>
+        </div>
+    </div>
+
+    <!-- Overall Progress Bar -->
+    <div class="progress-banner">
+        <div class="progress-stats">
+            <span class="stat-pill" id="empBadgeDisplay">👤 עובד/ת: טרם הוזן</span>
+            <span class="stat-pill" id="topicsCompletedDisplay">📚 נושאים שנחתמו: 0 / 9</span>
+            <span class="stat-pill" id="videosWatchedDisplay">🎬 סרטונים ויחידות שנצפו: 0 / 0</span>
+        </div>
+        <div class="progress-bar-wrap">
+            <span style="font-weight:700; font-size:0.9rem;">התקדמות בערכה:</span>
+            <div class="progress-track">
+                <div class="progress-fill" id="overallProgressFill"></div>
+            </div>
+            <span class="progress-pct" id="overallProgressPct">0%</span>
+        </div>
+    </div>
+
+    <!-- Permanent Top Employee Details Box (Always Accessible!) -->
+    <section class="emp-top-wrapper">
+        <div class="emp-top-card">
+            <div class="emp-top-header">
+                <h2>
+                    <span>👤</span>
+                    <span>פרטי העובד/ת והקליטה (יש למלא כאן את פרטי העובד/ת – יופיעו אוטומטית בחיתום הנושאים ובתעודה האישית)</span>
+                </h2>
+                <button type="button" class="btn-toggle-emp" id="toggleEmpFormBtn" onclick="toggleEmpTopForm()">הסתר / הצג פרטי עובד ▲</button>
+            </div>
+            <div id="empTopFormBody" class="form-grid">
+                <div class="field-group">
+                    <label>שם העובד/ת המלא *</label>
+                    <input type="text" id="topEmpFullName" placeholder="הקלד/י שם פרטי ושם משפחה" oninput="updateEmpField('fullName', this.value)">
+                </div>
+                <div class="field-group">
+                    <label>ת.ז / מספר עובד</label>
+                    <input type="text" id="topEmpIdNum" placeholder="מספר תעודת זהות" oninput="updateEmpField('idNum', this.value)">
+                </div>
+                <div class="field-group">
+                    <label>מקצוע *</label>
+                    <select id="topEmpRole" onchange="updateEmpField('role', this.value)">
+                        <option value="אחות">אחות</option>
+                        <option value="כוח עזר / מטפל/ת">כוח עזר / מטפל/ת</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label>משרה *</label>
+                    <select id="topEmpJobScope" onchange="updateEmpField('jobScope', this.value)">
+                        <option value="מלאה">מלאה</option>
+                        <option value="חלקית">חלקית</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label>אופן העסקה *</label>
+                    <select id="topEmpType" onchange="updateEmpField('employmentType', this.value)">
+                        <option value="ישירה">ישירה</option>
+                        <option value="קבלן">קבלן</option>
+                    </select>
+                </div>
+                <div class="field-group">
+                    <label style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>מחלקה *</span>
+                        <button type="button" onclick="openDeptModal()" style="background:#fef3c7; color:#92400e; border:1px solid #f59e0b; border-radius:6px; padding:0.15rem 0.55rem; font-size:0.76rem; font-weight:800; cursor:pointer;">✏️ עריכת מחלקות</button>
+                    </label>
+                    <select id="topEmpDept" onchange="updateEmpField('department', this.value)"></select>
+                </div>
+                <div class="field-group">
+                    <label>תאריך קליטה לעבודה *</label>
+                    <input type="date" id="topEmpHireDate" onchange="updateEmpField('hireDate', this.value)">
+                </div>
+                <div class="field-group">
+                    <label>תאריך תחילת ההדרכה *</label>
+                    <input type="date" id="topEmpStartDate" onchange="updateEmpField('trainingStartDate', this.value)">
+                </div>
+                <div class="field-group">
+                    <label>שם מנהל/ת ישיר/ה (אחות אחראית / חונך) *</label>
+                    <input type="text" id="topEmpManager" placeholder="שם הממונה הישיר/ה" oninput="updateEmpField('directManager', this.value)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main App Layout -->
+    <main class="app-layout">
+        <!-- Sidebar Stepper -->
+        <aside class="sidebar-nav">
+            <div class="sidebar-title">
+                <span>נושאי הערכה (ממוספרים 1–9)</span>
+                <span style="font-size:0.78rem; color:var(--text-muted);">18–22 שעות</span>
+            </div>
+            <div class="step-list" id="sidebarStepList"></div>
+        </aside>
+
+        <!-- Dynamic Content Panel -->
+        <section class="content-panel" id="mainContentPanel"></section>
+    </main>
+
+    <!-- Modal for Editing or Adding a Video / Resource -->
+    <div class="modal-backdrop" id="mediaEditModal">
+        <div class="modal-card">
+            <h3 id="mediaModalTitle">עריכת סרטון / יחידת הדרכה</h3>
+            <div class="field-group" style="margin-bottom:0.9rem;">
+                <label>כותרת הסרטון / יחידת הלימוד</label>
+                <input type="text" id="modalMediaTitle" placeholder="לדוגמה: סרטון הדרכה לשימוש במטף">
+            </div>
+            <div class="field-group" style="margin-bottom:0.9rem;">
+                <label>סוג מדיה</label>
+                <select id="modalMediaType">
+                    <option value="youtube">סרטון YouTube</option>
+                    <option value="drive_video">סרטון / מצגת / פודקאסט Google Drive</option>
+                    <option value="external">לומדה / קישור חיצוני (משרד הבריאות / טופס)</option>
+                </select>
+            </div>
+            <div class="field-group" style="margin-bottom:0.9rem;">
+                <label>קישור (URL) או מזהה סרטון YouTube</label>
+                <input type="text" id="modalMediaUrl" placeholder="הדבק קישור YouTube / Google Drive / אתר">
+            </div>
+            <div class="field-group" style="margin-bottom:1.2rem;">
+                <label>תיאור והנחיות לצפייה</label>
+                <textarea id="modalMediaDesc" rows="3" placeholder="הסבר קצר על הסרטון או ההדרכה..."></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.75rem;">
+                <button type="button" class="btn-outline" onclick="closeMediaModal()">ביטול</button>
+                <button type="button" class="btn-primary" onclick="saveMediaModal()">שמור שינויים</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Departments List -->
+    <div class="modal-backdrop" id="deptEditModal">
+        <div class="modal-card" style="max-width:600px;">
+            <h3>🏥 ניהול ועריכת רשימת מחלקות</h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">
+                ניתן להוסיף מחלקה חדשה, לערוך שם של מחלקה קיימת או להסיר מחלקה מהרשימה.
+            </p>
+            <div style="display:flex; gap:0.5rem; margin-bottom:1rem;">
+                <input type="text" id="newDeptInput" placeholder="הקלד/י שם מחלקה חדשה להוספה..." style="flex:1; padding:0.65rem 0.85rem; border:1px solid var(--border); border-radius:10px; font-family:inherit; font-size:0.95rem;" onkeydown="if(event.key==='Enter'){ addDepartmentItem(); }">
+                <button type="button" class="btn-primary" style="padding:0.6rem 1.1rem; font-size:0.9rem;" onclick="addDepartmentItem()">➕ הוסף מחלקה</button>
+            </div>
+            <div id="deptModalList" style="max-height:300px; overflow-y:auto; border:1px solid var(--border); border-radius:12px; padding:0.6rem; background:#f8fafc; margin-bottom:1.1rem;"></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.6rem;">
+                <button type="button" class="btn-small-delete" onclick="resetDepartmentsToDefault()">🔄 איפוס מחלקות לברירת מחדל</button>
+                <button type="button" class="btn-primary" style="padding:0.6rem 1.4rem;" onclick="closeDeptModal()">סגור ושמור ✓</button>
+            </div>
+        </div>
+    </div>
+
+    <script id="defaultKitDataScript">
+        const DEFAULT_KIT_TOPICS = [
+            {
+                num: 1,
+                id: "topic_1",
+                title: "הכרות ואוריינטציה",
+                timing: "ביום הקליטה (כ-3.5 שעות)",
+                description: "היכרות ואוריינטציה במערך הגריאטרי, הגדרת תפקיד אחות ומטפל/כוח עזר, זכויות העובד, נהלי ליבה וצ'ק-ליסט העברת משמרת.",
+                mediaItems: [
+                    {
+                        id: "m_1_1",
+                        code: "1.1",
+                        title: "הגדרת תפקיד מטפל – נהלי טיפול גריאטרי (נוהל 1.2.1.2)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1fNSTKIYwMD3NJrOWfUUi_Q-N64m-GGi0/view?usp=drive_link",
+                        desc: "קריאת נוהל הגדרת תפקיד מטפל ותחומי אחריות ומחויבות בטיפול."
+                    },
+                    {
+                        id: "m_1_2",
+                        code: "1.2",
+                        title: "פודקאסט הדרכה: עמוד השדרה השקוף של הטיפול הגריאטרי",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1tQ0CjDpA6rJGaVFkPrvZSF87AM_mwpWn/view?usp=drive_link",
+                        desc: "האזנה לפודקאסט הדרכה מקצועי על מהות הטיפול הגריאטרי."
+                    },
+                    {
+                        id: "m_1_3",
+                        code: "1.3",
+                        title: "מצגת הדרכה: המצפן למטפל הגריאטרי",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1TGb52-kH5tutXEKEKc3IeBUrLnA_2r4t/view?usp=drive_link",
+                        desc: "מצגת הדרכה מרכזית לקליטת עובד חדש בסיעוד."
+                    },
+                    {
+                        id: "m_1_4",
+                        code: "1.4",
+                        title: "צ'ק ליסט העברת משמרת של אחות (בוקר, ערב, לילה, קבלה ובקרות)",
+                        type: "local_doc",
+                        url: "checklist_nurse_clean.html",
+                        desc: "סדר יום מובנה, בקרות איכות חודשיות, מודל ISBAR ודגשים קליניים להעברת משמרת של אחות."
+                    },
+                    {
+                        id: "m_1_5",
+                        code: "1.5",
+                        title: "צ'ק ליסט העברת משמרת של מטפל / כוח עזר (בוקר, ערב, לילה)",
+                        type: "local_doc",
+                        url: "checklist_caregiver_clean.html",
+                        desc: "סדר יום מובנה ודגשים מקצועיים ובטיחותיים להעברת משמרת של מטפל/ת."
+                    }
+                ],
+                checklist: [
+                    { text: "זכויות העובד והסדרי עבודה (15 דק')", url: "https://drive.google.com/file/d/1fNSTKIYwMD3NJrOWfUUi_Q-N64m-GGi0/view?usp=drive_link" },
+                    { text: "קלסר נהלים – קריאת נהלי ליבה וחתימה (נוהל 1.2.1.2)", url: "https://drive.google.com/file/d/1fNSTKIYwMD3NJrOWfUUi_Q-N64m-GGi0/view?usp=drive_link" },
+                    { text: "הגדרת תפקיד כוח עזר ואחות ומצגת המצפן למטפל הגריאטרי", url: "https://drive.google.com/file/d/1TGb52-kH5tutXEKEKc3IeBUrLnA_2r4t/view?usp=drive_link" },
+                    { text: "צ'ק-ליסט העברת משמרת של אחות (בוקר, ערב, לילה)", url: "checklist_nurse_clean.html" },
+                    { text: "צ'ק-ליסט העברת משמרת של מטפל / כוח עזר", url: "checklist_caregiver_clean.html" }
+                ]
+            },
+            {
+                num: 2,
+                id: "topic_2",
+                title: "מניעת זיהומים",
+                timing: "במהלך השבוע הראשון לקליטה (כ-3 שעות)",
+                description: "צפייה בסרטוני היגיינת ידיים, 5 הרגעים, התמגנות PPE, ניקיון חדרי בידוד, מניעת זיהומים צולבים ולומדת משרד הבריאות.",
+                mediaItems: [
+                    {
+                        id: "m_2_1",
+                        code: "2.1",
+                        title: "סרטון: היגיינת ידיים היא האחריות של כולנו",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=RY5wXbPCY-o",
+                        desc: "סרטון מבוא לכלל אנשי הצוות בנושא חשיבות היגיינת ידיים."
+                    },
+                    {
+                        id: "m_2_2",
+                        code: "2.2",
+                        title: "לומדת משרד הבריאות להיגיינת ידיים ומניעת זיהומים",
+                        type: "external",
+                        url: "https://www.gov.il/files/health/moh-files/Infection-prevention/story.html",
+                        desc: "לומדה רשמית של משרד הבריאות לאחיות, רופאים ומקצועות הבריאות."
+                    },
+                    {
+                        id: "m_2_3",
+                        code: "2.3",
+                        title: "סרטון: מניעת הפצת מזהמים ו-5 הרגעים להיגיינת ידיים",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=LjHnCvv48hA",
+                        desc: "סרטון הדרכה לכלל הצוות על מניעת העברת מזהמים בין מטופלים."
+                    },
+                    {
+                        id: "m_2_4",
+                        code: "2.4",
+                        title: "סרטון: התמגנות והסרת אמצעי מיגון אישיים (PPE)",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=sOR40jML8IA",
+                        desc: "הדגמה מעשית של סדר לבישה והסרה בטוחה של כפפות, חלוק ומסכה."
+                    },
+                    {
+                        id: "m_2_5",
+                        code: "2.5",
+                        title: "סרטון הדרכה: ניקיון יומי בחדרי בידוד (לכוח עזר)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/10HeB9Z5rq4LZwX3IIDRU1kqmalr7FTbF/view?usp=drivesdk",
+                        desc: "סרטון הדרכה ייעודי לכוחות עזר ומטפלים בנושא חיטוי וניקיון בחדרי בידוד."
+                    },
+                    {
+                        id: "m_2_6",
+                        code: "2.6",
+                        title: "סרטון: מצגת למניעת זיהומים צולבים (בעברית)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link",
+                        desc: "הדרכה מקיפה לצוות רפואי, אחיות ומקצועות הבריאות למניעת זיהומים צולבים."
+                    },
+                    {
+                        id: "m_2_7",
+                        code: "2.7",
+                        title: "סרטון מדובב להדרכת צוות בנושא מניעת זיהומים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/18zxS04ValU2RNDKOWCh0m2qnNqoVnAEm/view?usp=drive_link",
+                        desc: "סרטון הדרכה מסכם לצוות המטפל בנושא שבירת שרשרת ההדבקה."
+                    },
+                    {
+                        id: "m_2_8",
+                        code: "2.8",
+                        title: "קובץ הנחיות מסוכמות למניעת זיהומים לפי סוגי המזהמים (PDF)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1I_ytPYopTivbkf3k9I2AFOWrnAVqWf3V/view?usp=drive_link",
+                        desc: "טבלת עזר מסכמת של סוגי הבידוד והמיגון הנדרש לפי מחולל."
+                    }
+                ],
+                checklist: [
+                    { text: "היגיינת ידיים וציפורניים (30 דק')", url: "https://www.youtube.com/watch?v=RY5wXbPCY-o" },
+                    { text: "ניקוי וחיטוי ידיים – 5 רגעים (30 דק')", url: "https://www.youtube.com/watch?v=LjHnCvv48hA" },
+                    { text: "מניעה ודיווח על אירועי דקירה ממחטים (30 דק')", url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link" },
+                    { text: "כללי בידוד וניקיון חדרי בידוד (30 דק')", url: "https://drive.google.com/file/d/10HeB9Z5rq4LZwX3IIDRU1kqmalr7FTbF/view?usp=drivesdk" },
+                    { text: "שימוש באמצעי מיגון אישיים PPE (30 דק')", url: "https://www.youtube.com/watch?v=sOR40jML8IA" },
+                    { text: "לומדת משרד הבריאות למניעת זיהומים (30 דק')", url: "https://www.gov.il/files/health/moh-files/Infection-prevention/story.html" }
+                ]
+            },
+            {
+                num: 3,
+                id: "topic_3",
+                title: "מצבי חירום ותשתיות",
+                timing: "ביום הקליטה",
+                description: "צפייה פרטנית בכל אחד מסרטוני הבטיחות והחירום: שריפה, הפעלת מטף, רעידת אדמה, ירי טילים, הזרקת גלוקגון, החייאה ותמיכה נפשית.",
+                mediaItems: [
+                    {
+                        id: "m_3_1",
+                        code: "3.1",
+                        title: "סרטון מבוא: התנהלות במצבי חירום ומפעל חיוני",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1fyQYO6MH7eCPig6vnOPJdGxEWUy6Kh4Z/view?usp=drive_link",
+                        desc: "מבוא להיערכות המוסד והמחלקה בשעת חירום."
+                    },
+                    {
+                        id: "m_3_2",
+                        code: "3.2",
+                        title: "סרטון: התנהגות צוותים בעת שריפה",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=j4tdIsAzpbg",
+                        desc: "כללי פעולה מיידיים של הצוות הסיעודי והרפואי בעת גילוי אש או עשן."
+                    },
+                    {
+                        id: "m_3_3",
+                        code: "3.3",
+                        title: "סרטון הדרכה: אופן השימוש במטף כיבוי אש",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=NxZhZ0K-dQ4",
+                        desc: "הדגמה מעשית של שלבי הפעלת מטף כיבוי אש בבטיחות."
+                    },
+                    {
+                        id: "m_3_4",
+                        code: "3.4",
+                        title: "סרטון: התמודדות והתנהלות בעת רעידת אדמה",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=EisMOTLrB54",
+                        desc: "הנחיות מצילות חיים לצוות ולמטופלים בזמן רעידת אדמה."
+                    },
+                    {
+                        id: "m_3_5",
+                        code: "3.5",
+                        title: "סרטון: התנהגות בזמן אזעקה וירי טילים",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=9BMH_58WOEI",
+                        desc: "הגנה על מטופלים מרותקים והגעה למרחב 'הכי מוגן שיש' במחלקה."
+                    },
+                    {
+                        id: "m_3_6",
+                        code: "3.6",
+                        title: "סרטון מציל חיים: הזרקת גלוקגון במצב היפוגליקמיה קשה",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=B_5cM6ad0Kw",
+                        desc: "זיהוי היפוגליקמיה חמורה והדרכה שלב-אחר-שלב להזרקת גלוקגון."
+                    },
+                    {
+                        id: "m_3_7",
+                        code: "3.7",
+                        title: "סרטון הדרכה: ביצוע החייאה בסיסית (BLS)",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=UhliDp32nYY",
+                        desc: "עקרונות החייאה בסיסית ושימוש בדפיברילטור."
+                    },
+                    {
+                        id: "m_3_8",
+                        code: "3.8",
+                        title: "סרטון: מתן עזרה ראשונה ותמיכה נפשית בחירום (עש\"ן)",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=Ycg3LXuXgKA",
+                        desc: "עקרונות התערבות ממוקדת להרגעת חרדה ודחק אצל מטופלים ואנשי צוות."
+                    }
+                ],
+                checklist: [
+                    { text: "משמעות הגדרת המקום כמפעל חיוני", url: "https://drive.google.com/file/d/1fyQYO6MH7eCPig6vnOPJdGxEWUy6Kh4Z/view?usp=drive_link" },
+                    { text: "נוהל ירי טילים והכרת המרחבים המוגנים ('הכי מוגן שיש')", url: "https://www.youtube.com/watch?v=9BMH_58WOEI" },
+                    { text: "נוהל שריפה, תפעול מטף ופינוי מחלקה (דחוף / מתוכנן)", url: "https://www.youtube.com/watch?v=j4tdIsAzpbg" },
+                    { text: "נוהל רעידת אדמה, אירוע ביולוגי חריג וחומרים כימיים מסוכנים", url: "https://www.youtube.com/watch?v=EisMOTLrB54" },
+                    { text: "עזרה ראשונה, הזרקת גלוקגון, החייאה ותמיכה נפשית בחירום", url: "https://www.youtube.com/watch?v=UhliDp32nYY" }
+                ]
+            },
+            {
+                num: 4,
+                id: "topic_4",
+                title: "בטיחות הטיפול וניהול סיכונים",
+                timing: "במהלך השבוע הראשון (כשעתיים וחצי)",
+                description: "לומדת משרד הבריאות לבטיחות הטיפול, מניעת נפילות באשפוז גריאטרי ודיווח על אירוע חריג וכמעט אירוע.",
+                mediaItems: [
+                    {
+                        id: "m_4_1",
+                        code: "4.1",
+                        title: "לומדה לבטיחות הטיפול – משרד הבריאות",
+                        type: "external",
+                        url: "https://www.health.gov.il/Subjects/MedicalAndHealthProfessions/022021lomda_treatment_safety/story_html5.aspx",
+                        desc: "כניסה ישירה ללומדת בטיחות הטיפול הרשמית של משרד הבריאות."
+                    },
+                    {
+                        id: "m_4_2",
+                        code: "4.2",
+                        title: "מדריך משרד הבריאות לגיל השלישי – מניעת נפילות",
+                        type: "external",
+                        url: "https://me.health.gov.il/older-adult/specialist-advice/fall-prevention/how-to-prevent-falls/tips/",
+                        desc: "דגשים קליניים וסביבתיים למניעת נפילות בקרב קשישים."
+                    },
+                    {
+                        id: "m_4_3",
+                        code: "4.3",
+                        title: "מצגת: תרבות ארגונית של ניהול סיכונים ובטיחות המטופל",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1KzPdV6zfYjrZ7Arzy-Pp51wJ6OvwM0sP/view?usp=sharing",
+                        desc: "זיהוי גורמי סיכון, תחקור לומד ודיווח על אירועים חריגים."
+                    }
+                ],
+                checklist: [
+                    { text: "לומדת משרד הבריאות לבטיחות הטיפול (שעה)", url: "https://www.health.gov.il/Subjects/MedicalAndHealthProfessions/022021lomda_treatment_safety/story_html5.aspx" },
+                    { text: "נוהל מניעת נפילות מטופלים ואומדן סיכון לנפילה (שעה)", url: "https://me.health.gov.il/older-adult/specialist-advice/fall-prevention/how-to-prevent-falls/tips/" },
+                    { text: "זיהוי ודיווח על אירוע חריג ו'כמעט אירוע' (30 דק')", url: "https://drive.google.com/file/d/1KzPdV6zfYjrZ7Arzy-Pp51wJ6OvwM0sP/view?usp=sharing" }
+                ]
+            },
+            {
+                num: 5,
+                id: "topic_5",
+                title: "זכויות החולה וכבוד האדם",
+                timing: "בשבועיים הראשונים (כשעה וחצי)",
+                description: "ערכים ואתיקה בטיפול הגריאטרי, שמירה על פרטיות המטופל, סרטון מדובב על חוק זכויות החולה ו-12 העקרונות.",
+                mediaItems: [
+                    {
+                        id: "m_5_1",
+                        code: "5.1",
+                        title: "סרטון מדובב בעברית: חוק זכויות החולה וכבוד האדם",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1S-ieNxCMuMLcJSEZkwWvOKZvRGhK698Y/view?usp=drive_link",
+                        desc: "סרטון הדרכה מדובב בשפה העברית על יישום חוק זכויות החולה בטיפול היומיומי."
+                    },
+                    {
+                        id: "m_5_2",
+                        code: "5.2",
+                        title: "מצגת: שנים עשר העקרונות של חוק זכויות החולה",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link",
+                        desc: "פירוט 12 העקרונות המחייבים לשמירה על כבוד, פרטיות וחיסיון רפואי."
+                    }
+                ],
+                checklist: [
+                    { text: "ערכים ואתיקה, שמירה על פרטיות ובטיחות (30 דק')", url: "https://drive.google.com/file/d/1S-ieNxCMuMLcJSEZkwWvOKZvRGhK698Y/view?usp=drive_link" },
+                    { text: "חוק זכויות החולה – 12 העקרונות (30 דק')", url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link" },
+                    { text: "חיסיון רפואי ושמירה על סודיות (30 דק')", url: "https://drive.google.com/file/d/1q-k9su26MD8xDhrJWPRfNqi7VmEwJ-CI/view?usp=drive_link" }
+                ]
+            },
+            {
+                num: 6,
+                id: "topic_6",
+                title: "שירות פיזיותרפיה וארגונומיה",
+                timing: "בשבועיים הראשונים (כ-3 שעות)",
+                description: "כל סרטון פיזיותרפיה מוצג בנפרד: מנוף עמידה, מנוף הרמה, מעבר עם מטפל אחד ושניים, כיסא גלגלים, סידור מנח במיטה, מזרון ויסקואלסטי וארגונומיה.",
+                mediaItems: [
+                    {
+                        id: "m_6_1",
+                        code: "6.1",
+                        title: "סרטון הדרכה: שימוש במנוף עמידה",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1xOp5g_D_BZwbPic6v2z-ceBZ0yopq2rX/view?usp=drive_link",
+                        desc: "הדגמת העברה בטוחה של מטופל באמצעות מנוף עמידה."
+                    },
+                    {
+                        id: "m_6_2",
+                        code: "6.2",
+                        title: "סרטון פיזיותרפיה: מעבר על ידי מנוף הרמה",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/14lk8_ZDic7GX3AQp7W9r_NBZzsZT-V-x/view?usp=drive_link",
+                        desc: "התאמת ערסל והעברת מטופל סיעודי באמצעות מנוף."
+                    },
+                    {
+                        id: "m_6_3",
+                        code: "6.3",
+                        title: "סרטון פיזיותרפיה: מעבר על ידי מטפל אחד",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1WjM391jlKo0OHp8PrWb7dO8nnPB1DCZ_/view?usp=drive_link",
+                        desc: "טכניקה נכונה ובטוחה לביצוע מעבר של מטופל בסיוע מטפל אחד."
+                    },
+                    {
+                        id: "m_6_4",
+                        code: "6.4",
+                        title: "סרטון פיזיותרפיה: מעבר על ידי שני מטפלים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1THoCXUpRc9I5q8xQgK9jlYcwj_lDTUq0/view?usp=drive_link",
+                        desc: "תיאום ובטיחות בביצוע מעבר של מטופל על ידי שני אנשי צוות."
+                    },
+                    {
+                        id: "m_6_5",
+                        code: "6.5",
+                        title: "סרטון פיזיותרפיה: התנהלות והושבה בכיסא גלגלים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1MAPto8fuZoz2kTL2ERxpGi_kAm2LeOg5/view?usp=drive_link",
+                        desc: "נעילת מעצורים, רגליות והושבה בטיחותית בכיסא גלגלים."
+                    },
+                    {
+                        id: "m_6_6",
+                        code: "6.6",
+                        title: "סרטון: סידור מנח במיטה למניעת פצעי לחץ",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1yEGhpi06aHACcUEUcQb014jJaD3fDCuF/view?usp=drive_link",
+                        desc: "השכבה במנח פיזיולוגי ושימוש בכריות תמיכה למניעת פצעי לחץ."
+                    },
+                    {
+                        id: "m_6_7",
+                        code: "6.7",
+                        title: "הדרכה: מזרון ויסקואלסטי ומניעת פצעי לחץ",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1lXyJ1oKZUbZfaCas4LBQfnfh3FVLpsyf/view?usp=drive_link",
+                        desc: "היכרות עם מזרון ויסקואלסטי ואופן התחזוקה והשימוש בו."
+                    },
+                    {
+                        id: "m_6_8",
+                        code: "6.8",
+                        title: "סרטון: כללים ארגונומיים בביצוע שינויי תנוחה",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=ypPgihCyx_w",
+                        desc: "הדרכה מעשית לשמירה על גב המטפל ומניעת פגיעות שלד-שריר בעבודה."
+                    }
+                ],
+                checklist: [
+                    { text: "ניידות וכללים ארגונומיים (30 דק')", url: "https://www.youtube.com/watch?v=ypPgihCyx_w" },
+                    { text: "מעברים – מטפל אחד ושני מטפלים (30 דק')", url: "https://drive.google.com/file/d/1WjM391jlKo0OHp8PrWb7dO8nnPB1DCZ_/view?usp=drive_link" },
+                    { text: "שימוש באביזרי עזר – כיסא גלגלים והליכון (30 דק')", url: "https://drive.google.com/file/d/1MAPto8fuZoz2kTL2ERxpGi_kAm2LeOg5/view?usp=drive_link" },
+                    { text: "שימוש במנוף הרמה ומנוף עמידה (שעה)", url: "https://drive.google.com/file/d/14lk8_ZDic7GX3AQp7W9r_NBZzsZT-V-x/view?usp=drive_link" },
+                    { text: "השכבה במנח פיזיולוגי ומזרון ויסקואלסטי (30 דק')", url: "https://drive.google.com/file/d/1yEGhpi06aHACcUEUcQb014jJaD3fDCuF/view?usp=drive_link" }
+                ]
+            },
+            {
+                num: 7,
+                id: "topic_7",
+                title: "שירות ריפוי בעיסוק",
+                timing: "במהלך החודש הראשון (כשעתיים)",
+                description: "כל סרטון בריפוי בעיסוק מוצג בנפרד: ישיבה בכיסא גלגלים ואכילה, סדים וגלילים, שירות נגיש, תפקוד בשירותים, וסיוע ברחצה והלבשה.",
+                mediaItems: [
+                    {
+                        id: "m_7_1",
+                        code: "7.1",
+                        title: "סרטון: ישיבה בכיסא גלגלים ואכילה מותאמת",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1YkL1Q6oexCKzS62-COm0msD_KC2pJ8dw/view?usp=drive_link",
+                        desc: "התאמת מנח ישיבה בכיסא גלגלים לאכילה בטוחה ועצמאית."
+                    },
+                    {
+                        id: "m_7_2",
+                        code: "7.2",
+                        title: "סרטון הדרכה: סדים וגלילים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1ofsCWOF6Ul2KLSbYBcuG6vSqU91r0-8N/view?usp=drive_link",
+                        desc: "אופן הנחת סדים וגלילים לשמירה על טווחי תנועה ומניעת קונטרקטורות."
+                    },
+                    {
+                        id: "m_7_3",
+                        code: "7.3",
+                        title: "סרטון: שירות נגיש ותקשורת ('יצירת קשר')",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1AfwkJKAsu4FhXr4yHJCCR0kCujPRcOU5/view?usp=drive_link",
+                        desc: "נגישות השירות ויצירת קשר מותאם ואמפתי עם הדייר."
+                    },
+                    {
+                        id: "m_7_4",
+                        code: "7.4",
+                        title: "סרטון: תפקוד וטיפול בשירותים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1DmrLUr0W_djWxESkdvoe_Zk6LcdvuAxU/view?usp=drive_link",
+                        desc: "סיוע מותאם ובטיחותי למטופל בתפקוד בשירותים."
+                    },
+                    {
+                        id: "m_7_5",
+                        code: "7.5",
+                        title: "סרטון הדרכה: סיוע ברחצה והלבשה",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=lvQtjY3-bcE",
+                        desc: "טכניקות הלבשה ורחצה תוך עידוד תפקוד ושמירה על כבוד המטופל."
+                    }
+                ],
+                checklist: [
+                    { text: "שימוש בסדים וגלילים (30 דק')", url: "https://drive.google.com/file/d/1ofsCWOF6Ul2KLSbYBcuG6vSqU91r0-8N/view?usp=drive_link" },
+                    { text: "תפקוד: אכילה, לבוש, שירותים ורחצה (שעה)", url: "https://drive.google.com/file/d/1YkL1Q6oexCKzS62-COm0msD_KC2pJ8dw/view?usp=drive_link" },
+                    { text: "תקשורת: 'יצירת קשר' ושירות נגיש (30 דק')", url: "https://drive.google.com/file/d/1AfwkJKAsu4FhXr4yHJCCR0kCujPRcOU5/view?usp=drive_link" }
+                ]
+            },
+            {
+                num: 8,
+                id: "topic_8",
+                title: "שירות תזונה ובטיחות בעבודה",
+                timing: "במהלך החודש הראשון (כשעתיים)",
+                description: "לומדת משרד הבריאות לתזונה בגריאטריה, סרטון בעיות אכילה בדמנציה, הדגמת ארוחות ומרקמי מזון IDDSI, והזנה אנטרלית.",
+                mediaItems: [
+                    {
+                        id: "m_8_1",
+                        code: "8.1",
+                        title: "לומדת משרד הבריאות – תזונה בגריאטריה",
+                        type: "external",
+                        url: "https://www.gov.il/files/health/nutrition_geriatrics/story_html5.html",
+                        desc: "לומדה אינטראקטיבית רשמית של משרד הבריאות בנושא תזונה בגיל השלישי."
+                    },
+                    {
+                        id: "m_8_2",
+                        code: "8.2",
+                        title: "סרטון: בעיות אכילה אצל חולי דמנציה ואלצהיימר",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1xlW_cKXVJ1C9slOk-Ht2_dtIfUhXzha4/view?usp=drive_link",
+                        desc: "סרטון הדרכה לזיהוי והתמודדות עם קשיי אכילה ובליעה בדמנציה."
+                    },
+                    {
+                        id: "m_8_3",
+                        code: "8.3",
+                        title: "מצגת: הדגמת ארוחות ומרקמי מזון ושתייה (IDDSI)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1yrw8pvaFeOFIVL_xTuXy-B1jWcOR4fPu/view?usp=drive_link",
+                        desc: "התאמת מרקמי מזון והסמכת שתייה למניעת אספירציה."
+                    },
+                    {
+                        id: "m_8_4",
+                        code: "8.4",
+                        title: "מצגת: הזנה אנטרלית ופורמולות 2025",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1NXKuIko5bIExqabwsKsn8BcOP6nD9Rfs/view?usp=drive_link",
+                        desc: "הנחיות עדכניות להזנה אנטרלית (זונדה / PEG) ופורמולות מזון ייעודיות."
+                    },
+                    {
+                        id: "m_8_5",
+                        code: "8.5",
+                        title: "מצגת תזונה והזנה אנטרלית לצוות אחיות",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1RSi-QtPkS8JuIEfRxtxiCDhpurEYPpPQ/view?usp=drive_link",
+                        desc: "דגשים קליניים לאחיות בניהול ובקרת הזנה אנטרלית."
+                    },
+                    {
+                        id: "m_8_6",
+                        code: "8.6",
+                        title: "מצגת: הזנה והאכלה בטוחה",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1iRvwpzDyTcreqxmzrLVWFqZfRLKDsw4A/view?usp=drive_link",
+                        desc: "כללי האכלה בטוחה, מעקב כלכלה יומי ודוח תזונה."
+                    },
+                    {
+                        id: "m_8_7",
+                        code: "8.7",
+                        title: "חוברת עמדא: לאכול ולחיות בכבוד (PDF)",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1in0oPcN-KLNz7E5dRv4-uHjgExiiSmVx/view?usp=drive_link",
+                        desc: "מדריך מעשי לתזונה והאכלה מכבדת של אנשים עם דמנציה."
+                    }
+                ],
+                checklist: [
+                    { text: "מרקמי מזון ושתייה IDDSI (30 דק')", url: "https://drive.google.com/file/d/1yrw8pvaFeOFIVL_xTuXy-B1jWcOR4fPu/view?usp=drive_link" },
+                    { text: "דוח תזונה וחלוקת מזון ורישום כלכלה יומי (30 דק')", url: "https://drive.google.com/file/d/1iRvwpzDyTcreqxmzrLVWFqZfRLKDsw4A/view?usp=drive_link" },
+                    { text: "לומדה לסיקור תזונתי, שקילה ומעקב (30 דק')", url: "https://www.gov.il/files/health/nutrition_geriatrics/story_html5.html" },
+                    { text: "הזנה אנטרלית ופורמולות (30 דק')", url: "https://drive.google.com/file/d/1NXKuIko5bIExqabwsKsn8BcOP6nD9Rfs/view?usp=drive_link" }
+                ]
+            },
+            {
+                num: 9,
+                id: "topic_9",
+                title: "טיפול תומך (פליאטיבי)",
+                timing: "במהלך החודש הראשון והשלישי (כ-3 שעות)",
+                description: "לומדות משרד הבריאות לסוף החיים וחולה נוטה למות, סרטוני הנחיות מקדימות וייפוי כוח מתמשך בטיפול הגריאטרי.",
+                mediaItems: [
+                    {
+                        id: "m_9_1",
+                        code: "9.1",
+                        title: "לומדת משרד הבריאות: סוף מעשה במחשבה תחילה – העדפות טיפול בסוף החיים",
+                        type: "external",
+                        url: "https://www.gov.il/files/Health/dying_patient_law/story_html5.html",
+                        desc: "לומדה רשמית של משרד הבריאות בנושא העדפות טיפול בסוף החיים."
+                    },
+                    {
+                        id: "m_9_2",
+                        code: "9.2",
+                        title: "לומדת משרד הבריאות: חוק החולה הנוטה למות",
+                        type: "external",
+                        url: "https://www.gov.il/files/health/dying_patient_request/story_html5.html",
+                        desc: "לומדה רשמית ליישום חוק החולה הנוטה למות."
+                    },
+                    {
+                        id: "m_9_3",
+                        code: "9.3",
+                        title: "סרטון הסברה: כבר כתבתם? הנחיות רפואיות מקדימות",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=IB5irFCuPxs",
+                        desc: "סרטון הסברה של משרד הבריאות בנושא מתן הנחיות רפואיות מקדימות."
+                    },
+                    {
+                        id: "m_9_4",
+                        code: "9.4",
+                        title: "סרטון והנחיות מילוי טופס הנחיות מקדימות וייפוי כוח",
+                        type: "external",
+                        url: "https://me.health.gov.il/older-adult/services-rights/before-saying-goodbye/advance-medical-directives/?source=5273",
+                        desc: "הדרכה מפורטת למילוי טפסי הנחיות רפואיות מקדימות ומינוי מיופה כוח."
+                    },
+                    {
+                        id: "m_9_5",
+                        code: "9.5",
+                        title: "סרטון הסברה על ייפוי כוח מתמשך",
+                        type: "youtube",
+                        url: "https://www.youtube.com/watch?v=l17BmQmFA5E",
+                        desc: "סרטון הדרכה על משמעות ייפוי כוח מתמשך בטיפול הגריאטרי."
+                    }
+                ],
+                checklist: [
+                    { text: "לומדת משרד הבריאות: סוף מעשה במחשבה תחילה (שעה)", url: "https://www.gov.il/files/Health/dying_patient_law/story_html5.html" },
+                    { text: "לומדת חולה נוטה למות (שעה)", url: "https://www.gov.il/files/health/dying_patient_request/story_html5.html" },
+                    { text: "הנחיות מילוי טופס הנחיות מקדימות וייפוי כוח", url: "https://me.health.gov.il/older-adult/services-rights/before-saying-goodbye/advance-medical-directives/?source=5273" },
+                    { text: "סרטון הסברה על ייפוי כוח מתמשך", url: "https://www.youtube.com/watch?v=l17BmQmFA5E" }
+                ]
+            },
+            {
+                num: 10,
+                id: "topic_10",
+                title: "הכנה למשמרת לילה",
+                timing: "במהלך החודש השלישי (כ-3 שעות)",
+                description: "סרטון פתיח, מצגת הנחיות ודגשים ניהוליים וקליניים, סימולציות ותרחישים לעבודה עצמאית ובטוחה במשמרת לילה.",
+                mediaItems: [
+                    {
+                        id: "m_10_1",
+                        code: "10.1",
+                        title: "סרטון פתיח: הכנה למשמרת לילה – דגשים ועקרונות מרכזיים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/drive/folders/1ZQIhfhvZdRJNOB6jWRlnfJYU-SIGc71P",
+                        desc: "סרטון פתיח והדרכה מקיפה להכנה למשמרת לילה במערך הגריאטרי."
+                    },
+                    {
+                        id: "m_10_2",
+                        code: "10.2",
+                        title: "הכנה למשמרת לילה – מצגת פתיחה והנחיות",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1XomwE-Mn8t_Q831O19npnN5wtdbY1FzQ/view?usp=drive_link",
+                        desc: "דגשים קליניים וניהוליים לעבודה עצמאית ובטוחה במשמרת לילה."
+                    },
+                    {
+                        id: "m_10_3",
+                        code: "10.3",
+                        title: "הכנה למשמרת לילה – סימולציות ופרוטוקולים קליניים",
+                        type: "drive_video",
+                        url: "https://drive.google.com/file/d/1kCUvx5lhlNHfbp_b0JcArWycCEE0wt3Q/view?usp=drive_link",
+                        desc: "תרחישים קליניים וסימולציות להתמודדות במשמרת לילה."
+                    }
+                ],
+                checklist: [
+                    { text: "צפייה בסרטון פתיח להכנה למשמרת לילה", url: "https://drive.google.com/drive/folders/1ZQIhfhvZdRJNOB6jWRlnfJYU-SIGc71P" },
+                    { text: "הכנה למשמרת לילה – מצגת פתיחה והנחיות", url: "https://drive.google.com/file/d/1XomwE-Mn8t_Q831O19npnN5wtdbY1FzQ/view?usp=drive_link" },
+                    { text: "סימולציות ותרחישים קליניים למשמרת לילה", url: "https://drive.google.com/file/d/1kCUvx5lhlNHfbp_b0JcArWycCEE0wt3Q/view?usp=drive_link" }
+                ]
+            }
+        ];
+    </script>
+
+    <script>
+        const STORAGE_TOPICS_KEY = "onboarding_kit_topics_v9";
+        const STORAGE_PROGRESS_KEY = "onboarding_kit_progress_v9";
+        const STORAGE_DEPTS_KEY = "onboarding_kit_departments_v9";
+
+        const DEFAULT_DEPARTMENTS = [
+            "סיעודית א'",
+            "סיעודית ב'",
+            "תשושי נפש",
+            "סיעוד מורכב",
+            "שיקום",
+            "מונשמים"
+        ];
+
+        let kitTopics = [];
+        let departmentsListData = [];
+        let userState = {
+            currentStep: 1, // Default directly to Topic 1 since employee info is permanently at the top!
+            emp: {
+                fullName: "",
+                idNum: "",
+                role: "אחות",
+                department: "סיעודית א'",
+                jobScope: "מלאה",
+                employmentType: "ישירה",
+                hireDate: new Date().toISOString().slice(0, 10),
+                trainingStartDate: new Date().toISOString().slice(0, 10),
+                directManager: ""
+            },
+            watchedMedia: {},
+            checkedSubItems: {},
+            topicSignoffs: {},
+            finalDeclaration: false,
+            empSignatureDataUrl: "",
+            managerTypedSignature: "",
+            managerApprovalDate: new Date().toISOString().slice(0, 10),
+            managerSignatureDataUrl: ""
+        };
+
+        let editMode = false;
+        let editingModalContext = null;
+        let activeInlineEmbeds = {};
+
+        function loadDepartmentsList() {
+            const isLegacyDept = (name) => /תבור|ארבל|אשכולות|אחוזה/.test(name || "");
+            const savedDepts = localStorage.getItem(STORAGE_DEPTS_KEY);
+            if (savedDepts) {
+                try {
+                    const parsed = JSON.parse(savedDepts);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        departmentsListData = parsed
+                            .map(d => typeof d === "string" ? d : (d.name || ""))
+                            .filter(d => d && !isLegacyDept(d));
+                        if (departmentsListData.length > 0) return;
+                    }
+                } catch (e) { }
+            }
+            departmentsListData = [...DEFAULT_DEPARTMENTS];
+        }
+
+        function saveDepartmentsList() {
+            localStorage.setItem(STORAGE_DEPTS_KEY, JSON.stringify(departmentsListData));
+            renderDepartmentsSelect();
+        }
+
+        function renderDepartmentsSelect() {
+            const sel = document.getElementById("topEmpDept");
+            if (!sel) return;
+            const currentVal = userState.emp.department || departmentsListData[0] || "";
+            if (currentVal && !departmentsListData.includes(currentVal)) {
+                departmentsListData.unshift(currentVal);
+            }
+            sel.innerHTML = departmentsListData.map(dept =>
+                `<option value="${escapeHtml(dept)}" ${dept === currentVal ? "selected" : ""}>${escapeHtml(dept)}</option>`
+            ).join("");
+            if (!userState.emp.department && departmentsListData.length > 0) {
+                userState.emp.department = departmentsListData[0];
+            }
+        }
+
+        function openDeptModal() {
+            renderDeptModalList();
+            document.getElementById("deptEditModal").classList.add("open");
+            setTimeout(() => document.getElementById("newDeptInput")?.focus(), 50);
+        }
+
+        function closeDeptModal() {
+            document.getElementById("deptEditModal").classList.remove("open");
+        }
+
+        function renderDeptModalList() {
+            const container = document.getElementById("deptModalList");
+            if (!container) return;
+            if (departmentsListData.length === 0) {
+                container.innerHTML = `<div style="padding:1rem; text-align:center; color:var(--text-muted);">אין מחלקות ברשימה. הוסף מחלקה חדשה למעלה.</div>`;
+                return;
+            }
+            container.innerHTML = departmentsListData.map((dept, idx) => `
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:0.5rem; background:#ffffff; border:1px solid var(--border); padding:0.55rem 0.8rem; border-radius:8px; margin-bottom:0.4rem;">
+                    <span style="font-weight:700; color:var(--text-main); flex:1;">🏥 ${escapeHtml(dept)}</span>
+                    <div style="display:flex; gap:0.35rem;">
+                        <button type="button" class="btn-small-edit" onclick="editDepartmentItem(${idx})">✏️ ערוך שם</button>
+                        <button type="button" class="btn-small-delete" onclick="deleteDepartmentItem(${idx})">🗑️ מחק</button>
+                    </div>
+                </div>
+            `).join("");
+        }
+
+        function addDepartmentItem() {
+            const input = document.getElementById("newDeptInput");
+            const val = (input?.value || "").trim();
+            if (!val) {
+                alert("נא להקליד שם מחלקה להוספה.");
+                return;
+            }
+            if (!departmentsListData.includes(val)) {
+                departmentsListData.push(val);
+            }
+            userState.emp.department = val;
+            input.value = "";
+            saveDepartmentsList();
+            saveProgress();
+            renderDeptModalList();
+            syncTopEmployeeInputs();
+        }
+
+        function editDepartmentItem(idx) {
+            const oldName = departmentsListData[idx];
+            const newName = prompt("עריכת שם המחלקה:", oldName);
+            if (newName === null) return;
+            const trimmed = newName.trim();
+            if (!trimmed) return;
+            departmentsListData[idx] = trimmed;
+            if (userState.emp.department === oldName) {
+                userState.emp.department = trimmed;
+            }
+            saveDepartmentsList();
+            saveProgress();
+            renderDeptModalList();
+            syncTopEmployeeInputs();
+            renderAll();
+        }
+
+        function deleteDepartmentItem(idx) {
+            const deptName = departmentsListData[idx];
+            if (!confirm(`האם למחוק את המחלקה "${deptName}" מהרשימה?`)) return;
+            departmentsListData.splice(idx, 1);
+            if (userState.emp.department === deptName) {
+                userState.emp.department = departmentsListData[0] || "";
+            }
+            saveDepartmentsList();
+            saveProgress();
+            renderDeptModalList();
+            syncTopEmployeeInputs();
+            renderAll();
+        }
+
+        function resetDepartmentsToDefault() {
+            if (!confirm("האם לאפס את רשימת המחלקות לברירת המחדל?")) return;
+            departmentsListData = [...DEFAULT_DEPARTMENTS];
+            userState.emp.department = departmentsListData[0];
+            saveDepartmentsList();
+            saveProgress();
+            renderDeptModalList();
+            syncTopEmployeeInputs();
+            renderAll();
+        }
+
+        function initApp() {
+            loadDepartmentsList();
+
+            const savedTopics = localStorage.getItem(STORAGE_TOPICS_KEY);
+            if (savedTopics) {
+                try {
+                    kitTopics = JSON.parse(savedTopics);
+                } catch (e) {
+                    kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
+                }
+            } else {
+                kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
+            }
+
+            // Ensure 10 topics and separation of Topic 9 (palliative) and Topic 10 (night shift)
+            if (!kitTopics || kitTopics.length < 10 || kitTopics.some(t => t.title && t.title.includes('והכנה למשמרת לילה'))) {
+                kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
+                localStorage.setItem(STORAGE_TOPICS_KEY, JSON.stringify(kitTopics));
+            }
+
+            const savedProgress = localStorage.getItem(STORAGE_PROGRESS_KEY);
+            if (savedProgress) {
+                try {
+                    const parsed = JSON.parse(savedProgress);
+                    userState = Object.assign({}, userState, parsed);
+                    if (!userState.currentStep || userState.currentStep < 1) userState.currentStep = 1;
+                    if (userState.emp && /תבור|ארבל|אשכולות|אחוזה/.test(userState.emp.department || "")) {
+                        userState.emp.department = departmentsListData[0] || "סיעודית א'";
+                    }
+                } catch (e) { }
+            }
+
+            renderDepartmentsSelect();
+            syncTopEmployeeInputs();
+            renderAll();
+        }
+
+        function syncTopEmployeeInputs() {
+            const e = userState.emp;
+            const setVal = (id, val) => {
+                const el = document.getElementById(id);
+                if (el && val !== undefined) el.value = val;
+            };
+            setVal("topEmpFullName", e.fullName);
+            setVal("topEmpIdNum", e.idNum);
+            setVal("topEmpRole", e.role);
+            setVal("topEmpJobScope", e.jobScope);
+            setVal("topEmpType", e.employmentType);
+            setVal("topEmpDept", e.department);
+            setVal("topEmpHireDate", e.hireDate);
+            setVal("topEmpStartDate", e.trainingStartDate);
+            setVal("topEmpManager", e.directManager);
+        }
+
+        function toggleEmpTopForm() {
+            const body = document.getElementById("empTopFormBody");
+            const btn = document.getElementById("toggleEmpFormBtn");
+            if (body.style.display === "none") {
+                body.style.display = "grid";
+                btn.textContent = "הסתר / הצג פרטי עובד ▲";
+            } else {
+                body.style.display = "none";
+                btn.textContent = "הצג פרטי עובד ▼";
+            }
+        }
+
+        function saveProgress() {
+            localStorage.setItem(STORAGE_PROGRESS_KEY, JSON.stringify(userState));
+            updateTopProgressUI();
+        }
+
+        function saveTopicsConfig() {
+            localStorage.setItem(STORAGE_TOPICS_KEY, JSON.stringify(kitTopics));
+        }
+
+        function extractYouTubeId(url) {
+            if (!url) return null;
+            const trimmed = url.trim();
+            if (/^[a-zA-Z0-9_-]{11}$/.test(trimmed)) return trimmed;
+            const regExp = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+            const match = trimmed.match(regExp);
+            return match ? match[1] : null;
+        }
+
+        function extractDriveFileId(url) {
+            if (!url) return null;
+            const match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
+        function extractDriveFolderId(url) {
+            if (!url) return null;
+            const match = url.match(/\/folders\/([a-zA-Z0-9_-]+)/);
+            return match ? match[1] : null;
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            document.body.classList.toggle("edit-mode", editMode);
+            const btn = document.getElementById("toggleEditModeBtn");
+            const toolbar = document.getElementById("editToolbar");
+            const label = document.getElementById("editModeBtnLabel");
+            if (editMode) {
+                btn.classList.add("active");
+                toolbar.classList.add("visible");
+                label.textContent = "סיום מצב עריכה ✓";
+            } else {
+                btn.classList.remove("active");
+                toolbar.classList.remove("visible");
+                label.textContent = "מצב עריכת סרטונים ותכנים";
+            }
+            renderMainPanel();
+        }
+
+        function updateTopProgressUI() {
+            const empDisplay = document.getElementById("empBadgeDisplay");
+            empDisplay.textContent = userState.emp.fullName
+                ? `👤 עובד/ת: ${userState.emp.fullName} (${userState.emp.role} | ${userState.emp.department})`
+                : "👤 עובד/ת: הקלד/י פרטים בתיבה העליונה";
+
+            let signedCount = 0;
+            kitTopics.forEach(t => {
+                if (userState.topicSignoffs[t.id] && userState.topicSignoffs[t.id].signed) {
+                    signedCount++;
+                }
+            });
+
+            let totalMedia = 0;
+            let watchedCount = 0;
+            kitTopics.forEach(t => {
+                t.mediaItems.forEach(m => {
+                    totalMedia++;
+                    if (userState.watchedMedia[m.id]) watchedCount++;
+                });
+            });
+
+            document.getElementById("topicsCompletedDisplay").textContent = `📚 נושאים שנחתמו: ${signedCount} / ${kitTopics.length}`;
+            document.getElementById("videosWatchedDisplay").textContent = `🎬 סרטונים ויחידות שנצפו: ${watchedCount} / ${totalMedia}`;
+
+            const pct = Math.round(((signedCount / kitTopics.length) * 0.7 + (totalMedia ? (watchedCount / totalMedia) * 0.3 : 0)) * 100);
+            document.getElementById("overallProgressFill").style.width = `${pct}%`;
+            document.getElementById("overallProgressPct").textContent = `${pct}%`;
+        }
+
+        function renderSidebar() {
+            const list = document.getElementById("sidebarStepList");
+            let html = "";
+
+            kitTopics.forEach((topic, idx) => {
+                const stepNum = idx + 1;
+                const isSigned = userState.topicSignoffs[topic.id] && userState.topicSignoffs[topic.id].signed;
+                const isActive = userState.currentStep === stepNum;
+                const watchedInTopic = topic.mediaItems.filter(m => userState.watchedMedia[m.id]).length;
+                html += `
+                    <button type="button" class="step-btn ${isActive ? 'active' : ''} ${isSigned ? 'completed' : ''}" onclick="goToStep(${stepNum})">
+                        <div class="step-num">${isSigned ? '✓' : topic.num}</div>
+                        <div class="step-meta">
+                            <div class="title">${topic.num}. ${topic.title}</div>
+                            <div class="sub">${isSigned ? 'נחתם והושלם ✓' : `נצפו ${watchedInTopic}/${topic.mediaItems.length} סרטונים`}</div>
+                        </div>
+                    </button>
+                `;
+            });
+
+            const certStep = kitTopics.length + 1;
+            const isCertActive = userState.currentStep === certStep;
+            html += `
+                <button type="button" class="step-btn ${isCertActive ? 'active' : ''}" onclick="goToStep(${certStep})">
+                    <div class="step-num">🎓</div>
+                    <div class="step-meta">
+                        <div class="title">חתימות והפקת תעודה אישית</div>
+                        <div class="sub">חתימת עובד/ת + ממונה ישיר</div>
+                    </div>
+                </button>
+            `;
+
+            list.innerHTML = html;
+        }
+
+        function goToStep(stepIndex) {
+            if (stepIndex < 1) stepIndex = 1;
+            userState.currentStep = stepIndex;
+            saveProgress();
+            renderAll();
+            document.getElementById("mainContentPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function renderAll() {
+            updateTopProgressUI();
+            renderSidebar();
+            renderMainPanel();
+        }
+
+        function renderMainPanel() {
+            const panel = document.getElementById("mainContentPanel");
+            if (userState.currentStep === kitTopics.length + 1) {
+                panel.innerHTML = renderCertificateStep();
+                setTimeout(initSignatureCanvases, 60);
+                return;
+            }
+
+            const topicIdx = Math.max(0, Math.min(kitTopics.length - 1, userState.currentStep - 1));
+            const topic = kitTopics[topicIdx];
+            panel.innerHTML = renderTopicStep(topic, topicIdx);
+        }
+
+        function openAndMarkWatched(mediaId, url) {
+            userState.watchedMedia[mediaId] = true;
+            saveProgress();
+            renderAll();
+            window.open(url, "_blank", "noopener");
+        }
+
+        function toggleInlinePlayer(mediaId) {
+            activeInlineEmbeds[mediaId] = !activeInlineEmbeds[mediaId];
+            userState.watchedMedia[mediaId] = true;
+            saveProgress();
+            renderAll();
+        }
+
+        function renderTopicStep(topic, topicIdx) {
+            const signoff = userState.topicSignoffs[topic.id] || {
+                signed: false,
+                date: new Date().toISOString().slice(0, 10),
+                instructor: userState.emp.directManager || "",
+                employeeConfirmName: userState.emp.fullName || ""
+            };
+
+            const quickLinksHtml = topic.mediaItems.map((m, mIdx) => {
+                const isWatched = !!userState.watchedMedia[m.id];
+                return `
+                    <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding:0.65rem 0.9rem; background:${isWatched ? '#f0fdf4' : '#ffffff'}; border:1px solid ${isWatched ? '#86efac' : '#cbd5e1'}; border-radius:10px; margin-bottom:0.45rem; flex-wrap:wrap;">
+                        <div style="display:flex; align-items:center; gap:0.6rem; flex:1; min-width:240px;">
+                            <span style="background:var(--primary); color:#fff; font-weight:800; font-size:0.78rem; padding:0.2rem 0.55rem; border-radius:999px;">${escapeHtml(m.code)}</span>
+                            <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="font-weight:800; color:var(--primary); text-decoration:underline; font-size:0.96rem;">
+                                🎬 ${escapeHtml(m.title)} ↗
+                            </a>
+                        </div>
+                        <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+                            <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="background:var(--primary); color:#ffffff; text-decoration:none; padding:0.38rem 0.9rem; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:0.35rem;">
+                                ▶️ לחץ כאן לצפייה בסרטון ↗
+                            </a>
+                            <span style="font-size:0.8rem; font-weight:800; color:${isWatched ? 'var(--success)' : 'var(--text-muted)'};">${isWatched ? '✅ נצפה' : 'טרם נצפה'}</span>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            const mediaCardsHtml = topic.mediaItems.map((m, mIdx) => {
+                const isWatched = !!userState.watchedMedia[m.id];
+                const ytId = extractYouTubeId(m.url);
+                const driveFileId = extractDriveFileId(m.url);
+                const driveFolderId = extractDriveFolderId(m.url);
+                const showInline = !!activeInlineEmbeds[m.id];
+
+                let embedVisual = "";
+                if (ytId) {
+                    const thumbUrl = `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
+                    const isFileProtocol = window.location.protocol === "file:";
+                    if (!isFileProtocol || showInline) {
+                        embedVisual = `
+                            <div class="media-embed-box">
+                                <iframe src="https://www.youtube.com/embed/${ytId}" title="${escapeHtml(m.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                            </div>
+                        `;
+                    } else {
+                        embedVisual = `
+                            <div class="media-embed-box">
+                                <a href="https://www.youtube.com/watch?v=${ytId}" target="_blank" rel="noopener" class="yt-thumb-link" style="background-image:url('${thumbUrl}');" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                    <div class="yt-thumb-overlay">
+                                        <div class="play-circle-btn">▶</div>
+                                        <span style="background:rgba(0,0,0,0.82); padding:0.35rem 1rem; border-radius:999px; font-weight:800; font-size:0.92rem;">לחץ כאן להפעלת סרטון ה-YouTube ↗</span>
+                                    </div>
+                                </a>
+                            </div>
+                        `;
+                    }
+                } else if (driveFileId) {
+                    embedVisual = `
+                        <div class="media-embed-box">
+                            <iframe src="https://drive.google.com/file/d/${driveFileId}/preview" title="${escapeHtml(m.title)}" allow="autoplay" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                    `;
+                } else if (driveFolderId) {
+                    embedVisual = `
+                        <div class="media-embed-box" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; padding:1.5rem; text-align:center;">
+                            <div style="font-size:3rem;">🎬🌙</div>
+                            <div style="font-weight:800; font-size:1.15rem; color:#ffffff;">${escapeHtml(m.title)}</div>
+                            <div style="font-size:0.88rem; color:#93c5fd; max-width:480px;">קישור ישיר לצפייה בסרטון הפתיח מתוך תיקיית Google Drive</div>
+                            <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="btn-watch-main" style="max-width:320px; background:#f59e0b; color:#0f172a; font-weight:800;" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                <span>▶️ לחץ כאן לצפייה ישירה בסרטון ↗</span>
+                            </a>
+                        </div>
+                    `;
+                } else if (m.type === "local_doc" || /\.html$/i.test(m.url || "")) {
+                    embedVisual = `
+                        <div class="media-embed-box">
+                            <iframe src="${escapeHtml(m.url)}" title="${escapeHtml(m.title)}" loading="lazy"></iframe>
+                        </div>
+                    `;
+                } else {
+                    embedVisual = `
+                        <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="external-resource-box" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                            <div class="external-resource-icon">🌐</div>
+                            <div style="font-weight:800; font-size:1.02rem; color:var(--primary);">${escapeHtml(m.title)}</div>
+                            <span style="background:var(--primary); color:#fff; padding:0.45rem 1.15rem; border-radius:999px; font-weight:800; font-size:0.88rem;">
+                                ▶️ לחץ כאן לפתיחת הלומדה / היחידה ↗
+                            </span>
+                        </a>
+                    `;
+                }
+
+                return `
+                    <div class="media-card ${isWatched ? 'watched' : ''}">
+                        <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="media-card-header" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                            <span class="media-num-badge">סרטון / יחידה ${escapeHtml(m.code)}</span>
+                            <div class="media-card-title">${escapeHtml(m.title)} ↗</div>
+                        </a>
+                        ${embedVisual}
+                        <div class="media-card-body">
+                            <div class="media-desc">${escapeHtml(m.desc || "")}</div>
+                            <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:0.45rem 0.7rem; margin-bottom:0.4rem; font-size:0.82rem; word-break:break-all;">
+                                <strong style="color:var(--primary);">🔗 קישור לסרטון:</strong>
+                                <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="color:#1d4ed8; font-weight:700; text-decoration:underline; margin-right:0.3rem;">
+                                    לחץ כאן לפתיחה ישירה בחלון חדש ↗
+                                </a>
+                            </div>
+                            <div>
+                                <div class="media-actions">
+                                    <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="btn-watch-main" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                        <span>▶️ פתח סרטון / יחידה</span>
+                                        <span>↗</span>
+                                    </a>
+                                    ${(ytId || driveFileId) ? `
+                                        <button type="button" class="btn-inline-embed" onclick="toggleInlinePlayer('${m.id}')">
+                                            <span>${showInline ? '✖ סגור נגן' : '📺 נגן בדף'}</span>
+                                        </button>
+                                    ` : ''}
+                                    <button type="button" class="btn-mark-watched ${isWatched ? 'done' : ''}" onclick="toggleMediaWatched('${m.id}')">
+                                        <span>${isWatched ? '✅ נצפה' : '⬜ סמן כנצפה'}</span>
+                                    </button>
+                                </div>
+                                <div class="item-edit-controls">
+                                    <button type="button" class="btn-small-edit" onclick="openMediaModal(${topicIdx}, ${mIdx})">✏️ ערוך סרטון/קישור</button>
+                                    <button type="button" class="btn-small-delete" onclick="deleteMediaItem(${topicIdx}, ${mIdx})">🗑️ מחק יחידה</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            const checklistHtml = topic.checklist.map((itemObj, cIdx) => {
+                const itemText = typeof itemObj === "string" ? itemObj : itemObj.text;
+                const itemUrl = typeof itemObj === "object" && itemObj.url ? itemObj.url : (topic.mediaItems[0]?.url || "");
+                const key = `${topic.id}_chk_${cIdx}`;
+                const isChecked = !!userState.checkedSubItems[key];
+                return `
+                    <div class="checklist-item ${isChecked ? 'checked' : ''}" onclick="toggleSubChecklist('${key}')">
+                        <label onclick="event.stopPropagation()">
+                            <input type="checkbox" ${isChecked ? 'checked' : ''} onchange="toggleSubChecklist('${key}')">
+                            <span>${topic.num}.${cIdx + 1} – ${escapeHtml(itemText)}</span>
+                        </label>
+                        <div style="display:flex; align-items:center; gap:0.6rem;" onclick="event.stopPropagation()">
+                            ${itemUrl ? `
+                                <a href="${escapeHtml(itemUrl)}" target="_blank" rel="noopener" class="btn-inline-embed" style="text-decoration:none;" onclick="userState.checkedSubItems['${key}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                    🎬 צפה בסרטון / בלומדה ↗
+                                </a>
+                            ` : ''}
+                            ${editMode ? `<button type="button" class="btn-small-delete" onclick="deleteChecklistItem(${topicIdx}, ${cIdx})">🗑️ מחק</button>` : `<span style="font-size:0.82rem; font-weight:800; color:${isChecked ? 'var(--success)' : 'var(--text-muted)'};">${isChecked ? 'בוצע ✓' : 'לביצוע'}</span>`}
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            return `
+                <div class="topic-header">
+                    <div>
+                        <span class="topic-badge">נושא ${topic.num} מתוך ${kitTopics.length} • ${escapeHtml(topic.timing)}</span>
+                        <h2>${topic.num}. ${escapeHtml(topic.title)}</h2>
+                        <p>${escapeHtml(topic.description)}</p>
+                    </div>
+                    ${editMode ? `<button type="button" class="btn-small-edit" onclick="editTopicHeader(${topicIdx})">✏️ ערוך כותרת ותיאור נושא</button>` : ''}
+                </div>
+
+                <div style="background:#eff6ff; border:2px solid #93c5fd; border-radius:14px; padding:1rem 1.2rem; margin-bottom:1.5rem;">
+                    <div style="font-weight:800; color:var(--primary); font-size:1.05rem; margin-bottom:0.65rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+                        <span>🔗 ריכוז קישורים ישירים לכל הסרטונים והלומדות בנושא ${topic.num} (${topic.mediaItems.length} יחידות לימוד):</span>
+                        ${editMode ? `<button type="button" class="btn-small-edit" onclick="openMediaModal(${topicIdx}, null)">➕ הוסף סרטון / קישור חדש לנושא זה</button>` : ''}
+                    </div>
+                    ${quickLinksHtml}
+                </div>
+
+                <div class="section-subtitle">
+                    <span>🎬 כרטיסיות צפייה בסרטונים, מצגות ולומדות בנושא ${topic.num} (כולל נגן מוטמע):</span>
+                </div>
+
+                <div class="media-grid">
+                    ${mediaCardsHtml}
+                </div>
+
+                <div class="section-subtitle">
+                    <span>📋 סימון וחיתום תתי-נושאים שבוצעו בנושא ${topic.num}:</span>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button type="button" class="btn-inline-embed" onclick="markAllInTopicDone(${topicIdx})">✓ סמן את כל הסרטונים והנושאים בפרק זה כבוצעו</button>
+                        ${editMode ? `<button type="button" class="btn-small-edit" onclick="addChecklistItem(${topicIdx})">➕ הוסף תת-נושא</button>` : ''}
+                    </div>
+                </div>
+
+                <div class="checklist-box">
+                    ${checklistHtml}
+                </div>
+
+                <!-- Per-Topic Sign-Off Box -->
+                <div class="signoff-box ${signoff.signed ? 'signed' : ''}">
+                    <div class="signoff-title">
+                        <span>✍️</span>
+                        <span>חיתום ביצוע צפייה והדרכה – נושא ${topic.num}: ${escapeHtml(topic.title)}</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field-group">
+                            <label>תאריך ביצוע ההדרכה</label>
+                            <input type="date" id="signDate_${topic.id}" value="${escapeHtml(signoff.date)}" onchange="updateTopicSignoffField('${topic.id}', 'date', this.value)">
+                        </div>
+                        <div class="field-group">
+                            <label>שם המנחה / החונך/ת</label>
+                            <input type="text" id="signInstructor_${topic.id}" value="${escapeHtml(signoff.instructor || userState.emp.directManager)}" placeholder="הקלד/י שם מנחה ההדרכה" oninput="updateTopicSignoffField('${topic.id}', 'instructor', this.value)">
+                        </div>
+                        <div class="field-group">
+                            <label>חתימת העובד/ת לאישור הצפייה בנושא ${topic.num}</label>
+                            <input type="text" id="signEmpName_${topic.id}" value="${escapeHtml(signoff.employeeConfirmName || userState.emp.fullName)}" placeholder="הקלד/י שם מלא לחיתום" oninput="updateTopicSignoffField('${topic.id}', 'employeeConfirmName', this.value)">
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-top:0.85rem;">
+                        <label style="display:flex; align-items:center; gap:0.6rem; font-weight:700; cursor:pointer;">
+                            <input type="checkbox" style="width:22px; height:22px; accent-color:var(--success);" ${signoff.signed ? 'checked' : ''} onchange="toggleTopicSignoff('${topic.id}', this.checked)">
+                            <span>אני מאשר/ת כי צפיתי בכל הסרטונים וקיבלתי הדרכה מלאה בנושא "${escapeHtml(topic.title)}"</span>
+                        </label>
+                        <button type="button" class="btn-success" onclick="signTopicAndNext('${topic.id}', ${topicIdx})">
+                            <span>חתום על ביצוע נושא ${topic.num} והמשך לנושא הבא</span>
+                            <span>⬅️</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="nav-footer-btns">
+                    ${topicIdx > 0 ? `
+                        <button type="button" class="btn-outline" onclick="goToStep(${topicIdx})">
+                            <span>➡️</span>
+                            <span>חזרה לנושא ${topicIdx}: ${escapeHtml(kitTopics[topicIdx - 1].title)}</span>
+                        </button>
+                    ` : `<div></div>`}
+                    <button type="button" class="btn-primary" onclick="goToStep(${topicIdx + 2})">
+                        <span>${topicIdx + 1 < kitTopics.length ? `מעבר לנושא ${topicIdx + 2}: ${escapeHtml(kitTopics[topicIdx + 1].title)}` : 'מעבר לחתימות והפקת תעודה אישית 🎓'}</span>
+                        <span>⬅️</span>
+                    </button>
+                </div>
+            `;
+        }
+
+        function renderCertificateStep() {
+            const e = userState.emp;
+            const rowsHtml = kitTopics.map(t => {
+                const s = userState.topicSignoffs[t.id] || {};
+                const watchedInTopic = t.mediaItems.filter(m => userState.watchedMedia[m.id]).length;
+                return `
+                    <tr>
+                        <td><strong>${t.num}. ${escapeHtml(t.title)}</strong></td>
+                        <td>${watchedInTopic} / ${t.mediaItems.length} סרטונים ויחידות</td>
+                        <td>${escapeHtml(s.date || new Date().toISOString().slice(0, 10))}</td>
+                        <td>${escapeHtml(s.instructor || e.directManager || "—")}</td>
+                        <td style="color:${s.signed ? '#15803d' : '#b45309'}; font-weight:800;">
+                            ${s.signed ? `✓ נחתם (${escapeHtml(s.employeeConfirmName || e.fullName || 'עובד/ת')})` : 'טרם נחתם'}
+                        </td>
+                    </tr>
+                `;
+            }).join("");
+
+            return `
+                <div class="topic-header">
+                    <div>
+                        <span class="topic-badge">שלב סיום – אישור צפייה והפקת תעודה אישית</span>
+                        <h2>🎓 הפקת תעודה אישית חתומה דיגיטלית</h2>
+                        <p>אנא ודא/י את הצהרת העובד/ת, חתום/י דיגיטלית והחתם/י את הממונה הישיר לביצוע הצפייה בערכה. ניתן להדפיס או לשמור את התעודה כ-PDF.</p>
+                    </div>
+                </div>
+
+                <div class="checklist-box" style="background:#f0fdf4; border-color:#86efac;">
+                    <label style="display:flex; align-items:center; gap:0.75rem; font-weight:800; font-size:1.05rem; color:#14532d; cursor:pointer;">
+                        <input type="checkbox" style="width:22px; height:22px; accent-color:var(--success);" ${userState.finalDeclaration ? 'checked' : ''} onchange="userState.finalDeclaration = this.checked; saveProgress(); renderMainPanel(); setTimeout(initSignatureCanvases, 60);">
+                        <span>הריני מאשר/ת בזה כי קיבלתי את כלל ההדרכות המפורטות לעיל וצפיתי בכל סרטוני החובה בערכה.</span>
+                    </label>
+                </div>
+
+                <!-- Digital Signatures Input Section -->
+                <div class="sig-grid">
+                    <!-- Employee Digital Signature -->
+                    <div class="sig-card">
+                        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:0.6rem;">✍️ חתימה דיגיטלית של העובד/ת</h3>
+                        <div class="field-group" style="margin-bottom:0.6rem;">
+                            <label>שם העובד/ת החותם/ת</label>
+                            <input type="text" value="${escapeHtml(e.fullName)}" placeholder="שם מלא של העובד/ת" oninput="updateEmpField('fullName', this.value); updateCertLive();">
+                        </div>
+                        <label style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">חתימה גרפית על המשטח (עם העכבר או האצבע):</label>
+                        <div class="sig-canvas-wrap">
+                            <canvas id="empSigCanvas" width="460" height="150"></canvas>
+                        </div>
+                        <div style="margin-top:0.5rem; display:flex; justify-content:space-between;">
+                            <button type="button" class="btn-small-delete" onclick="clearSigCanvas('emp')">נקה חתימת עובד/ת</button>
+                            <span style="font-size:0.8rem; color:var(--success); font-weight:700;">נשמר אוטומטית בתעודה ✓</span>
+                        </div>
+                    </div>
+
+                    <!-- Direct Manager Digital Signature -->
+                    <div class="sig-card">
+                        <h3 style="font-size:1.1rem; color:var(--primary); margin-bottom:0.6rem;">👔 חתימת הממונה הישיר לביצוע הצפייה בערכה</h3>
+                        <div class="field-group" style="margin-bottom:0.6rem;">
+                            <label>שם ותפקיד הממונה הישיר/ה</label>
+                            <input type="text" value="${escapeHtml(e.directManager)}" placeholder="שם הממונה הישיר/ה (אחות אחראית / מנהל/ת סיעוד)" oninput="updateEmpField('directManager', this.value); updateCertLive();">
+                        </div>
+                        <div class="field-group" style="margin-bottom:0.6rem;">
+                            <label>הקלדת חתימת הממונה הישיר לביצוע הצפייה בערכה</label>
+                            <input type="text" value="${escapeHtml(userState.managerTypedSignature)}" placeholder="הקלד/י חתימת הממונה הישיר לאישור ביצוע הצפייה" oninput="userState.managerTypedSignature = this.value; saveProgress(); updateCertLive();">
+                        </div>
+                        <label style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">חתימה גרפית של הממונה הישיר (אופציונלי בנוסף להקלדה):</label>
+                        <div class="sig-canvas-wrap">
+                            <canvas id="mgrSigCanvas" width="460" height="150"></canvas>
+                        </div>
+                        <div style="margin-top:0.5rem; display:flex; justify-content:space-between;">
+                            <button type="button" class="btn-small-delete" onclick="clearSigCanvas('mgr')">נקה חתימת ממונה</button>
+                            <span style="font-size:0.8rem; color:var(--success); font-weight:700;">נשמר אוטומטית בתעודה ✓</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:flex; justify-content:center; gap:1rem; margin:1.5rem 0; flex-wrap:wrap;">
+                    <button type="button" class="btn-primary" onclick="signAllTopicsQuick()">✓ חתום אוטומטית על כל הנושאים שטרם נחתמו</button>
+                    <button type="button" class="btn-success" onclick="window.print()">🖨️ הדפס תעודה אישית / שמור כ-PDF</button>
+                </div>
+
+                <!-- Printable Official Certificate -->
+                <div class="certificate-container" id="printableCertificate">
+                    <div class="cert-header">
+                        <div style="font-size:0.9rem; font-weight:800; color:var(--accent); letter-spacing:0.5px;">מערך האֲחָיוּת והאיכות</div>
+                        <h3>תעודת סיום ערכת הדרכה בקליטת אחות וכוח עזר/מטפל</h3>
+                        <p>אישור רשמי על השלמת מסלול הדרכות חובה וצפייה בסרטוני הבטיחות והטיפול בחודש הראשון לקליטה</p>
+                    </div>
+
+                    <div class="cert-emp-summary">
+                        <div><strong>שם העובד/ת:</strong> <span id="certEmpName">${escapeHtml(e.fullName || "—")}</span></div>
+                        <div><strong>ת.ז / מספר עובד:</strong> <span>${escapeHtml(e.idNum || "—")}</span></div>
+                        <div><strong>מקצוע:</strong> <span>${escapeHtml(e.role)}</span></div>
+                        <div><strong>מחלקה:</strong> <span>${escapeHtml(e.department || "—")}</span></div>
+                        <div><strong>משרה והעסקה:</strong> <span>משרה ${escapeHtml(e.jobScope)} (${escapeHtml(e.employmentType)})</span></div>
+                        <div><strong>תאריך קליטה:</strong> <span>${escapeHtml(e.hireDate)}</span></div>
+                        <div><strong>תאריך תחילת הדרכה:</strong> <span>${escapeHtml(e.trainingStartDate)}</span></div>
+                        <div><strong>ממונה ישיר/ה:</strong> <span id="certMgrName">${escapeHtml(e.directManager || "—")}</span></div>
+                    </div>
+
+                    <table class="cert-table">
+                        <thead>
+                            <tr>
+                                <th>נושא ההדרכה הממוספר</th>
+                                <th>צפייה בסרטונים ולומדות</th>
+                                <th>תאריך ביצוע</th>
+                                <th>שם המנחה</th>
+                                <th>סטטוס חיתום העובד/ת</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+
+                    <div style="background:#f0fdf4; border:1px solid #86efac; padding:0.75rem 1rem; border-radius:10px; font-weight:700; color:#14532d; margin-bottom:1rem;">
+                        ☑ הצהרת העובד/ת: "הריני מאשר/ת בזה כי קיבלתי את כלל ההדרכות המפורטות לעיל וצפיתי בכל סרטוני ההדרכה בערכה."
+                    </div>
+
+                    <div class="cert-signatures-row">
+                        <div class="cert-sig-box">
+                            <div style="font-weight:800; color:var(--primary); margin-bottom:0.3rem;">חתימה דיגיטלית של העובד/ת</div>
+                            <div id="certEmpTyped" style="font-weight:700; font-size:1.05rem;">${escapeHtml(e.fullName || "—")}</div>
+                            ${userState.empSignatureDataUrl ? `<img id="certEmpSigImg" src="${userState.empSignatureDataUrl}" alt="חתימת עובד">` : `<img id="certEmpSigImg" style="display:none;" alt="חתימת עובד">`}
+                            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.35rem;">תאריך חתימה: ${new Date().toLocaleDateString('he-IL')}</div>
+                        </div>
+
+                        <div class="cert-sig-box">
+                            <div style="font-weight:800; color:var(--primary); margin-bottom:0.3rem;">חתימת הממונה הישיר לביצוע הצפייה בערכה</div>
+                            <div id="certMgrTyped" style="font-weight:800; font-size:1.05rem; color:#0f4c81;">
+                                ${escapeHtml(userState.managerTypedSignature || e.directManager || "—")}
+                            </div>
+                            ${userState.managerSignatureDataUrl ? `<img id="certMgrSigImg" src="${userState.managerSignatureDataUrl}" alt="חתימת ממונה ישיר">` : `<img id="certMgrSigImg" style="display:none;" alt="חתימת ממונה ישיר">`}
+                            <div style="font-size:0.82rem; color:var(--text-muted); margin-top:0.35rem;">מאשר/ת ביצוע צפייה מלא בערכת הקליטה • תאריך: ${new Date().toLocaleDateString('he-IL')}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:1.5rem; display:flex; justify-content:space-between; align-items:center; font-size:0.82rem; color:var(--text-muted); border-top:1px solid #e2e8f0; padding-top:0.75rem;">
+                        <span>נוצר על ידי: מאיה שקולניק גזית | R.N, BA, M.H.A, Policy Management Specialist</span>
+                        <span>מערכת ניהול איכות ובקרות בטיפול גריאטרי</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        function updateEmpField(field, val) {
+            userState.emp[field] = val;
+            syncTopEmployeeInputs();
+            saveProgress();
+            renderSidebar();
+        }
+
+        function updateCertLive() {
+            const empNameEl = document.getElementById("certEmpName");
+            if (empNameEl) empNameEl.textContent = userState.emp.fullName || "—";
+            const empTypedEl = document.getElementById("certEmpTyped");
+            if (empTypedEl) empTypedEl.textContent = userState.emp.fullName || "—";
+            const mgrNameEl = document.getElementById("certMgrName");
+            if (mgrNameEl) mgrNameEl.textContent = userState.emp.directManager || "—";
+            const mgrTypedEl = document.getElementById("certMgrTyped");
+            if (mgrTypedEl) mgrTypedEl.textContent = userState.managerTypedSignature || userState.emp.directManager || "—";
+        }
+
+        function toggleMediaWatched(mediaId) {
+            userState.watchedMedia[mediaId] = !userState.watchedMedia[mediaId];
+            saveProgress();
+            renderAll();
+        }
+
+        function toggleSubChecklist(key) {
+            userState.checkedSubItems[key] = !userState.checkedSubItems[key];
+            saveProgress();
+            renderMainPanel();
+        }
+
+        function markAllInTopicDone(topicIdx) {
+            const topic = kitTopics[topicIdx];
+            topic.mediaItems.forEach(m => {
+                userState.watchedMedia[m.id] = true;
+            });
+            topic.checklist.forEach((_, cIdx) => {
+                userState.checkedSubItems[`${topic.id}_chk_${cIdx}`] = true;
+            });
+            saveProgress();
+            renderAll();
+        }
+
+        function updateTopicSignoffField(topicId, field, value) {
+            if (!userState.topicSignoffs[topicId]) {
+                userState.topicSignoffs[topicId] = {
+                    signed: false,
+                    date: new Date().toISOString().slice(0, 10),
+                    instructor: userState.emp.directManager || "",
+                    employeeConfirmName: userState.emp.fullName || ""
+                };
+            }
+            userState.topicSignoffs[topicId][field] = value;
+            saveProgress();
+        }
+
+        function toggleTopicSignoff(topicId, checked) {
+            updateTopicSignoffField(topicId, "signed", checked);
+            renderAll();
+        }
+
+        function signTopicAndNext(topicId, topicIdx) {
+            const topic = kitTopics[topicIdx];
+            topic.mediaItems.forEach(m => {
+                userState.watchedMedia[m.id] = true;
+            });
+            topic.checklist.forEach((_, cIdx) => {
+                userState.checkedSubItems[`${topic.id}_chk_${cIdx}`] = true;
+            });
+            if (!userState.topicSignoffs[topicId]) {
+                userState.topicSignoffs[topicId] = {};
+            }
+            userState.topicSignoffs[topicId].signed = true;
+            userState.topicSignoffs[topicId].date = document.getElementById(`signDate_${topicId}`)?.value || new Date().toISOString().slice(0, 10);
+            userState.topicSignoffs[topicId].instructor = document.getElementById(`signInstructor_${topicId}`)?.value || userState.emp.directManager || "";
+            userState.topicSignoffs[topicId].employeeConfirmName = document.getElementById(`signEmpName_${topicId}`)?.value || userState.emp.fullName || "";
+            saveProgress();
+            goToStep(topicIdx + 2);
+        }
+
+        function signAllTopicsQuick() {
+            kitTopics.forEach(t => {
+                t.mediaItems.forEach(m => userState.watchedMedia[m.id] = true);
+                t.checklist.forEach((_, cIdx) => userState.checkedSubItems[`${t.id}_chk_${cIdx}`] = true);
+                userState.topicSignoffs[t.id] = {
+                    signed: true,
+                    date: new Date().toISOString().slice(0, 10),
+                    instructor: userState.emp.directManager || "אחות אחראית",
+                    employeeConfirmName: userState.emp.fullName || "עובד/ת"
+                };
+            });
+            userState.finalDeclaration = true;
+            saveProgress();
+            renderAll();
+            setTimeout(initSignatureCanvases, 60);
+        }
+
+        /* Signature Pad Logic */
+        function initSignatureCanvases() {
+            setupSingleCanvas("empSigCanvas", "empSignatureDataUrl", "certEmpSigImg");
+            setupSingleCanvas("mgrSigCanvas", "managerSignatureDataUrl", "certMgrSigImg");
+        }
+
+        function setupSingleCanvas(canvasId, stateKey, imgPreviewId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext("2d");
+            ctx.strokeStyle = "#0f4c81";
+            ctx.lineWidth = 2.4;
+            ctx.lineCap = "round";
+
+            if (userState[stateKey]) {
+                const img = new Image();
+                img.onload = () => ctx.drawImage(img, 0, 0);
+                img.src = userState[stateKey];
+            }
+
+            let drawing = false;
+            const getPos = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+                return {
+                    x: (clientX - rect.left) * (canvas.width / rect.width),
+                    y: (clientY - rect.top) * (canvas.height / rect.height)
+                };
+            };
+
+            const start = (e) => {
+                e.preventDefault();
+                drawing = true;
+                const pos = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+            };
+
+            const move = (e) => {
+                if (!drawing) return;
+                e.preventDefault();
+                const pos = getPos(e);
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+            };
+
+            const end = () => {
+                if (!drawing) return;
+                drawing = false;
+                userState[stateKey] = canvas.toDataURL("image/png");
+                saveProgress();
+                const previewImg = document.getElementById(imgPreviewId);
+                if (previewImg) {
+                    previewImg.src = userState[stateKey];
+                    previewImg.style.display = "block";
+                }
+            };
+
+            canvas.onmousedown = start;
+            canvas.onmousemove = move;
+            window.addEventListener("mouseup", end);
+            canvas.ontouchstart = start;
+            canvas.ontouchmove = move;
+            canvas.ontouchend = end;
+        }
+
+        function clearSigCanvas(which) {
+            const canvasId = which === "emp" ? "empSigCanvas" : "mgrSigCanvas";
+            const stateKey = which === "emp" ? "empSignatureDataUrl" : "managerSignatureDataUrl";
+            const imgId = which === "emp" ? "certEmpSigImg" : "certMgrSigImg";
+            const canvas = document.getElementById(canvasId);
+            if (canvas) {
+                const ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            userState[stateKey] = "";
+            saveProgress();
+            const img = document.getElementById(imgId);
+            if (img) img.style.display = "none";
+        }
+
+        /* Content Editing Functions */
+        function openMediaModal(topicIdx, mediaIdx) {
+            editingModalContext = { topicIdx, mediaIdx };
+            const topic = kitTopics[topicIdx];
+            const modal = document.getElementById("mediaEditModal");
+            if (mediaIdx !== null) {
+                const item = topic.mediaItems[mediaIdx];
+                document.getElementById("mediaModalTitle").textContent = `עריכת יחידה ${item.code} (${topic.title})`;
+                document.getElementById("modalMediaTitle").value = item.title;
+                document.getElementById("modalMediaType").value = item.type;
+                document.getElementById("modalMediaUrl").value = item.url;
+                document.getElementById("modalMediaDesc").value = item.desc || "";
+            } else {
+                document.getElementById("mediaModalTitle").textContent = `הוספת סרטון / יחידת הדרכה חדשה לנושא ${topic.num}`;
+                document.getElementById("modalMediaTitle").value = "";
+                document.getElementById("modalMediaType").value = "youtube";
+                document.getElementById("modalMediaUrl").value = "";
+                document.getElementById("modalMediaDesc").value = "";
+            }
+            modal.classList.add("open");
+        }
+
+        function closeMediaModal() {
+            document.getElementById("mediaEditModal").classList.remove("open");
+            editingModalContext = null;
+        }
+
+        function saveMediaModal() {
+            if (!editingModalContext) return;
+            const { topicIdx, mediaIdx } = editingModalContext;
+            const topic = kitTopics[topicIdx];
+            const title = document.getElementById("modalMediaTitle").value.trim();
+            const type = document.getElementById("modalMediaType").value;
+            const url = document.getElementById("modalMediaUrl").value.trim();
+            const desc = document.getElementById("modalMediaDesc").value.trim();
+
+            if (!title || !url) {
+                alert("נא למלא כותרת וקישור לסרטון/יחידה.");
+                return;
+            }
+
+            if (mediaIdx !== null) {
+                topic.mediaItems[mediaIdx].title = title;
+                topic.mediaItems[mediaIdx].type = type;
+                topic.mediaItems[mediaIdx].url = url;
+                topic.mediaItems[mediaIdx].desc = desc;
+            } else {
+                const newNum = topic.mediaItems.length + 1;
+                topic.mediaItems.push({
+                    id: `m_${topic.num}_${Date.now()}`,
+                    code: `${topic.num}.${newNum}`,
+                    title,
+                    type,
+                    url,
+                    desc
+                });
+            }
+
+            saveTopicsConfig();
+            closeMediaModal();
+            renderAll();
+        }
+
+        function deleteMediaItem(topicIdx, mediaIdx) {
+            if (!confirm("האם למחוק יחידת תוכן / סרטון זה מהנושא?")) return;
+            const topic = kitTopics[topicIdx];
+            topic.mediaItems.splice(mediaIdx, 1);
+            topic.mediaItems.forEach((m, idx) => {
+                m.code = `${topic.num}.${idx + 1}`;
+            });
+            saveTopicsConfig();
+            renderAll();
+        }
+
+        function editTopicHeader(topicIdx) {
+            const topic = kitTopics[topicIdx];
+            const newTitle = prompt("עריכת שם הנושא:", topic.title);
+            if (newTitle === null) return;
+            const newDesc = prompt("עריכת תיאור הנושא:", topic.description);
+            if (newDesc !== null) topic.description = newDesc;
+            if (newTitle.trim()) topic.title = newTitle.trim();
+            saveTopicsConfig();
+            renderAll();
+        }
+
+        function addChecklistItem(topicIdx) {
+            const text = prompt("הקלד/י תת-נושא חדש לביצוע וחיתום:");
+            if (!text || !text.trim()) return;
+            const url = prompt("הקלד/י קישור לסרטון/לומדה (אופציונלי):", "") || "";
+            kitTopics[topicIdx].checklist.push({ text: text.trim(), url: url.trim() });
+            saveTopicsConfig();
+            renderAll();
+        }
+
+        function deleteChecklistItem(topicIdx, cIdx) {
+            if (!confirm("למחוק סעיף זה מרשימת התתי-נושאים?")) return;
+            kitTopics[topicIdx].checklist.splice(cIdx, 1);
+            saveTopicsConfig();
+            renderAll();
+        }
+
+        function resetKitContentToDefault() {
+            if (!confirm("האם לאפס את כל הסרטונים והנושאים לברירת המחדל המקורית?")) return;
+            localStorage.removeItem(STORAGE_TOPICS_KEY);
+            kitTopics = JSON.parse(JSON.stringify(DEFAULT_KIT_TOPICS));
+            renderAll();
+        }
+
+        function downloadUpdatedHtmlFile() {
+            const docClone = document.documentElement.cloneNode(true);
+            const scriptEl = docClone.querySelector("#defaultKitDataScript");
+            if (scriptEl) {
+                scriptEl.textContent = `\n        const DEFAULT_KIT_TOPICS = ${JSON.stringify(kitTopics, null, 8)};\n    `;
+            }
+            const fullHtml = "<!DOCTYPE html>\n" + docClone.outerHTML;
+            const blob = new Blob([fullHtml], { type: "text/html;charset=utf-8" });
+            const a = new document.defaultView.HTMLAnchorElement ? document.createElement("a") : document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "onboarding_kit_preview.html";
+            a.click();
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return "";
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        window.addEventListener("DOMContentLoaded", initApp);
+    </script>
+</body>
+
+</html>

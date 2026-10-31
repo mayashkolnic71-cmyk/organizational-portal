@@ -1,4 +1,4 @@
-﻿let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
+let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
 try {
     const savedUser = localStorage.getItem('clinic_current_user');
     if (savedUser) {
@@ -1342,11 +1342,12 @@ function navigate(viewName) {
         
         const contentArea = document.getElementById('content-area');
         if (!contentArea) return;
+        if (viewName !== 'intro' && typeof stopBlueprintPlayer === 'function') stopBlueprintPlayer();
 
         if (viewName === 'user-guide') {
             if (typeof renderUserGuideView === 'function') renderUserGuideView();
         } else if (viewName === 'intro') {
-            contentArea.innerHTML = renderIntro();
+            contentArea.innerHTML = renderIntro(); if (typeof initBlueprintPlayer === 'function') setTimeout(initBlueprintPlayer, 50);
         } else if (viewName === 'tip') {
             contentArea.innerHTML = renderTip();
         } else if (viewName === 'dashboard') {
@@ -2369,6 +2370,176 @@ function toggleTheme() {
     body.getAttribute('data-theme') === 'dark' ? body.removeAttribute('data-theme') : body.setAttribute('data-theme', 'dark');
 }
 
+// ==========================================
+// CLINICAL SAFETY BLUEPRINT SLIDESHOW PLAYER
+// ==========================================
+let blueprintSlides = Array.from({length: 21}, (_, i) => `blueprint_slides/slide_${i + 1}.jpg`);
+let blueprintCurrentIndex = 0;
+let blueprintIsPlaying = true;
+let blueprintSlideDuration = 5000;
+let blueprintSlideTimer = null;
+let blueprintProgressInterval = null;
+
+function handleBlueprintKeyboard(e) {
+    if (!document.getElementById('blueprint-player-container')) {
+        window.removeEventListener('keydown', handleBlueprintKeyboard);
+        return;
+    }
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) return;
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        nextBlueprintSlide();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        prevBlueprintSlide();
+    } else if (e.key === ' ') {
+        e.preventDefault();
+        toggleBlueprintPlay();
+    }
+}
+
+function initBlueprintPlayer() {
+    window.removeEventListener('keydown', handleBlueprintKeyboard);
+    window.addEventListener('keydown', handleBlueprintKeyboard);
+    blueprintCurrentIndex = 0;
+    blueprintIsPlaying = true;
+    updateBlueprintSlide(0);
+    startBlueprintTimer();
+}
+
+function stopBlueprintPlayer() {
+    blueprintIsPlaying = false;
+    if (blueprintSlideTimer) clearTimeout(blueprintSlideTimer);
+    if (blueprintProgressInterval) clearInterval(blueprintProgressInterval);
+    window.removeEventListener('keydown', handleBlueprintKeyboard);
+}
+
+function updateBlueprintSlide(index) {
+    if (index < 0) index = blueprintSlides.length - 1;
+    if (index >= blueprintSlides.length) index = 0;
+    blueprintCurrentIndex = index;
+    
+    const img = document.getElementById('blueprint-slide-img');
+    const counter = document.getElementById('blueprint-slide-counter');
+    const playBtn = document.getElementById('blueprint-play-btn');
+    
+    if (img) {
+        img.style.opacity = '0.2';
+        setTimeout(() => {
+            img.src = blueprintSlides[blueprintCurrentIndex];
+            img.style.opacity = '1';
+        }, 80);
+    }
+    
+    if (counter) counter.innerText = `×©×§×£ ${blueprintCurrentIndex + 1} ×ž×ª×•×š ${blueprintSlides.length}`;
+    if (playBtn) playBtn.innerHTML = blueprintIsPlaying ? 'â¸ï¸ ×”×©×”×”' : 'â–¶ï¸ × ×’×Ÿ';
+    
+    // Update timeline segments
+    const segments = document.querySelectorAll('.bp-timeline-seg');
+    segments.forEach((seg, i) => {
+        if (i < blueprintCurrentIndex) {
+            seg.style.background = '#2563eb';
+            seg.style.opacity = '0.9';
+        } else if (i === blueprintCurrentIndex) {
+            seg.style.background = '#38bdf8';
+            seg.style.opacity = '1';
+        } else {
+            seg.style.background = 'rgba(255,255,255,0.2)';
+            seg.style.opacity = '0.5';
+        }
+    });
+
+    resetBlueprintProgressBar();
+}
+
+function startBlueprintTimer() {
+    if (blueprintSlideTimer) clearTimeout(blueprintSlideTimer);
+    if (blueprintProgressInterval) clearInterval(blueprintProgressInterval);
+    window.removeEventListener('keydown', handleBlueprintKeyboard);
+    if (!blueprintIsPlaying) return;
+    
+    const pBar = document.getElementById('blueprint-slide-progressbar');
+    let startTime = Date.now();
+    
+    blueprintProgressInterval = setInterval(() => {
+        let elapsed = Date.now() - startTime;
+        let pct = Math.min(100, (elapsed / blueprintSlideDuration) * 100);
+        if (pBar) pBar.style.width = pct + '%';
+        if (elapsed >= blueprintSlideDuration) {
+            clearInterval(blueprintProgressInterval);
+        }
+    }, 40);
+    
+    blueprintSlideTimer = setTimeout(() => {
+        if (blueprintIsPlaying) {
+            nextBlueprintSlide();
+        }
+    }, blueprintSlideDuration);
+}
+
+function resetBlueprintProgressBar() {
+    const pBar = document.getElementById('blueprint-slide-progressbar');
+    if (pBar) pBar.style.width = '0%';
+}
+
+function toggleBlueprintPlay() {
+    blueprintIsPlaying = !blueprintIsPlaying;
+    const playBtn = document.getElementById('blueprint-play-btn');
+    const overlayIcon = document.getElementById('blueprint-pause-overlay');
+    if (playBtn) playBtn.innerHTML = blueprintIsPlaying ? 'â¸ï¸ ×”×©×”×”' : 'â–¶ï¸ × ×’×Ÿ';
+    
+    if (blueprintIsPlaying) {
+        if (overlayIcon) overlayIcon.style.display = 'none';
+        startBlueprintTimer();
+    } else {
+        if (blueprintSlideTimer) clearTimeout(blueprintSlideTimer);
+        if (blueprintProgressInterval) clearInterval(blueprintProgressInterval);
+    window.removeEventListener('keydown', handleBlueprintKeyboard);
+        if (overlayIcon) overlayIcon.style.display = 'flex';
+    }
+}
+
+function nextBlueprintSlide() {
+    updateBlueprintSlide(blueprintCurrentIndex + 1);
+    if (blueprintIsPlaying) startBlueprintTimer();
+}
+
+function prevBlueprintSlide() {
+    updateBlueprintSlide(blueprintCurrentIndex - 1);
+    if (blueprintIsPlaying) startBlueprintTimer();
+}
+
+function jumpToBlueprintSlide(index) {
+    updateBlueprintSlide(index);
+    if (blueprintIsPlaying) startBlueprintTimer();
+}
+
+function setBlueprintSpeed(durationMs, btn) {
+    blueprintSlideDuration = durationMs;
+    if (btn && btn.parentElement) {
+        btn.parentElement.querySelectorAll('button').forEach(b => {
+            b.style.background = 'rgba(255,255,255,0.15)';
+            b.style.fontWeight = 'normal';
+        });
+        btn.style.background = '#2563eb';
+        btn.style.fontWeight = 'bold';
+    }
+    if (blueprintIsPlaying) startBlueprintTimer();
+}
+
+function toggleBlueprintFullscreen() {
+    const container = document.getElementById('blueprint-player-container');
+    if (!container) return;
+    if (!document.fullscreenElement) {
+        container.requestFullscreen().catch(err => {
+            console.error('Fullscreen error:', err);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+}
+
+
 function renderIntro() {
     let curName = (currentUser && currentUser.name) ? currentUser.name : "מנהל מערכת"; let hasAnswered = introFeedbackDb.find(f => f.user === curName);
     let feedbackForm = hasAnswered ? `<div class="card" style="margin-top: 20px; background: var(--success); color: white;">תודה שענית על המשוב!</div>` : `
@@ -2407,11 +2578,93 @@ function renderIntro() {
                 <h3 style="margin-bottom: 20px; color: var(--primary-color);">חשיבות האתר לארגונים במערכת הבריאות הגריאטרית</h3>
 
                 <!-- סרטון מבוא והדרכה -->
-                <div style="margin-bottom: 25px; background: #0f172a; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.12); border: 1px solid var(--border-color);">
-                    <video controls preload="metadata" style="width: 100%; max-height: 480px; display: block; margin: 0 auto; background: #000;">
-                        <source src="intro_video.mp4" type="video/mp4">
-                        הדפדפן שלך אינו תומך בניגון וידאו.
-                    </video>
+                <!-- ×ž×¦×’×ª ×”×“×¨×›×” ××™× ×˜×¨××§×˜×™×‘×™×ª ×›×¡×¨×˜×•×Ÿ ×©×§×¤×™× ×ž×ª×—×œ×£ ×¢×¦×ž××™×ª -->
+                <div id="blueprint-player-container" style="position: relative; margin-bottom: 30px; background: #090d16; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 45px rgba(0,0,0,0.35); border: 1px solid #1e293b; color: #fff;">
+                    
+                    <!-- Top Title Bar -->
+                    <div style="padding: 14px 20px; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(8px); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 22px;">ðŸ“½ï¸</span>
+                            <div>
+                                <h3 style="margin: 0; font-size: 16px; font-weight: 800; color: #f8fafc;">××“×¨×™×›×œ×•×ª ×©×œ ×‘×˜×™×—×•×ª: ×”××—×•×ª ×›×ž×•×‘×™×œ×ª ××™×›×•×ª 360</h3>
+                                <p style="margin: 2px 0 0 0; font-size: 12px; color: #94a3b8;">×ž××¡×˜×¨-×§×œ××¡ ×œ××—×™×•×ª ×‘×›×™×¨×•×ª: × ×™×”×•×œ ×¡×™×›×•× ×™×, ×ž×“×“×™ ××™×›×•×ª ×•×”×•×‘×œ×ª ×¦×•×•×ª×™× ×‘×ž×¢×¨×š ×”×’×¨×™××˜×¨×™</p>
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span id="blueprint-slide-counter" style="background: rgba(37,99,235,0.3); border: 1px solid #2563eb; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #38bdf8;">×©×§×£ 1 ×ž×ª×•×š 21</span>
+                            <a href="Clinical_Safety_Blueprint.pptx" download="Clinical_Safety_Blueprint.pptx" class="btn" style="background: rgba(255,255,255,0.15); color: #fff; padding: 6px 12px; font-size: 12px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;" title="×”×•×¨×“ ×§×•×‘×¥ ×ž×¦×’×ª ×ž×§×•×¨×™">
+                                <span>ðŸ“¥ ×ž×¦×’×ª ×ž×§×•×¨×™×ª (PPTX)</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Slide Stage (16:9 Aspect Ratio) -->
+                    <div style="position: relative; width: 100%; aspect-ratio: 16 / 9; max-height: 560px; background: #000; display: flex; justify-content: center; align-items: center; overflow: hidden; cursor: pointer;" onclick="toggleBlueprintPlay()">
+                        <img id="blueprint-slide-img" src="blueprint_slides/slide_1.jpg" alt="×©×§×£ ×ž×¦×’×ª ××™×›×•×ª ×•×‘×˜×™×—×•×ª" style="width: 100%; height: 100%; object-fit: contain; transition: opacity 0.25s ease-in-out;">
+                        
+                        <!-- Pause Overlay Indicator -->
+                        <div id="blueprint-pause-overlay" style="display: none; position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); justify-content: center; align-items: center; flex-direction: column; gap: 12px;">
+                            <div style="width: 72px; height: 72px; border-radius: 50%; background: rgba(37,99,235,0.9); display: flex; justify-content: center; align-items: center; font-size: 32px; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+                                â–¶ï¸
+                            </div>
+                            <span style="font-size: 14px; font-weight: 700; color: #f8fafc; background: rgba(0,0,0,0.65); padding: 5px 16px; border-radius: 20px;">×”×ž×¦×’×ª ×ž×•×©×”×™×ª - ×œ×—×¦×• ×œ×”×ž×©×š × ×™×’×•×Ÿ</span>
+                        </div>
+
+                        <!-- Previous / Next Floating Arrows -->
+                        <button onclick="event.stopPropagation(); prevBlueprintSlide();" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(15,23,42,0.75); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.95)'" onmouseout="this.style.background='rgba(15,23,42,0.75)'" title="×©×§×£ ×§×•×“× (×—×¥ ×™×ž×™× ×”)">
+                            âžœ
+                        </button>
+                        <button onclick="event.stopPropagation(); nextBlueprintSlide();" style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border-radius: 50%; background: rgba(15,23,42,0.75); color: white; border: 1px solid rgba(255,255,255,0.2); font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: all 0.2s;" onmouseover="this.style.background='rgba(37,99,235,0.95)'" onmouseout="this.style.background='rgba(15,23,42,0.75)'" title="×©×§×£ ×”×‘× (×—×¥ ×©×ž××œ×”)">
+                            &larr;
+                        </button>
+                    </div>
+
+                    <!-- Slide Continuous Countdown Progress Bar -->
+                    <div style="width: 100%; height: 5px; background: rgba(255,255,255,0.1); position: relative;">
+                        <div id="blueprint-slide-progressbar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #2563eb); transition: width 0.04s linear;"></div>
+                    </div>
+
+                    <!-- Interactive Segmented Timeline (21 Slides) -->
+                    <div style="padding: 10px 18px 6px 18px; display: flex; gap: 4px; background: #0b1120;">
+                        ${Array.from({length: 21}, (_, i) => `
+                            <div class="bp-timeline-seg" onclick="jumpToBlueprintSlide(${i})" title="×§×¤×•×¥ ×œ×©×§×£ ${i + 1}" style="flex: 1; height: 6px; border-radius: 3px; background: ${i === 0 ? '#38bdf8' : 'rgba(255,255,255,0.2)'}; cursor: pointer; transition: all 0.2s;"></div>
+                        `).join('')}
+                    </div>
+
+                    <!-- Bottom Controls Toolbar -->
+                    <div style="padding: 12px 20px; background: #0f172a; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid rgba(255,255,255,0.06);">
+                        
+                        <!-- Playback Controls -->
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button id="blueprint-play-btn" onclick="toggleBlueprintPlay()" class="btn" style="background: var(--primary-color, #2563eb); color: white; padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
+                                â¸ï¸ ×”×©×”×”
+                            </button>
+                            <button onclick="prevBlueprintSlide()" class="btn" style="background: rgba(255,255,255,0.1); color: white; padding: 7px 12px; border-radius: 8px; font-size: 13px;" title="×©×§×£ ×§×•×“×">
+                                â­ï¸ ×§×•×“×
+                            </button>
+                            <button onclick="nextBlueprintSlide()" class="btn" style="background: rgba(255,255,255,0.1); color: white; padding: 7px 12px; border-radius: 8px; font-size: 13px;" title="×©×§×£ ×”×‘×">
+                                ×”×‘× â®ï¸
+                            </button>
+                        </div>
+
+                        <!-- Speed Selector -->
+                        <div style="display: flex; gap: 6px; align-items: center; font-size: 12px; color: #94a3b8;">
+                            <span>×ž×”×™×¨×•×ª ×ž×¢×‘×¨:</span>
+                            <div style="display: flex; gap: 4px;">
+                                <button onclick="setBlueprintSpeed(3000, this)" style="padding: 4px 8px; font-size: 11px; border-radius: 4px; background: rgba(255,255,255,0.15); color: white; border: none; cursor: pointer;">3 ×©× ×™×•×ª</button>
+                                <button onclick="setBlueprintSpeed(5000, this)" style="padding: 4px 8px; font-size: 11px; border-radius: 4px; background: #2563eb; color: white; border: none; cursor: pointer; font-weight: 700;">5 ×©× ×™×•×ª</button>
+                                <button onclick="setBlueprintSpeed(8000, this)" style="padding: 4px 8px; font-size: 11px; border-radius: 4px; background: rgba(255,255,255,0.15); color: white; border: none; cursor: pointer;">8 ×©× ×™×•×ª</button>
+                                <button onclick="setBlueprintSpeed(12000, this)" style="padding: 4px 8px; font-size: 11px; border-radius: 4px; background: rgba(255,255,255,0.15); color: white; border: none; cursor: pointer;">12 ×©× ×™×•×ª</button>
+                            </div>
+                        </div>
+
+                        <!-- Fullscreen and View Mode -->
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <button onclick="toggleBlueprintFullscreen()" class="btn" style="background: rgba(255,255,255,0.1); color: white; padding: 7px 14px; border-radius: 8px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px;" title="×¦×¤×™×™×” ×‘×ž×¡×š ×ž×œ×">
+                                <span>â›¶ ×ž×¡×š ×ž×œ×</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <p style="margin-bottom: 15px; line-height: 1.8; font-size: 16px;">
