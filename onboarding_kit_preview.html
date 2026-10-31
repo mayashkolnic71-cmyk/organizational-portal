@@ -1500,6 +1500,14 @@
                         type: "youtube",
                         url: "https://www.youtube.com/watch?v=Ycg3LXuXgKA",
                         desc: "עקרונות התערבות ממוקדת להרגעת חרדה ודחק אצל מטופלים ואנשי צוות."
+                    },
+                    {
+                        id: "m_3_9",
+                        code: "3.9",
+                        title: "סרטון הדרכה: המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר",
+                        type: "local_video",
+                        url: "emotional_distress_elderly.mp4",
+                        desc: "סרטון הדרכה מקצועי לצוותי הטיפול והאֲחָיוּת על זיהוי מצוקה נפשית, בדידות, דיכאון, חרדה ומתן תמיכה רגשית לדייר הקשיש."
                     }
                 ],
                 checklist: [
@@ -1507,7 +1515,8 @@
                     { text: "נוהל ירי טילים והכרת המרחבים המוגנים ('הכי מוגן שיש')", url: "https://www.youtube.com/watch?v=9BMH_58WOEI" },
                     { text: "נוהל שריפה, תפעול מטף ופינוי מחלקה (דחוף / מתוכנן)", url: "https://www.youtube.com/watch?v=j4tdIsAzpbg" },
                     { text: "נוהל רעידת אדמה, אירוע ביולוגי חריג וחומרים כימיים מסוכנים", url: "https://www.youtube.com/watch?v=EisMOTLrB54" },
-                    { text: "עזרה ראשונה, הזרקת גלוקגון, החייאה ותמיכה נפשית בחירום", url: "https://www.youtube.com/watch?v=UhliDp32nYY" }
+                    { text: "עזרה ראשונה, הזרקת גלוקגון, החייאה ותמיכה נפשית בחירום", url: "https://www.youtube.com/watch?v=UhliDp32nYY" },
+                    { text: "המצוקה הרגשית בגיל השלישי ותמיכה נפשית בדייר (30 דק')", url: "emotional_distress_elderly.mp4" }
                 ]
             },
             {
@@ -1774,13 +1783,22 @@
                         type: "drive_video",
                         url: "https://drive.google.com/file/d/1in0oPcN-KLNz7E5dRv4-uHjgExiiSmVx/view?usp=drive_link",
                         desc: "מדריך מעשי לתזונה והאכלה מכבדת של אנשים עם דמנציה."
+                    },
+                    {
+                        id: "m_8_8",
+                        code: "8.8",
+                        title: "סרטון הדרכה מונפש: מניעת אספירציה וחנק בהאכלת קשישים",
+                        type: "local_video",
+                        url: "aspiration_prevention_video.mp4",
+                        desc: "סרטון הדרכה מונפש (Claymation) לצוות המטפל בנושא זיהוי מוקדם, תנוחת האכלה בטוחה, מניעת אספירציה שקטה וערנות לסימני חנק."
                     }
                 ],
                 checklist: [
                     { text: "מרקמי מזון ושתייה IDDSI (30 דק')", url: "https://drive.google.com/file/d/1yrw8pvaFeOFIVL_xTuXy-B1jWcOR4fPu/view?usp=drive_link" },
                     { text: "דוח תזונה וחלוקת מזון ורישום כלכלה יומי (30 דק')", url: "https://drive.google.com/file/d/1iRvwpzDyTcreqxmzrLVWFqZfRLKDsw4A/view?usp=drive_link" },
                     { text: "לומדה לסיקור תזונתי, שקילה ומעקב (30 דק')", url: "https://www.gov.il/files/health/nutrition_geriatrics/story_html5.html" },
-                    { text: "הזנה אנטרלית ופורמולות (30 דק')", url: "https://drive.google.com/file/d/1NXKuIko5bIExqabwsKsn8BcOP6nD9Rfs/view?usp=drive_link" }
+                    { text: "הזנה אנטרלית ופורמולות (30 דק')", url: "https://drive.google.com/file/d/1NXKuIko5bIExqabwsKsn8BcOP6nD9Rfs/view?usp=drive_link" },
+                    { text: "סרטון הדרכה מונפש: מניעת אספירציה וחנק בגיל השלישי (30 דק')", url: "aspiration_prevention_video.mp4" }
                 ]
             },
             {
@@ -2278,8 +2296,9 @@
             const quickLinksHtml = topic.mediaItems.map((m, mIdx) => {
                 const isWatched = !!userState.watchedMedia[m.id];
                 const isPptx = m.type === "presentation" || /\.pptx?$/i.test(m.url || "");
-                const icon = isPptx ? "📊" : "🎬";
-                const actionLabel = isPptx ? "📥 לחץ כאן להורדת המצגת (PPTX)" : "▶️ לחץ כאן לצפייה בסרטון ↗";
+                const isLocalVid = m.type === "local_video" || /\.mp4$/i.test(m.url || "");
+                const icon = isPptx ? "📊" : (isLocalVid ? "🎬" : "🎬");
+                const actionLabel = isPptx ? "📥 לחץ כאן להורדת המצגת (PPTX)" : (isLocalVid ? "▶️ צפה בסרטון ישירות 🎬" : "▶️ לחץ כאן לצפייה בסרטון ↗");
                 return `
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding:0.65rem 0.9rem; background:${isWatched ? '#f0fdf4' : '#ffffff'}; border:1px solid ${isWatched ? '#86efac' : '#cbd5e1'}; border-radius:10px; margin-bottom:0.45rem; flex-wrap:wrap;">
                         <div style="display:flex; align-items:center; gap:0.6rem; flex:1; min-width:240px;">
@@ -2289,7 +2308,7 @@
                             </a>
                         </div>
                         <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-                            <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="background:${isPptx ? '#059669' : 'var(--primary)'}; color:#ffffff; text-decoration:none; padding:0.38rem 0.9rem; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:0.35rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                            <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="background:${isPptx ? '#059669' : (isLocalVid ? '#ef4444' : 'var(--primary)')}; color:#ffffff; text-decoration:none; padding:0.38rem 0.9rem; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:0.35rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
                                 ${actionLabel}
                             </a>
                             <span style="font-size:0.8rem; font-weight:800; color:${isWatched ? 'var(--success)' : 'var(--text-muted)'};">${isWatched ? '✅ נצפה' : 'טרם נצפה'}</span>
@@ -2305,6 +2324,7 @@
                 const driveFolderId = extractDriveFolderId(m.url);
                 const showInline = !!activeInlineEmbeds[m.id];
                 const isPptx = m.type === "presentation" || /\.pptx?$/i.test(m.url || "");
+                const isLocalVid = m.type === "local_video" || /\.mp4$/i.test(m.url || "");
 
                 let embedVisual = "";
                 if (isPptx) {
@@ -2316,6 +2336,12 @@
                             <a href="${escapeHtml(m.url)}" download="${escapeHtml(m.downloadName || m.url)}" class="btn-watch-main" style="max-width: 320px; background: #059669; color: #ffffff; font-weight: 800; border: none; box-shadow: 0 4px 14px rgba(5,150,105,0.4); text-decoration: none; padding: 0.65rem 1.25rem; font-size: 0.95rem;" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
                                 <span>📥 לחץ כאן להורדת קובץ המצגת (PPTX) ↗</span>
                             </a>
+                        </div>
+                    `;
+                } else if (isLocalVid) {
+                    embedVisual = `
+                        <div class="media-embed-box" style="background:#0f172a; padding:6px; border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center; box-shadow:0 4px 14px rgba(0,0,0,0.25); margin-bottom: 0.8rem;">
+                            <video src="${escapeHtml(m.url)}" controls playsinline preload="metadata" style="width:100%; max-height:420px; border-radius:8px; outline:none; background:#000;" onplay="userState.watchedMedia['${m.id}']=true; saveProgress();"></video>
                         </div>
                     `;
                 } else if (ytId) {
@@ -2343,6 +2369,9 @@
                     embedVisual = `
                         <div class="media-embed-box">
                             <iframe src="https://drive.google.com/file/d/${driveFileId}/preview" title="${escapeHtml(m.title)}" allow="autoplay" allowfullscreen loading="lazy"></iframe>
+                        </div>
+                        <div style="font-size:0.8rem; color:#475569; background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:0.4rem 0.65rem; margin-top:0.35rem; display:flex; align-items:center; gap:0.4rem;">
+                            <span>💡 אם נגן Google Drive חסום בהגדרות הדפדפן שלך, לחץ על הכפתור הכחול 'פתח סרטון' לצפייה ישירה בחלון חדש.</span>
                         </div>
                     `;
                 } else if (driveFolderId) {
@@ -2377,7 +2406,7 @@
                 return `
                     <div class="media-card ${isWatched ? 'watched' : ''}">
                         <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} class="media-card-header" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
-                            <span class="media-num-badge">${isPptx ? 'מצגת' : 'סרטון / יחידה'} ${escapeHtml(m.code)}</span>
+                            <span class="media-num-badge">${isPptx ? 'מצגת' : (isLocalVid ? 'סרטון מקומי MP4' : 'סרטון / יחידה')} ${escapeHtml(m.code)}</span>
                             <div class="media-card-title">${escapeHtml(m.title)} ${isPptx ? '📥' : '↗'}</div>
                         </a>
                         ${embedVisual}
@@ -2391,8 +2420,8 @@
                             </div>
                             <div>
                                 <div class="media-actions">
-                                    <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} class="btn-watch-main" style="${isPptx ? 'background:#059669;' : ''}" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
-                                        <span>${isPptx ? '📥 הורד קובץ מצגת' : '▶️ פתח סרטון / יחידה'}</span>
+                                    <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} class="btn-watch-main" style="${isPptx ? 'background:#059669;' : (isLocalVid ? 'background:#ef4444;' : '')}" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                        <span>${isPptx ? '📥 הורד קובץ מצגת' : (isLocalVid ? '▶️ הפעל / פתח סרטון' : '▶️ פתח סרטון / יחידה')}</span>
                                         <span>${isPptx ? '💾' : '↗'}</span>
                                     </a>
                                     ${(ytId || driveFileId) ? `
