@@ -1409,6 +1409,15 @@
                         type: "drive_video",
                         url: "https://drive.google.com/file/d/1I_ytPYopTivbkf3k9I2AFOWrnAVqWf3V/view?usp=drive_link",
                         desc: "טבלת עזר מסכמת של סוגי הבידוד והמיגון הנדרש לפי מחולל."
+                    },
+                    {
+                        id: "m_2_9",
+                        code: "2.9",
+                        title: "מצגת הדרכה: מניעת זיהומים היא שליחות (קובץ PPTX)",
+                        type: "presentation",
+                        url: "infection_prevention_mission.pptx",
+                        downloadName: "מניעת זיהומים היא שליחות.pptx",
+                        desc: "מצגת מקצועית ומעמיקה בנושא שבירת שרשרת ההדבקה, היגיינת ידיים, 5 הרגעים, שימוש ב-PPE ואחריות אישית בטיפול (קובץ PPTX – 15.4MB)."
                     }
                 ],
                 checklist: [
@@ -1417,7 +1426,8 @@
                     { text: "מניעה ודיווח על אירועי דקירה ממחטים (30 דק')", url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link" },
                     { text: "כללי בידוד וניקיון חדרי בידוד (30 דק')", url: "https://drive.google.com/file/d/10HeB9Z5rq4LZwX3IIDRU1kqmalr7FTbF/view?usp=drivesdk" },
                     { text: "שימוש באמצעי מיגון אישיים PPE (30 דק')", url: "https://www.youtube.com/watch?v=sOR40jML8IA" },
-                    { text: "לומדת משרד הבריאות למניעת זיהומים (30 דק')", url: "https://www.gov.il/files/health/moh-files/Infection-prevention/story.html" }
+                    { text: "לומדת משרד הבריאות למניעת זיהומים (30 דק')", url: "https://www.gov.il/files/health/moh-files/Infection-prevention/story.html" },
+                    { text: "מצגת: מניעת זיהומים היא שליחות – קובץ PPTX (30 דק')", url: "infection_prevention_mission.pptx" }
                 ]
             },
             {
@@ -2267,17 +2277,20 @@
 
             const quickLinksHtml = topic.mediaItems.map((m, mIdx) => {
                 const isWatched = !!userState.watchedMedia[m.id];
+                const isPptx = m.type === "presentation" || /\.pptx?$/i.test(m.url || "");
+                const icon = isPptx ? "📊" : "🎬";
+                const actionLabel = isPptx ? "📥 לחץ כאן להורדת המצגת (PPTX)" : "▶️ לחץ כאן לצפייה בסרטון ↗";
                 return `
                     <div style="display:flex; align-items:center; justify-content:space-between; gap:0.75rem; padding:0.65rem 0.9rem; background:${isWatched ? '#f0fdf4' : '#ffffff'}; border:1px solid ${isWatched ? '#86efac' : '#cbd5e1'}; border-radius:10px; margin-bottom:0.45rem; flex-wrap:wrap;">
                         <div style="display:flex; align-items:center; gap:0.6rem; flex:1; min-width:240px;">
                             <span style="background:var(--primary); color:#fff; font-weight:800; font-size:0.78rem; padding:0.2rem 0.55rem; border-radius:999px;">${escapeHtml(m.code)}</span>
-                            <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="font-weight:800; color:var(--primary); text-decoration:underline; font-size:0.96rem;">
-                                🎬 ${escapeHtml(m.title)} ↗
+                            <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="font-weight:800; color:var(--primary); text-decoration:underline; font-size:0.96rem;">
+                                ${icon} ${escapeHtml(m.title)} ${isPptx ? '📥' : '↗'}
                             </a>
                         </div>
                         <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
-                            <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="background:var(--primary); color:#ffffff; text-decoration:none; padding:0.38rem 0.9rem; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:0.35rem;">
-                                ▶️ לחץ כאן לצפייה בסרטון ↗
+                            <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="background:${isPptx ? '#059669' : 'var(--primary)'}; color:#ffffff; text-decoration:none; padding:0.38rem 0.9rem; border-radius:8px; font-weight:800; font-size:0.84rem; display:inline-flex; align-items:center; gap:0.35rem; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                                ${actionLabel}
                             </a>
                             <span style="font-size:0.8rem; font-weight:800; color:${isWatched ? 'var(--success)' : 'var(--text-muted)'};">${isWatched ? '✅ נצפה' : 'טרם נצפה'}</span>
                         </div>
@@ -2291,9 +2304,21 @@
                 const driveFileId = extractDriveFileId(m.url);
                 const driveFolderId = extractDriveFolderId(m.url);
                 const showInline = !!activeInlineEmbeds[m.id];
+                const isPptx = m.type === "presentation" || /\.pptx?$/i.test(m.url || "");
 
                 let embedVisual = "";
-                if (ytId) {
+                if (isPptx) {
+                    embedVisual = `
+                        <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #ffffff; padding: 2.2rem 1.5rem; border-radius: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.9rem; margin-bottom: 0.8rem; box-shadow: 0 4px 15px rgba(30,58,138,0.25); border: 1px solid rgba(255,255,255,0.1);">
+                            <div style="font-size: 3.5rem; line-height: 1;">📊</div>
+                            <div style="font-weight: 800; font-size: 1.18rem; color: #ffffff;">${escapeHtml(m.title)}</div>
+                            <div style="font-size: 0.92rem; color: #bfdbfe; max-width: 460px; line-height: 1.5;">קובץ מצגת מקצועי (PowerPoint PPTX – 15.4MB) להדרכת צוותי האחיות והמטפלים בנושא מניעת זיהומים ואחריות אישית</div>
+                            <a href="${escapeHtml(m.url)}" download="${escapeHtml(m.downloadName || m.url)}" class="btn-watch-main" style="max-width: 320px; background: #059669; color: #ffffff; font-weight: 800; border: none; box-shadow: 0 4px 14px rgba(5,150,105,0.4); text-decoration: none; padding: 0.65rem 1.25rem; font-size: 0.95rem;" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                <span>📥 לחץ כאן להורדת קובץ המצגת (PPTX) ↗</span>
+                            </a>
+                        </div>
+                    `;
+                } else if (ytId) {
                     const thumbUrl = `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
                     const isFileProtocol = window.location.protocol === "file:";
                     if (!isFileProtocol || showInline) {
@@ -2322,9 +2347,9 @@
                     `;
                 } else if (driveFolderId) {
                     embedVisual = `
-                        <div class="media-embed-box" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.75rem; padding:1.5rem; text-align:center;">
-                            <div style="font-size:3rem;">🎬🌙</div>
-                            <div style="font-weight:800; font-size:1.15rem; color:#ffffff;">${escapeHtml(m.title)}</div>
+                        <div class="drive-folder-card">
+                            <div style="font-size:2.6rem;">📁</div>
+                            <div style="font-weight:800; font-size:1.05rem; color:#ffffff;">${escapeHtml(m.title)}</div>
                             <div style="font-size:0.88rem; color:#93c5fd; max-width:480px;">קישור ישיר לצפייה בסרטון הפתיח מתוך תיקיית Google Drive</div>
                             <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="btn-watch-main" style="max-width:320px; background:#f59e0b; color:#0f172a; font-weight:800;" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
                                 <span>▶️ לחץ כאן לצפייה ישירה בסרטון ↗</span>
@@ -2351,24 +2376,24 @@
 
                 return `
                     <div class="media-card ${isWatched ? 'watched' : ''}">
-                        <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="media-card-header" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
-                            <span class="media-num-badge">סרטון / יחידה ${escapeHtml(m.code)}</span>
-                            <div class="media-card-title">${escapeHtml(m.title)} ↗</div>
+                        <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} class="media-card-header" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                            <span class="media-num-badge">${isPptx ? 'מצגת' : 'סרטון / יחידה'} ${escapeHtml(m.code)}</span>
+                            <div class="media-card-title">${escapeHtml(m.title)} ${isPptx ? '📥' : '↗'}</div>
                         </a>
                         ${embedVisual}
                         <div class="media-card-body">
                             <div class="media-desc">${escapeHtml(m.desc || "")}</div>
                             <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px; padding:0.45rem 0.7rem; margin-bottom:0.4rem; font-size:0.82rem; word-break:break-all;">
-                                <strong style="color:var(--primary);">🔗 קישור לסרטון:</strong>
-                                <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="color:#1d4ed8; font-weight:700; text-decoration:underline; margin-right:0.3rem;">
-                                    לחץ כאן לפתיחה ישירה בחלון חדש ↗
+                                <strong style="color:var(--primary);">🔗 ${isPptx ? 'קובץ מצגת להורדה:' : 'קישור לסרטון:'}</strong>
+                                <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);" style="color:#1d4ed8; font-weight:700; text-decoration:underline; margin-right:0.3rem;">
+                                    ${isPptx ? 'לחץ כאן להורדת קובץ ה-PPTX למחשב 📥' : 'לחץ כאן לפתיחה ישירה בחלון חדש ↗'}
                                 </a>
                             </div>
                             <div>
                                 <div class="media-actions">
-                                    <a href="${escapeHtml(m.url)}" target="_blank" rel="noopener" class="btn-watch-main" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
-                                        <span>▶️ פתח סרטון / יחידה</span>
-                                        <span>↗</span>
+                                    <a href="${escapeHtml(m.url)}" ${isPptx ? `download="${escapeHtml(m.downloadName || m.url)}"` : 'target="_blank" rel="noopener"'} class="btn-watch-main" style="${isPptx ? 'background:#059669;' : ''}" onclick="userState.watchedMedia['${m.id}']=true; saveProgress(); setTimeout(renderAll, 200);">
+                                        <span>${isPptx ? '📥 הורד קובץ מצגת' : '▶️ פתח סרטון / יחידה'}</span>
+                                        <span>${isPptx ? '💾' : '↗'}</span>
                                     </a>
                                     ${(ytId || driveFileId) ? `
                                         <button type="button" class="btn-inline-embed" onclick="toggleInlinePlayer('${m.id}')">

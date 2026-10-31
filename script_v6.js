@@ -1318,7 +1318,7 @@ function renderOnboarding() {
                 </div>
             </div>
             <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
-                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=56" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     `;
