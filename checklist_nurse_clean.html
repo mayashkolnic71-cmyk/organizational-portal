@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>צ'ק ליסט ובקרה (העברת מקל) – אחות (בוקר, ערב, לילה)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #143652;
+            --primary: #0f4c81;
+            --accent: #0d9488;
+            --danger: #dc2626;
+            --border: #cbd5e1;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Assistant', sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            margin: 0;
+            padding: 1.25rem;
+            line-height: 1.5;
+        }
+        .toolbar {
+            max-width: 960px;
+            margin: 0 auto 1rem;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .toolbar-tabs {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--navy);
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .btn-action {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .btn-action.word { background: #1d4ed8; }
+        .page-sheet {
+            max-width: 960px;
+            margin: 0 auto 1.75rem;
+            background: #ffffff;
+            border: 1px solid #dbe3ee;
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        }
+        h1 {
+            font-size: 1.55rem;
+            color: var(--navy);
+            margin: 0 0 0.25rem;
+            font-weight: 800;
+            border-bottom: 3px solid var(--navy);
+            padding-bottom: 0.45rem;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+        .meta-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            border-top: 2px solid var(--navy);
+            border-bottom: 2px solid var(--navy);
+            padding: 0.6rem 0;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .meta-bar input {
+            border: none;
+            border-bottom: 1px solid #64748b;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 0.1rem 0.3rem;
+            width: 115px;
+            background: transparent;
+        }
+        table.checklist-tbl {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        table.checklist-tbl th {
+            background: var(--navy);
+            color: #ffffff;
+            padding: 0.65rem 0.6rem;
+            text-align: right;
+            font-weight: 700;
+            border: 1px solid var(--navy);
+        }
+        table.checklist-tbl td {
+            padding: 0.65rem 0.6rem;
+            border: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+        table.checklist-tbl tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+        .time-cell {
+            font-weight: 800;
+            white-space: nowrap;
+            text-align: center;
+            width: 110px;
+        }
+        .icon-cell {
+            text-align: center;
+            font-size: 1.2rem;
+            width: 52px;
+        }
+        .done-cell {
+            text-align: center;
+            width: 55px;
+        }
+        .done-cell input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+        .note-cell {
+            width: 165px;
+            text-align: center;
+            color: #334155;
+            font-weight: 600;
+        }
+        .warn-red {
+            color: var(--danger);
+            font-weight: 800;
+        }
+        .footer-box {
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .toolbar { display: none !important; }
+            .page-sheet {
+                box-shadow: none;
+                border: none;
+                padding: 0.5cm;
+                page-break-after: always;
+                margin: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-tabs">
+            <button class="tab-btn active" onclick="scrollToPage('p1')">1. משמרת בוקר</button>
+            <button class="tab-btn" onclick="scrollToPage('p2')">2. משמרת ערב</button>
+            <button class="tab-btn" onclick="scrollToPage('p3')">3. משמרת לילה</button>
+            <button class="tab-btn" onclick="scrollToPage('p4')">4. קבלה ראשונה ובקרות</button>
+            <button class="tab-btn" onclick="scrollToPage('p5')">5. מקרא סמלים</button>
+            <button class="tab-btn" onclick="scrollToPage('p6')">6. מודל ISBAR / ה.מ.ר.א.ה</button>
+        </div>
+        <div class="action-btns">
+            <a href="checklist_nurse_clean.docx" download class="btn-action word">📄 הורד קובץ Word נקי</a>
+            <button class="btn-action" onclick="window.print()">🖨️ הדפס / שמור כ-PDF</button>
+        </div>
+    </div>
+
+    <!-- Page 1: Morning Shift -->
+    <div class="page-sheet" id="p1">
+        <h1>צ'ק ליסט ובקרה (העברת מקל) – אחות משמרת בוקר</h1>
+        <div class="subtitle">משמרת בוקר: 07:00–15:00 | תחנת אחיות</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>שם האחות: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">07:00–07:45</td>
+                    <td class="icon-cell">➕</td>
+                    <td><strong>דיווח, טוקסיקה ובקרת טמפרטורה:</strong> דיווח ISBAR + טוקסיקה בקרה כפולה (ספירה מול פנקס). בקרת טמפרטורה יומית: מקרר למחשב (2-8°C, נמדד: ___°C, מחשב: ☐) וחדר תרופות (&lt;25°C, נמדד: ___°C).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ספירה וטמפרטורה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">07:30–09:00</td>
+                    <td class="icon-cell">💊</td>
+                    <td><strong>מתן תרופות בוקר וחיתום:</strong> הכנה, בדיקה ומתן תרופות בוקר וחובת חיתום מיד בסיום המתן (חלון: עד שעה מהוראה רפואית).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">חיתום מיידי בסיום מתן</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">07:45–08:15</td>
+                    <td class="icon-cell">♿</td>
+                    <td><strong>סבב קליני והושבה בטוחה:</strong> בדיקת הכרה, נשימה, כאב, שלמות עור, ניידות והושבה בכיסא גלגלים (<span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span>).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell"><span class="warn-red">מצב קליני והורדת רגליות</span></td>
+                </tr>
+                <tr>
+                    <td class="time-cell">08:15–08:45</td>
+                    <td class="icon-cell">⚠️</td>
+                    <td><strong>פיקוח ארוחת בוקר ורחצות:</strong> וידוא האכלה תקינה, הושבה ב-90° למניעת אספירציה; בקרת טמפ' מזון בחלוקה ובהגשה לפי נוהל מערך המזון 5.0.3 (<strong>מזון חם: 65°C ומעלה, מזון קר: 5°C ומטה</strong>); בדיקת סוכר וטיפול לפי הוראה. <span class="warn-red">⚠ איסור האכלה במיטה ללא אישור חריג!</span></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">טמפ' מזון ואיסור האכלה במיטה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">10:00–11:00</td>
+                    <td class="icon-cell">🥤</td>
+                    <td><strong>מעקב שתייה יזומה ואספירציה:</strong> שתייה יזומה (יעד 6–7 כוסות ביום בשעות 08, 10, 12, 16, 18, 20), בדיקת בליעה, חבישות ומדדים.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מעקב שתייה ואספירציה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">11:00–13:30</td>
+                    <td class="icon-cell">🩺</td>
+                    <td><strong>ביקור רופא, צהריים ותרופות:</strong> ביקור רופא/ה, בדיקות מעבדה; פיקוח על ארוחת צהריים ובקרת טמפ' מזון בהגשה (<strong>מזון חם ≥65°C, מזון קר ≤5°C</strong>; איסור האכלה במיטה ללא אישור), תרופות צהריים וחיתום.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ביקור רופא, טמפ' ותרופות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">13:30–15:00</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>השכבות, בטיחות, טוקסיקה ומסירה:</strong> סבב השכבות צהריים ובטיחות; טוקסיקה בהעברה לערב (מוסרת: ___ מקבלת: ___ שעה: ___:___) + פינוי כביסה ופסולת לקרקע, דיווח סיעודי שוטף כולל ביקורי משפחה ושיחות עם משפחה ומסירת משמרת.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">בקרה, פינוי ומסירה</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>שם האחות: ______________ שעת סיום: __:__</div>
+            <div>חתימת האחות: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 2: Evening Shift -->
+    <div class="page-sheet" id="p2">
+        <h1>צ'ק ליסט ובקרה (העברת מקל) – אחות משמרת ערב</h1>
+        <div class="subtitle">משמרת ערב: 15:00–23:00 | תחנת אחיות</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>שם האחות: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">15:00–16:00</td>
+                    <td class="icon-cell">➕</td>
+                    <td><strong>דיווח, תדריך, טוקסיקה ותרופות 16:00:</strong> קבלת דיווח מאחות בוקר + טוקסיקה בקרה כפולה (ספירה מול פנקס). הכנה, מתן וחיתום תרופות 16:00 בגיליון.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ספירה, תדריך ותרופות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">16:30–17:30</td>
+                    <td class="icon-cell">♿</td>
+                    <td><strong>סבב קליני ראשון והושבה בטוחה:</strong> בדיקת הכרה, נשימה, כאב ובטיחות; הושבה בכיסא גלגלים (<span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span>), תיאום מטפלים והגבלות.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell"><span class="warn-red">סבב קליני והורדת רגליות</span></td>
+                </tr>
+                <tr>
+                    <td class="time-cell">17:30–18:15</td>
+                    <td class="icon-cell">🩸</td>
+                    <td><strong>בדיקת סוכר Dex טרום-ארוחה:</strong> בדיקת סוכר (Dex) וטיפול לפני אוכל כשנדרש; בקרה על דיירים עם דיספגיה ותנוחת האכלה בטוחה.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">בדיקת Dex וטיפול</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">18:15–19:30</td>
+                    <td class="icon-cell">⚠️</td>
+                    <td><strong>פיקוח ארוחת ערב והאכלה:</strong> בקרת קצב אכילה ובליעה, בקרת טמפ' מזון בחלוקה ובהגשה לפי נוהל 5.0.3 (<strong>מזון חם: 65°C ומעלה, מזון קר: 5°C ומטה</strong>), הושבה מלאה ב-90°, מעקב שתייה וסיוע לצוות. <span class="warn-red">⚠ איסור מוחלט על האכלה במיטה ללא אישור חריג!</span></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">פיקוח ערב, טמפ' ואיסור האכלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">19:30–20:00</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>סבב השכבות נכונות ומנח גוף:</strong> בדיקת תנוחה, מנח גוף, שמיכות; תיאום השכבות מוקדמות רק לפי שיקול דעת אחות המשמרת.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מנח גוף והשכבות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">20:00</td>
+                    <td class="icon-cell">💊</td>
+                    <td><strong>סבב תרופות 20:00 וחיתום:</strong> הכנה, בדיקה, מתן וחיתום של תרופה (סבב תרופות 20:00). חובת חיתום מיד בסיום המתן בגיליון.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">חיתום מיידי בסיום מתן</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">20:30–21:30</td>
+                    <td class="icon-cell">📋</td>
+                    <td><strong>מעקב קליני ופניות משפחות:</strong> מעקב מצב עור, חום, כאב, יציאות ותפוקת שתן; מתן מענה לשינויים קליניים ופניות משפחות.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מעקב עור והפרשות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">21:30–23:00</td>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>בדיקת ניקיון חדרים, טוקסיקה ומסירה:</strong> בדיקת ניקיון חדרים לפי תוכנית; טוקסיקה בהעברה ללילה (מוסרת: ___ מקבלת: ___ שעה: ___:___) + פינוי כביסה ופסולת, דיווח סיעודי שוטף כולל ביקורי משפחה ושיחות עם משפחה ומסירת משמרת.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ניקיון, טוקסיקה ומסירה</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>שם האחות: ______________ שעת סיום: __:__</div>
+            <div>חתימת האחות: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 3: Night Shift -->
+    <div class="page-sheet" id="p3">
+        <h1>צ'ק ליסט ובקרה (העברת מקל) – אחות משמרת לילה</h1>
+        <div class="subtitle">משמרת לילה: 23:00–07:00 | תחנת אחיות</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>שם האחות: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">23:00–23:15</td>
+                    <td class="icon-cell">📋</td>
+                    <td><strong>קבלת דיווח מאחות ערב:</strong> איתור דיירים לא יציבים, טיפול בהוראות פתוחות ומעקבים מיוחדים (ללא טיפול תרופתי מוקדם).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">קבלת דיווח ערב</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">23:15–23:30</td>
+                    <td class="icon-cell">➕</td>
+                    <td><strong>טוקסיקה בקרה כפולה בקבלה:</strong> ספירה פיזית מול פנקס סמים, בדיקת ארון נעול. מוסרת: ___ מקבלת: ___</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ספירה ובדיקת ארון</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">23:30–00:30</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>סבב ראשוני ובטיחות לילה:</strong> בדיקת נשימה, מצב הכרה, כאב ונוחות; וידוא תנוחת שכיבה בטוחה, ציוד תומך ולחצני מצוקה נגישים.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">סבב ראשוני ובטיחות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">00:30–03:00</td>
+                    <td class="icon-cell">🩺</td>
+                    <td><strong>סבבים יזומים ומתועדים:</strong> ניטור מדדים, סוכר (Dex), מתן תרופות לילה וטיפולים לפי הוראה רפואית; מענה לקריאות.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מדדים וטיפולי לילה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">03:00–05:00</td>
+                    <td class="icon-cell">🔄</td>
+                    <td><strong>שינויי תנוחה ורצף שינה:</strong> פיקוח על שינויי תנוחה, טיפול בהפרשות, מניעת נפילות; שמירה קפדנית על שקט ורצף שינה של הדיירים.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מניעת פצעים ושקט</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">05:00–06:00</td>
+                    <td class="icon-cell">🧪</td>
+                    <td><strong>מעקב בוקר ומעבדות:</strong> מעקב לפנות בוקר אחר דיירים הדורשים בדיקה חוזרת; הכנת מבחנות ודגימות לבדיקות מעבדה מתוכננות.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">בדיקות מעבדה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">06:00–06:30</td>
+                    <td class="icon-cell">♿</td>
+                    <td><strong>היערכות לבוקר עם מטפלים:</strong> תיאום עם צוות המטפלים לגבי דיירים לרחצה מיוחדת, השגחה מוגברת, מעברים ומניעת סיכונים (<span class="warn-red">⚠ הקפדה על חובת הורדת רגליות מכיסא גלגלים למניעת פציעה</span>).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell"><span class="warn-red">תיאום בוקר והורדת רגליות</span></td>
+                </tr>
+                <tr>
+                    <td class="time-cell">06:30–07:00</td>
+                    <td class="icon-cell">➕</td>
+                    <td><strong>טוקסיקה, פינוי ומסירה לבוקר:</strong> טוקסיקה – בקרה כפולה בהעברה לבוקר: ספירה ואימות. מוסרת: _____ מקבלת: _____ שעה: ___:___ + סיכום והעברת דיווח.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ספירה כפולה ומסירה</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>שם האחות: ______________ שעת סיום: __:__</div>
+            <div>חתימת האחות: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 4: New Resident Admission & Monthly Controls -->
+    <div class="page-sheet" id="p4">
+        <h1>נספח קבלה ראשונה ובקרות חודשיות – אחות</h1>
+        <div class="subtitle">נוהל קליטת דייר חדש ובקרות איכות תקופתיות | תחנת אחיות</div>
+        <div class="meta-bar">
+            <div>שם הדייר/ת: <input type="text"></div>
+            <div>ת.ז: <input type="text"></div>
+            <div>חדר / מיטה: <input type="text" style="width:70px;"></div>
+            <div>תאריך קבלה: <input type="text"></div>
+        </div>
+        <p style="font-weight:700; margin:0.5rem 0;">
+            1. נוהל קבלה ראשונה של דייר חדש – רישום נוח ומעקב 3 ימים ראשונים (מדדים, כאב, Dex, ומשטר שתייה יזום בשעות 08, 10, 12, 16, 18, 20 – יעד 6–7 כוסות). <span class="warn-red">איסור מוחלט על האכלה במיטה ללא אישור חריג!</span>
+        </p>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>פרמטר למעקב</th>
+                    <th>הנחיית ניטור</th>
+                    <th>יום 1 לקבלה</th>
+                    <th>יום 2 לקבלה</th>
+                    <th>יום 3 לקבלה</th>
+                    <th>המשך (מיום 4)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>🥤 רישום מזון ושתייה (6–7 כוסות)</strong></td>
+                    <td>מעקב שתייה בשעות 08, 10, 12, 16, 18, 20 ומזון. דגש: איסור האכלה במיטה ללא אישור חריג אחות!</td>
+                    <td>בוקר: ___<br>צהריים: ___<br>ערב: ___<br>שתייה: ___</td>
+                    <td>בוקר: ___<br>צהריים: ___<br>ערב: ___<br>שתייה: ___</td>
+                    <td>בוקר: ___<br>צהריים: ___<br>ערב: ___<br>שתייה: ___</td>
+                    <td>לפי הוראת רופא / דיאטנית</td>
+                </tr>
+                <tr>
+                    <td><strong>🩺 סימנים חיוניים</strong></td>
+                    <td>לחץ דם, דופק, חום גוף, סטורציה (ריווי חמצן) וקצב נשימות.</td>
+                    <td>ל"ד: ___/___<br>דופק: ___ חום: ___<br>סטור': ___%</td>
+                    <td>ל"ד: ___/___<br>דופק: ___ חום: ___<br>סטור': ___%</td>
+                    <td>ל"ד: ___/___<br>דופק: ___ חום: ___<br>סטור': ___%</td>
+                    <td>לפי הוראת רופא / צורך (PRN)</td>
+                </tr>
+                <tr>
+                    <td><strong>➕ אומדן כאב (סולם 0–10)</strong></td>
+                    <td>הערכת עוצמת כאב, מיקום, סוג כאב ומענה טיפולי שניתן.</td>
+                    <td>ציון: ___/10<br>טיפול: _______</td>
+                    <td>ציון: ___/10<br>טיפול: _______</td>
+                    <td>ציון: ___/10<br>טיפול: _______</td>
+                    <td>לפי הוראת רופא / צורך</td>
+                </tr>
+                <tr>
+                    <td><strong>🩸 בדיקת סוכר (Dex)</strong></td>
+                    <td>מדידת רמת גלוקוז בדם בצום / לפני ארוחות לפי הנחיה.</td>
+                    <td>תוצאה: ___ mg/dL<br>שעה: __:__</td>
+                    <td>תוצאה: ___ mg/dL<br>שעה: __:__</td>
+                    <td>תוצאה: ___ mg/dL<br>שעה: __:__</td>
+                    <td>לפי הוראת רופא / צורך</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="font-weight:700; margin:1.25rem 0 0.5rem;">
+            2. בקרות תקופתיות חודשיות (עגלת החייאה, ארון תרופות והפקת מרשמים – אחת לחודש)
+        </p>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>נושא הבקרה</th>
+                    <th>תדירות</th>
+                    <th>בדיקה אחרונה</th>
+                    <th>בדיקה הבאה</th>
+                    <th>דגשי בדיקה ורשימת תיוג</th>
+                    <th>סטטוס וחתימה</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>🚑 בדיקת עגלת החייאה</strong></td>
+                    <td>אחת לחודש</td>
+                    <td>_________</td>
+                    <td>_________</td>
+                    <td>שלמות סגר, בלון חמצן מלא, אמבו ומסכות, סקשן, דפיברילטור, תרופות החייאה ועירויים בתוקף.</td>
+                    <td>☐ תקין ומוכן<br>☐ נדרשה השלמה<br>חתימה: ______</td>
+                </tr>
+                <tr>
+                    <td><strong>💊 מלאי ופגי תוקף ארון תרופות</strong></td>
+                    <td>אחת לחודש</td>
+                    <td>_________</td>
+                    <td>_________</td>
+                    <td>סריקת מדפים, בדיקת תוקף, הוצאת פגי תוקף להשמדה, סידור FEFO והשלמת חוסרים.</td>
+                    <td>☐ תקין ומסודר<br>☐ הוצאו להשמדה<br>חתימה: ______</td>
+                </tr>
+                <tr>
+                    <td><strong>📄 הפקת מרשמים קבוצתית לתרופות וציוד</strong></td>
+                    <td>אחת לחודש</td>
+                    <td>_________</td>
+                    <td>_________</td>
+                    <td>בדיקת תרופות שבסל ותרופות הדורשות אישור רופא מחוזי של הקופה המבטחת.</td>
+                    <td>☐ בוצע<br>חתימה: ______</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Page 5: Legend -->
+    <div class="page-sheet" id="p5">
+        <h1>מקרא סמלי בקרה וסיווג פעולות בצ'ק-ליסט</h1>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th style="width:90px;">סמל חזותי</th>
+                    <th style="width:240px;">סיווג ותחום פעולה</th>
+                    <th>משמעות ודגשי ביצוע בצ'ק-ליסט</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="icon-cell">⏱</td>
+                    <td><strong>זמנים, שעות וקבלת משמרת</strong></td>
+                    <td>קבלת דיווח מובנה, חלוקת עבודה ותדריך צוות בתחילת משמרת.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚕ / 💊</td>
+                    <td><strong>פעולות סיעוד, תרופות וטוקסיקה</strong></td>
+                    <td>הכנה, מתן וחיתום תרופות (07:30–09:00, 16:00, 20:00), בקרה כפולה בסמים ומדדים.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">☕ / 🥤</td>
+                    <td><strong>ארוחות, שתייה והזנה (6–7 כוסות)</strong></td>
+                    <td>חלוקת ארוחות; שתייה יזומה בשעות 08, 10, 12, 16, 18, 20 (לפחות 6–7 כוסות ביום).</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚠</td>
+                    <td><strong>איסור האכלה במיטה (דגש קריטי)</strong></td>
+                    <td class="warn-red">חל איסור מוחלט להאכיל דייר במיטה ללא אישור חריג של אחות! חובת הושבה מלאה ב-90°.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">♿</td>
+                    <td><strong class="warn-red">מעברים, כיסא גלגלים והורדת רגליות</strong></td>
+                    <td>הושבה בטוחה, <span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span> מניעת נפילות והגבלות.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚡</td>
+                    <td><strong>חיבור עגלת אוכל לחשמל ובקרת טמפ' מזון</strong></td>
+                    <td>
+                        חיבור מידי בהגעה (08:00, 12:00, 16:00), בדיקת טמפ' מזון ותיעוד.<br>
+                        <strong>לפי נוהלי משרד הבריאות והאגף לגריאטריה (<a href="https://www.gov.il/BlobFolder/dynamiccollectorresultitem/ng-5-0-3/he/files_circulars_ng_5_0_3.pdf" target="_blank" rel="noopener" style="color:var(--primary);">נוהל מערך המזון 5.0.3 בבתי חולים גריאטריים</a>), טמפרטורות היעד המומלצות והמחייבות לחלוקת מזון הן:</strong><br>
+                        • <strong>מזון חם:</strong> חייב להיות בטמפרטורה של <strong>65°C ומעלה</strong> בעת החלוקה וההגשה.<br>
+                        • <strong>מזון קר:</strong> חייב להיות בטמפרטורה של <strong>5°C ומטה</strong> (לטווח בטוח של קירור).
+                    </td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>שינויי תנוחה, השכבות ושינה</strong></td>
+                    <td>שינויי תנוחה כל שעתיים, השכבות צהריים/לילה, שמירה על שקט ורצף שינה.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>ניקיון יסודי ופינוי לקרקע</strong></td>
+                    <td>ניקיון חדרים לפי תוכנית, פינוי שקי כביסה ופחי פסולת לקומת קרקע בכל משמרת.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">✎ / ☐</td>
+                    <td><strong>תיעוד, חיתום ותיבות סימון</strong></td>
+                    <td>חיתום מיידי, מעקב שתן/צואה, רישום כאב וסוכר Dex, וסימון ביצוע (☐) בכל שורה.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Page 6: ISBAR -->
+    <div class="page-sheet" id="p6">
+        <h1>מודל ISBAR (מודל ה.מ.ר.א.ה.) להעברת משמרת ודיווח קליני</h1>
+        <p style="font-size:1.05rem; font-weight:600;">
+            מודל ISBAR (או מודל ה.מ.ר.א.ה. בעברית) הוא כלי מובנה לתקשורת אפקטיבית והעברת מידע חיוני בין אנשי צוות רפואי (בהעברת משמרת או דיווח על מטופל), שמטרתו למנוע טעויות ולשמור על בטיחות המטופל.
+        </p>
+        <ul style="font-size:1rem; line-height:1.8;">
+            <li><strong>I – Introduction (הצגה):</strong> הצגה עצמית (שם, תפקיד ומחלקה) והצגת המטופל (שם, גיל, מין).</li>
+            <li><strong>S – Situation (מצב / סיטואציה):</strong> סיבת הפנייה או האשפוז, והבעיה האקוטית הנוכחית.</li>
+            <li><strong>B – Background (רקע):</strong> הרקע הקליני של המטופל, מחלות רקע, רגישויות ומידע רלוונטי להמשך הטיפול.</li>
+            <li><strong>A – Assessment (אומדן / הערכה):</strong> המצב הנוכחי של המטופל – סימנים חיוניים, ממצאי מעבדה חריגים, אומדנים קליניים וגורמי סיכון.</li>
+            <li><strong>R – Recommendation (המלצות):</strong> המלצות להמשך הטיפול (ניטור, בדיקות נדרשות, טיפול תרופתי או דגשים מיוחדים).</li>
+        </ul>
+
+        <h3 style="color:var(--navy); margin-top:1.5rem;">המקבילה הרשמית בעברית: מודל ה.מ.ר.א.ה.</h3>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th style="width:90px;">אות במודל</th>
+                    <th style="width:160px;">שלב התקשורת</th>
+                    <th>מה הוא כולל?</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">ה</td>
+                    <td><strong>הצגה</strong></td>
+                    <td>מי המדווח, מי המטופל ואיפה הם נמצאים.</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">מ</td>
+                    <td><strong>מצב</strong></td>
+                    <td>מהי תלונת המטופל, האבחנה העיקרית או סיבת האשפוז.</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">ר</td>
+                    <td><strong>רקע</strong></td>
+                    <td>היסטוריה רפואית, רגישויות, טיפול תרופתי קבוע ונתונים קודמים.</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">א</td>
+                    <td><strong>אומדן</strong></td>
+                    <td>מדדים חיוניים נוכחיים, תוצאות מעבדה והערכה קלינית של המצב.</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">ה</td>
+                    <td><strong>המלצה</strong></td>
+                    <td>מה נדרש לעשות כעת, תוכנית המשך הטיפול או פתרון הבעיה.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function scrollToPage(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>צ'ק ליסט וסדר יום – מטפל / כוח עזר (בוקר, ערב, לילה)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #143652;
+            --primary: #0f4c81;
+            --accent: #0d9488;
+            --danger: #dc2626;
+            --border: #cbd5e1;
+        }
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Assistant', sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            margin: 0;
+            padding: 1.25rem;
+            line-height: 1.5;
+        }
+        .toolbar {
+            max-width: 960px;
+            margin: 0 auto 1rem;
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+        }
+        .toolbar-tabs {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            color: var(--navy);
+            padding: 0.45rem 0.85rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .tab-btn:hover, .tab-btn.active {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+        .btn-action {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .page-sheet {
+            max-width: 960px;
+            margin: 0 auto 1.75rem;
+            background: #ffffff;
+            border: 1px solid #dbe3ee;
+            border-radius: 14px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+        }
+        h1 {
+            font-size: 1.55rem;
+            color: var(--navy);
+            margin: 0 0 0.25rem;
+            font-weight: 800;
+            border-bottom: 3px solid var(--navy);
+            padding-bottom: 0.45rem;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+        .meta-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            border-top: 2px solid var(--navy);
+            border-bottom: 2px solid var(--navy);
+            padding: 0.6rem 0;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        .meta-bar input {
+            border: none;
+            border-bottom: 1px solid #64748b;
+            font-family: inherit;
+            font-size: 0.95rem;
+            padding: 0.1rem 0.3rem;
+            width: 115px;
+            background: transparent;
+        }
+        table.checklist-tbl {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        table.checklist-tbl th {
+            background: var(--navy);
+            color: #ffffff;
+            padding: 0.65rem 0.6rem;
+            text-align: right;
+            font-weight: 700;
+            border: 1px solid var(--navy);
+        }
+        table.checklist-tbl td {
+            padding: 0.65rem 0.6rem;
+            border: 1px solid #e2e8f0;
+            vertical-align: middle;
+        }
+        table.checklist-tbl tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+        .time-cell {
+            font-weight: 800;
+            white-space: nowrap;
+            text-align: center;
+            width: 110px;
+        }
+        .icon-cell {
+            text-align: center;
+            font-size: 1.2rem;
+            width: 52px;
+        }
+        .done-cell {
+            text-align: center;
+            width: 55px;
+        }
+        .done-cell input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #16a34a;
+            cursor: pointer;
+        }
+        .note-cell {
+            width: 165px;
+            text-align: center;
+            color: #334155;
+            font-weight: 600;
+        }
+        .warn-red {
+            color: var(--danger);
+            font-weight: 800;
+        }
+        .footer-box {
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .toolbar { display: none !important; }
+            .page-sheet {
+                box-shadow: none;
+                border: none;
+                padding: 0.5cm;
+                page-break-after: always;
+                margin: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-tabs">
+            <button class="tab-btn active" onclick="scrollToPage('c1')">1. משמרת בוקר</button>
+            <button class="tab-btn" onclick="scrollToPage('c2')">2. משמרת ערב</button>
+            <button class="tab-btn" onclick="scrollToPage('c3')">3. משמרת לילה</button>
+            <button class="tab-btn" onclick="scrollToPage('c4')">4. דגשים מקצועיים ונהלי בטיחות</button>
+            <button class="tab-btn" onclick="scrollToPage('c5')">5. מקרא סמלים</button>
+        </div>
+        <button class="btn-action" onclick="window.print()">🖨️ הדפס / שמור כ-PDF</button>
+    </div>
+
+    <!-- Page 1: Morning Shift -->
+    <div class="page-sheet" id="c1">
+        <h1>צ'ק ליסט וסדר יום – מטפל / כוח עזר – משמרת בוקר</h1>
+        <div class="subtitle">משמרת בוקר: 07:00–15:00 | רחצות, ארוחות, שתייה, טיפול אישי והשכבות | צוות מטפלים</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>אחראי משמרת: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">07:00–07:15</td>
+                    <td class="icon-cell">⏱</td>
+                    <td><strong>קבלת משמרת ותדריך בטיחות:</strong> קבלת משמרת, חלוקת עבודה ותדריך בטיחות מאחות המשמרת על דיירים בסיכון.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">נוכחות מלאה בתדריך</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">07:15–08:00</td>
+                    <td class="icon-cell">♿</td>
+                    <td><strong>רחצות והחלפת מצעים, הלבשה והושבה בכיסא גלגלים:</strong> שימוש בפרגוד, מנוף בעת צורך; <span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span> + סידור עגלת מטופל.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">פרגוד, <span class="warn-red">הורדת רגליות</span> וסידור עגלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">08:00–09:15</td>
+                    <td class="icon-cell">⚡</td>
+                    <td><strong>חיבור עגלת אוכל והאכלת בוקר:</strong> חיבור עגלת אוכל לחשמל ובדיקת טמפ' בעת החלוקה וההגשה לפי נוהל מערך המזון 5.0.3 (08:00 – <strong>מזון חם: 65°C ומעלה, מזון קר: 5°C ומטה</strong>), חלוקה והאכלה ב-90° ליד שולחן/כורסה. <span class="warn-red">⚠ חל איסור מוחלט על האכלה במיטה ללא אישור חריג של אחות!</span></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">טמפ' בוקר (חם ≥65°C / קר ≤5°C) ואיסור האכלה במיטה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">09:15–10:00</td>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>פינוי ארוחה וסידור חדרים:</strong> פינוי חדר אוכל, ניקוי שולחנות, סידור חדרי הדיירים, מצעים ואוורור החדר.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">סביבה נקייה ובטוחה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">10:00–11:00</td>
+                    <td class="icon-cell">🥤</td>
+                    <td><strong>משטר שתייה יזום וניוד דיירים:</strong> חלוקת שתייה (יעד 6–7 כוסות), ניוד בכיסא גלגלים (<span class="warn-red">⚠ הקפדה על רגליות מורדות מכיסא גלגלים למניעת פציעה!</span>).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">שתייה, <span class="warn-red">רגליות מורדות</span> ומניעת נפילות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">11:00–13:00</td>
+                    <td class="icon-cell">🍽️</td>
+                    <td><strong>החלפות, חיבור עגלת צהריים והאכלה:</strong> סבב החלפות + סידור עגלת מטופל; חיבור עגלת אוכל לחשמל ובדיקת טמפ' בעת החלוקה וההגשה לפי נוהל 5.0.3 (12:00 – <strong>מזון חם: 65°C ומעלה, מזון קר: 5°C ומטה</strong>), האכלה בטוחה. <span class="warn-red">⚠ איסור האכלה במיטה ללא אישור חריג!</span></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">טמפ' צהריים (חם ≥65°C / קר ≤5°C) ואימות אכילה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">13:00–14:00</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>סבב החלפות והשכבה לצהריים:</strong> השכבה לצהריים, מנח גוף, שמיכות + השלמת סידור עגלת יחידת מטופל.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מיגון מיטות וסידור עגלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">14:00–15:00</td>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>סבב בטיחות, תיעוד ופינוי לקרקע:</strong> תיעוד הפרשות (שתן, צואה), פינוי שקי כביסה ופסולת לקומת קרקע ומסירה לערב.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תיעוד ופינוי לקרקע</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>אחראי מטפלים: ______________ אישור אחות: ______________</div>
+            <div>חתימה: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 2: Evening Shift -->
+    <div class="page-sheet" id="c2">
+        <h1>צ'ק ליסט לאחראי משמרת ערב – צוות מטפלים</h1>
+        <div class="subtitle">משמרת ערב: 15:00–23:00 | הפקדות, הקמה, קפה ועוגה, חימום, תעסוקה, ארוחה והשכבות</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>אחראי משמרת: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">15:00–15:30</td>
+                    <td class="icon-cell">⏱</td>
+                    <td><strong>קבלת משמרת, חלוקת צוות ותדריך:</strong> תדריך מאחות, חלוקת צוות לפי הפקדות, מעבר על תיקים ודיירים בסיכון.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תדריך מסודר מאחות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">15:30–16:30</td>
+                    <td class="icon-cell">⚡</td>
+                    <td><strong>סיבוב חדרים והקמה (פרגוד, מנוף):</strong> רחצות והחלפת מצעים לפי הפקדה, הלבשה והושבה בכיסא גלגלים; <span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span> + סידור עגלת מטופל. חלוקת שתייה/עוגה + חיבור עגלת אוכל לחשמל ובדיקת טמפ' בעת החלוקה וההגשה לפי נוהל 5.0.3 (16:00 – <strong>מזון חם: 65°C ומעלה, מזון קר: 5°C ומטה</strong>).</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell"><span class="warn-red">הורדת רגליות</span>, טמפ' מזון וסידור עגלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">16:30–17:00</td>
+                    <td class="icon-cell">🎵</td>
+                    <td><strong>תעסוקה והפעלת דיירים:</strong> קיום תעסוקה (יציאה לחצר / מוסיקה / מפעיל / משחקים אישיים) והשגחה פעילה.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">הפעלה והשגחה פעילה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">17:00–18:30</td>
+                    <td class="icon-cell">♿</td>
+                    <td><strong>בדיקת הגבלות והכנה לארוחה (<span class="warn-red">⚠ וידוא הורדת רגליות מכיסא גלגלים</span>).</strong></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell"><span class="warn-red">הורדת רגליות</span>, מנח והחלפות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">18:30–19:00</td>
+                    <td class="icon-cell">⚠️</td>
+                    <td><strong>חלוקת ארוחת ערב והאכלה:</strong> סיוע פעיל בהאכלה, וידוא אכילה ושתייה מלאה ליד שולחן/כורסה ב-90°. <span class="warn-red">⚠ איסור האכלה במיטה ללא אישור חריג של אחות!</span></td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">איסור האכלה במיטה ללא אישור</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">19:45–20:00</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>פינוי ארוחה, השכבות במיטה וסידור עגלה:</strong> פינוי שולחנות, השכבות במיטה (מנח גוף נכון, שמיכות) + השלמת סידור עגלת מטופל.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">השכבה נכונה וסידור עגלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">20:00–22:00</td>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>ניקיון יסודי של חדרים לפי תוכנית:</strong> ביצוע ניקיון יסודי לפי תוכנית יומית; צחצוח תותבות, סבב יציאות, ניקוי דלפקים והשלמת השכבות.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">ניקיון חדרים ותותבות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">22:00–23:00</td>
+                    <td class="icon-cell">📋</td>
+                    <td><strong>מענה לקריאות, תיעוד ופינוי לקרקע:</strong> בדיקת פעמונים, השלמת תיעוד (שתן, צואה), פינוי שקי כביסה ופסולת לקרקע ומסירה ללילה.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תיעוד ופינוי לקרקע</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>אחראי מטפלים: ______________ אישור אחות: ______________</div>
+            <div>חתימה: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 3: Night Shift -->
+    <div class="page-sheet" id="c3">
+        <h1>צ'ק ליסט וסדר יום – מטפל / כוח עזר – משמרת לילה</h1>
+        <div class="subtitle">משמרת לילה: 23:00–07:00 | שמירה על רצף שינה, השגחה, שינויי תנוחה והכנה לבוקר | צוות מטפלים</div>
+        <div class="meta-bar">
+            <div>תאריך: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>אחראי משמרת: <input type="text"></div>
+            <div>דיירים/מאושפזים: <input type="text" style="width:70px;"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th>שעה / שלב</th>
+                    <th>סמל</th>
+                    <th>פעולות הצוות והמשימות הנדרשות</th>
+                    <th>בוצע</th>
+                    <th>הערות ודגשי ביצוע</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="time-cell">23:00–23:15</td>
+                    <td class="icon-cell">⏱</td>
+                    <td><strong>קבלת משמרת ותדריך:</strong> חלוקת עבודה ותדריך מאחות הלילה על דיירים בסיכון ודגשים מיוחדים.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תדריך דיירים רגישים</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">23:15–00:00</td>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>סבב בטיחות ראשוני והחלפות:</strong> בדיקת נוחות, כיסוי שמיכות, תאורת לילה ופעמונים בהישג יד הדייר.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תאורת לילה ופעמונים נגישים</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">00:00–02:00</td>
+                    <td class="icon-cell">🔄</td>
+                    <td><strong>השגחה רציפה ושינויי תנוחה:</strong> מענה לקריאות, שינויי תנוחה כל שעתיים לפי תוכנית אישית למניעת פצעי לחץ.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מניעת פצעי לחץ ונפילות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">02:00–03:00</td>
+                    <td class="icon-cell">🌙</td>
+                    <td><strong>סבב דיירים יזום והחלפות:</strong> החלפות לפי צורך ושינויי תנוחה, אור מעומעם ושקט מרבי.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">שקט מקסימלי ואור מעומעם</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">03:00–05:00</td>
+                    <td class="icon-cell">🔔</td>
+                    <td><strong>השגחה ושמירה על רצף שינה:</strong> מענה מיידי לצורכי הדיירים, מניעת רעש והפרעה לשינה.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">מענה מהיר לקריאות</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">05:00–06:00</td>
+                    <td class="icon-cell">🤝</td>
+                    <td><strong>סבב דיירים מתעוררים:</strong> החלפות וטיפול אישי לפי צורך לדיירים מתעוררים בצורה עדינה ומכבדת.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">טיפול עדין ומכבד</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">06:00–06:45</td>
+                    <td class="icon-cell">🛒</td>
+                    <td><strong>סידור ציוד ועגלת יחידת מטופל:</strong> כביסה + השלמת סידור מלא של "עגלת סידור יחידת דייר" לקראת משמרת בוקר.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">השלמת ציוד בעגלה</td>
+                </tr>
+                <tr>
+                    <td class="time-cell">06:45–07:00</td>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>פינוי כביסה ופסולת לקומת קרקע והעברה לבוקר:</strong> השלמת תיעוד שתן וצואה ומסירה לבוקר.</td>
+                    <td class="done-cell"><input type="checkbox"></td>
+                    <td class="note-cell">תיעוד ופינוי לקרקע</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>בקשות משפחה / דייר: _______________________ (מאת: _____)</div>
+            <div>אירוע חריג / נפילה: _____________ (דווח: ☐ כן שעה: __:__)</div>
+            <div>אחראי מטפלים: ______________ אישור אחות: ______________</div>
+            <div>חתימה: ______________ תאריך: __________</div>
+        </div>
+    </div>
+
+    <!-- Page 4: Professional Guidelines -->
+    <div class="page-sheet" id="c4">
+        <h1>דגשים מקצועיים ונהלי בטיחות – צוות המטפלים</h1>
+        <div class="subtitle">סטנדרט טיפול, כבוד הדייר, מניעת סיכונים וחובת דיווח (נוהל מחייב לכל המשמרות)</div>
+        <div class="meta-bar">
+            <div>תאריך בקרה: <input type="text"></div>
+            <div>מחלקה: <input type="text"></div>
+            <div>אחראי הדרכה: <input type="text"></div>
+        </div>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th style="width:240px;">נושא הדגש והסמל</th>
+                    <th>פירוט ההנחיה המקצועית והבטיחותית</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>⚡ חיבור עגלת אוכל ובקרת טמפרטורה (נוהל 5.0.3)</strong></td>
+                    <td>
+                        חובה לחבר עגלת אוכל לחשמל מיד בהגעתה (08:00, 12:00, 16:00), לבדוק טמפרטורת מזון ולתעד בטופס.<br>
+                        <strong>לפי נוהלי משרד הבריאות והאגף לגריאטריה (<a href="https://www.gov.il/BlobFolder/dynamiccollectorresultitem/ng-5-0-3/he/files_circulars_ng_5_0_3.pdf" target="_blank" rel="noopener" style="color:var(--primary);">נוהל מערך המזון 5.0.3 בבתי חולים גריאטריים</a>), טמפרטורות היעד המומלצות והמחייבות לחלוקת מזון הן:</strong><br>
+                        • <strong>מזון חם:</strong> חייב להיות בטמפרטורה של <strong>65°C ומעלה</strong> בעת החלוקה וההגשה.<br>
+                        • <strong>מזון קר:</strong> חייב להיות בטמפרטורה של <strong>5°C ומטה</strong> (לטווח בטוח של קירור).
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>🛒 סידור 'עגלת סידור יחידת מטופל'</strong></td>
+                    <td>חובה להשלים ציוד, מצעים, חיתולים וחומרי טיפול ולסדר את העגלה באופן מלא מיד לאחר כל שימוש בכל המשמרות!</td>
+                </tr>
+                <tr>
+                    <td><strong>🤝 שמירה על כבוד ופרטיות הדייר</strong></td>
+                    <td>חובה להשתמש בפרגוד בכל רחיצה, החלפה או טיפול אישי. יש לסגור דלת, לכסות את הדייר ולפנות בכבוד וברוגע.</td>
+                </tr>
+                <tr>
+                    <td><strong class="warn-red">♿ מעברים בטוחים והורדת רגליות מכיסא גלגלים</strong></td>
+                    <td>העברת דייר מבוצעת בזוג/מנוף בלבד, נעילת גלגלים חובה. <span class="warn-red">⚠ בהושבת דייר בכיסא גלגלים: חובה להקפיד להוריד רגליות מכיסא הגלגלים ולהניח את כפות הרגליים עליהן למניעת פציעות, שפשופים וגרירת רגליים!</span></td>
+                </tr>
+                <tr>
+                    <td><strong>🛏️ שינויי תנוחה ומניעת פצעי לחץ</strong></td>
+                    <td>ביצוע שינויי תנוחה כל שעתיים לדיירים מרותקים למיטה/לכיסא בהתאם לתוכנית הטיפול. שימוש בכריות תמיכה ושמירה על מנח גוף נכון.</td>
+                </tr>
+                <tr>
+                    <td><strong>⚠ איסור האכלה במיטה ומניעת אספירציה</strong></td>
+                    <td class="warn-red">חל איסור מוחלט להאכיל דייר במיטה ללא אישור חריג מפורש מאחות! האכלה אך ורק בישיבה מלאה (90 מעלות) ליד שולחן או בכורסה. האכלה במיטה מהווה סיכון מיידי לחנק, שאיפת מזון (אספירציה) ודלקת ריאות.</td>
+                </tr>
+                <tr>
+                    <td><strong>🥤 משטר שתייה יזום (6–7 כוסות) ומעקב</strong></td>
+                    <td>רישום שתייה הוא נושא קריטי: חלוקת שתייה לפחות בשעות 08:00, 10:00, 12:00, 16:00, 18:00, 20:00 (יעד מחייב: לפחות 6 עד 7 כוסות ביום!). חובה לוודא שכל דייר שתה, לרשום כמויות, ולדווח לאחות על סירוב או מיעוט שתייה.</td>
+                </tr>
+                <tr>
+                    <td><strong>🧹 פינוי כביסה ופסולת לקומת קרקע ותיעוד</strong></td>
+                    <td>חובה בסיום כל משמרת לפנות שקי כביסה ופחי פסולת לקומת קרקע, ולתעד הפרשות שתן וצואה. דיווח מיידי לאחות על כל שינוי!</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="footer-box">
+            <div>שמות המטפלים במשמרת: 1. _________ 2. _________ 3. _________</div>
+            <div>אישור אחות אחראית / תורנית: _________ תאריך: _________</div>
+        </div>
+    </div>
+
+    <!-- Page 5: Legend -->
+    <div class="page-sheet" id="c5">
+        <h1>מקרא סמלי בקרה וסיווג פעולות בצ'ק-ליסט</h1>
+        <table class="checklist-tbl">
+            <thead>
+                <tr>
+                    <th style="width:90px;">סמל חזותי</th>
+                    <th style="width:240px;">סיווג ותחום פעולה</th>
+                    <th>משמעות ודגשי ביצוע בצ'ק-ליסט</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="icon-cell">⏱</td>
+                    <td><strong>זמנים, שעות וקבלת משמרת</strong></td>
+                    <td>קבלת דיווח מובנה, חלוקת עבודה ותדריך צוות בתחילת משמרת.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚕ / 💊</td>
+                    <td><strong>פעולות סיעוד, תרופות וטוקסיקה</strong></td>
+                    <td>הכנה, מתן וחיתום תרופות (07:30–09:00, 16:00, 20:00), בקרה כפולה בסמים ומדדים.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">☕ / 🥤</td>
+                    <td><strong>ארוחות, שתייה והזנה (6–7 כוסות)</strong></td>
+                    <td>חלוקת ארוחות; שתייה יזומה בשעות 08, 10, 12, 16, 18, 20 (לפחות 6–7 כוסות ביום).</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚠</td>
+                    <td><strong>איסור האכלה במיטה (דגש קריטי)</strong></td>
+                    <td class="warn-red">חל איסור מוחלט להאכיל דייר במיטה ללא אישור חריג של אחות! חובת הושבה מלאה ב-90°.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">♿</td>
+                    <td><strong class="warn-red">מעברים, כיסא גלגלים והורדת רגליות</strong></td>
+                    <td>הושבה בטוחה, <span class="warn-red">⚠ חובת הורדת רגליות מכיסא גלגלים למניעת פציעה!</span> מניעת נפילות והגבלות.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">⚡</td>
+                    <td><strong>חיבור עגלת אוכל לחשמל ובקרת טמפ' מזון</strong></td>
+                    <td>
+                        חיבור מידי בהגעה (08:00, 12:00, 16:00), בדיקת טמפ' מזון ותיעוד.<br>
+                        <strong>לפי נוהלי משרד הבריאות והאגף לגריאטריה (<a href="https://www.gov.il/BlobFolder/dynamiccollectorresultitem/ng-5-0-3/he/files_circulars_ng_5_0_3.pdf" target="_blank" rel="noopener" style="color:var(--primary);">נוהל מערך המזון 5.0.3 בבתי חולים גריאטריים</a>), טמפרטורות היעד המומלצות והמחייבות לחלוקת מזון הן:</strong><br>
+                        • <strong>מזון חם:</strong> חייב להיות בטמפרטורה של <strong>65°C ומעלה</strong> בעת החלוקה וההגשה.<br>
+                        • <strong>מזון קר:</strong> חייב להיות בטמפרטורה של <strong>5°C ומטה</strong> (לטווח בטוח של קירור).
+                    </td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">🛏️</td>
+                    <td><strong>שינויי תנוחה, השכבות ושינה</strong></td>
+                    <td>שינויי תנוחה כל שעתיים, השכבות צהריים/לילה, שמירה על שקט ורצף שינה.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">🧹</td>
+                    <td><strong>ניקיון יסודי ופינוי לקומת קרקע</strong></td>
+                    <td>ניקיון חדרים לפי תוכנית, פינוי שקי כביסה ופחי פסולת לקומת קרקע בכל משמרת.</td>
+                </tr>
+                <tr>
+                    <td class="icon-cell">✎ / ☐</td>
+                    <td><strong>תיעוד, חיתום ותיבות סימון</strong></td>
+                    <td>חיתום מיידי, מעקב שתן/צואה, רישום כאב וסוכר Dex, וסימון ביצוע (☐) בכל שורה.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function scrollToPage(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    </script>
+</body>
+</html>
