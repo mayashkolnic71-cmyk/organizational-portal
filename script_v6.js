@@ -6,6 +6,17 @@ try {
         if (parsedUser && parsedUser.name) currentUser = parsedUser;
     }
 } catch(e) {}
+
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+
 let formsSchema = null;
 let usersDb = [];
 let filledFormsDb = [];
