@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 
 <head>
@@ -1115,7 +1115,7 @@
             </a>
             <button type="button" id="toggleEditModeBtn" class="btn-edit-mode" onclick="toggleEditMode()">
                 <span>⚙️</span>
-                <span id="editModeBtnLabel">מצב עריכת סרטונים ותכנים</span>
+                <span id="editModeBtnLabel">מצב עריכת סרטונים ותכנים (מנהל על 🔒)</span>
             </button>
             <div class="creator-badge">
                 <div class="name">נוצר על ידי: מאיה שקולניק גזית</div>
@@ -2326,7 +2326,47 @@
             return match ? match[1] : null;
         }
 
+        function isSuperAdmin() {
+            try {
+                if (window.parent && typeof window.parent.isSuperAdminUser === 'function' && window.parent.isSuperAdminUser()) {
+                    return true;
+                }
+            } catch(e) {}
+            if (sessionStorage.getItem('super_admin_unlocked') === 'true') return true;
+            try {
+                const u = localStorage.getItem('clinic_current_user');
+                if (u) {
+                    const parsed = JSON.parse(u);
+                    const uname = (parsed.username || '').toLowerCase();
+                    const r = (parsed.role || '');
+                    if (uname === 'admin' || parsed.isSuperAdmin === true || r.includes('מנהל על') || r.includes('מנהל ראשי')) {
+                        return true;
+                    }
+                }
+            } catch(e) {}
+            return false;
+        }
+
         function toggleEditMode() {
+            if (!editMode && !isSuperAdmin()) {
+                const pwd = prompt('🔒 גישה מוגבלת למנהל על בלבד!\n\nעריכת סרטונים, קישורים ותכני הדרכה מותרת למנהל על בלבד.\nנא להזין סיסמת מנהל על:');
+                if (pwd && pwd.trim().toLowerCase() === 'admin') {
+                    sessionStorage.setItem('super_admin_unlocked', 'true');
+                    try {
+                        if (window.parent && window.parent.sessionStorage) {
+                            window.parent.sessionStorage.setItem('super_admin_unlocked', 'true');
+                        }
+                    } catch(e) {}
+                    if (typeof showToast === 'function') showToast('הרשאת מנהל על אומתה בהצלחה 🔓', 'success');
+                    else alert('הרשאת מנהל על אומתה בהצלחה 🔓');
+                } else {
+                    if (pwd !== null) {
+                        alert('סיסמת מנהל על שגויה! הפעולה נחסמה.');
+                    }
+                    return;
+                }
+            }
+
             editMode = !editMode;
             document.body.classList.toggle("edit-mode", editMode);
             const btn = document.getElementById("toggleEditModeBtn");
@@ -2339,7 +2379,7 @@
             } else {
                 btn.classList.remove("active");
                 toolbar.classList.remove("visible");
-                label.textContent = "מצב עריכת סרטונים ותכנים";
+                label.textContent = "מצב עריכת סרטונים ותכנים (מנהל על 🔒)";
             }
             renderMainPanel();
         }

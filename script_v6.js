@@ -1361,7 +1361,7 @@ function renderOnboarding() {
                     <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background: #059669; color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה רשמי על הדרכות קליטה לתיוק בתיק עובד במשאבי אנוש">
                         <span>📋</span> נספח א': טופס החתמה (A4)
                     </a>
-                    <a href="onboarding_kit_preview.html?v=66" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    <a href="onboarding_kit_preview.html?v=76" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                         <span>↗ פתיחה בחלון נפרד מלא</span>
                     </a>
                     <button onclick="const ifr=document.getElementById('onboarding-kit-frame'); if(ifr){ifr.contentWindow.location.reload();}" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 7px 12px; font-size: 13px;" title="רענון ערכה">
@@ -1370,7 +1370,7 @@ function renderOnboarding() {
                 </div>
             </div>
             <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
-                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=66" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=76" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     `;
