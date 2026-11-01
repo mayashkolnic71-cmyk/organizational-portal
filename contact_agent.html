@@ -1,1168 +1,576 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>סוכן פניות והצעה עסקית | הפורטל הארגוני לניהול איכות בסיעוד</title>
+    <title>הפורטל הארגוני לניהול איכות ובטיחות אחיות | דמו והצעה מוסדית</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #1e40af;
-            --primary-light: #3b82f6;
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
             --accent: #0284c7;
             --accent-green: #059669;
+            --bg: #f8fafc;
             --surface: #ffffff;
-            --bg-color: #f8fafc;
-            --text-primary: #0f172a;
-            --text-secondary: #475569;
             --border: #e2e8f0;
-            --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.06);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
         }
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            font-family: 'Heebo', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(180deg, #f0f7ff 0%, #f8fafc 400px);
-            color: var(--text-primary);
-            direction: rtl;
-            line-height: 1.6;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Heebo', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); line-height: 1.5; direction: rtl; }
+
+        /* Top Bar */
+        .top-navbar {
             position: sticky;
             top: 0;
             z-index: 1000;
-            padding: 14px 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
         }
-        .header-content {
-            max-width: 1200px;
+        .nav-container {
+            max-width: 1150px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
             gap: 12px;
+            flex-wrap: wrap;
         }
-        .logo-group {
+        .logo-wrap {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            text-decoration: none;
+            color: inherit;
         }
         .logo-icon {
-            font-size: 28px;
-            background: #e0f2fe;
-            width: 46px;
-            height: 46px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+            font-size: 20px;
         }
+
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            gap: 6px;
             padding: 9px 18px;
-            border-radius: 10px;
+            border-radius: 8px;
             font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
+            font-weight: 800;
             border: none;
-            transition: all 0.2s ease;
+            cursor: pointer;
             text-decoration: none;
+            transition: all 0.2s;
         }
+        .btn:hover { transform: translateY(-1px); }
         .btn-primary {
-            background: linear-gradient(135deg, #1e40af, #2563eb);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
         }
         .btn-green {
-            background: linear-gradient(135deg, #059669, #10b981);
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
-        }
-        .btn-green:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 8px rgba(16,185,129,0.3);
         }
         .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--text-primary);
+            background: var(--surface);
+            color: var(--primary);
+            border: 1px solid #bfdbfe;
         }
-        .btn-outline:hover {
-            background: #f1f5f9;
+
+        /* Hero Container */
+        .hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #1d4ed8 100%);
+            color: white;
+            padding: 38px 20px;
         }
-        .badge {
-            display: inline-flex;
+        .hero-container {
+            max-width: 1150px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.3fr 0.8fr;
+            gap: 28px;
             align-items: center;
-            gap: 6px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 11.5px;
-            font-weight: 800;
         }
+        @media(max-width: 860px) {
+            .hero-container { grid-template-columns: 1fr; }
+        }
+
+        .creator-box {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+            backdrop-filter: blur(8px);
+        }
+        .creator-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #60a5fa;
+            margin: 0 auto 10px;
+            display: block;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 30px 20px 60px;
+        }
+
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 14px;
             padding: 24px;
-            box-shadow: var(--card-shadow);
+            margin-bottom: 24px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
         }
-        .tabs-nav {
-            display: flex;
-            gap: 8px;
-            border-bottom: 2px solid var(--border);
-            padding-bottom: 8px;
-            margin: 24px 0 20px;
-            overflow-x: auto;
+
+        /* Video wrapper */
+        .video-box {
+            position: relative;
+            padding-top: 56.25%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
-        .tab-btn {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            color: var(--text-secondary);
-            padding: 10px 18px;
-            border-radius: 10px;
-            font-size: 13.5px;
-            font-weight: 700;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-        .tab-btn.active {
-            background: #1e40af;
-            color: #ffffff;
-            border-color: #1e40af;
-            box-shadow: 0 4px 12px rgba(30, 64, 175, 0.25);
-        }
-        .tab-btn:hover:not(.active) {
-            background: #f1f5f9;
-            color: var(--text-primary);
-        }
-        .tab-pane {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .tab-pane.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-        @media (max-width: 860px) {
-            .grid-2 { grid-template-columns: 1fr; }
-        }
-        .form-group {
-            margin-bottom: 14px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 12.5px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 5px;
-        }
-        .form-control {
+        .video-box video {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            padding: 10px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            background: #f8fafc;
-            color: var(--text-primary);
-            font-size: 13.5px;
-            font-family: inherit;
-            transition: border 0.2s;
+            height: 100%;
+            object-fit: contain;
         }
-        .form-control:focus {
-            outline: none;
-            border-color: #2563eb;
-            background: #ffffff;
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+
+        /* Pricing cards */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+            margin-top: 14px;
         }
         .price-card {
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .price-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            background: var(--surface);
         }
         .price-card.featured {
-            border: 2px solid #2563eb;
-            box-shadow: 0 8px 30px rgba(37, 99, 235, 0.15);
+            border-color: #2563eb;
+            background: #f0f7ff;
         }
-        .hours-badge {
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            color: #1e40af;
-            border-radius: 10px;
-            padding: 12px;
-            margin: 14px 0;
-            font-size: 12.5px;
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
         }
-        .hours-badge strong {
-            display: block;
-            font-size: 13.5px;
-            color: #1e3a8a;
-            margin-bottom: 4px;
+        @media(max-width: 650px) {
+            .form-grid { grid-template-columns: 1fr; }
         }
-        .rate-card-table {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        .rate-card-table th {
-            background: #f1f5f9;
-            padding: 12px 14px;
-            text-align: right;
-            border-bottom: 2px solid var(--border);
-            color: #334155;
-            font-weight: 800;
-        }
-        .rate-card-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid var(--border);
-        }
-        .toast {
-            position: fixed;
-            bottom: 24px;
-            left: 24px;
-            background: #0f172a;
-            color: #ffffff;
-            padding: 12px 20px;
-            border-radius: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             font-size: 13.5px;
-            font-weight: 600;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            z-index: 99999;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            animation: fadeIn 0.3s ease;
+            outline: none;
         }
-        @media print {
-            body * { visibility: hidden; }
-            #proposal-printable-content, #proposal-printable-content * { visibility: visible; }
-            #proposal-printable-content { position: absolute; left: 0; top: 0; width: 100%; }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: var(--primary-light);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-card {
+            background: white;
+            border-radius: 18px;
+            max-width: 500px;
+            width: 100%;
+            padding: 30px 24px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <!-- Sticky Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo-group">
-                <div class="logo-icon">🤖</div>
+    <!-- Top Navbar -->
+    <header class="top-navbar">
+        <div class="nav-container">
+            <a href="contact.html" class="logo-wrap">
+                <div class="logo-icon">⚕️</div>
                 <div>
-                    <h1 style="font-size: 17px; font-weight: 900; color: #1e3a8a; margin: 0;">
-                        סוכן הפניות וההצעה העסקית | הפורטל הארגוני
+                    <h1 style="font-size: 15px; font-weight: 900; color: var(--primary); margin: 0;">
+                        הפורטל הארגוני לניהול איכות ובטיחות אחיות
                     </h1>
-                    <span style="font-size: 11.5px; color: var(--text-secondary);">
-                        פלטפורמה עצמאית לבירור, הדגמת דמו, איסוף פרטים והצעות מחיר למוסדות רפואיים
+                    <span style="font-size: 11px; color: var(--text-muted);">
+                        מודל הבקרה האחודה 2026 | מאיה שקולניק גזית
                     </span>
                 </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <a href="https://organizational-portal.vercel.app" target="_blank" class="btn btn-outline">
-                    <span>🌐</span> מעבר לאתר הפורטל המבצעי
+            </a>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <a href="user_guide_preview.html" class="btn btn-outline" style="font-size: 13px;">
+                    <span>📖</span> מעבר לדף מנחה ותוכן עניינים
                 </a>
-                <button onclick="switchTab('contact-tab')" class="btn btn-green">
-                    <span>📝</span> תאם הדגמה ואיסוף פרטים
-                </button>
+                <a href="#contact-section" class="btn btn-green" style="font-size: 13px;">
+                    <span>📝</span> השארת פרטים ותיאום ➜
+                </a>
             </div>
         </div>
     </header>
 
-    <main class="container" style="padding-top: 28px; padding-bottom: 60px;">
+    <!-- Hero Section (Short, Focused & Executive) -->
+    <section class="hero">
+        <div class="hero-container">
+            <div>
+                <div style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">שלום רב 🌸</div>
+                <h2 style="font-size: 24px; font-weight: 900; line-height: 1.3; margin-bottom: 12px; color: #ffffff;">
+                    הפורטל הארגוני לניהול איכות, בטיחות הטיפול והכשרת אחיות
+                </h2>
+                <p style="font-size: 13.5px; color: #dbeafe; line-height: 1.6; margin-bottom: 14px;">
+                    פלטפורמה ממוחשבת מקיפה שפותחה במיוחד עבור בתי חולים, מרכזים גריאטריים ובתי אבות, בהתאמה מלאה למודל הבקרה האחודה 2026 של משרד הבריאות.
+                </p>
 
-        <!-- Hero Virtual Agent Banner -->
-        <div class="card" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2563eb 100%); color: #ffffff; border: none; padding: 30px; position: relative; overflow: hidden; margin-bottom: 24px;">
-            <div style="position: absolute; top: -50px; left: -50px; width: 220px; height: 220px; background: rgba(59, 130, 246, 0.25); border-radius: 50%; filter: blur(40px); pointer-events: none;"></div>
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; position: relative; z-index: 2;">
-                <div style="max-width: 780px;">
-                    <div class="badge" style="background: rgba(255,255,255,0.15); color: #93c5fd; border: 1px solid rgba(255,255,255,0.25); margin-bottom: 12px;">
-                        <span>👋</span> שלום וברכים הבאים לפלטפורמת הפניות הרשמית
-                    </div>
-                    <h2 style="font-size: 26px; font-weight: 900; line-height: 1.3; margin-bottom: 10px; color: #ffffff;">
-                        רוצים להטמיע את הפורטל הארגוני בבית החולים או במוסד הגריאטרי שלכם?
-                    </h2>
-                    <p style="font-size: 14.5px; color: #dbeafe; line-height: 1.6; margin: 0;">
-                        סוכן זה מיועד להנהלות בתי חולים, מנהלות סיעוד וממוני איכות: צפו בסרטון הדמו המציג את השימוש והמשמעות הקלינית, עיינו בהצעה העסקית (הכוללת שעות הטמעה ממוקדות ותמחור שעות תמיכה בנפרד), והשאירו פרטים לתיאום פגישת הדגמה אישית עם המומחית.
-                    </p>
+                <!-- 4 Key Points -->
+                <div style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); border-radius: 10px; padding: 14px; margin-bottom: 18px; font-size: 13px; line-height: 1.6;">
+                    <strong style="color: #93c5fd; display: block; margin-bottom: 6px;">🔹 מה הפורטל מעניק למוסד?</strong>
+                    <div>✓ <strong>מעבר מניירת לדיגיטל:</strong> 5 כלי בקרה בטאבלט (החייאה, זיהומים, תרופות, פצעים ורחצה).</div>
+                    <div>✓ <strong>הגנה משפטית ותיעוד הכשרה:</strong> ערכת קליטה 62 שעות עם חתימות דיגיטליות בתיק עובד.</div>
+                    <div>✓ <strong>מערכת תומכת החלטה (CDSS):</strong> מחשבוני סיכון גריאטריים למניעת טעויות תרופתיות.</div>
+                    <div>✓ <strong>סנכרון מלא לשרת הארגון המוסדי:</strong> אבטחת מידע מרבית (On-Premises).</div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 10px; min-width: 200px;">
-                    <button onclick="switchTab('video-tab')" class="btn" style="background: rgba(255,255,255,0.2); color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); justify-content: center;">
+                <!-- Action Links -->
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <a href="#video-section" class="btn btn-primary">
                         <span>🎬</span> צפה בסרטון הדמו
-                    </button>
-                    <button onclick="switchTab('pricing-tab')" class="btn" style="background: rgba(255,255,255,0.2); color: #fff; font-weight: 800; border: 1px solid rgba(255,255,255,0.4); justify-content: center;">
-                        <span>💼</span> הצעה עסקית ומחירון
-                    </button>
-                    <button onclick="switchTab('contact-tab')" class="btn btn-green" style="justify-content: center;">
-                        <span>🚀</span> השארת פרטים לפגישה
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Navigation Tabs -->
-        <div class="tabs-nav">
-            <button class="tab-btn active" id="tab-btn-video" onclick="switchTab('video-tab')">
-                <span>🎬</span> 1. סרטון דמו ומשמעות האתר
-            </button>
-            <button class="tab-btn" id="tab-btn-pricing" onclick="switchTab('pricing-tab')">
-                <span>💼</span> 2. הצעה עסקית ושעות מומחית
-            </button>
-            <button class="tab-btn" id="tab-btn-support" onclick="switchTab('support-tab')">
-                <span>⏱️</span> 3. מחירון שעות תמיכה מעבר (בנפרד)
-            </button>
-            <button class="tab-btn" id="tab-btn-contact" onclick="switchTab('contact-tab')">
-                <span>📝</span> 4. איסוף פרטים ותיאום הדגמה
-            </button>
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- TAB 1: DEMO VIDEO & STRATEGIC CLINICAL SIGNIFICANCE -->
-        <!-- ============================================================== -->
-        <div id="video-tab" class="tab-pane active">
-            <div class="grid-2">
-                
-                <!-- Video Player Box -->
-                <div class="card">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-                        <h3 id="current-video-title" style="font-size: 16.5px; font-weight: 800; color: #1e3a8a; margin: 0; display: flex; align-items: center; gap: 8px;">
-                            <span>🎬</span> סרטון הדגמה: גלישה קצרה לאורך הפלטפורמה
-                        </h3>
-                        <span class="badge" style="background: #e0f2fe; color: #0369a1;">הדגמה מוסדית</span>
-                    </div>
-
-                    <div style="border-radius: 12px; overflow: hidden; background: #000000; box-shadow: 0 4px 20px rgba(0,0,0,0.25); position: relative; padding-top: 56.25%;">
-                        <video id="agent-video-player" controls style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;" poster="maya-profile.jpeg">
-                            <source src="intro_video.mp4" type="video/mp4">
-                            הדפדפן אינו תומך בניגון וידאו HTML5.
-                        </video>
-                    </div>
-
-                    <!-- Chapters Selector -->
-                    <div style="margin-top: 16px; display: flex; flex-direction: column; gap: 8px;">
-                        <span style="font-size: 12px; font-weight: 800; color: var(--text-secondary); text-transform: uppercase;">
-                            בחרו סרטון להדגמה:
-                        </span>
-                        
-                        <div onclick="changeVideo('intro_video.mp4', 'סרטון הדגמה: גלישה קצרה לאורך הפלטפורמה')" style="background: #f8fafc; border: 1px solid #bfdbfe; padding: 10px 14px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong style="font-size: 13px; color: #1e40af;">1. גלישה בפורטל ומבנה המודולים</strong>
-                                <div style="font-size: 11.5px; color: var(--text-secondary);">תצוגת מסכי המערכת, דשבורד הבקרה וכלי הדיווח</div>
-                            </div>
-                            <span style="font-size: 11.5px; font-weight: bold; background: #dbeafe; color: #1e40af; padding: 2px 8px; border-radius: 4px;">סרטון ראשי</span>
-                        </div>
-
-                        <div onclick="changeVideo('aspiration_prevention_video.mp4', 'סרטון קליני: פרוטוקול מניעת אספירציות ובטיחות האכלה')" style="background: #f8fafc; border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong style="font-size: 13px; color: var(--text-primary);">2. מניעת אספירציות ובטיחות האכלה</strong>
-                                <div style="font-size: 11.5px; color: var(--text-secondary);">דוגמה להדרכה אינטראקטיבית מונפשת מתוך מודול הלומדות</div>
-                            </div>
-                            <span style="font-size: 11.5px; color: var(--text-secondary);">02:15</span>
-                        </div>
-
-                        <div onclick="changeVideo('emotional_distress_elderly.mp4', 'סרטון חוסן: התמודדות עם מצוקה רגשית בצוות ובמטופל')" style="background: #f8fafc; border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <strong style="font-size: 13px; color: var(--text-primary);">3. חוסן הצוות ומצוקה רגשית בגיל השלישי</strong>
-                                <div style="font-size: 11.5px; color: var(--text-secondary);">התמודדות עם שחיקה ורווחת המטופל המבוגר</div>
-                            </div>
-                            <span style="font-size: 11.5px; color: var(--text-secondary);">03:40</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Strategic Clinical Meaning Box -->
-                <div class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
-                    <div>
-                        <div class="badge" style="background: #ecfdf5; color: #047857; margin-bottom: 12px;">
-                            <span>💡</span> המשמעות הארגונית והקלינית
-                        </div>
-                        <h3 style="font-size: 20px; font-weight: 900; color: #1e3a8a; margin-bottom: 12px;">
-                            למה הפורטל הארגוני מחולל מהפכה במוסד?
-                        </h3>
-                        
-                        <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin-bottom: 16px;">
-                            בתי חולים גריאטריים ובתי אבות מתמודדים עם אתגר משולש: דרישות רגולטוריות מחמירות של משרד הבריאות, תחלופת כוח אדם גבוהה של צוותי סיעוד ומטפלים, ועומס פקידותי כבד המונע טיפול ישיר.
-                        </p>
-
-                        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="font-size: 18px; color: #2563eb;">✓</span>
-                                <div>
-                                    <strong style="color: var(--text-primary);">מעבר מלא מניירת לדיגיטל:</strong>
-                                    5 כלי בקרה דיגיטליים בטאבלט או בסמארטפון (עגלת החייאה, מניעת זיהומים, בטיחות תרופתית, שלמות עור ורחצה).
-                                </div>
-                            </div>
-
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="font-size: 18px; color: #059669;">✓</span>
-                                <div>
-                                    <strong style="color: var(--text-primary);">מוכנות רציפה לביקורת משרד הבריאות 2026:</strong>
-                                    שאלונים מעודכנים ב-100% לפי מודל הבקרה האחודה ומנגנון הפקת תוכנית תיקון ליקויים (CAPA) מיידית.
-                                </div>
-                            </div>
-
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="font-size: 18px; color: #d97706;">✓</span>
-                                <div>
-                                    <strong style="color: var(--text-primary);">הגנה משפטית ותיעוד הכשרת עובדים (62 שעות):</strong>
-                                    ערכת קליטה מובנית עם חתימות דיגיטליות בתיק עובד במשאבי אנוש – אין יותר טענות "לא הוכשרתי".
-                                </div>
-                            </div>
-
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <span style="font-size: 18px; color: #7c3aed;">✓</span>
-                                <div>
-                                    <strong style="color: var(--text-primary);">דשבורד מנהל מרכזי וסנכרון שרת הארגון המוסדי:</strong>
-                                    צפייה במגמות מחלקתיות, זיהוי כשלים לפני החמרה וייצוא דוחות אקסל רשמיים להנהלה ולפיקוח.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-                        <span style="font-size: 12.5px; color: var(--text-secondary);">
-                            מעוניינים לראות את ההצעה העסקית והתמחור?
-                        </span>
-                        <button onclick="switchTab('pricing-tab')" class="btn btn-primary" style="font-size: 12.5px; padding: 7px 14px;">
-                            מעבר להצעה עסקית ➜
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- ============================================================== -->
-        <!-- TAB 2: UPDATED COMMERCIAL PROPOSAL (REDUCED EXPERT HOURS) -->
-        <!-- ============================================================== -->
-        <div id="pricing-tab" class="tab-pane">
-            
-            <!-- Expert Profile Banner -->
-            <div class="card" style="background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%); border: 1px solid #bfdbfe; margin-bottom: 24px; padding: 22px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-                    <div style="display: flex; align-items: center; gap: 16px;">
-                        <img src="maya-profile.jpeg" alt="מאיה שקולניק גזית" style="width: 75px; height: 75px; border-radius: 50%; object-fit: cover; border: 3px solid #2563eb; box-shadow: 0 4px 10px rgba(37,99,235,0.2);">
-                        <div>
-                            <span class="badge" style="background: #2563eb; color: #fff; margin-bottom: 4px;">מומחית ההטמעה והליווי</span>
-                            <h3 style="margin: 2px 0; font-size: 19px; font-weight: 900; color: #1e3a8a;">
-                                מאיה שקולניק גזית (R.N, BA, M.H.A)
-                            </h3>
-                            <div style="font-size: 12.5px; color: var(--text-secondary);">
-                                מומחית מדיניות וניהול סיעוד, איכות, בטיחות והדרכה במערכת הבריאות הגריאטרית
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; gap: 10px;">
-                        <button onclick="openPrintableProposalModal()" class="btn btn-outline" style="font-size: 12.5px;">
-                            <span>🖨️</span> הפק הצעת מחיר רשמית A4
-                        </button>
-                        <button onclick="switchTab('support-tab')" class="btn btn-primary" style="font-size: 12.5px;">
-                            <span>⏱️</span> צפה במחירון שעות תמיכה מעבר
-                        </button>
-                    </div>
+                    </a>
+                    <a href="user_guide_preview.html" class="btn btn-outline" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.35);">
+                        <span>📖</span> מעבר לדף מנחה ותוכן עניינים
+                    </a>
+                    <a href="#pricing-section" class="btn btn-outline" style="background: rgba(255,255,255,0.15); color: #fff; border-color: rgba(255,255,255,0.35);">
+                        <span>💼</span> הצעה עסקית
+                    </a>
+                    <a href="#contact-section" class="btn btn-green">
+                        <span>📝</span> השארת פרטים לפגישה
+                    </a>
                 </div>
             </div>
 
-            <!-- 3 Pricing Cards (With REDUCED EXPERT HOURS) -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px;">
-                
-                <!-- Package 1: Pilot -->
-                <div class="price-card">
-                    <div>
-                        <div style="font-size: 11.5px; font-weight: 800; color: #64748b; text-transform: uppercase;">מחלקה בודדת / פיילוט התנסות</div>
-                        <h4 style="margin: 6px 0 8px; font-size: 20px; font-weight: 900; color: var(--text-primary);">חבילת פיילוט מחלקתי</h4>
-                        <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-                            מתאימה למחלקה אחת (עד 40 מיטות) המעוניינת להוכיח שיפור במדדי האיכות וצמצום ניירת בתוך 60 יום.
-                        </p>
-
-                        <!-- Reduced Hours Box -->
-                        <div class="hours-badge">
-                            <strong>⏱️ 4 שעות הטמעה מרוכזות של המומחית (כלול במחיר):</strong>
-                            <ul style="margin: 6px 0 0 16px; padding: 0; font-size: 12px; color: #334155; line-height: 1.5;">
-                                <li><strong>שעתיים:</strong> מיפוי מקוון והתאמת הגדרות הפורטל למחלקה.</li>
-                                <li><strong>שעתיים:</strong> הדרכת אחות אחראית וסגנית בביצוע הבקרות הראשונות.</li>
-                            </ul>
-                        </div>
-
-                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 7px;">
-                            <div>✓ רישוי שנתי מלא לכלל 15 המודולים למחלקה</div>
-                            <div>✓ 5 כלי בקרה דיגיטליים ודשבורד תוצאות חי</div>
-                            <div>✓ ערכת קליטה 62 שעות עם חתימות דיגיטליות</div>
-                            <div>✓ תמיכה טכנית של באגים בלבד (שאר שירותי הליווי במחירון נפרד)</div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
-                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">8,500 ₪</div>
-                        <div style="display: flex; align-items: baseline; gap: 6px;">
-                            <span style="font-size: 28px; font-weight: 900; color: var(--text-primary);">6,500 ₪</span>
-                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה (כולל 4 שעות מומחית)</span>
-                        </div>
-                        <button onclick="requestQuoteWithPackage('פיילוט מחלקתי (6,500 ₪)')" class="btn btn-outline" style="width: 100%; margin-top: 12px; justify-content: center;">
-                            בחירה במסלול זה ➜
-                        </button>
-                    </div>
+            <!-- Profile Box -->
+            <div class="creator-box">
+                <img src="maya-profile.jpeg" alt="מאיה שקולניק גזית" class="creator-avatar">
+                <h3 style="font-size: 18px; font-weight: 900; color: #fff; margin-bottom: 2px;">
+                    מאיה שקולניק גזית
+                </h3>
+                <div style="font-size: 12.5px; color: #93c5fd; font-weight: 700; margin-bottom: 6px;">
+                    R.N, BA, M.H.A
                 </div>
-
-                <!-- Package 2: Standard Enterprise (Featured) -->
-                <div class="price-card featured">
-                    <div style="position: absolute; top: -12px; right: 20px; background: #2563eb; color: #fff; font-size: 11px; font-weight: 800; padding: 3px 12px; border-radius: 20px;">
-                        ★ המומלץ למוסדות
-                    </div>
-
-                    <div>
-                        <div style="font-size: 11.5px; font-weight: 800; color: #2563eb; text-transform: uppercase;">מוסד רפואי מלא (עד 6 מחלקות)</div>
-                        <h4 style="margin: 6px 0 8px; font-size: 20px; font-weight: 900; color: var(--text-primary);">חבילה מוסדית מלאה</h4>
-                        <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-                            פתרון מקיף לכלל המוסד (עד 250 מיטות) לעמידה מלאה בדרישות מודל הבקרה האחודה 2026.
-                        </p>
-
-                        <!-- Reduced Hours Box -->
-                        <div class="hours-badge" style="background: #eff6ff; border-color: #93c5fd;">
-                            <strong style="color: #1e40af;">⏱️ 8 שעות הטמעה מרוכזות של המומחית (כלול במחיר):</strong>
-                            <ul style="margin: 6px 0 0 16px; padding: 0; font-size: 12px; color: #1e3a8a; line-height: 1.55;">
-                                <li><strong>2 שעות:</strong> ישיבת התנעה עם הנהלת הסיעוד וגיבוש מדיניות.</li>
-                                <li><strong>4 שעות:</strong> סדנת הדרכה מרוכזת לכלל האחיות האחראיות והסגניות.</li>
-                                <li><strong>2 שעות:</strong> סימולציית בקרה, משוב וליווי הפקת דוח CAPA ראשון.</li>
-                            </ul>
-                        </div>
-
-                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 7px;">
-                            <div>✓ רישוי שנתי מוסדי מלא ללא הגבלת משתמשים</div>
-                            <div>✓ דשבורד מנהל מרכזי ומעקב MDT שבועי</div>
-                            <div>✓ סנכרון מאובטח מול שרת הארגון המוסדי (Enterprise On-Premises)</div>
-                            <div>✓ מודול CDSS גריאטרי, מרקמי IDDSI וניהול פצעים</div>
-                            <div>✓ תמיכה טכנית של באגים בלבד (ייעוץ והדרכות במחירון נפרד)</div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
-                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">24,500 ₪</div>
-                        <div style="display: flex; align-items: baseline; gap: 6px;">
-                            <span style="font-size: 30px; font-weight: 900; color: #2563eb;">18,500 ₪</span>
-                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה (כולל 8 שעות מומחית)</span>
-                        </div>
-                        <button onclick="requestQuoteWithPackage('מוסדית מלאה (18,500 ₪)')" class="btn btn-primary" style="width: 100%; margin-top: 12px; justify-content: center;">
-                            הזמן מסלול מוסדי זה ➜
-                        </button>
-                    </div>
+                <div style="font-size: 11.5px; color: #e2e8f0; line-height: 1.4;">
+                    מומחית למדיניות ומנהל במערכת הבריאות, איכות, בטיחות הטיפול והדרכה גריאטרית
                 </div>
-
-                <!-- Package 3: Advanced Multi-Ward / Chain -->
-                <div class="price-card">
-                    <div>
-                        <div style="font-size: 11.5px; font-weight: 800; color: #7c3aed; text-transform: uppercase;">מרכז גדול / רשת מוסדות</div>
-                        <h4 style="margin: 6px 0 8px; font-size: 20px; font-weight: 900; color: var(--text-primary);">חבילה מוסדית מורחבת</h4>
-                        <p style="font-size: 12.5px; color: var(--text-secondary); margin-bottom: 14px;">
-                            מיועדת למרכזים גריאטריים גדולים (עד 400 מיטות) או רשתות הדורשות סטנדרטיזציה אחידה.
-                        </p>
-
-                        <!-- Reduced Hours Box -->
-                        <div class="hours-badge" style="background: #faf5ff; border-color: #d8b4fe;">
-                            <strong style="color: #6b21a8;">⏱️ 16 שעות הטמעה של המומחית (כלול במחיר):</strong>
-                            <ul style="margin: 6px 0 0 16px; padding: 0; font-size: 12px; color: #581c87; line-height: 1.55;">
-                                <li><strong>4 שעות:</strong> ישיבת התנעה מוסדית והתאמת נהלים רשתיים.</li>
-                                <li><strong>6 שעות:</strong> 2 סדנאות הדרכה פרונטליות (הנהלה וסוכני תרופות).</li>
-                                <li><strong>6 שעות:</strong> סימולציית ביקורת פתע מוסדית מלאה והפקת דוח פערים.</li>
-                            </ul>
-                        </div>
-
-                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 7px;">
-                            <div>✓ רישוי שנתי מורחב לכלל המחלקות והקמפוסים</div>
-                            <div>✓ דשבורד מנהל ראשי ומטריצת אחריות RACI מוסדית</div>
-                            <div>✓ אינטגרציית API לסנכרון נתוני איכות לתיק הרפואי</div>
-                            <div>✓ תמיכת פרימיום ומוקד מומחית ייעודי</div>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border);">
-                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">38,000 ₪</div>
-                        <div style="display: flex; align-items: baseline; gap: 6px;">
-                            <span style="font-size: 28px; font-weight: 900; color: #7c3aed;">29,000 ₪</span>
-                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה (כולל 16 שעות מומחית)</span>
-                        </div>
-                        <button onclick="requestQuoteWithPackage('מוסדית מורחבת (29,000 ₪)')" class="btn btn-outline" style="width: 100%; margin-top: 12px; justify-content: center;">
-                            בחירה במסלול מורחב ➜
-                        </button>
-                    </div>
+                <div style="margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.15); font-size: 11px; color: #cbd5e1;">
+                    ליווי אישי ממוקד להנהלת האחיות ולצוותי המחלקות
                 </div>
-
             </div>
         </div>
+    </section>
 
-        <!-- ============================================================== -->
-        <!-- TAB 3: SEPARATE SUPPORT HOURS RATE CARD (שעות תמיכה מעבר) -->
-        <!-- ============================================================== -->
-        <div id="support-tab" class="tab-pane">
-            <div class="card">
-                <div style="margin-bottom: 20px;">
-                    <span class="badge" style="background: #fef3c7; color: #92400e; margin-bottom: 6px;">
-                        ⏱️ מחירון שירותים מקצועיים נוספים
-                    </span>
-                    <h3 style="font-size: 20px; font-weight: 900; color: #1e3a8a; margin: 4px 0;">
-                        מחירון שעות תמיכה, ליווי וייעוץ מומחית מעבר לחבילת הבסיס
+    <!-- Main Content Container (No duplicated tab bar) -->
+    <main class="container">
+
+        <!-- 1. Demo Video Section -->
+        <section id="video-section" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <h3 style="font-size: 17px; font-weight: 800; color: var(--primary); margin: 0;">
+                    🎬 סרטון הדגמה: גלישה קצרה לאורך הפלטפורמה
+                </h3>
+                <a href="#contact-section" class="btn btn-green" style="font-size: 12px; padding: 6px 14px;">
+                    <span>📝</span> תיאום הדגמה אישית ➜
+                </a>
+            </div>
+
+            <div class="video-box">
+                <video controls poster="maya-profile.jpeg">
+                    <source src="intro_video.mp4" type="video/mp4">
+                    הדפדפן אינו תומך בניגון וידאו HTML5.
+                </video>
+            </div>
+
+            <div style="margin-top: 14px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: #1e40af; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <span>💡 <strong>לפרטים נוספים ועיון במבנה המלא:</strong> לחצו לצפייה בדף המנחה ותוכן 15 המודולים.</span>
+                <a href="user_guide_preview.html" class="btn btn-primary" style="font-size: 12px; padding: 6px 14px;">
+                    מעבר לדף מנחה ותוכן עניינים ➜
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. Business Proposal Section -->
+        <section id="pricing-section" class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px;">
+                <div>
+                    <h3 style="font-size: 17px; font-weight: 800; color: var(--primary); margin: 0;">
+                        💼 הצעה עסקית ומסלולי רישוי מוסדי
                     </h3>
-                    <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
-                        מוסדות המעוניינים בהדרכות צוות נוספות, ליווי מתמשך, או סימולציות ביקורת פתע נוספות לאורך השנה, יכולים לרכוש שעות מומחית או בנקי שעות במחיר מוזל:
-                    </p>
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                        כולל שעות הטמעה מרוכזות של המומחית, סנכרון שרת מוסדי ותמיכת באגים כלולה
+                    </div>
+                </div>
+                <a href="#contact-section" class="btn btn-green" style="font-size: 12px; padding: 6px 14px;">
+                    <span>📝</span> להשארת פרטים והזמנה
+                </a>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Pilot -->
+                <div class="price-card">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 800; background: #e2e8f0; color: #475569; padding: 2px 8px; border-radius: 12px;">מחלקה / פיילוט</span>
+                        <h4 style="font-size: 17px; font-weight: 900; color: var(--primary); margin-top: 6px;">פיילוט מחלקתי ממוקד</h4>
+                        <div style="font-size: 26px; font-weight: 900; color: var(--primary); margin: 8px 0;">
+                            12,500 ₪ <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">/ שנה</span>
+                        </div>
+                        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px; font-size: 12px; color: #1e40af; margin-bottom: 10px;">
+                            <strong>⏱️ 4 שעות הטמעה מרוכזות (כלול):</strong> מיפוי מקוון, התאמת הגדרות והדרכת אחראית וסגנית.
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ 5 כלי בקרה דיגיטליים בטאבלט<br>
+                            ✓ ערכת קליטה 62 שעות עם חתימות<br>
+                            ✓ תמיכה טכנית של באגים בלבד כלולה
+                        </div>
+                    </div>
+                    <a href="#contact-section" onclick="setPackage('פיילוט מחלקה (4 שעות)')" class="btn btn-outline" style="width: 100%; margin-top: 14px; font-size: 12.5px;">
+                        בחר מסלול זה ➜
+                    </a>
                 </div>
 
-                <div style="overflow-x: auto; margin-bottom: 24px;">
-                    <table class="rate-card-table">
-                        <thead>
-                            <tr>
-                                <th>שירות / מסלול תמיכה נוסף</th>
-                                <th>פירוט התכולה והפעילות</th>
-                                <th>שעות מומחית</th>
-                                <th>תעריף</th>
-                                <th>הזמנה מהירה</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><strong style="color: #1e40af;">שעת ייעוץ / תמיכה בודדת</strong></td>
-                                <td style="color: var(--text-secondary);">תמיכה מקצועית מקוונת (Zoom / טלפון), פתרון סוגיות בקרה, עדכון שאלונים ייעודיים</td>
-                                <td>1 שעה</td>
-                                <td><strong style="font-size: 15px;">450 ₪</strong> / לשעה</td>
-                                <td>
-                                    <button onclick="requestSupportService('שעת ייעוץ בודדת (450 ₪)')" class="btn btn-outline" style="padding: 5px 12px; font-size: 11.5px;">הזמן</button>
-                                </td>
-                            </tr>
-                            <tr style="background: #f0fdf4;">
-                                <td><strong style="color: #059669;">בנק 10 שעות תמיכה וליווי (מוזל)</strong></td>
-                                <td style="color: var(--text-secondary);">בנק שעות שנתי גמיש: סיוע בהטמעה, ליווי אחיות אחראיות חדשות, הדרכות רענון ממוקדות</td>
-                                <td>10 שעות</td>
-                                <td><strong style="font-size: 16px; color: #059669;">3,800 ₪</strong> <small style="color: gray;">(380 ₪ לשעה)</small></td>
-                                <td>
-                                    <button onclick="requestSupportService('בנק 10 שעות תמיכה (3,800 ₪)')" class="btn btn-green" style="padding: 5px 12px; font-size: 11.5px;">הזמן בנק</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong style="color: #2563eb;">בנק 20 שעות ליווי והדרכה מעמיקה</strong></td>
-                                <td style="color: var(--text-secondary);">ליווי שנתי צמוד: הדרכות נאמני פצע וזיהומים, בקרות תצפית חודשיות, ניתוח נתונים להנהלה</td>
-                                <td>20 שעות</td>
-                                <td><strong style="font-size: 16px; color: #1e40af;">6,800 ₪</strong> <small style="color: gray;">(340 ₪ לשעה)</small></td>
-                                <td>
-                                    <button onclick="requestSupportService('בנק 20 שעות ליווי (6,800 ₪)')" class="btn btn-outline" style="padding: 5px 12px; font-size: 11.5px;">הזמן בנק</button>
-                                </td>
-                            </tr>
-                            <tr style="background: #fffbeb;">
-                                <td><strong style="color: #b45309;">יום סימולציית ביקורת משרד הבריאות פרונטלית (Mock Audit)</strong></td>
-                                <td style="color: var(--text-secondary);">יום מרוכז במוסד: ביקורת פתע מדמה במחלקות, בדיקת עגלות החייאה, תרופות ותיקי עובדים + הפקת דו"ח פערים רשמי להנהלה</td>
-                                <td>6 שעות פרונטליות</td>
-                                <td><strong style="font-size: 16px; color: #b45309;">3,200 ₪</strong> <small style="color: gray;">(יום שלם)</small></td>
-                                <td>
-                                    <button onclick="requestSupportService('יום סימולציית ביקורת פרונטלית (3,200 ₪)')" class="btn btn-outline" style="padding: 5px 12px; font-size: 11.5px;">תאם יום</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><strong style="color: #475569;">תמיכה טכנית של באגים ותקלות בלבד</strong></td>
-                                <td style="color: var(--text-secondary);">תיקון תקלות תוכנה ובאגים בלבד (הדרכות, ייעוץ ושאלות צוות מתומחרים בנפרד)</td>
-                                <td>ללא הגבלה לבאגים</td>
-                                <td><strong style="color: #059669;">כלול ברישוי (באגים בלבד)</strong></td>
-                                <td><span style="font-size: 11px; color: #059669; font-weight: bold;">כלול ✓</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <!-- Institutional (Featured) -->
+                <div class="price-card featured">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 800; background: #2563eb; color: white; padding: 2px 10px; border-radius: 12px;">⭐ המומלץ ביותר למוסד</span>
+                        <h4 style="font-size: 17px; font-weight: 900; color: var(--primary); margin-top: 6px;">מוסדי מלא (כל המחלקות)</h4>
+                        <div style="font-size: 26px; font-weight: 900; color: var(--primary); margin: 8px 0;">
+                            28,000 ₪ <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">/ שנה</span>
+                        </div>
+                        <div style="background: #dbeafe; border: 1px solid #93c5fd; border-radius: 8px; padding: 10px; font-size: 12px; color: #1e40af; margin-bottom: 10px;">
+                            <strong>⏱️ 8 שעות הטמעה מרוכזות (כלול):</strong> התנעה עם הנהלת האחיות, סדנת מובילות מחלקתיות וליווי עלייה לאוויר.
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ פריסה בכלל מחלקות הארגון<br>
+                            ✓ דשבורד מנהל מרכזי וסגירת ליקויי CAPA<br>
+                            ✓ סנכרון מאובטח לשרת הארגון המוסדי<br>
+                            ✓ תמיכה טכנית של באגים בלבד כלולה
+                        </div>
+                    </div>
+                    <a href="#contact-section" onclick="setPackage('מוסדי מלא (8 שעות)')" class="btn btn-primary" style="width: 100%; margin-top: 14px; font-size: 12.5px;">
+                        בחר מסלול מוסדי ➜
+                    </a>
                 </div>
 
-                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 16px; font-size: 12.5px; color: var(--text-secondary); line-height: 1.6;">
-                    <strong>💡 הערות לתמחור שעות התמיכה:</strong><br>
-                    • שעות הייעוץ ניתנות למימוש במשך 12 חודשים מיום הרכישה.<br>
-                    • שעות פרונטליות במוסד באזורים מרוחקים עשויות לכלול החזר הוצאות נסיעה בתיאום מראש.<br>
-                    • המחירים אינם כוללים מע"מ כחוק.
+                <!-- Network -->
+                <div class="price-card">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 800; background: #fae8ff; color: #86198f; padding: 2px 8px; border-radius: 12px;">רשת / רב-אגפי</span>
+                        <h4 style="font-size: 17px; font-weight: 900; color: var(--primary); margin-top: 6px;">מרכז רפואי רשתי</h4>
+                        <div style="font-size: 26px; font-weight: 900; color: var(--primary); margin: 8px 0;">
+                            45,000 ₪ <span style="font-size: 12px; font-weight: 500; color: var(--text-muted);">/ שנה</span>
+                        </div>
+                        <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 8px; padding: 10px; font-size: 12px; color: #6b21a8; margin-bottom: 10px;">
+                            <strong>⏱️ 16 שעות הטמעה מרוכזות (כלול):</strong> תוכנית הטמעה רב-אגפית, בניית נהלים ייעודיים וסדנאות הנהלה.
+                        </div>
+                        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.5;">
+                            ✓ פריסה מרובת סניפים ואגפים<br>
+                            ✓ התאמות תוכן ומודולים ייעודיים<br>
+                            ✓ תמיכה טכנית של באגים בלבד כלולה
+                        </div>
+                    </div>
+                    <a href="#contact-section" onclick="setPackage('מרכז רפואי רשתי (16 שעות)')" class="btn btn-outline" style="width: 100%; margin-top: 14px; font-size: 12.5px;">
+                        בחר מסלול רשתי ➜
+                    </a>
                 </div>
             </div>
-        </div>
 
-        <!-- ============================================================== -->
-        <!-- TAB 4: SEPARATE LEAD CAPTURE & CONTACT PLATFORM -->
-        <!-- ============================================================== -->
-        <div id="contact-tab" class="tab-pane">
-            <div class="grid-2">
-                
-                <!-- Lead Form Container -->
-                <div class="card">
-                    <div style="margin-bottom: 18px;">
-                        <span class="badge" style="background: #dcfce7; color: #166534; margin-bottom: 6px;">
-                            📝 טופס פנייה מוסדית
-                        </span>
-                        <h3 style="font-size: 20px; font-weight: 900; color: #1e3a8a; margin: 4px 0;">
-                            השאירו פרטים ונחזור אליכם לתיאום פגישת הדגמה
-                        </h3>
-                        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">
-                            הזינו את פרטי המוסד לקבלת הדגמה חיה מותאמת ב-Zoom או בביקור פרונטלי, וקבלת הצעת מחיר רשמית:
-                        </p>
-                    </div>
-
-                    <form id="agentInquiryForm" onsubmit="handleAgentFormSubmit(event)">
-                        <div class="grid-2" style="gap: 12px;">
-                            <div class="form-group">
-                                <label>שם המוסד הרפואי / בית האבות: *</label>
-                                <input type="text" id="f_inst_name" required placeholder="למשל: מרכז רפואי גריאטרי נווה אור" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>סוג המוסד:</label>
-                                <select id="f_inst_type" class="form-control">
-                                    <option value="בית חולים גריאטרי שיקומי">בית חולים גריאטרי שיקומי</option>
-                                    <option value="בית אבות ומחלקה סיעודית">בית אבות ומחלקה סיעודית</option>
-                                    <option value="רשת דיור מוגן">רשת דיור מוגן</option>
-                                    <option value="מרכז סיעוד מורכב / מונשמים">מרכז סיעוד מורכב / מונשמים</option>
-                                    <option value="מחלקה פנימית בבית חולים">מחלקה פנימית בבית חולים</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="grid-2" style="gap: 12px;">
-                            <div class="form-group">
-                                <label>שם איש הקשר: *</label>
-                                <input type="text" id="f_contact_name" required placeholder="שם מלא" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>תפקיד בארגון:</label>
-                                <input type="text" id="f_contact_role" placeholder="למשל: מנהלת סיעוד / מנהל איכות" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="grid-2" style="gap: 12px;">
-                            <div class="form-group">
-                                <label>טלפון נייד / וואטסאפ: *</label>
-                                <input type="tel" id="f_phone" required placeholder="050-0000000" class="form-control" style="direction: ltr; text-align: right;">
-                            </div>
-                            <div class="form-group">
-                                <label>כתובת אימייל:</label>
-                                <input type="email" id="f_email" placeholder="name@hospital.org.il" class="form-control" style="direction: ltr; text-align: right;">
-                            </div>
-                        </div>
-
-                        <div class="grid-2" style="gap: 12px;">
-                            <div class="form-group">
-                                <label>מספר מיטות / מחלקות:</label>
-                                <input type="text" id="f_beds" placeholder="למשל: 120 מיטות / 4 מחלקות" class="form-control">
-                            </div>
-                            <div class="form-group">
-                                <label>מסלול מבוקש:</label>
-                                <select id="f_package" class="form-control">
-                                    <option value="מוסדית מלאה (18,500 ₪) - 8 שעות מומחית">מוסדית מלאה (18,500 ₪) - 8 שעות מומחית</option>
-                                    <option value="פיילוט מחלקתי (6,500 ₪) - 4 שעות מומחית">פיילוט מחלקתי (6,500 ₪) - 4 שעות מומחית</option>
-                                    <option value="מוסדית מורחבת (29,000 ₪) - 16 שעות מומחית">מוסדית מורחבת (29,000 ₪) - 16 שעות מומחית</option>
-                                    <option value="בנק שעות תמיכה נוספות בנפרד">בנק שעות תמיכה נוספות בנפרד</option>
-                                    <option value="התאמה אישית / בירור ראשוני">התאמה אישית / בירור ראשוני</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>הערות או מועד מועדף להדגמה:</label>
-                            <textarea id="f_notes" rows="2" placeholder="ציינו דגשים, תאריך ושעה מועדפים לשיחה וכד'..." class="form-control"></textarea>
-                        </div>
-
-                        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px;">
-                            <button type="submit" class="btn btn-green" style="font-size: 14.5px; padding: 11px 26px;">
-                                <span>🚀</span> שלח פנייה ותאם הדגמה
-                            </button>
-                        </div>
-                    </form>
+            <!-- Support hours disclaimer & quick pricing -->
+            <div style="margin-top: 18px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; font-size: 12px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                <div>
+                    <strong>שעות תמיכה מעבר (בנפרד):</strong> שעת מומחית בודדת: 450 ₪ | חבילת 10 שעות ליווי מוסדי: 3,800 ₪ (חיסכון 700 ₪).
                 </div>
-
-                <!-- Fast Contact & Leads Overview -->
-                <div style="display: flex; flex-direction: column; gap: 18px;">
-                    
-                    <!-- Direct WhatsApp with Maya -->
-                    <div class="card" style="background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: #ffffff;">
-                        <h4 style="margin: 0 0 8px; font-size: 16px; font-weight: 900; color: #ffffff; display: flex; align-items: center; gap: 8px;">
-                            <span>💬</span> מענה ישיר ומהיר בוואטסאפ
-                        </h4>
-                        <p style="font-size: 13px; color: #e8f5e9; margin-bottom: 16px; line-height: 1.5;">
-                            מעדיפים לקבל מענה מיידי? שילחו הודעה ישירה למאיה שקולניק גזית (מומחית מדיניות וניהול סיעוד) לתיאום מהיר של הדגמה:
-                        </p>
-                        <a href="https://wa.me/972500000000?text=%D7%A9%D7%9C%D7%95%D7%9D%20%D7%9E%D7%90%D7%99%D7%94%2C%20%D7%90%D7%A0%D7%99%20%D7%A4%D7%95%D7%A0%D7%94%20%D7%91%D7%A7%D7%A9%D7%A8%20%D7%9C%D7%A4%D7%95%D7%A8%D7%98%D7%9C%20%D7%94%D7%90%D7%A8%D7%20%D7%92%D7%95%D7%A0%D7%99%20%D7%95%D7%A0%D7%A9%D7%9E%D7%97%20%D7%9C%D7%AA%D7%90%D7%9D%20%D7%A4%D7%92%D7%99%D7%A9%D7%AA%20%D7%94%D7%93%D7%92%D7%9E%D7%94." target="_blank" class="btn" style="background: #ffffff; color: #128c7e; font-weight: 800; font-size: 13.5px; width: 100%; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-                            <span>💬</span> שלח הודעת וואטסאפ כעת
-                        </a>
-                    </div>
-
-                    <!-- Leads History Log for Admin -->
-                    <div class="card">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                            <strong style="font-size: 14px; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
-                                <span>📂</span> פניות שנשמרו במערכת (<span id="leads-count-badge">0</span>)
-                            </strong>
-                            <button onclick="exportAgentLeadsCsv()" class="btn btn-outline" style="padding: 4px 10px; font-size: 11px;">
-                                ייצוא CSV 📊
-                            </button>
-                        </div>
-
-                        <div id="leads-list-container" style="max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
-                            <div style="padding: 16px; text-align: center; color: var(--text-secondary); font-size: 12px; background: #f8fafc; border-radius: 8px;">
-                                טרם נרשמו פניות. פניות שיוגשו יישמרו כאן אוטומטית.
-                            </div>
-                        </div>
-                    </div>
-
+                <div style="color: #059669; font-weight: bold;">
+                    תמיכה טכנית לבאגים כלולה ללא הגבלה ✓
                 </div>
-
             </div>
-        </div>
+        </section>
+
+        <!-- 3. Contact & Lead Form Section -->
+        <section id="contact-section" class="card" style="max-width: 820px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 18px;">
+                <h3 style="font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">
+                    📝 השארת פרטים ותיאום הדגמה אישית
+                </h3>
+                <div style="font-size: 13px; color: var(--text-muted);">
+                    השאירו פרטים ומאיה שקולניק גזית תחזור אליכם בהקדם לתיאום מועד להדגמה
+                </div>
+            </div>
+
+            <form id="leadForm" onsubmit="submitForm(event)">
+                <div class="form-grid">
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">שם בית החולים / המוסד *</label>
+                        <input type="text" id="f_inst" required placeholder="למשל: מרכז רפואי גריאטרי..." class="form-input">
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">סוג המוסד</label>
+                        <select id="f_type" class="form-select">
+                            <option value="בית חולים גריאטרי">בית חולים גריאטרי</option>
+                            <option value="בית אבות ומחלקה סיעודית">בית אבות ומחלקה סיעודית</option>
+                            <option value="מרכז סיעוד מורכב / מונשמים">מרכז סיעוד מורכב / מונשמים</option>
+                            <option value="רשת דיור מוגן">רשת דיור מוגן</option>
+                            <option value="אחר">אחר</option>
+                        </select>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">שם איש / אשת קשר *</label>
+                        <input type="text" id="f_name" required placeholder="שם מלא" class="form-input">
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">תפקיד בארגון *</label>
+                        <input type="text" id="f_role" required placeholder="מנהלת אחיות / מנהל איכות" class="form-input">
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">מספר טלפון להתקשרות *</label>
+                        <input type="tel" id="f_phone" required placeholder="050-0000000" class="form-input" style="direction: ltr; text-align: right;">
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">אימייל</label>
+                        <input type="email" id="f_email" placeholder="nurse@hospital.org.il" class="form-input" style="direction: ltr; text-align: right;">
+                    </div>
+
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">מסלול מבוקש</label>
+                        <select id="f_pkg" class="form-select">
+                            <option value="מוסדי מלא (8 שעות)">מוסדי מלא (כל המחלקות - 8 שעות הטמעה) ⭐ מומלץ</option>
+                            <option value="פיילוט מחלקה (4 שעות)">מחלקה בודדת / פיילוט (4 שעות הטמעה)</option>
+                            <option value="מרכז רפואי רשתי (16 שעות)">מרכז רפואי רשתי (16 שעות הטמעה)</option>
+                            <option value="חבילת 10 שעות ליווי מוסדי">חבילת 10 שעות ליווי מוסדי (3,800 ₪)</option>
+                            <option value="מעוניין בשיחת ייעוץ ראשונית">מעוניין בשיחת ייעוץ ראשונית</option>
+                        </select>
+                    </div>
+
+                    <div style="grid-column: 1 / -1; display: flex; flex-direction: column; gap: 4px;">
+                        <label style="font-size: 12.5px; font-weight: 700;">הערות או דגשים</label>
+                        <textarea id="f_notes" rows="2" placeholder="מועד ביקורת מתוכנן? צרכים מיוחדים?" class="form-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div style="margin-top: 18px; text-align: center;">
+                    <button type="submit" class="btn btn-green" style="padding: 12px 36px; font-size: 15px;">
+                        <span>🚀</span> שליחת פנייה לתיאום הדגמה אישית
+                    </button>
+                </div>
+            </form>
+        </section>
 
     </main>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast">
-        <span id="toast-msg">הודעה</span>
-    </div>
-
-    <!-- Official Printable Proposal Modal (A4 Print Preview) -->
-    <div id="proposal_modal" style="display: none; position: fixed; inset: 0; z-index: 999999; background: rgba(15,23,42,0.85); align-items: center; justify-content: center; backdrop-filter: blur(4px); padding: 1rem; box-sizing: border-box;">
-        <div style="background: #ffffff; width: 100%; max-width: 850px; border-radius: 14px; box-shadow: 0 12px 35px rgba(0,0,0,0.35); overflow: hidden; direction: rtl; text-align: right; max-height: 92vh; display: flex; flex-direction: column;">
-            
-            <div style="padding: 14px 20px; background: #1e3a8a; color: #fff; display: flex; justify-content: space-between; align-items: center;">
-                <div style="font-weight: 800; font-size: 14px;">📄 הצעת מחיר מוסדית רשמית (A4) - שעות הטמעה מצומצמות</div>
-                <div style="display: flex; gap: 8px;">
-                    <button onclick="window.print()" class="btn btn-green" style="padding: 6px 14px; font-size: 12px;">
-                        🖨️ הדפס / שמור כ-PDF
-                    </button>
-                    <button onclick="document.getElementById('proposal_modal').style.display='none'" style="background: rgba(255,255,255,0.2); border: none; color: #fff; font-size: 16px; width: 28px; height: 28px; border-radius: 50%; cursor: pointer;">✖</button>
-                </div>
+    <!-- Thank You Modal -->
+    <div id="thankModal" class="modal">
+        <div class="modal-card">
+            <div style="font-size: 40px; margin-bottom: 10px;">🌸</div>
+            <h3 style="font-size: 20px; font-weight: 900; color: var(--primary); margin-bottom: 8px;">
+                תודה רבה על פנייתך!
+            </h3>
+            <div id="thankText" style="font-size: 13.5px; color: #334155; line-height: 1.6; margin-bottom: 18px;"></div>
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 14px; font-size: 12px; color: #64748b; margin-bottom: 18px; text-align: right;">
+                <div>📅 <strong>זמן מענה ממוצע:</strong> תוך מספר שעות בשעות הפעילות</div>
+                <div>👩‍⚕️ <strong>מומחית מלווה:</strong> מאיה שקולניק גזית (מומחית למדיניות ומנהל במערכת הבריאות)</div>
             </div>
-
-            <div id="proposal-printable-content" style="padding: 32px; overflow-y: auto; flex: 1; font-family: 'Heebo', sans-serif; color: #1e293b; line-height: 1.6; font-size: 13px; background: #ffffff;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #1e3a8a; padding-bottom: 14px; margin-bottom: 18px;">
-                    <div>
-                        <h2 style="margin: 0; font-size: 21px; font-weight: 900; color: #1e3a8a;">הפורטל הארגוני לניהול איכות ובטיחות בסיעוד</h2>
-                        <div style="font-size: 12px; color: #64748b; margin-top: 2px;">מודל הבקרה האחודה 2026 | מומחית מדיניות וניהול סיעוד: מאיה שקולניק גזית (R.N, BA, M.H.A)</div>
-                    </div>
-                    <div style="text-align: left; font-size: 11.5px; color: #475569;">
-                        <div><strong>תאריך:</strong> <span id="modal-date"></span></div>
-                        <div><strong>מספר הצעה:</strong> PROPOSAL-2026-SLIM</div>
-                        <div><strong>תוקף:</strong> 30 יום</div>
-                    </div>
-                </div>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 16px; margin-bottom: 18px;">
-                    <div><strong>לכבוד:</strong> הנהלת המוסד הרפואי / מנהלת הסיעוד</div>
-                    <div><strong>הנדון:</strong> הצעת מחיר רשמית להטמעת הפורטל הארגוני וליווי ממוקד</div>
-                </div>
-
-                <h4 style="margin: 0 0 8px; font-size: 14px; font-weight: 800; color: #1e3a8a;">1. תכולת רישוי הפורטל הארגוני</h4>
-                <p style="margin: 0 0 14px; font-size: 12px; color: #475569;">
-                    כולל גישה מלאה ל-15 מודולי המערכת: 5 כלי בקרה דיגיטליים, ערכת קליטה מוסדית 62 שעות עם חתימות דיגיטליות, דשבורד מנהל עם ניתוח מגמות ו-CAPA, סנכרון מאובטח מול שרת הארגון, ומערכת תומכת החלטה קלינית (CDSS).
-                </p>
-
-                <h4 style="margin: 16px 0 8px; font-size: 14px; font-weight: 800; color: #1e3a8a;">2. מפרט מסלולים (כולל שעות הטמעה ממוקדות)</h4>
-                <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 18px;">
-                    <thead>
-                        <tr style="background: #1e3a8a; color: #ffffff;">
-                            <th style="padding: 8px 10px; text-align: right;">מסלול שירות</th>
-                            <th style="padding: 8px 10px; text-align: right;">היקף מוסדי</th>
-                            <th style="padding: 8px 10px; text-align: right;">שעות הטמעה ממוקדות של המומחית (כלול במחיר)</th>
-                            <th style="padding: 8px 10px; text-align: left;">עלות שנתית</th>
-                        </tr>
-                    </thead>
-                    <tbody style="border: 1px solid #cbd5e1;">
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 8px 10px; font-weight: 700;">פיילוט מחלקתי</td>
-                            <td style="padding: 8px 10px;">מחלקה אחת (עד 40 מיטות)</td>
-                            <td style="padding: 8px 10px;"><strong>4 שעות מומחית:</strong> מיפוי מקוון והדרכת אחות אחראית</td>
-                            <td style="padding: 8px 10px; text-align: left; font-weight: bold;">6,500 ₪</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0; background: #eff6ff;">
-                            <td style="padding: 8px 10px; font-weight: 700; color: #1e40af;">מוסדית מלאה (מומלץ)</td>
-                            <td style="padding: 8px 10px;">מוסד מלא (עד 6 מחלקות / 250 מיטות)</td>
-                            <td style="padding: 8px 10px;"><strong>8 שעות מומחית:</strong> התנעה עם הנהלה, סדנת אחראיות מרוכזת, סימולציה ודוח CAPA</td>
-                            <td style="padding: 8px 10px; text-align: left; font-weight: bold; color: #1e40af;">18,500 ₪</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 8px 10px; font-weight: 700;">מוסדית מורחבת</td>
-                            <td style="padding: 8px 10px;">מוסד גדול / רשת (עד 400 מיטות)</td>
-                            <td style="padding: 8px 10px;"><strong>16 שעות מומחית:</strong> התנעה, 2 סדנאות, סימולציית ביקורת מקיפה ודוח פערים</td>
-                            <td style="padding: 8px 10px; text-align: left; font-weight: bold;">29,000 ₪</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <h4 style="margin: 16px 0 8px; font-size: 14px; font-weight: 800; color: #1e3a8a;">3. מחירון שעות תמיכה וליווי מעבר (בנפרד)</h4>
-                <table style="width: 100%; border-collapse: collapse; font-size: 11.5px; margin-bottom: 18px;">
-                    <thead>
-                        <tr style="background: #f1f5f9; color: #334155;">
-                            <th style="padding: 6px 10px; text-align: right;">שירות</th>
-                            <th style="padding: 6px 10px; text-align: right;">היקף</th>
-                            <th style="padding: 6px 10px; text-align: left;">תעריף</th>
-                        </tr>
-                    </thead>
-                    <tbody style="border: 1px solid #cbd5e1;">
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 6px 10px;">שעת ייעוץ / תמיכה בודדת</td>
-                            <td style="padding: 6px 10px;">1 שעה מקוונת</td>
-                            <td style="padding: 6px 10px; text-align: left; font-weight: bold;">450 ₪</td>
-                        </tr>
-                        <tr style="border-bottom: 1px solid #e2e8f0;">
-                            <td style="padding: 6px 10px;">בנק 10 שעות תמיכה שנתי</td>
-                            <td style="padding: 6px 10px;">10 שעות ליווי והדרכה</td>
-                            <td style="padding: 6px 10px; text-align: left; font-weight: bold;">3,800 ₪ (380 ₪ לשעה)</td>
-                        </tr>
-                        <tr>
-                            <td style="padding: 6px 10px;">יום סימולציית ביקורת משרד הבריאות פרונטלית (Mock Audit)</td>
-                            <td style="padding: 6px 10px;">יום מלא במוסד (6 שעות) + דו"ח פערים</td>
-                            <td style="padding: 6px 10px; text-align: left; font-weight: bold;">3,200 ₪</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; font-size: 11px; color: #475569; margin-bottom: 20px;">
-                    <strong>תנאים כלליים:</strong> המחירים אינם כוללים מע"מ כחוק. תמיכה טכנית כלולה לתיקון באגים בלבד. שרת המערכת הוא שרת הארגון המוסדי (On-Premises / שרת בית החולים). שעות ליווי נוספות מתומחרות בנפרד לפי מחירון השירותים.
-                </div>
-
-                <div style="display: flex; justify-content: space-between; margin-top: 25px; padding-top: 15px; border-top: 1px dashed #cbd5e1;">
-                    <div style="text-align: center; min-width: 180px;">
-                        <div style="font-weight: bold; color: #1e3a8a;">מאיה שקולניק גזית</div>
-                        <div style="font-size: 11px; color: #64748b;">R.N, BA, M.H.A<br>מומחית מדיניות וניהול סיעוד</div>
-                        <div style="margin-top: 20px; border-bottom: 1px solid #94a3b8; width: 140px; margin-left: auto; margin-right: auto;"></div>
-                    </div>
-                    <div style="text-align: center; min-width: 180px;">
-                        <div style="font-weight: bold; color: #1e293b;">אישור הנהלת המוסד</div>
-                        <div style="font-size: 11px; color: #64748b;">שם המאשר / תפקיד</div>
-                        <div style="margin-top: 20px; border-bottom: 1px solid #94a3b8; width: 140px; margin-left: auto; margin-right: auto;"></div>
-                    </div>
-                </div>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="document.getElementById('thankModal').style.display='none'" class="btn btn-primary">
+                    אישור וסגירה ✓
+                </button>
+                <a id="thankWa" href="#" target="_blank" class="btn btn-green">
+                    <span>💬</span> פתיחת וואטסאפ מהיר
+                </a>
             </div>
-
         </div>
     </div>
 
-    <!-- Script Logic -->
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-            const targetPane = document.getElementById(tabId);
-            if (targetPane) targetPane.classList.add('active');
-
-            if (tabId === 'video-tab') document.getElementById('tab-btn-video').classList.add('active');
-            if (tabId === 'pricing-tab') document.getElementById('tab-btn-pricing').classList.add('active');
-            if (tabId === 'support-tab') document.getElementById('tab-btn-support').classList.add('active');
-            if (tabId === 'contact-tab') document.getElementById('tab-btn-contact').classList.add('active');
-            
-            window.scrollTo({ top: 180, behavior: 'smooth' });
-        }
-
-        function changeVideo(src, title) {
-            const player = document.getElementById('agent-video-player');
-            const titleEl = document.getElementById('current-video-title');
-            if (player) {
-                player.src = src;
-                player.load();
-                player.play().catch(e => console.log('Autoplay prevented:', e));
-            }
-            if (titleEl) {
-                titleEl.innerHTML = `<span>🎬</span> ${title}`;
-            }
-            showToast(`סרטון הוחלף: ${title}`);
-        }
-
-        function requestQuoteWithPackage(pkgName) {
-            switchTab('contact-tab');
-            const pkgSelect = document.getElementById('f_package');
-            if (pkgSelect) {
-                for (let i = 0; i < pkgSelect.options.length; i++) {
-                    if (pkgSelect.options[i].text.includes(pkgName.split(' ')[0])) {
-                        pkgSelect.selectedIndex = i;
+        function setPackage(pkgName) {
+            const sel = document.getElementById('f_pkg');
+            if (sel) {
+                for (let i = 0; i < sel.options.length; i++) {
+                    if (sel.options[i].value.includes(pkgName)) {
+                        sel.selectedIndex = i;
                         break;
                     }
                 }
             }
-            const notesEl = document.getElementById('f_notes');
-            if (notesEl) {
-                notesEl.value = `בקשה להצעת מחיר עבור: ${pkgName}`;
-                notesEl.focus();
-            }
-            showToast(`נבחר מסלול: ${pkgName}`);
         }
 
-        function requestSupportService(serviceName) {
-            switchTab('contact-tab');
-            const notesEl = document.getElementById('f_notes');
-            if (notesEl) {
-                notesEl.value = `מעוניינים במידע והזמנה עבור: ${serviceName}`;
-                notesEl.focus();
-            }
-            showToast(`נבחר שירות: ${serviceName}`);
-        }
+        function submitForm(e) {
+            e.preventDefault();
+            const inst = document.getElementById('f_inst').value.trim();
+            const name = document.getElementById('f_name').value.trim();
+            const role = document.getElementById('f_role').value.trim();
+            const phone = document.getElementById('f_phone').value.trim();
+            const pkg = document.getElementById('f_pkg').value;
+            const notes = document.getElementById('f_notes').value.trim();
 
-        function showToast(msg) {
-            const t = document.getElementById('toast');
-            const tm = document.getElementById('toast-msg');
-            if (t && tm) {
-                tm.innerText = msg;
-                t.style.display = 'flex';
-                setTimeout(() => { t.style.display = 'none'; }, 3500);
-            }
-        }
+            const waText = encodeURIComponent(
+                `שלום מאיה, שמי ${name} (${role}) ממוסד "${inst}".\nמעוניינים בפרטים והדגמה לגבי הפורטל הארגוני.\nמסלול: ${pkg}\nטלפון: ${phone}\nהערות: ${notes}`
+            );
+            const waUrl = `https://wa.me/972500000000?text=${waText}`;
 
-        function getAgentLeads() {
-            try {
-                const raw = localStorage.getItem('agent_inquiry_leads');
-                if (raw) return JSON.parse(raw);
-            } catch(e) {}
-            return [];
-        }
+            document.getElementById('thankText').innerHTML = `
+                שלום <strong>${escapeHtml(name)}</strong>,<br>
+                פרטי פנייתך עבור מוסד <strong>"${escapeHtml(inst)}"</strong> נקלטו בהצלחה.<br><br>
+                <strong>מאיה שקולניק גזית</strong> מודה לך על התעניינותך בפורטל הארגוני ותיצור עמך קשר אישי בהקדם במספר <strong>${escapeHtml(phone)}</strong> לתיאום מועד להדגמה.
+            `;
+            document.getElementById('thankWa').href = waUrl;
+            document.getElementById('thankModal').style.display = 'flex';
 
-        function renderLeadsList() {
-            const leads = getAgentLeads();
-            const badge = document.getElementById('leads-count-badge');
-            const container = document.getElementById('leads-list-container');
-            if (badge) badge.innerText = leads.length;
-            if (!container) return;
-
-            if (leads.length === 0) {
-                container.innerHTML = `
-                    <div style="padding: 16px; text-align: center; color: var(--text-secondary); font-size: 12px; background: #f8fafc; border-radius: 8px;">
-                        טרם נרשמו פניות. פניות שיוגשו יישמרו כאן אוטומטית.
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = leads.map(l => `
-                <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                        <strong style="color: #1e40af;">${escapeHtml(l.instName)}</strong>
-                        <span style="font-size: 10px; color: var(--text-secondary);">${l.date}</span>
-                    </div>
-                    <div>${escapeHtml(l.contactName)} (${escapeHtml(l.contactRole || 'נציג')}) | 📞 ${escapeHtml(l.phone)}</div>
-                    <div style="color: #059669; font-weight: bold; margin-top: 2px;">מסלול: ${escapeHtml(l.pkg)}</div>
-                </div>
-            `).join('');
+            document.getElementById('leadForm').reset();
         }
 
         function escapeHtml(str) {
             if (!str) return '';
             return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
-
-        function handleAgentFormSubmit(e) {
-            e.preventDefault();
-            const instName = document.getElementById('f_inst_name').value.trim();
-            const instType = document.getElementById('f_inst_type').value;
-            const contactName = document.getElementById('f_contact_name').value.trim();
-            const contactRole = document.getElementById('f_contact_role').value.trim();
-            const phone = document.getElementById('f_phone').value.trim();
-            const email = document.getElementById('f_email').value.trim();
-            const beds = document.getElementById('f_beds').value.trim();
-            const pkg = document.getElementById('f_package').value;
-            const notes = document.getElementById('f_notes').value.trim();
-
-            const lead = {
-                id: 'INQ-' + Date.now(),
-                date: new Date().toLocaleDateString('he-IL') + ' ' + new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }),
-                instName,
-                instType,
-                contactName,
-                contactRole,
-                phone,
-                email,
-                beds,
-                pkg,
-                notes
-            };
-
-            const leads = getAgentLeads();
-            leads.unshift(lead);
-            localStorage.setItem('agent_inquiry_leads', JSON.stringify(leads));
-            renderLeadsList();
-
-            // WhatsApp link
-            const waText = encodeURIComponent(
-                `שלום מאיה, שמי ${contactName} (${contactRole}) ממוסד "${instName}" (${instType}, ${beds}).\n` +
-                `אנחנו מעוניינים בפרטים והדגמה לגבי הפורטל הארגוני.\n` +
-                `מסלול מבוקש: ${pkg}\n` +
-                `טלפון לחזרה: ${phone} | אימייל: ${email}\n` +
-                `הערות: ${notes}`
-            );
-            const waUrl = `https://wa.me/972500000000?text=${waText}`;
-
-            showToast(`תודה ${contactName}! פרטי הפנייה נקלטו בהצלחה. פותח קישור לוואטסאפ...`);
-            setTimeout(() => {
-                window.open(waUrl, '_blank');
-            }, 1000);
-
-            document.getElementById('agentInquiryForm').reset();
-        }
-
-        function exportAgentLeadsCsv() {
-            const leads = getAgentLeads();
-            if (!leads.length) {
-                showToast('אין פניות לייצוא עדיין');
-                return;
-            }
-
-            let csv = '\uFEFFמזהה,תאריך,שם המוסד,סוג מוסד,איש קשר,תפקיד,טלפון,אימייל,מיטות,מסלול,הערות\n';
-            leads.forEach(l => {
-                csv += `"${l.id}","${l.date}","${l.instName}","${l.instType}","${l.contactName}","${l.contactRole}","${l.phone}","${l.email}","${l.beds}","${l.pkg}","${(l.notes||'').replace(/"/g, '""')}"\n`;
-            });
-
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.setAttribute('download', `agent_leads_${new Date().toISOString().slice(0,10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showToast('קובץ CSV יוצא בהצלחה!');
-        }
-
-        function openPrintableProposalModal() {
-            const modal = document.getElementById('proposal_modal');
-            const dateEl = document.getElementById('modal-date');
-            if (dateEl) dateEl.innerText = new Date().toLocaleDateString('he-IL');
-            if (modal) modal.style.display = 'flex';
-        }
-
-        // Init on load
-        window.addEventListener('DOMContentLoaded', () => {
-            renderLeadsList();
-        });
     </script>
 </body>
 </html>

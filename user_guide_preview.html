@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>דף מנחה למשתמש ותוכן עניינים ארגוני</title>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Heebo', sans-serif; }
+        body { background: var(--bg); color: var(--text-main); padding: 18px; direction: rtl; }
+        .top-bar {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-green {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 2px 6px rgba(16,185,129,0.3);
+        }
+        .subtabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 8px;
+            margin-bottom: 18px;
+        }
+        .subtab-btn {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 9px 18px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+        .subtab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        .grid-toc {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+            margin-top: 14px;
+        }
+        .toc-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 10px; }
+        th, td { padding: 10px 14px; text-align: right; border-bottom: 1px solid var(--border); }
+        th { background: var(--bg); font-weight: 800; color: var(--primary); }
+    </style>
+</head>
+<body>
+
+    <!-- Header bar with return button -->
+    <div class="top-bar">
+        <div>
+            <h1 style="font-size: 18px; font-weight: 900; color: var(--primary); margin: 0;">
+                🏛️ דף מנחה למשתמש ותוכן עניינים ארגוני (לשונית 1)
+            </h1>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                סקירת 15 המודולים, ארבעת שלבי ההטמעה ומטריצת RACI להנהלת האחיות
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+            <a href="contact.html" class="btn btn-green">
+                <span>📝</span> חזרה לדף הנחיתה וההצעה ➜
+            </a>
+            <button onclick="window.print()" class="btn" style="background: var(--bg); border: 1px solid var(--border); color: var(--text-main);">
+                <span>🖨️</span> הדפסה (A4)
+            </button>
+        </div>
+    </div>
+
+    <!-- Subtabs -->
+    <div class="subtabs">
+        <button id="btn-inst" class="subtab-btn active" onclick="switchSub('inst')">
+            🏛️ דף מנחה מוסדי להטמעה
+        </button>
+        <button id="btn-toc" class="subtab-btn" onclick="switchSub('toc')">
+            📑 תוכן עניינים ואינדקס 15 המודולים
+        </button>
+    </div>
+
+    <!-- Institutional Roadmap & RACI -->
+    <div id="pane-inst">
+        <div class="card" style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white;">
+            <h3 style="font-size: 17px; margin-bottom: 6px;">🎯 מטרת הפורטל ומדיניות האיכות המוסדית 2026</h3>
+            <p style="font-size: 13px; line-height: 1.6; color: #dbeafe;">
+                הפורטל הארגוני מרכז את כלל כלי הבקרה, נהלי העבודה, ערכת הקליטה (62 שעות) וההדרכות במערכת ממוחשבת אחת המותאמת למודל הבקרה האחודה של משרד הבריאות.
+            </p>
+        </div>
+
+        <div class="card">
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px;">
+                ⏱️ ארבעת שלבי ההטמעה המוסדית
+            </h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px;">
+                <div style="background: var(--bg); border: 1px solid var(--border); border-top: 4px solid #2563eb; border-radius: 8px; padding: 12px;">
+                    <strong style="color: #2563eb; font-size: 12px; display: block;">שלב 1 (שבוע 1)</strong>
+                    <div style="font-weight: 700; font-size: 13px; margin: 4px 0;">התנעה ותשתית</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">מיפוי מחלקות, הגדרת הרשאות וסנכרון שרת מוסדי.</div>
+                </div>
+                <div style="background: var(--bg); border: 1px solid var(--border); border-top: 4px solid #10b981; border-radius: 8px; padding: 12px;">
+                    <strong style="color: #10b981; font-size: 12px; display: block;">שלב 2 (שבועות 2-3)</strong>
+                    <div style="font-weight: 700; font-size: 13px; margin: 4px 0;">סדנאות מובילות</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">הדרכת הנהלת האחיות, אחראיות מחלקה ונאמנות איכות.</div>
+                </div>
+                <div style="background: var(--bg); border: 1px solid var(--border); border-top: 4px solid #f59e0b; border-radius: 8px; padding: 12px;">
+                    <strong style="color: #d97706; font-size: 12px; display: block;">שלב 3 (חודש 1)</strong>
+                    <div style="font-weight: 700; font-size: 13px; margin: 4px 0;">שגרת בקרות שבועית</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">הפעלת 5 הבקרות והפקת תוכניות תיקון ליקויים (CAPA).</div>
+                </div>
+                <div style="background: var(--bg); border: 1px solid var(--border); border-top: 4px solid #8b5cf6; border-radius: 8px; padding: 12px;">
+                    <strong style="color: #7c3aed; font-size: 12px; display: block;">שלב 4 (שוטף)</strong>
+                    <div style="font-weight: 700; font-size: 13px; margin: 4px 0;">בקרה מתכללת ו-MDT</div>
+                    <div style="font-size: 11.5px; color: var(--text-muted);">מפגשים רב-מקצועיים שבועיים וייצוא דוחות אקסל רשמיים.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 8px;">
+                👥 מטריצת אחריות מוסדית (RACI)
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>תפקיד בארגון</th>
+                        <th>אחריות עיקרית בהטמעה</th>
+                        <th>לשוניות מרכזיות</th>
+                        <th>תדירות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>הנהלת האחיות / מנהל איכות</strong></td>
+                        <td>הגדרת מדיניות, פיקוח יעדים ואישור דוחות משרד הבריאות.</td>
+                        <td>לשוניות 1, 4, 7, 15</td>
+                        <td>שבועי / חודשי</td>
+                    </tr>
+                    <tr>
+                        <td><strong>אחות אחראית מחלקה</strong></td>
+                        <td>ביצוע בקרות שבועיות, מעקב ליקויים וקליטת אחיות חדשות.</td>
+                        <td>לשוניות 4, 5, 6, 7</td>
+                        <td>שבועי שוטף</td>
+                    </tr>
+                    <tr>
+                        <td><strong>אחראית משמרת</strong></td>
+                        <td>הפעלת סימולציות אפר"ת, תרגול סוכן תרופות ובקרה בשטח.</td>
+                        <td>לשוניות 4, 6, 8</td>
+                        <td>בכל משמרת</td>
+                    </tr>
+                    <tr>
+                        <td><strong>אחות נקלטת / כוח עזר</strong></td>
+                        <td>מעבר 10 הדרכות חובה וחתימה דיגיטלית בתיק אישי.</td>
+                        <td>לשונית 5 (ערכת קליטה)</td>
+                        <td>בחודש הראשון</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 15 Modules Index -->
+    <div id="pane-toc" style="display: none;">
+        <div class="card">
+            <h3 style="font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">
+                📑 אינדקס 15 המודולים של הפורטל
+            </h3>
+            <div style="font-size: 12px; color: var(--text-muted);">סקירה תמציתית של כלל כלי המערכת וייעודם</div>
+            
+            <div class="grid-toc" id="tocBox"></div>
+        </div>
+    </div>
+
+    <script>
+        const items = [
+            { n: 1, t: "דף מנחה ותוכן עניינים", ic: "📖", d: "מפת הדרכים, אינדקס 15 הלשוניות והנחיות עבודה." },
+            { n: 2, t: "הדרכת מבוא לאיכות ובטיחות", ic: "💡", d: "לומדת פתיחה מובנית ועקרונות איכות בגריאטריה." },
+            { n: 3, t: "טיפ השבוע", ic: "✨", d: "מבזק מקצועי שבועי מתחלף עם דגשים מצילי חיים." },
+            { n: 4, t: "דשבורד בקרה ראשי (5 כלי בקרה)", ic: "📊", d: "החייאה, פצעי לחץ, מניעת זיהומים, תרופות ורחצה." },
+            { n: 5, t: "ערכת הדרכה בקליטה (62 שעות)", ic: "🎓", d: "מסלול 10 הדרכות חובה עם חתימות דיגיטליות בתיק עובד." },
+            { n: 6, t: "הכשרת אחראית משמרת וסוכן תרופות", ic: "🩺", d: "סימולטור החלטות חירום (אפר\"ת) וסוכן בטיחות תרופתית." },
+            { n: 7, t: "דשבורד יעדים וממשקים רב-מקצועיים", ic: "🎯", d: "מעקב יעדי איכות מחלקתיים ודיונים רב-מקצועיים (MDT)." },
+            { n: 8, t: "כרטיסיות כיס דיגיטליות (Pocket Guides)", ic: "📱", d: "שליפה מהירה בסמארטפון: מניעת IAD, נשימה ונפילות." },
+            { n: 9, t: "אינפוגרפיקות קליניות מותאמות", ic: "🖼️", d: "כרזות ותרשימי זרימה ויזואליים להדפסה במחלקות." },
+            { n: 10, t: "לומדות ומבחני ידע מקוונים", ic: "📝", d: "מארזי לומדות אינטראקטיביות, מניעת זיהומים וחוק הנוטה למות." },
+            { n: 11, t: "ספריית נהלים ופרוטוקולים", ic: "📚", d: "מאגר נהלי משרד הבריאות והמוסד עם מעקב אישורי קריאה." },
+            { n: 12, t: "חוברות הדרכה ב-5 שפות", ic: "🌐", d: "הנחיות בטיחות בעברית, אמהרית, רוסית, ערבית ונפאלית." },
+            { n: 13, t: "מערכת תומכת החלטה קלינית (CDSS)", ic: "💻", d: "מחשבוני סיכון גריאטריים: עומס אנטיכולינרגי (ACB) ותזונה." },
+            { n: 14, t: "מרכז התראות והודעות לצוות", ic: "🔔", d: "הפצת הנחיות דחופות ותזכורות לבקרות ישירות לצוות." },
+            { n: 15, t: "פורטל מעקב ובקרה למנהל", ic: "📈", d: "מבט-על ארגוני חוצה מחלקות וייצוא דוחות אקסל רשמיים." }
+        ];
+
+        document.getElementById('tocBox').innerHTML = items.map(i => `
+            <div class="toc-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <strong style="color:var(--primary); font-size:13px;">${i.n}. ${i.t}</strong>
+                    <span style="font-size:18px;">${i.ic}</span>
+                </div>
+                <div style="font-size:11.5px; color:var(--text-muted); line-height:1.4;">${i.d}</div>
+            </div>
+        `).join('');
+
+        function switchSub(tab) {
+            document.getElementById('btn-inst').classList.toggle('active', tab === 'inst');
+            document.getElementById('btn-toc').classList.toggle('active', tab === 'toc');
+            document.getElementById('pane-inst').style.display = tab === 'inst' ? 'block' : 'none';
+            document.getElementById('pane-toc').style.display = tab === 'toc' ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
