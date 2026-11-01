@@ -632,7 +632,20 @@ function logout() {
 // Views Templates
 function renderDashboard() {
     let recentForms = filledFormsDb.slice().reverse().slice(0, 5);
-    let recentFormsHtml = recentForms.length === 0 ? '<p>אין בקרות שהוגשו עדיין.</p>' : 
+    let recentFormsHtml = recentForms.length === 0 ? `
+        <div style="padding: 24px; text-align: center; background: var(--surface); border: 1px dashed var(--border-color); border-radius: 12px; margin-top: 15px;">
+            <div style="font-size: 28px; margin-bottom: 6px;">📋</div>
+            <p style="margin: 0 0 10px; color: var(--text-secondary); font-size: 14px;">אין כעת בקרות איכות שמורות במערכת (הדשבורד נקי).</p>
+            <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <button class="btn" onclick="loadDemoAuditData()" style="background: #2563eb; color: white; font-size: 12.5px; padding: 7px 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    🎲 טען 6 בקרות הדגמה לתצוגה
+                </button>
+                <button class="btn" onclick="navigate('forms')" style="background: var(--primary-color); color: white; font-size: 12.5px; padding: 7px 16px; border-radius: 8px; font-weight: bold; cursor: pointer;">
+                    📝 מילוי בקרה חדשה
+                </button>
+            </div>
+        </div>
+    ` : 
         `<table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
             <tr style="border-bottom: 1px solid var(--border-color); text-align: right;">
                 <th style="padding: 10px;">טופס</th><th style="padding: 10px;">מחלקה</th><th style="padding: 10px;">תאריך</th><th style="padding: 10px;">מגיש</th><th style="padding: 10px;">ציון</th><th style="padding: 10px;">דוח מסכם</th>
@@ -671,7 +684,10 @@ function renderDashboard() {
                     <div class="card" style="margin-bottom: 20px; border-right: 4px solid var(--primary-color);">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                             <h3 style="margin: 0;">מעקב ביצועים (מבט מנהל)</h3>
-                            <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--success);" onclick="exportDashboardExcel()">הורד נתונים לאקסל 📥</button>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn" style="padding: 5px 12px; font-size: 12px; background: #2563eb; color: white;" onclick="navigate('settings')">⚙️ ניהול ואיפוס נתונים</button>
+                                <button class="btn" style="padding: 5px 10px; font-size: 12px; background: var(--success);" onclick="exportDashboardExcel()">הורד נתונים לאקסל 📥</button>
+                            </div>
                         </div>
                         <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                             <tr style="border-bottom: 1px solid var(--border-color); text-align: right;">
@@ -2194,10 +2210,371 @@ function sendReminder(user, task) {
     }, 1500);
 }
 
+// ==============================================================
+// DATA MANAGEMENT, RESET & DEMO DATA CONTROLLER
+// ==============================================================
+
+function getStoredFilledFormsCount() {
+    try {
+        const raw = localStorage.getItem('clinic_filled_forms');
+        if (raw) {
+            const arr = JSON.parse(raw);
+            return Array.isArray(arr) ? arr.length : 0;
+        }
+    } catch(e) {}
+    return (filledFormsDb && Array.isArray(filledFormsDb)) ? filledFormsDb.length : 0;
+}
+
+function resetAuditForms() {
+    const count = getStoredFilledFormsCount();
+    const msg = count > 0 
+        ? `האם אתה בטוח שברצונך לאפס ולמחוק את כל ${count} בקרות האיכות שהוגשו במערכת?\n\nפעולה זו תנקה את לוח הדשבורד הראשי, את טבלת הבקרות האחרונות ואת הגרפים ל-0.`
+        : 'האם לאפס את מאגר הבקרות בדשבורד הראשי? (כעת אין בקרות שמורות)';
+    
+    if (!confirm(msg)) return;
+
+    filledFormsDb = [];
+    localStorage.removeItem('clinic_filled_forms');
+    
+    showToast('כל בקרות האיכות אופסו בהצלחה! הדשבורד הראשי נקי.', 'success');
+    if (typeof navigate === 'function') navigate('settings');
+}
+
+function loadDemoAuditData() {
+    const count = getStoredFilledFormsCount();
+    if (count > 0) {
+        if (!confirm(`קיימות כעת ${count} בקרות במערכת. טעינת נתוני הדגמה תחליף או תוסיף עליהן 6 בקרות איכות מוכנות.\n\nהאם להמשיך?`)) return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+    const twoDaysAgo = new Date(Date.now() - 172800000).toISOString().split('T')[0];
+    const threeDaysAgo = new Date(Date.now() - 259200000).toISOString().split('T')[0];
+
+    const demoRecords = [
+        {
+            id: 1730000000001,
+            formId: "form_8",
+            formTitle: "בקרת עגלת החייאה וציוד חירום",
+            dateFilled: today,
+            score: 100,
+            user: "נילי גזית - אחות אחראית",
+            findingsCount: 0,
+            findings: [],
+            data: {
+                department: "סיעוד מונשמים",
+                f8_q1: "כן",
+                f8_q2: "אנשי צוות אחיות",
+                f8_q3: "כן",
+                f8_q4: "כן",
+                f8_q5: "כן",
+                f8_q6: "כן",
+                f8_q7: "כן",
+                f8_q8: "כן",
+                f8_q9: "כן"
+            }
+        },
+        {
+            id: 1730000000002,
+            formId: "form_1",
+            formTitle: "נוהל מניעת פצעי לחץ ושלמות העור",
+            dateFilled: today,
+            score: 94,
+            user: "רבקה כהן - נאמנת פצע",
+            findingsCount: 1,
+            findings: [
+                { question: "מריחת אמוליינט תוך 3 דקות מסיום הרחצה", answer: "לא", comment: "הודרך צוות מטפלים על חשיבות הליחוח המיידי" }
+            ],
+            data: {
+                department: "סיעוד מורכב",
+                w_date: today,
+                q1: "כן",
+                q2: "כן",
+                q3: "לא",
+                q4: "כן"
+            }
+        },
+        {
+            id: 1730000000003,
+            formId: "form_5",
+            formTitle: "בקרת מניעת זיהומים צולבים והיגיינת ידיים",
+            dateFilled: yesterday,
+            score: 96,
+            user: "דניאל לוי - נאמן מניעת זיהומים",
+            findingsCount: 0,
+            findings: [],
+            data: {
+                department: "גריאטריה כרונית סיעודית",
+                f5_date: yesterday,
+                q1: "כן",
+                q2: "כן",
+                q3: "כן"
+            }
+        },
+        {
+            id: 1730000000004,
+            formId: "form_16",
+            formTitle: "בקרת בטיחות רחצה יומית ומניעת כוויות",
+            dateFilled: yesterday,
+            score: 100,
+            user: "מיכל שרון - אחות משמרת",
+            findingsCount: 0,
+            findings: [],
+            data: {
+                department: "שיקום גריאטרי",
+                f16_date: yesterday,
+                q1: "כן",
+                q2: "כן",
+                q3: "כן"
+            }
+        },
+        {
+            id: 1730000000005,
+            formId: "form_18",
+            formTitle: "בקרת ניהול תרופות ואיזון כאב",
+            dateFilled: twoDaysAgo,
+            score: 92,
+            user: "אליאס נסאר - סוכן תרופות",
+            findingsCount: 1,
+            findings: [
+                { question: "רישום סולם בריסטול בעת מתן אופיואידים", answer: "חלקי", comment: "נדרש ריענון לצוות ערב" }
+            ],
+            data: {
+                department: "תשושי נפש",
+                f18_date: twoDaysAgo,
+                q1: "כן",
+                q2: "כן"
+            }
+        },
+        {
+            id: 1730000000006,
+            formId: "form_3",
+            formTitle: "בקרת אומדן בליעה (IDDSI) ומניעת אספירציות",
+            dateFilled: threeDaysAgo,
+            score: 95,
+            user: "מאיה שקולניק - מנהלת סיעוד",
+            findingsCount: 0,
+            findings: [],
+            data: {
+                department: "כלל המחלקות",
+                date_field: threeDaysAgo,
+                q1: "כן",
+                q2: "כן"
+            }
+        }
+    ];
+
+    filledFormsDb = demoRecords;
+    localStorage.setItem('clinic_filled_forms', JSON.stringify(filledFormsDb));
+
+    showToast('נטענו בהצלחה 6 בקרות הדגמה עשירות ומגוונות! הדשבורד הראשי מוכן לתצוגה.', 'success');
+    if (typeof navigate === 'function') navigate('dashboard');
+}
+
+function resetInterprofGoals() {
+    if (!confirm('האם לאפס את כל יעדי האיכות והממצאים המחלקתיים (לשונית 7) לברירת המחדל המוסדית המקורית?')) return;
+    localStorage.removeItem('interprof_goals_store_v2');
+    showToast('יעדי האיכות המחלקתיים (לשונית 7) אופסו לברירת המחדל.', 'success');
+    if (typeof navigate === 'function') navigate('settings');
+}
+
+function resetShiftLeaderData() {
+    if (!confirm('האם לאפס את כל נתוני החניכים והסימולציות בהכשרת אחראית משמרת וסוכן תרופות (לשונית 6)?')) return;
+    localStorage.removeItem('shift_leader_trainees_data');
+    localStorage.removeItem('shift_leader_active_id');
+    showToast('נתוני הכשרת אחראית משמרת אופסו בהצלחה.', 'success');
+    if (typeof navigate === 'function') navigate('settings');
+}
+
+function exportSystemBackup() {
+    try {
+        const backupData = {
+            exportDate: new Date().toISOString(),
+            systemVersion: "v68",
+            filledForms: filledFormsDb || [],
+            interprofGoals: (function() {
+                try { return JSON.parse(localStorage.getItem('interprof_goals_store_v2')) || null; } catch(e) { return null; }
+            })(),
+            shiftLeaderTrainees: (function() {
+                try { return JSON.parse(localStorage.getItem('shift_leader_trainees_data')) || null; } catch(e) { return null; }
+            })(),
+            departments: departmentsDb || [],
+            procedures: proceduresDb || []
+        };
+
+        const jsonStr = JSON.stringify(backupData, null, 2);
+        const blob = new Blob([jsonStr], { type: 'application/json;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        const dateStr = new Date().toISOString().split('T')[0];
+        a.href = url;
+        a.download = `clinic_quality_backup_${dateStr}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('קובץ גיבוי נתונים הורד בהצלחה למחשב!', 'success');
+    } catch(err) {
+        console.error('Export backup failed:', err);
+        showToast('שגיאה בייצוא קובץ גיבוי: ' + err.message, 'error');
+    }
+}
+
+function factoryResetSystem() {
+    const confirmation1 = confirm('⚠️ אזהרת איפוס מלא (Factory Reset):\n\nפעולה זו תמחק את כל בקרות האיכות, יעדי המחלקות, נתוני החניכים והמשובים השמורים במחשב זה.\n\nהאם אתה בטוח שברצונך להמשיך?');
+    if (!confirmation1) return;
+
+    const confirmation2 = confirm('אישור סופי: האם למחוק הכל ולהחזיר את המערכת למצב התקנה ראשוני? (מומלץ לבצע גיבוי לפני)');
+    if (!confirmation2) return;
+
+    const keysToRemove = [
+        'clinic_filled_forms',
+        'interprof_goals_store_v2',
+        'shift_leader_trainees_data',
+        'shift_leader_active_id',
+        'clinic_trainings_answers',
+        'clinic_intro_feedback',
+        'portal_notifications',
+        'clinic_agent_tip_state_v2'
+    ];
+
+    keysToRemove.forEach(k => localStorage.removeItem(k));
+    filledFormsDb = [];
+
+    showToast('המערכת אופסה למצב מפעל ראשוני בהצלחה! מרענן...', 'info');
+    setTimeout(() => {
+        location.reload();
+    }, 1200);
+}
+
 function renderSettings() {
+    const filledCount = getStoredFilledFormsCount();
     let html = `
         <div class="fade-in">
-            <h2>הגדרות מערכת</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                <h2 style="margin:0;">⚙️ הגדרות מערכת ומרכז ניהול נתונים</h2>
+                <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-size:12.5px; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                    ➜ חזרה לדשבורד הראשי
+                </button>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- כרטיס ניהול נתונים ואיפוס מערכת (Data Management & Reset) -->
+            <!-- ============================================================== -->
+            <div class="card" style="margin-bottom: 24px; border-top: 4px solid #2563eb; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:15px;">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <span style="font-size:28px;">🎛️</span>
+                        <div>
+                            <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
+                            <p style="color:var(--text-secondary); margin:4px 0 0; font-size:12.5px;">
+                                כלי שליטה מוגנים למנהל: איפוס נתוני בקרות, שחזור ברירות מחדל, טעינת בקרות דמו מוכנות להדרכות והורדת גיבוי.
+                            </p>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <span class="badge" style="background:${filledCount > 0 ? '#e0f2fe' : '#f1f5f9'}; color:${filledCount > 0 ? '#0369a1' : '#64748b'}; font-weight:700; font-size:12px; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                            סה"כ בקרות במערכת: <strong style="font-size:14px; color:${filledCount > 0 ? '#1e40af' : '#0f172a'};">${filledCount}</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 6 Quick Protected Action Cards -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:12px; margin-top:16px;">
+                    <!-- Card 1: Clear Audits -->
+                    <div style="background:#ffffff; border:1px solid #fecaca; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#dc2626; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>🗑️</span> איפוס דשבורד בקרות ראשי
+                            </div>
+                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">
+                                מוחק את כל בקרות האיכות שהוגשו ומנקה את הדשבורד הראשי, ללא פגיעה במחלקות ובנהלים.
+                            </div>
+                        </div>
+                        <button onclick="resetAuditForms()" class="btn" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer;">
+                            אפס בקרות בלבד
+                        </button>
+                    </div>
+
+                    <!-- Card 2: Load Demo Audits -->
+                    <div style="background:#ffffff; border:1px solid #bfdbfe; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#2563eb; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>🎲</span> טעינת בקרות הדגמה (Demo Data)
+                            </div>
+                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">
+                                טוען 6 בקרות איכות מוכנות (החייאה, פצעים, זיהומים, רחצה, תרופות ובליעה) להצגה חיה בדשבורד.
+                            </div>
+                        </div>
+                        <button onclick="loadDemoAuditData()" class="btn" style="background:#2563eb; color:#ffffff; border:none; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer; box-shadow:0 2px 6px rgba(37,99,235,0.3);">
+                            טען 6 בקרות דמו ✓
+                        </button>
+                    </div>
+
+                    <!-- Card 3: Reset Interprofessional Goals -->
+                    <div style="background:#ffffff; border:1px solid #e9d5ff; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#7e22ce; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>🎯</span> איפוס יעדי איכות מחלקתיים (לשונית 7)
+                            </div>
+                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">
+                                מאפס את היעדים והממצאים התקופתיים של כל המחלקות לברירת המחדל המקורית (מודל 2026).
+                            </div>
+                        </div>
+                        <button onclick="resetInterprofGoals()" class="btn" style="background:#f3e8ff; color:#7e22ce; border:1px solid #d8b4fe; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer;">
+                            אפס יעדים לברירת מחדל
+                        </button>
+                    </div>
+
+                    <!-- Card 4: Reset Shift Leader Training Data -->
+                    <div style="background:#ffffff; border:1px solid #fed7aa; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#c2410c; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>🩺</span> איפוס הכשרת אחראית משמרת (לשונית 6)
+                            </div>
+                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">
+                                מאפס את נתוני החניכים, תרגולי סימולטור אפר"ת ומבחני סוכן התרופות שנשמרו בלשונית 6.
+                            </div>
+                        </div>
+                        <button onclick="resetShiftLeaderData()" class="btn" style="background:#ffedd5; color:#c2410c; border:1px solid #fdba74; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer;">
+                            אפס נתוני הכשרה
+                        </button>
+                    </div>
+
+                    <!-- Card 5: Export Backup -->
+                    <div style="background:#ffffff; border:1px solid #bbf7d0; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#15803d; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>💾</span> גיבוי וייצוא נתונים מלא (JSON)
+                            </div>
+                            <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px; line-height:1.4;">
+                                מוריד קובץ גיבוי שלם של כל הבקרות, היעדים, המחלקות וההגדרות למחשב שלך לשמירה וארכוב.
+                            </div>
+                        </div>
+                        <button onclick="exportSystemBackup()" class="btn" style="background:#dcfce7; color:#15803d; border:1px solid #86efac; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer;">
+                            הורד גיבוי נתונים 📥
+                        </button>
+                    </div>
+
+                    <!-- Card 6: Factory Reset -->
+                    <div style="background:#fff1f2; border:1px solid #fda4af; border-radius:10px; padding:14px; display:flex; flex-direction:column; justify-content:space-between; gap:10px; box-shadow:0 1px 4px rgba(0,0,0,0.03);">
+                        <div>
+                            <div style="font-weight:700; color:#9f1239; font-size:13.5px; display:flex; align-items:center; gap:6px;">
+                                <span>⚠️</span> איפוס מלא למצב מפעל (Factory Reset)
+                            </div>
+                            <div style="font-size:11.5px; color:#881337; margin-top:4px; line-height:1.4;">
+                                מוחק את כל נתוני המערכת השמורים במחשב זה ומחזיר את כל הלשוניות והדשבורדים למצב התקנה ראשוני.
+                            </div>
+                        </div>
+                        <button onclick="factoryResetSystem()" class="btn" style="background:#e11d48; color:#ffffff; border:none; font-weight:700; font-size:12px; padding:7px 12px; border-radius:8px; cursor:pointer; box-shadow:0 2px 6px rgba(225,29,72,0.3);">
+                            איפוס מערכת כולל ⚠️
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Existing System Configuration Cards -->
             <div class="card" style="margin-top: 20px;">
                 <h3>ניהול מחלקות</h3>
                 <p style="color: var(--text-secondary); margin-bottom: 15px;">כאן תוכל לערוך את רשימת המחלקות שיופיעו בטפסי הבקרה.</p>
@@ -2254,7 +2631,6 @@ function renderSettings() {
                     <button class="btn" style="background: var(--success); width: 100%;" onclick="addProcedureFromSettings()">שמור נוהל למערכת</button>
                 </div>
             </div>
-        </div>
 
             <div class="card" style="margin-top: 20px;">
                 <h3>ניהול טפסים ופרוטוקולים טיפוליים</h3>
