@@ -2233,10 +2233,10 @@ function isSuperAdminUser() {
     return u === 'admin' || currentUser.isSuperAdmin === true || r.includes('מנהל על') || r.includes('מנהל ראשי');
 }
 
-function verifySuperAdminPermission(actionName = 'פעולה זו') {
+function verifySuperAdminPermission(actionName) {
+    if (!actionName) actionName = 'פעולה זו';
     if (isSuperAdminUser()) return true;
-    
-    const pwd = prompt(🔒 גישה מוגבלת למנהל על בלבד!\n\nלביצוע "", נא להזין את סיסמת מנהל העל:);
+    const pwd = prompt('🔒 גישה מוגבלת למנהל על בלבד!\n\nלביצוע ' + actionName + ', נא להזין סיסמת מנהל על:');
     if (pwd && pwd.trim().toLowerCase() === 'admin') {
         sessionStorage.setItem('super_admin_unlocked', 'true');
         showToast('אימות סיסמת מנהל על הצליח ✓', 'success');
@@ -2249,21 +2249,62 @@ function verifySuperAdminPermission(actionName = 'פעולה זו') {
     }
 }
 
-function promptSuperAdminUnlock() {
-    const pwd = prompt('🔑 הזן סיסמת מנהל על (admin) לשחרור מרכז ניהול הנתונים והאיפוס:');
-    if (pwd && pwd.trim().toLowerCase() === 'admin') {
+function unlockSettingsSuperAdmin() {
+    const input = document.getElementById('settings_super_admin_pass');
+    const pwd = (input ? input.value : '').trim().toLowerCase();
+    if (pwd === 'admin') {
         sessionStorage.setItem('super_admin_unlocked', 'true');
-        showToast('מרכז ניהול נתונים ואיפוס מערכת שוחרר בהצלחה למנהל על! 🔓', 'success');
+        showToast('הרשאת מנהל על אומתה בהצלחה! לשונית הגדרות נפתחה 🔓', 'success');
         if (typeof navigate === 'function') navigate('settings');
-    } else if (pwd !== null) {
+    } else {
         showToast('סיסמת מנהל על שגויה!', 'error');
     }
 }
 
 function lockSuperAdminPanel() {
     sessionStorage.removeItem('super_admin_unlocked');
-    showToast('מרכז ניהול הנתונים ננעל מחדש 🔒', 'info');
+    showToast('לשונית ההגדרות ננעלה מחדש למנהל על 🔒', 'info');
     if (typeof navigate === 'function') navigate('settings');
+}
+
+function renderSuperAdminLockedSettingsView() {
+    return `
+        <div class="fade-in" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: 18px; padding: 36px 30px; text-align: center; max-width: 580px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
+                <div style="width: 70px; height: 70px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 16px;">
+                    🔒
+                </div>
+                <div class="badge" style="background: #fee2e2; color: #b91c1c; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 800; margin-bottom: 12px;">
+                    גישה מוגבלת למנהל על בלבד (Super Admin Only)
+                </div>
+                <h2 style="font-size: 22px; font-weight: 900; color: #1e3a8a; margin: 0 0 10px;">
+                    16. לשונית הגדרות מערכת מוגנת
+                </h2>
+                <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 24px;">
+                    כלל מודולי לשונית ההגדרות – כולל ניהול מחלקות המוסד, נהלי עבודה מחייבים, מרכז ניהול נתוני הבקרות, גיבויים ואיפוסי מערכת – מוגנים בהרשאת על בלעדית.
+                </p>
+
+                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: right;">
+                    <label style="font-size: 13px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 6px;">
+                        הזן סיסמת מנהל על (admin):
+                    </label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="password" id="settings_super_admin_pass" onkeydown="if(event.key==='Enter') unlockSettingsSuperAdmin()" placeholder="סיסמת על..." style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; background: var(--surface); color: var(--text-primary);">
+                        <button type="button" onclick="unlockSettingsSuperAdmin()" class="btn" style="background: #1e40af; color: #fff; font-weight: 800; padding: 10px 20px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
+                            כניסה 🔓
+                        </button>
+                    </div>
+                    <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 8px;">
+                        💡 סיסמת ברירת מחדל למנהל על: <strong>admin</strong>
+                    </div>
+                </div>
+
+                <button onclick="navigate('dashboard')" class="btn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 18px; border-radius: 8px; font-size: 12.5px; cursor: pointer;">
+                    ➜ חזרה לדשבורד הראשי
+                </button>
+            </div>
+        </div>
+    `;
 }
 
 function resetAuditForms() {
@@ -2432,6 +2473,7 @@ function resetShiftLeaderData() {
 }
 
 function exportSystemBackup() {
+    if (!verifySuperAdminPermission('הורדת גיבוי נתונים')) return;
     try {
         const backupData = {
             exportDate: new Date().toISOString(),
@@ -2494,118 +2536,45 @@ function factoryResetSystem() {
     }, 1200);
 }
 
-function updateSuperAdminUiVisibility() {
-    const isSuper = typeof isSuperAdminUser === 'function' && isSuperAdminUser();
-    document.querySelectorAll('.super-admin-only').forEach(el => {
-        el.style.display = isSuper ? 'flex' : 'none';
-    });
-}
-
-function unlockSettingsSuperAdmin() {
-    const input = document.getElementById('settings_super_admin_pass');
-    const pwd = (input ? input.value : '').trim().toLowerCase();
-    if (pwd === 'admin') {
-        sessionStorage.setItem('super_admin_unlocked', 'true');
-        showToast('הרשאת מנהל על אומתה בהצלחה! לשונית הגדרות נפתחה 🔓', 'success');
-        updateSuperAdminUiVisibility();
-        navigate('settings');
-    } else {
-        showToast('סיסמת מנהל על שגויה!', 'error');
-    }
-}
-
-function lockSuperAdminPanel() {
-    sessionStorage.removeItem('super_admin_unlocked');
-    showToast('לשונית ההגדרות ננעלה מחדש למנהל על 🔒', 'info');
-    updateSuperAdminUiVisibility();
-    if (typeof navigate === 'function') navigate('settings');
-}
-
-function renderSuperAdminLockedSettingsView() {
-    return 
-        <div class="fade-in" style="min-height: 70vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
-            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: 18px; padding: 36px 30px; text-align: center; max-width: 580px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.06);">
-                <div style="width: 70px; height: 70px; background: #fee2e2; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 34px; margin: 0 auto 16px;">
-                    🔒
-                </div>
-                <div class="badge" style="background: #fee2e2; color: #b91c1c; font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 800; margin-bottom: 12px;">
-                    גישה מוגבלת למנהל על בלבד (Super Admin Only)
-                </div>
-                <h2 style="font-size: 22px; font-weight: 900; color: #1e3a8a; margin: 0 0 10px;">
-                    16. לשונית הגדרות מערכת מוגנת
-                </h2>
-                <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.6; margin: 0 0 24px;">
-                    כלל מודולי לשונית ההגדרות – כולל ניהול מחלקות המוסד, נהלי עבודה מחייבים, מרכז ניהול נתוני הבקרות, גיבויים ואיפוסי מערכת – מוגנים בהרשאת על בלעדית.
-                </p>
-
-                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 20px; text-align: right;">
-                    <label style="font-size: 13px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 6px;">
-                        הזן סיסמת מנהל על (admin):
-                    </label>
-                    <div style="display: flex; gap: 10px;">
-                        <input type="password" id="settings_super_admin_pass" onkeydown="if(event.key==='Enter') unlockSettingsSuperAdmin()" placeholder="סיסמת על..." style="flex: 1; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; box-sizing: border-box; background: var(--surface); color: var(--text-primary);">
-                        <button type="button" onclick="unlockSettingsSuperAdmin()" class="btn" style="background: #1e40af; color: #fff; font-weight: 800; padding: 10px 20px; border-radius: 8px; cursor: pointer; white-space: nowrap;">
-                            כניסה 🔓
-                        </button>
-                    </div>
-                    <div style="font-size: 11.5px; color: var(--text-secondary); margin-top: 8px;">
-                        💡 סיסמת ברירת מחדל למנהל על: <strong>admin</strong>
-                    </div>
-                </div>
-
-                <button onclick="navigate('dashboard')" class="btn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 18px; border-radius: 8px; font-size: 12.5px; cursor: pointer;">
-                    ➜ חזרה לדשבורד הראשי
-                </button>
-            </div>
-        </div>
-    ;
-}
-
 function renderSettings() {
     if (!isSuperAdminUser()) {
         return renderSuperAdminLockedSettingsView();
     }
-
     const filledCount = getStoredFilledFormsCount();
-    let html = 
-        <div class="fade-in space-y-6">
-            <!-- Super Admin Active Status Banner -->
-            <div style="display:flex; justify-content:space-between; align-items:center; background:#eff6ff; border:1px solid #93c5fd; padding:12px 18px; border-radius:12px; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
-                <div style="display:flex; align-items:center; gap:10px;">
-                    <span style="font-size:24px;">👑</span>
-                    <div>
-                        <strong style="color:#1e40af; font-size:14px;">לשונית הגדרות במצב מנהל על (Super Admin Mode)</strong>
-                        <div style="font-size:12px; color:#3b82f6;">כלל הרשאות הניהול, עריכת מחלקות, נהלים מחייבים, איפוס מערכת וסנכרון שרת מוסדי פתוחים לשינוי.</div>
-                    </div>
+    let html = `
+        <div class="fade-in">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <h2 style="margin:0;">⚙️ הגדרות מערכת ומרכז ניהול נתונים</h2>
+                    <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 8px; border-radius:6px; font-weight:bold;">מורשה: מנהל על 👑</span>
                 </div>
                 <div style="display:flex; gap:8px;">
                     <button onclick="lockSuperAdminPanel()" class="btn" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-size:12px; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer;" title="נעל את לשונית ההגדרות למניעת שינויים">
                         🔒 נעל לשונית הגדרות
                     </button>
-                    <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-size:12px; padding:6px 14px; border-radius:8px; cursor:pointer;">
-                        ➜ חזרה לדשבורד
+                    <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-size:12.5px; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                        ➜ חזרה לדשבורד הראשי
                     </button>
                 </div>
             </div>
 
+            <!-- ============================================================== -->
             <!-- כרטיס ניהול נתונים ואיפוס מערכת (Data Management & Reset) -->
+            <!-- ============================================================== -->
             <div class="card" style="margin-bottom: 24px; border-top: 4px solid #2563eb; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:15px;">
                     <div style="display:flex; align-items:center; gap:10px;">
                         <span style="font-size:28px;">🎛️</span>
                         <div>
-                            <div style="display:flex; align-items:center; gap:8px;">
-                                <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
-                                <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 8px; border-radius:6px; font-weight:bold;">מורשה: מנהל על 👑</span>
-                            </div>
+                            <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
                             <p style="color:var(--text-secondary); margin:4px 0 0; font-size:12.5px;">
-                                כלי שליטה מוגנים למנהל על: איפוס נתוני בקרות, שחזור ברירות מחדל, טעינת בקרות דמו מוכנות להדרכות והורדת גיבוי.
+                                כלי שליטה מוגנים למנהל: איפוס נתוני בקרות, שחזור ברירות מחדל, טעינת בקרות דמו מוכנות להדרכות והורדת גיבוי.
                             </p>
                         </div>
                     </div>
                     <div style="display:flex; gap:8px; align-items:center;">
-                        <span class="badge" style="background:\; color:\; font-weight:700; font-size:12px; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                            סה"כ בקרות במערכת: <strong style="font-size:14px; color:\;">\</strong>
+                        <span class="badge" style="background:${filledCount > 0 ? '#e0f2fe' : '#f1f5f9'}; color:${filledCount > 0 ? '#0369a1' : '#64748b'}; font-weight:700; font-size:12px; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                            סה"כ בקרות במערכת: <strong style="font-size:14px; color:${filledCount > 0 ? '#1e40af' : '#0f172a'};">${filledCount}</strong>
                         </span>
                     </div>
                 </div>
@@ -5275,7 +5244,6 @@ function switchUserDirectly(username) {
     
     const isManager = currentUser.isAdmin || currentUser.role.includes('אחות אחראית') || currentUser.role.includes('הנהלה');
     document.querySelectorAll('.manage-only').forEach(el => el.style.display = isManager ? 'flex' : 'none');
-    if (typeof updateSuperAdminUiVisibility === 'function') updateSuperAdminUiVisibility();
     
     const modal = document.getElementById('user_switch_modal');
     if (modal) modal.style.display = 'none';
