@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta name='robots' content='noindex, nofollow'>
@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>פורטל לניהול איכות ובטיחות ארגונית</title>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=68">
+    <link rel="stylesheet" href="style.css?v=69">
     <meta name="description" content="מערכת לניהול כלי בקרה קליניים">
 </head>
 <body>
@@ -180,14 +180,18 @@
 
         <main class="main-content">
             <header class="top-header">
-                <div class="user-info">
+                <div class="user-info" onclick="openUserSwitchModal()" style="cursor: pointer; padding: 4px 8px; border-radius: 8px; transition: background 0.2s;" title="לחץ להחלפת משתמש או התחברות מהירה">
                     <img src="https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff" id="user-avatar" alt="User Avatar" class="avatar">
                     <div class="user-details">
                         <span id="user-name" class="user-name">ד"ר ישראלי</span>
                         <span id="user-role" class="user-role">מנהל איכות</span>
                     </div>
+                    <span style="font-size: 11px; color: var(--primary-color); margin-right: 4px;" title="החלף משתמש">▼</span>
                 </div>
-                <div style="display: flex; gap: 12px; align-items: center; position: relative;">
+                <div style="display: flex; gap: 10px; align-items: center; position: relative; flex-wrap: wrap;">
+                    <button class="btn" style="background: rgba(37, 99, 235, 0.1); color: #2563eb; border: 1px solid rgba(37, 99, 235, 0.3); padding: 7px 12px; font-size: 12px; font-weight: 700; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; cursor: pointer;" onclick="openUserSwitchModal()" title="כניסה / החלפת משתמש למערכת">
+                        <span>👤</span> החלף משתמש
+                    </button>
                     <button class="btn" style="background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%); color: white; padding: 7px 14px; font-size: 12px; font-weight: 700; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 2px 4px rgba(2,132,199,0.25);" onclick="openMessagingModal()">
                         <span>✉️</span> שליחת הודעה / אימייל לצוות
                     </button>
@@ -281,9 +285,9 @@
 
         </main>
     </div>
-    <script src="forms.js?v=68"></script>
+    <script src="forms.js?v=69"></script>
     <script src="quizzes.js?v=57"></script>
-    <script src="script_v6.js?v=68"></script>
+    <script src="script_v6.js?v=69"></script>
 </body>
 </html>
 

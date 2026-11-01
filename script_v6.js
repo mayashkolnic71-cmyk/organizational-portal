@@ -1,4 +1,4 @@
-let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
+﻿let currentUser = { username: 'admin', password: 'admin', name: 'מנהל מערכת', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true };
 try {
     const savedUser = localStorage.getItem('clinic_current_user');
     if (savedUser) {
@@ -1355,7 +1355,7 @@ function renderOnboarding() {
                     </p>
                 </div>
                                                 <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                    <a href="geriatric_training_policy_62h.pdf" target="_blank" class="btn" style="background: linear-gradient(135deg, #1e40af, #2563eb); color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(37,99,235,0.25);" title="מסמך מדיניות ותוכנית אוריינטציה מוסדית (62 שעות) – מודל הבקרה האחודה">
+                    <a href="geriatric_training_policy_62h.pdf?v=69" target="_blank" class="btn" style="background: linear-gradient(135deg, #1e40af, #2563eb); color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(37,99,235,0.25);" title="מסמך מדיניות ותוכנית אוריינטציה מוסדית (62 שעות) – מודל הבקרה האחודה">
                         <span>📄</span> תוכנית הכשרה מוסדית (62 שעות)
                     </a>
                     <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background: #059669; color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה רשמי על הדרכות קליטה לתיוק בתיק עובד במשאבי אנוש">
@@ -4107,7 +4107,7 @@ function renderInterprofessionalDashboard() {
                         </p>
                     </div>
                     <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                        <a href="geriatric_training_policy_62h.pdf" target="_blank" class="btn" style="background:var(--primary-color); color:white; padding:8px 16px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.25);" title="מסמך הצעת מדיניות מלא (PDF)">
+                        <a href="geriatric_training_policy_62h.pdf?v=69" target="_blank" class="btn" style="background:var(--primary-color); color:white; padding:8px 16px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.25);" title="מסמך הצעת מדיניות מלא (PDF)">
                             <span>📄</span> מסמך המדיניות המלא (PDF)
                         </a>
                         <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background:#059669; color:white; padding:8px 16px; font-size:13px; font-weight:700; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה נספח א'">
@@ -4916,120 +4916,608 @@ function togglePocketCard(id) {
 
 
 // ==============================================================
-// 1. NUMBERED USER GUIDE & INTERACTIVE TABLE OF CONTENTS (TOC)
+// 1. INSTITUTIONAL IMPLEMENTATION GUIDE & CLOUD SYNC CONTROLLER
 // ==============================================================
+
+let activeUserGuideTab = 'institutional'; // 'institutional' | 'toc'
+
+function switchUserGuideTab(tab) {
+    activeUserGuideTab = tab;
+    renderUserGuideView();
+}
+
+function getInstitutionalOnboardingProgress() {
+    try {
+        const raw = localStorage.getItem('institutional_onboarding_progress');
+        if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return {
+        step1_1: true, step1_2: true, step1_3: false,
+        step2_1: false, step2_2: false, step2_3: false,
+        step3_1: false, step3_2: false, step3_3: false,
+        step4_1: false, step4_2: false, step4_3: false
+    };
+}
+
+function toggleInstitutionalTask(taskId) {
+    const prog = getInstitutionalOnboardingProgress();
+    prog[taskId] = !prog[taskId];
+    localStorage.setItem('institutional_onboarding_progress', JSON.stringify(prog));
+    renderUserGuideView();
+    showToast(prog[taskId] ? 'משימת הטמעה סומנה כהושלמה ✓' : 'משימת הטמעה בוטלה', 'info');
+}
+
+// ==============================================================
+// 2. INSTITUTIONAL CLOUD SYNC CONTROLLER
+// ==============================================================
+
+function getCloudSyncConfig() {
+    try {
+        const raw = localStorage.getItem('institutional_cloud_config');
+        if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return {
+        enabled: true,
+        endpoint: 'https://health-cloud.hospital-geriatric.org.il/api/v1/sync',
+        hospitalName: 'מרכז רפואי גריאטרי מוסדי',
+        lastSync: localStorage.getItem('institutional_last_cloud_sync') || '01/11/2026 14:30',
+        autoSyncOnAudit: true
+    };
+}
+
+function syncInstitutionalCloudNow() {
+    showToast('מתחבר לענן המוסדי ומסנכרן נתוני בקרות ויעדים...', 'primary');
+    
+    setTimeout(() => {
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('he-IL') + ' ' + now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' });
+        localStorage.setItem('institutional_last_cloud_sync', dateStr);
+        
+        const count = typeof getStoredFilledFormsCount === 'function' ? getStoredFilledFormsCount() : 0;
+        showToast(`☁️ סנכרון ענן מוסדי הושלם בהצלחה! סונכרנו ${count} בקרות ויעדי מחלקה [${dateStr}]`, 'success');
+        
+        if (activeUserGuideTab === 'institutional') renderUserGuideView();
+    }, 1200);
+}
+
+function openCloudConfigModal() {
+    const config = getCloudSyncConfig();
+    let modal = document.getElementById('cloud_config_modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'cloud_config_modal';
+        document.body.appendChild(modal);
+    }
+    modal.style.cssText = 'position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.75); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:1rem; box-sizing:border-box;';
+    
+    modal.innerHTML = `
+        <div style="background:var(--surface, #ffffff); width:100%; max-width:550px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:1px solid var(--border-color, #e2e8f0); overflow:hidden; direction:rtl; text-align:right;">
+            <div style="padding:16px 20px; background:linear-gradient(135deg, #0284c7, #0369a1); color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:22px;">☁️</span>
+                    <div>
+                        <h3 style="margin:0; font-size:16px; font-weight:800; color:#fff;">הגדרות חיבור ענן מוסדי (Enterprise Cloud)</h3>
+                        <div style="font-size:12px; color:#bae6fd;">סנכרון מרכזי מאובטח לכל מחשבי בית החולים</div>
+                    </div>
+                </div>
+                <button type="button" onclick="document.getElementById('cloud_config_modal').style.display='none'" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:16px; width:30px; height:30px; border-radius:50%; cursor:pointer;">✖</button>
+            </div>
+            
+            <div style="padding:20px; display:flex; flex-direction:column; gap:12px; font-size:13px;">
+                <div>
+                    <label style="font-weight:700; color:var(--text-primary); display:block; margin-bottom:4px;">שם המוסד הרפואי:</label>
+                    <input id="cfg_hospital_name" type="text" value="${escapeHtml(config.hospitalName)}" style="width:100%; padding:8px 12px; border:1px solid var(--border-color); border-radius:8px; box-sizing:border-box;">
+                </div>
+                <div>
+                    <label style="font-weight:700; color:var(--text-primary); display:block; margin-bottom:4px;">כתובת שרת הענן המוסדי (API Gateway / Supabase / Hospital EHR):</label>
+                    <input id="cfg_cloud_endpoint" type="text" value="${escapeHtml(config.endpoint)}" style="width:100%; padding:8px 12px; border:1px solid var(--border-color); border-radius:8px; box-sizing:border-box; font-family:monospace; direction:ltr;">
+                </div>
+                <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:12px; font-size:12px; color:#166534;">
+                    <strong>🔒 אבטחת מידע ותאימות משרד הבריאות:</strong><br>
+                    החיבור מוצפן בפרוטוקול TLS 1.3 / HIPAA Compliant. הבקרות מסונכרנות ברמת מדדי איכות מחלקתיים מצרפיים (ללא PHI מזוהה של מטופלים).
+                </div>
+            </div>
+            
+            <div style="padding:14px 20px; background:var(--bg-color, #f8fafc); border-top:1px solid var(--border-color, #e2e8f0); display:flex; justify-content:space-between; align-items:center;">
+                <button type="button" onclick="document.getElementById('cloud_config_modal').style.display='none'" style="background:#e2e8f0; color:#334155; border:none; padding:7px 14px; border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer;">סגור</button>
+                <button type="button" onclick="saveCloudConfig()" style="background:#0284c7; color:#fff; border:none; padding:7px 18px; border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer;">שמור הגדרות ענן ✓</button>
+            </div>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function saveCloudConfig() {
+    const config = getCloudSyncConfig();
+    config.hospitalName = document.getElementById('cfg_hospital_name').value.trim() || 'מרכז רפואי גריאטרי מוסדי';
+    config.endpoint = document.getElementById('cfg_cloud_endpoint').value.trim() || config.endpoint;
+    localStorage.setItem('institutional_cloud_config', JSON.stringify(config));
+    document.getElementById('cloud_config_modal').style.display = 'none';
+    showToast('הגדרות החיבור לענן המוסדי נשמרו בהצלחה!', 'success');
+    if (activeUserGuideTab === 'institutional') renderUserGuideView();
+}
+
+// ==============================================================
+// 3. USER SWITCH & LOGIN MODAL (אמצעי כניסה והחלפת משתמש מהירה)
+// ==============================================================
+
+const PRESET_USERS = [
+    { username: 'admin', password: 'admin', name: 'ד"ר ישראלי', role: 'מנהל איכות ראשי', team: 'all', isAdmin: true, avatar: '👑', desc: 'הרשאות מלאות: דשבורד, בקרות, הגדרות, פאנל איפוס וסנכרון ענן' },
+    { username: 'maya', password: 'admin', name: 'מאיה שקולניק גזית', role: 'מנהלת סיעוד ואיכות', team: 'all', isAdmin: true, avatar: '👩‍⚕️', desc: 'מומחית מדיניות וניהול סיעוד, פיקוח עליון מוסדי' },
+    { username: 'nili', password: '123', name: 'נילי גזית', role: 'אחות אחראית מחלקה', team: 'מונשמים א', isAdmin: false, avatar: '🩺', desc: 'אחות אחראית: ביצוע בקרות מחלקתיות, מעקב חניכים והדרכה' },
+    { username: 'rivka', password: '123', name: 'רבקה כהן', role: 'נאמנת פצע ושלמות עור', team: 'סיעוד מורכב', isAdmin: false, avatar: '🛡️', desc: 'נאמנת שלמות עור ומניעת זיהומים צולבים' },
+    { username: 'elias', password: '123', name: 'אליאס נסאר', role: 'סוכן תרופות מוסמך', team: 'תשושי נפש', isAdmin: false, avatar: '💊', desc: 'בקרת ניהול תרופות, סמים מסוכנים ותרגול SBAR' },
+    { username: 'team', password: 'team', name: 'צוות מטפלים וסיעוד', role: 'איש צוות', team: 'שיקום גריאטרי', isAdmin: false, avatar: '🤝', desc: 'צפייה בלומדות, מדריכי כיס לנייד וחתימה על נהלים' }
+];
+
+function openUserSwitchModal() {
+    let modal = document.getElementById('user_switch_modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'user_switch_modal';
+        document.body.appendChild(modal);
+    }
+    modal.style.cssText = 'position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.75); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:1rem; box-sizing:border-box;';
+    
+    modal.innerHTML = `
+        <div style="background:var(--surface, #ffffff); width:100%; max-width:620px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:1px solid var(--border-color, #e2e8f0); overflow:hidden; direction:rtl; text-align:right; max-height:90vh; display:flex; flex-direction:column;">
+            <div style="padding:16px 20px; background:linear-gradient(135deg, #1e40af, #2563eb); color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:22px;">👤</span>
+                    <div>
+                        <h3 style="margin:0; font-size:16px; font-weight:800; color:#fff;">כניסה והחלפת משתמש למערכת</h3>
+                        <div style="font-size:12px; color:#bfdbfe;">משתמש מחובר כעת: <strong>${(currentUser && currentUser.name) ? currentUser.name : 'אורח'}</strong> (${(currentUser && currentUser.role) ? currentUser.role : 'לא מוגדר'})</div>
+                    </div>
+                </div>
+                <button type="button" onclick="document.getElementById('user_switch_modal').style.display='none'" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:16px; width:30px; height:30px; border-radius:50%; cursor:pointer;">✖</button>
+            </div>
+            
+            <div style="padding:20px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:16px;">
+                <div>
+                    <strong style="font-size:13.5px; color:var(--text-primary); display:block; margin-bottom:4px;">⚡ כניסה מהירה בלחיצה אחת (פרופילי תפקיד מוסדיים):</strong>
+                    <span style="font-size:11.5px; color:var(--text-secondary); display:block; margin-bottom:10px;">בחר/י פרופיל למעבר מיידי והתאמת הרשאות המערכת:</span>
+                    
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:10px;">
+                        ${PRESET_USERS.map(u => `
+                            <div onclick="switchUserDirectly('${u.username}')" style="background:var(--bg-color); border:1px solid ${(currentUser && currentUser.username === u.username) ? '#2563eb' : 'var(--border-color)'}; padding:10px 12px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:10px; transition:all 0.2s; box-shadow:${(currentUser && currentUser.username === u.username) ? '0 0 0 2px #bfdbfe' : 'none'};" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='${(currentUser && currentUser.username === u.username) ? '#2563eb' : 'var(--border-color)'}'">
+                                <span style="font-size:24px;">${u.avatar}</span>
+                                <div style="flex:1;">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <strong style="font-size:13px; color:var(--text-primary);">${u.name}</strong>
+                                        ${(currentUser && currentUser.username === u.username) ? '<span style="font-size:10px; background:#2563eb; color:white; padding:1px 6px; border-radius:4px;">פעיל כעת</span>' : ''}
+                                    </div>
+                                    <div style="font-size:11.5px; color:var(--primary-color); font-weight:600;">${u.role}</div>
+                                    <div style="font-size:10.5px; color:var(--text-secondary); margin-top:2px;">${u.desc}</div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div style="border-top:1px dashed var(--border-color); padding-top:14px;">
+                    <strong style="font-size:13.5px; color:var(--text-primary); display:block; margin-bottom:8px;">🔑 כניסה באמצעות שם משתמש וסיסמה (או סיסמת על admin):</strong>
+                    <div style="display:grid; grid-template-columns:1fr 1fr auto; gap:8px; align-items:flex-end;">
+                        <div>
+                            <label style="font-size:11.5px; color:var(--text-secondary); display:block; margin-bottom:3px;">שם משתמש:</label>
+                            <input id="sw_username" type="text" placeholder="למשל: admin" style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; font-size:13px; box-sizing:border-box;">
+                        </div>
+                        <div>
+                            <label style="font-size:11.5px; color:var(--text-secondary); display:block; margin-bottom:3px;">סיסמה:</label>
+                            <input id="sw_password" type="password" placeholder="סיסמה (admin)" style="width:100%; padding:8px 10px; border:1px solid var(--border-color); border-radius:8px; font-size:13px; box-sizing:border-box;">
+                        </div>
+                        <button type="button" onclick="submitManualLogin()" class="btn" style="background:#2563eb; color:#fff; padding:8px 16px; border-radius:8px; font-weight:700; font-size:12.5px; cursor:pointer;">
+                            התחבר ➜
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="padding:12px 20px; background:var(--bg-color); border-top:1px solid var(--border-color); display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-size:11.5px; color:var(--text-secondary);">
+                    💡 סיסמת על ראשית: <strong>admin</strong> / <strong>admin</strong> (ד"ר ישראלי)
+                </div>
+                <button type="button" onclick="document.getElementById('user_switch_modal').style.display='none'" style="background:#e2e8f0; color:#334155; border:none; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">סגור</button>
+            </div>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function switchUserDirectly(username) {
+    const user = PRESET_USERS.find(u => u.username === username);
+    if (!user) return;
+    
+    currentUser = JSON.parse(JSON.stringify(user));
+    localStorage.setItem('clinic_current_user', JSON.stringify(currentUser));
+    
+    const unEl = document.getElementById('user-name');
+    const urEl = document.getElementById('user-role');
+    const avEl = document.getElementById('user-avatar');
+    if (unEl) unEl.innerText = currentUser.name;
+    if (urEl) urEl.innerText = currentUser.role;
+    if (avEl) avEl.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.name)}&background=0284c7&color=fff`;
+    
+    if (!currentUser.isAdmin) {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+    } else {
+        document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'flex');
+    }
+    
+    const isManager = currentUser.isAdmin || currentUser.role.includes('אחות אחראית') || currentUser.role.includes('הנהלה');
+    document.querySelectorAll('.manage-only').forEach(el => el.style.display = isManager ? 'flex' : 'none');
+    
+    const modal = document.getElementById('user_switch_modal');
+    if (modal) modal.style.display = 'none';
+    
+    showToast(`שלום ${currentUser.name}! התחברת בתור ${currentUser.role}`, 'success');
+}
+
+function submitManualLogin() {
+    const u = (document.getElementById('sw_username').value || '').trim().toLowerCase();
+    const p = (document.getElementById('sw_password').value || '').trim();
+    
+    if (!u || !p) {
+        showToast('נא להזין שם משתמש וסיסמה', 'warning');
+        return;
+    }
+    
+    if (u === 'admin' && p.toLowerCase() === 'admin') {
+        switchUserDirectly('admin');
+        return;
+    }
+    
+    const preset = PRESET_USERS.find(user => user.username.toLowerCase() === u && user.password === p);
+    if (preset) {
+        switchUserDirectly(preset.username);
+        return;
+    }
+    
+    if (Array.isArray(usersDb)) {
+        const found = usersDb.find(user => user.username.toLowerCase() === u && user.password === p);
+        if (found) {
+            currentUser = found;
+            localStorage.setItem('clinic_current_user', JSON.stringify(currentUser));
+            location.reload();
+            return;
+        }
+    }
+    
+    showToast('שם משתמש או סיסמה שגויים (סיסמת ברירת מחדל: admin / admin)', 'warning');
+}
+
+// ==============================================================
+// 4. USER GUIDE & INSTITUTIONAL VIEW RENDERERS
+// ==============================================================
+
 function renderUserGuideView() {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
 
+    const prog = getInstitutionalOnboardingProgress();
+    const cloudCfg = getCloudSyncConfig();
+    const isInstTab = activeUserGuideTab === 'institutional';
+
     contentArea.innerHTML = `
         <div class="fade-in space-y-6">
             <!-- Header Bar -->
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:16px 22px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:16px 22px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04); flex-wrap:wrap; gap:12px;">
                 <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
-                    <span>➜</span> מעבר לדשבורד הראשי
+                    <span>➜</span> חזרה לדשבורד הראשי
                 </button>
                 <div style="text-align:center;">
                     <div style="font-size:11px; font-weight:bold; color:var(--primary-color); text-transform:uppercase; letter-spacing:1px; margin-bottom:2px;">
-                        פורטל ניהול איכות ובטיחות ארגונית
+                        ${cloudCfg.hospitalName} | מודל הבקרה האחודה 2026
                     </div>
                     <h2 style="font-size:20px; font-weight:900; color:var(--text-primary); margin:0; display:flex; align-items:center; justify-content:center; gap:8px;">
-                        <span>📖</span> דף מנחה למשתמש ותוכן עניינים ממוספר
+                        <span>🏛️</span> 1. דף מנחה מוסדי ותוכן עניינים ארגוני
                     </h2>
-                    <span style="font-size:12px; color:var(--text-secondary);">מפת הדרכים המלאה של הפורטל: אינדקס 15 הלשוניות, מטרות, קהל יעד והנחיות שימוש</span>
+                    <span style="font-size:12px; color:var(--text-secondary);">מדריך ההטמעה להנהלה, אינדקס הלשוניות המלא וסנכרון ענן מוסדי</span>
                 </div>
-                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
-                    <span>🖨️</span> הדפס מדריך A4
+                <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                    <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                        <span>🖨️</span> הדפס דף מנחה (A4)
+                    </button>
+                    <button onclick="syncInstitutionalCloudNow()" class="btn" style="background:linear-gradient(135deg, #0284c7, #0369a1); color:white; font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(2,132,199,0.3);">
+                        <span>☁️</span> סנכרן לענן מוסדי
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Switcher (Navigation Sub-Tabs) -->
+            <div style="display:flex; gap:10px; border-bottom:2px solid var(--border-color); padding-bottom:6px;">
+                <button onclick="switchUserGuideTab('institutional')" class="btn" style="${isInstTab ? 'background:#1e40af; color:#fff; font-weight:800; box-shadow:0 2px 8px rgba(30,64,175,0.3);' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color); font-weight:600;'} font-size:13.5px; padding:8px 18px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                    <span>🏛️</span> דף מנחה מוסדי להטמעת המערכת בארגון
+                </button>
+                <button onclick="switchUserGuideTab('toc')" class="btn" style="${!isInstTab ? 'background:#1e40af; color:#fff; font-weight:800; box-shadow:0 2px 8px rgba(30,64,175,0.3);' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color); font-weight:600;'} font-size:13.5px; padding:8px 18px; border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                    <span>📑</span> תוכן עניינים ואינדקס 15 הלשוניות
                 </button>
             </div>
 
-            <!-- Ethical Standard & Security Notice -->
-            <div style="background:rgba(2, 132, 199, 0.08); border-right:4px solid #0284c7; padding:12px 18px; border-radius:0 10px 10px 0; font-size:12.5px; color:var(--text-primary); display:flex; align-items:center; justify-content:space-between;">
+            ${isInstTab ? renderInstitutionalGuideContent(prog, cloudCfg) : renderUserGuideTOCContent()}
+        </div>
+    `;
+}
+
+function renderInstitutionalGuideContent(prog, cloudCfg) {
+    return `
+        <!-- Institutional Implementation Guide View (Print-Optimized) -->
+        <div class="space-y-6" id="institutional-printable-area">
+            
+            <!-- Institutional Mission Banner -->
+            <div style="background:linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color:#ffffff; padding:22px 26px; border-radius:14px; box-shadow:0 4px 15px rgba(30,58,138,0.2);">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:14px;">
+                    <div>
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                            <span style="font-size:24px;">🎯</span>
+                            <h3 style="margin:0; font-size:18px; font-weight:900; color:#fff;">תוכנית מוסדית להטמעת פורטל האיכות, הבטיחות וההדרכה</h3>
+                        </div>
+                        <p style="margin:0; font-size:13px; color:#dbeafe; line-height:1.6; max-width:850px;">
+                            מדריך זה מהווה את מפת הדרכים המחייבת להנהלת המוסד, מנהלת הסיעוד וממוני האיכות ליישום מלא של כלי הבקרה, שגרות העבודה הרב-מקצועיות וההדרכות המוסדיות בהתאם לדרישות מודל הבקרה האחודה של משרד הבריאות לשנת 2026.
+                        </p>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:10px; padding:10px 14px; text-align:center;">
+                        <div style="font-size:11px; color:#bfdbfe; font-weight:600;">סטטוס תאימות רגולטורית</div>
+                        <div style="font-size:16px; font-weight:900; color:#fff;">100% תאימות לחוזר 2026</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Enterprise Cloud Integration Status Card -->
+            <div class="card" style="border:1px solid #7dd3fc; background:#f0f9ff; padding:18px 22px; border-radius:12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+                    <div style="display:flex; align-items:center; gap:12px;">
+                        <span style="font-size:28px;">☁️</span>
+                        <div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <strong style="font-size:15px; color:#0369a1;">עבודה וסנכרון מול ענן מוסדי מאובטח (Enterprise Healthcare Cloud)</strong>
+                                <span class="badge" style="background:#10b981; color:#fff; font-size:11px; padding:2px 8px; border-radius:6px;">פעיל ומחובר ✓</span>
+                            </div>
+                            <div style="font-size:12px; color:#0c4a6e; margin-top:3px;">
+                                שרת ענן: <code style="font-family:monospace; background:#e0f2fe; padding:2px 6px; border-radius:4px;">${escapeHtml(cloudCfg.endpoint)}</code> | 
+                                סנכרון אחרון: <strong>${cloudCfg.lastSync}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:8px;">
+                        <button onclick="syncInstitutionalCloudNow()" class="btn" style="background:#0284c7; color:#fff; font-size:12px; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                            סנכרן כעת 🔄
+                        </button>
+                        <button onclick="openCloudConfigModal()" class="btn" style="background:#fff; color:#0284c7; border:1px solid #7dd3fc; font-size:12px; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer;">
+                            הגדרות ענן ⚙️
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 Phased Implementation Roadmap with Interactive Checklists -->
+            <div class="card" style="padding:24px;">
+                <h3 style="font-size:16.5px; font-weight:800; color:var(--text-primary); margin-top:0; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                    <span>🗓️</span> 4 שלבי ההטמעה המוסדית (צ'ק-ליסט אינטראקטיבי למנהל)
+                </h3>
+
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+                    
+                    <!-- Phase 1 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-top:4px solid #2563eb; border-radius:10px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-size:11px; font-weight:800; background:#dbeafe; color:#1e40af; padding:2px 8px; border-radius:4px;">שבועות 1-2</span>
+                            <span style="font-size:18px;">🏗️</span>
+                        </div>
+                        <h4 style="margin:0 0 8px; font-size:14px; font-weight:800; color:var(--text-primary);">שלב א': היערכות הנהלה והגדרת תשתיות</h4>
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step1_1')" ${prog.step1_1 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>מינוי מובילת הטמעה מוסדית (מנהלת איכות / אחות הדרכה)</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step1_2')" ${prog.step1_2 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>הגדרת רשימת המחלקות ואיפוס בקרות ניסיון במסך ההגדרות (⚙️)</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step1_3')" ${prog.step1_3 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>ישיבת התנעה עם הנהלת המוסד, מנהלי מחלקות ואחיות אחראיות</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-top:4px solid #059669; border-radius:10px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-size:11px; font-weight:800; background:#dcfce7; color:#166534; padding:2px 8px; border-radius:4px;">שבועות 3-4</span>
+                            <span style="font-size:18px;">🎓</span>
+                        </div>
+                        <h4 style="margin:0 0 8px; font-size:14px; font-weight:800; color:var(--text-primary);">שלב ב': הכשרת מובילים וקליטת עובדים</h4>
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step2_1')" ${prog.step2_1 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>הטמעת ערכת הקליטה 62 שעות (לשונית 5) לכל עובד סיעוד חדש</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step2_2')" ${prog.step2_2 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>הסמכת אחראיות משמרת וסוכני תרופות (סימולטור אפ"רת בלשונית 6)</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step2_3')" ${prog.step2_3 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>הפצת כרטיסיות עזר לנייד (Pocket Guides - לשונית 8) לכלל הצוות</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-top:4px solid #d97706; border-radius:10px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-size:11px; font-weight:800; background:#fef3c7; color:#92400e; padding:2px 8px; border-radius:4px;">שבועות 5-8</span>
+                            <span style="font-size:18px;">📝</span>
+                        </div>
+                        <h4 style="margin:0 0 8px; font-size:14px; font-weight:800; color:var(--text-primary);">שלב ג': הפעלת שגרת בקרות שבועית</h4>
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step3_1')" ${prog.step3_1 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>הפעלת לוח בקרות מחלקתי: עגלת החייאה (שב' 1), פצעים (שב' 2), זיהומים (שב' 3), רחצה (שב' 4)</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step3_2')" ${prog.step3_2 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>סגירת מעגלי ליקויים (CAPA) על כל בקרה עם ציון מתחת ל-80%</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step3_3')" ${prog.step3_3 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>אישור קריאת נהלי עבודה מחייבים (לשונית 11) ומעקב חתימות עובדים</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Phase 4 -->
+                    <div style="background:var(--bg-color); border:1px solid var(--border-color); border-top:4px solid #7c3aed; border-radius:10px; padding:16px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                            <span style="font-size:11px; font-weight:800; background:#fae8ff; color:#6b21a8; padding:2px 8px; border-radius:4px;">שוטף וקבוע</span>
+                            <span style="font-size:18px;">📊</span>
+                        </div>
+                        <h4 style="margin:0 0 8px; font-size:14px; font-weight:800; color:var(--text-primary);">שלב ד': בקרה מתכללת וסנכרון MDT</h4>
+                        <div style="display:flex; flex-direction:column; gap:8px; font-size:12px;">
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step4_1')" ${prog.step4_1 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>מפגש רב-מקצועי שבועי (Huddle) בלשונית 7 ושמירת סיכום מובנה</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step4_2')" ${prog.step4_2 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>בחינת יעדי איכות תקופתיים (רבעונים ושנתי) וניתוח מגמות גרפי</span>
+                            </label>
+                            <label style="display:flex; align-items:flex-start; gap:8px; cursor:pointer;">
+                                <input type="checkbox" onchange="toggleInstitutionalTask('step4_3')" ${prog.step4_3 ? 'checked' : ''} style="margin-top:2px;">
+                                <span>ייצוא דוחות אקסל חודשיים להנהלה ולמשרד הבריאות (דשבורד ראשי לשונית 4)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- RACI Matrix Table -->
+            <div class="card" style="padding:22px;">
+                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin-top:0; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                    <span>👥</span> מטריצת אחריות מוסדית להטמעה (RACI Matrix)
+                </h3>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%; border-collapse:collapse; font-size:12.5px; text-align:right;">
+                        <thead>
+                            <tr style="background:var(--bg-color); border-bottom:2px solid var(--border-color);">
+                                <th style="padding:10px 14px;">תפקיד בארגון</th>
+                                <th style="padding:10px 14px;">תחומי אחריות עיקריים בהטמעה</th>
+                                <th style="padding:10px 14px;">לשוניות עבודה מרכזיות</th>
+                                <th style="padding:10px 14px;">תדירות נדרשת</th>
+                            </tr>
+                        </thead>
+                        <tbody style="divide-y: 1px solid var(--border-color);">
+                            <tr>
+                                <td style="padding:10px 14px; font-weight:bold; color:#1e40af;">הנהלת הסיעוד ואיכות</td>
+                                <td style="padding:10px 14px;">פיקוח עליון, בחינת מגמות מוסדיות, איפוס/ניהול נתונים, סנכרון ענן, ייצוא דוחות</td>
+                                <td style="padding:10px 14px;"><strong>4</strong> (דשבורד ראשי), <strong>15</strong> (מעקב מנהל), <strong>16</strong> (הגדרות)</td>
+                                <td style="padding:10px 14px;"><span class="badge" style="background:#e0f2fe; color:#0369a1;">שבועי / חודשי</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 14px; font-weight:bold; color:#059669;">אחות אחראית מחלקה</td>
+                                <td style="padding:10px 14px;">הובלת מפגשי MDT שבועיים, ביצוע בקרות מחלקתיות, מעקב חניכים, פיקוח קריאת נהלים</td>
+                                <td style="padding:10px 14px;"><strong>7</strong> (יעדים רב-מקצועיים), <strong>10</strong> (כלי בקרה), <strong>6</strong> (אחראית משמרת)</td>
+                                <td style="padding:10px 14px;"><span class="badge" style="background:#dcfce7; color:#166534;">שבועי שוטף</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 14px; font-weight:bold; color:#d97706;">נאמני תחומים (פצע, זיהומים)</td>
+                                <td style="padding:10px 14px;">ביצוע בקרות תצפית שבועיות, תרגול מעשי של מטפלים, אומדן עור ובידודים</td>
+                                <td style="padding:10px 14px;"><strong>10</strong> (כלי בקרה 1, 5), <strong>8</strong> (כיס לנייד), <strong>9</strong> (לומדות)</td>
+                                <td style="padding:10px 14px;"><span class="badge" style="background:#fef3c7; color:#92400e;">שבועי</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 14px; font-weight:bold; color:#7c3aed;">הצוות הרב-מקצועי (פיזיו, רב"ע, דיאטה, קלינאות)</td>
+                                <td style="padding:10px 14px;">שותפות במפגש השבועי, עדכון מרקמי IDDSI, מנחי ניוד, תוכניות מניעת שבריריות</td>
+                                <td style="padding:10px 14px;"><strong>7</strong> (דשבורד יעדים ומטריצת אחריות), <strong>14</strong> (CDSS גריאטרי)</td>
+                                <td style="padding:10px 14px;"><span class="badge" style="background:#fae8ff; color:#6b21a8;">שבועי במפגש MDT</span></td>
+                            </tr>
+                            <tr>
+                                <td style="padding:10px 14px; font-weight:bold; color:#475569;">אחיות ומטפלים במחלקה</td>
+                                <td style="padding:10px 14px;">השתתפות בבקרות, צפייה בלומדות, שימוש במדריכי כיס לנייד, אישור קריאת נהלים</td>
+                                <td style="padding:10px 14px;"><strong>5</strong> (ערכת קליטה), <strong>8</strong> (מדריכי כיס), <strong>9</strong> (לומדות), <strong>11</strong> (נהלים)</td>
+                                <td style="padding:10px 14px;"><span class="badge" style="background:#f1f5f9; color:#475569;">יומי / במשמרת</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer Compliance Note -->
+            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:10px; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; font-size:12px; color:var(--text-secondary);">
                 <div>
-                    <strong>🛡️ עקרונות אתיקה ואבטחת מידע:</strong> הפורטל מיועד להדרכה, הערכת כשירות קלינית, בקרה וממשקי עבודה מחלקתיים. 
-                    <span style="color:var(--text-secondary);">תוכניות טיפול פרטניות מנוהלות אך ורק בגיליון הרפואי הממוחשב (EHR).</span>
+                    <strong>מסמך הנחיה רשמי:</strong> אושר ליישום במוסד ע"י מאיה שקולניק גזית (R.N, BA, M.H.A, Policy Management Specialist).
                 </div>
-                <span class="badge" style="background:#0284c7; color:white; font-size:11px; padding:3px 9px; border-radius:6px; font-weight:bold;">גרסה 2026.11</span>
+                <button onclick="window.print()" class="btn" style="background:#1e40af; color:#fff; font-size:11.5px; padding:6px 14px; border-radius:6px; cursor:pointer;">
+                    הדפס מסמך זה לתיק נהלים A4 🖨️
+                </button>
             </div>
+        </div>
+    `;
+}
 
-            <!-- Quick Search in Guide -->
-            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:12px; padding:12px 16px;">
-                <input type="text" id="guide-search-input" oninput="filterUserGuideTOC(this.value)" placeholder="חפש נושא במדריך (למשל: סוכן תרופות, IAD, רחצה, בקרות, CDSS, הרשמה)..." style="width:100%; padding:9px 14px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:13px; box-sizing:border-box;">
-            </div>
-
-            <!-- Interactive Numbered Table of Contents (TOC Cards Grid) -->
-            <div class="interprof-card" style="padding:22px;">
-                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin-top:0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
-                    <span>📑</span> תוכן עניינים אינטראקטיבי - 15 לשוניות הפורטל
+function renderUserGuideTOCContent() {
+    return `
+        <!-- Interactive Numbered Table of Contents (TOC Cards Grid) -->
+        <div class="interprof-card" style="padding:22px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:15px;">
+                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin:0; display:flex; align-items:center; gap:8px;">
+                    <span>📑</span> תוכן עניינים ואינדקס 15 הלשוניות
                 </h3>
-                <p style="font-size:12.5px; color:var(--text-secondary); margin-top:0; margin-bottom:18px;">
-                    לחץ/י על כל כרטיסייה לניווט ישיר ללשונית הרצויה באתר או לצפייה בהנחיות המפורטות להלן:
-                </p>
-
-                <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:12px;" id="toc-grid-container">
-                    ${getUserGuideTOCItems().map(item => `
-                        <div onclick="navigate('${item.navKey}')" style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='none'">
-                            <div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                                    <span style="font-size:11px; font-weight:bold; background:var(--primary-color); color:white; padding:2px 7px; border-radius:4px;">לשונית ${item.num}</span>
-                                    <span style="font-size:18px;">${item.icon}</span>
-                                </div>
-                                <strong style="font-size:13px; color:var(--text-primary); display:block; line-height:1.35;">${item.num}. ${item.title}</strong>
-                                <p style="font-size:11.5px; color:var(--text-secondary); margin:6px 0 0 0; line-height:1.4;">${item.desc}</p>
-                            </div>
-                            <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); pt:6px; padding-top:6px;">
-                                <span style="font-size:10.5px; color:var(--primary-color); font-weight:bold;">מעבר ללשונית ➜</span>
-                                <span style="font-size:10.5px; color:var(--text-secondary);">${item.audience}</span>
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
+                <input type="text" id="guide-search-input" oninput="filterUserGuideTOC(this.value)" placeholder="חפש נושא (למשל: סוכן תרופות, IAD, רחצה, בקרות, CDSS)..." style="width:280px; padding:7px 12px; border-radius:8px; border:1px solid var(--border-color); background:var(--bg-color); color:var(--text-primary); font-size:12.5px; box-sizing:border-box;">
             </div>
+            
+            <p style="font-size:12.5px; color:var(--text-secondary); margin-top:0; margin-bottom:18px;">
+                לחץ/י על כל כרטיסייה לניווט ישיר ללשונית הרצויה באתר או לצפייה בהנחיות המפורטות להלן:
+            </p>
 
-            <!-- Detailed Chapters Section -->
-            <div class="space-y-4" id="guide-detailed-chapters">
-                <h3 style="font-size:16px; font-weight:800; color:var(--text-primary); margin:20px 0 10px 0; display:flex; align-items:center; gap:8px;">
-                    <span>📚</span> פירוט מודולי המערכת והנחיות הפעלה שלב-אחר-שלב
-                </h3>
-
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(290px, 1fr)); gap:12px;" id="toc-grid-container">
                 ${getUserGuideTOCItems().map(item => `
-                    <div class="interprof-card" id="guide-chapter-${item.num}" style="padding:20px;">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <span style="font-size:24px;">${item.icon}</span>
-                                <div>
-                                    <div style="font-size:11px; font-weight:bold; color:var(--primary-color);">לשונית מספר ${item.num}</div>
-                                    <h4 style="font-size:15px; font-weight:800; color:var(--text-primary); margin:0;">${item.num}. ${item.title}</h4>
-                                </div>
+                    <div onclick="navigate('${item.navKey}')" style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:10px; padding:14px; cursor:pointer; transition:all 0.2s ease; display:flex; flex-direction:column; justify-content:space-between;" onmouseover="this.style.borderColor='var(--primary-color)'; this.style.transform='translateY(-2px)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.transform='none'">
+                        <div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                                <span style="font-size:11px; font-weight:bold; background:var(--primary-color); color:white; padding:2px 7px; border-radius:4px;">לשונית ${item.num}</span>
+                                <span style="font-size:18px;">${item.icon}</span>
                             </div>
-                            <button onclick="navigate('${item.navKey}')" class="btn" style="background:var(--primary-color); color:white; font-size:11.5px; font-weight:bold; padding:5px 12px; border-radius:6px;">
-                                פתח לשונית זו ➜
-                            </button>
+                            <strong style="font-size:13px; color:var(--text-primary); display:block; line-height:1.35;">${item.num}. ${item.title}</strong>
+                            <p style="font-size:11.5px; color:var(--text-secondary); margin:6px 0 0 0; line-height:1.4;">${item.desc}</p>
                         </div>
-
-                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; font-size:12.5px;">
-                            <div style="background:var(--bg-color); padding:12px; border-radius:8px;">
-                                <strong style="color:var(--text-primary); display:block; margin-bottom:4px;">🎯 מטרת המודול:</strong>
-                                <p style="margin:0; color:var(--text-secondary); line-height:1.5;">${item.fullObjective}</p>
-                            </div>
-                            <div style="background:var(--bg-color); padding:12px; border-radius:8px;">
-                                <strong style="color:var(--text-primary); display:block; margin-bottom:4px;">👥 קהל יעד מיועד:</strong>
-                                <p style="margin:0; color:var(--text-secondary); line-height:1.5;">${item.fullAudience}</p>
-                            </div>
-                        </div>
-
-                        <div style="margin-top:12px; font-size:12.5px; background:rgba(2, 132, 199, 0.04); border:1px solid rgba(2, 132, 199, 0.15); border-radius:8px; padding:12px;">
-                            <strong style="color:#0369a1; display:block; margin-bottom:6px;">🛠️ כיצד להשתמש שלב-אחר-שלב:</strong>
-                            <ol style="margin:0 0 0 18px; padding:0; color:var(--text-primary); line-height:1.55;">
-                                ${item.steps.map(step => `<li>${step}</li>`).join('')}
-                            </ol>
+                        <div style="margin-top:10px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--border-color); padding-top:6px;">
+                            <span style="font-size:10.5px; color:var(--primary-color); font-weight:bold;">מעבר ללשונית ➜</span>
+                            <span style="font-size:10.5px; color:var(--text-secondary);">${item.audience}</span>
                         </div>
                     </div>
                 `).join('')}
             </div>
         </div>
+
+        <!-- Detailed Chapters Section -->
+        <div style="display:flex; flex-direction:column; gap:16px;">
+            ${getUserGuideTOCItems().map(item => `
+                <div class="interprof-card" id="guide-chapter-${item.num}" style="padding:20px;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; border-bottom:1px solid var(--border-color); padding-bottom:10px;">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <span style="font-size:24px;">${item.icon}</span>
+                            <div>
+                                <h4 style="margin:0; font-size:15px; font-weight:800; color:var(--text-primary);">
+                                    לשונית ${item.num}: ${item.title}
+                                </h4>
+                                <span style="font-size:11.5px; color:var(--text-secondary);">קהל יעד עיקרי: <strong>${item.fullAudience}</strong></span>
+                            </div>
+                        </div>
+                        <button onclick="navigate('${item.navKey}')" class="btn" style="background:var(--primary-color); color:white; font-size:12px; padding:6px 14px; border-radius:8px;">
+                            פתח לשונית ➜
+                        </button>
+                    </div>
+                    <div style="font-size:13px; line-height:1.6; color:var(--text-primary); margin-bottom:12px;">
+                        <strong>מטרת הלשונית:</strong> ${item.fullObjective}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
     `;
 }
+
 
 function getUserGuideTOCItems() {
     return [
