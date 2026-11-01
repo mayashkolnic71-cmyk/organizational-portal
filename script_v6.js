@@ -3568,7 +3568,10 @@ function updateNotifBadge() {
     badge.style.display = unread > 0 ? 'inline-flex' : 'none';
 }
 
-function toggleNotifications() {
+function toggleNotifications(event) {
+    if (event) {
+        event.stopPropagation();
+    }
     const dropdown = document.getElementById('notifications-dropdown');
     if (!dropdown) return;
     if (dropdown.style.display === 'block') {
@@ -3579,29 +3582,41 @@ function toggleNotifications() {
     }
 }
 
+// Close notifications dropdown when clicking outside
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('notifications-dropdown');
+    const notifBtn = document.querySelector('.notifications');
+    if (dropdown && dropdown.style.display === 'block') {
+        if (!dropdown.contains(e.target) && (!notifBtn || !notifBtn.contains(e.target))) {
+            dropdown.style.display = 'none';
+        }
+    }
+});
+
 function renderNotificationsDropdown() {
     const dropdown = document.getElementById('notifications-dropdown');
     if (!dropdown) return;
 
     let html = `
-        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:8px; margin-bottom:8px;">
-            <strong style="font-size:13px; color:var(--text-primary);">התראות מערכת והודעות</strong>
-            <button onclick="markAllNotificationsAsRead()" class="btn" style="font-size:11px; padding:3px 8px; background:transparent; color:var(--primary-color); border:1px solid var(--border-color); border-radius:6px; cursor:pointer;">סמן הכל כנקרא</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border-color); padding-bottom:10px; margin-bottom:10px;">
+            <strong style="font-size:13.5px; color:var(--text-primary); display:flex; align-items:center; gap:6px;">🔔 התראות מערכת והודעות</strong>
+            <button onclick="markAllNotificationsAsRead()" class="btn" style="font-size:11px; padding:3px 8px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; border-radius:6px; cursor:pointer;">סמן הכל כנקרא</button>
         </div>
     `;
 
-    if (portalNotifications.length === 0) {
-        html += '<div style="text-align:center; padding:15px; color:var(--text-secondary); font-size:12px;">אין התראות חדשות</div>';
+    if (!portalNotifications || portalNotifications.length === 0) {
+        html += '<div style="text-align:center; padding:20px; color:var(--text-secondary); font-size:12.5px;">אין התראות חדשות</div>';
     } else {
-        html += '<div style="display:flex; flex-direction:column; gap:4px;">';
+        html += '<div style="display:flex; flex-direction:column; gap:6px;">';
         portalNotifications.forEach(n => {
+            const isUnread = !n.read;
             html += `
-                <div class="notif-item" style="${!n.read ? 'background:rgba(2, 132, 199, 0.08); font-weight:600;' : ''}">
-                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                        <span style="color:var(--text-primary); font-size:12px;">${n.title}</span>
-                        <span class="notif-time">${n.time}</span>
+                <div class="notif-item" style="${isUnread ? 'background:#eff6ff; border:1px solid #bfdbfe; font-weight:600;' : 'background:#ffffff; border:1px solid #e2e8f0;'}">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+                        <span style="color:var(--text-primary); font-size:12.5px;">${isUnread ? '🟢 ' : ''}${n.title}</span>
+                        <span class="notif-time" style="white-space:nowrap;">${n.time}</span>
                     </div>
-                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${n.body}</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:3px; line-height:1.4;">${n.body}</div>
                 </div>
             `;
         });
