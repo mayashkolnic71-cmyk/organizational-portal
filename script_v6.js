@@ -1334,7 +1334,7 @@ function renderOnboarding() {
                     <a href="onboarding_signing_form_appendix_a.html" target="_blank" class="btn" style="background: #059669; color: white; padding: 7px 14px; font-size: 13px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-radius: 8px; box-shadow: 0 2px 8px rgba(5,150,105,0.25);" title="טופס החתמה רשמי על הדרכות קליטה לתיוק בתיק עובד במשאבי אנוש">
                         <span>📋</span> נספח א': טופס החתמה (A4)
                     </a>
-                    <a href="onboarding_kit_preview.html?v=65" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    <a href="onboarding_kit_preview.html?v=66" target="_blank" class="btn" style="padding: 7px 15px; font-size: 13px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
                         <span>↗ פתיחה בחלון נפרד מלא</span>
                     </a>
                     <button onclick="const ifr=document.getElementById('onboarding-kit-frame'); if(ifr){ifr.contentWindow.location.reload();}" class="btn" style="background: transparent; color: var(--text-secondary); border: 1px solid var(--border-color); padding: 7px 12px; font-size: 13px;" title="רענון ערכה">
@@ -1343,7 +1343,7 @@ function renderOnboarding() {
                 </div>
             </div>
             <div style="flex: 1; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid var(--border-color); background: #ffffff;">
-                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=65" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="onboarding-kit-frame" src="onboarding_kit_preview.html?v=66" style="width: 100%; height: 100%; border: none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
         </div>
     `;
@@ -3249,68 +3249,153 @@ window.simulateNotifications = openMessagingModal;
 // 1. INTERPROFESSIONAL DEPARTMENTAL GOALS DASHBOARD (ETHICAL / NO PHI)
 // ==============================================================
 let activeInterprofDept = 'all';
+let activeInterprofPeriod = 'q3';
+
+const INTERPROF_PERIOD_LIST = [
+    { key: 'q1', label: 'רבעון 1 (Q1)', short: 'Q1' },
+    { key: 'q2', label: 'רבעון 2 (Q2)', short: 'Q2' },
+    { key: 'q3', label: 'רבעון 3 (Q3 נוכחי)', short: 'Q3' },
+    { key: 'q4', label: 'רבעון 4 (Q4 צפוי)', short: 'Q4' },
+    { key: 'semi_annual', label: 'חצי שנתי (H1/H2)', short: 'חצי שנתי' },
+    { key: 'annual', label: 'סיכום שנתי מצטבר', short: 'שנתי' }
+];
+
+const DEFAULT_INTERPROF_STORE = {
+    all: {
+        title: 'כלל המחלקות (ממוצע מוסדי)',
+        sub: 'סנכרון רב-מקצועי כולל: מניעת פצעים, בטיחות רחצה, ניוד מתוזמן ומרקמי מזון IDDSI',
+        periods: {
+            q1: { kpi1: 91, kpi1Sub: 'סקר עור קבלה תוך 24 שעות', kpi2: 100, kpi2Sub: 'אפס כוויות ונפילות במקלחת', kpi3: 82, kpi3Sub: 'הושבה מתוזמנת לכורסה', kpi4: 93, kpi4Sub: 'אומדן בליעה תוך 48 שעות', findings: 'תחילת שנת עבודה: הטמעת ערכת הדרכה חדשה ובקרות רחצה.', actions: 'הדרכת צוותי ערב ולילה בנושא שינויי תנוחה ומריחת אמוליינט.' },
+            q2: { kpi1: 93, kpi1Sub: 'מריחת אמוליינט תוך 3 דקות', kpi2: 100, kpi2Sub: 'בדיקת טמפ מים 37-40C', kpi3: 85, kpi3Sub: 'שימוש במנופי הרמה תקניים', kpi4: 95, kpi4Sub: 'העשרה חלבונית לפי דיאטנית', findings: 'שיפור מובהק בשלמות העור הודות להקפדה על סבון pH 5.5.', actions: 'המשך פיקוח על נעילת מעצורים ברחצה ובמעברים.' },
+            q3: { kpi1: 95, kpi1Sub: 'פרוטוקול 3 שלבים וליחוח מותאם', kpi2: 100, kpi2Sub: 'רחצה בישיבה בלבד בכסא נעול', kpi3: 88, kpi3Sub: 'קימה לכורסה וסולמות תמיכה', kpi4: 97, kpi4Sub: 'התאמת צמיגות נוזלים IDDSI', findings: 'עמידה של 95% במדדי העור ו-100% בבטיחות רחצה. עלייה ביציבות מרקמי מזון.', actions: 'תגבור הדרכות פיזיותרפיה לשיפור זמני הניוד לקראת רבעון 4.' },
+            q4: { kpi1: 96, kpi1Sub: 'שמירה על שלמות עור וספיגה', kpi2: 100, kpi2Sub: 'כיסוי מגן לצנתרים ברחצה', kpi3: 91, kpi3Sub: 'שילוב 2 מטפלים במעברים', kpi4: 98, kpi4Sub: 'אפס אירועי אספירציה שקטה', findings: 'יעד שנתי הושג ברוב המחלקות. שיתוף פעולה רב-מקצועי מיטבי.', actions: 'הצגת ממצאים מסכמים בישיבת הנהלה ושימור הישגים.' },
+            semi_annual: { kpi1: 93, kpi1Sub: 'ממוצע חצי שנתי משוקלל', kpi2: 100, kpi2Sub: 'בטיחות רחצה מלאה', kpi3: 85, kpi3Sub: 'ממוצע ניוד חצי שנתי', kpi4: 95, kpi4Sub: 'סנכרון תזונתי יציב', findings: 'מחצית ראשונה חיובית עם מגמת עלייה רציפה בכלל המדדים.', actions: 'מיקוד במחלקות מורכבות לשיפור נוסף ברבעונים הבאים.' },
+            annual: { kpi1: 95, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 100, kpi2Sub: 'עמידה מלאה ביעד הבטיחות', kpi3: 89, kpi3Sub: 'עמידה ביעד הניוד השנתי', kpi4: 97, kpi4Sub: 'סנכרון רב-מקצועי מצטיין', findings: 'עמידה מלאה ביעדי כלי הבקרה האחוד של משרד הבריאות לשנת 2026.', actions: 'קביעת יעדי איכות מאתגרים לשנה הבאה.' }
+        }
+    },
+    complex: {
+        title: 'מחלקת סיעוד מורכב',
+        sub: 'דגשי איכות: מניעת פצעי לחץ וקרעי עור, שלמות צנתרים, איזון כאב ורצף טיפול',
+        periods: {
+            q1: { kpi1: 91, kpi1Sub: 'מזרנים דינמיים ושינויי תנוחה', kpi2: 98, kpi2Sub: 'הגנה אטומה על צנתרים ופצעים', kpi3: 80, kpi3Sub: 'התאמת כריות ישיבה מונעות לחץ', kpi4: 94, kpi4Sub: 'תוספי חלבון 1.5 גר/קג לריפוי', findings: 'תחילת הטמעה של חבישות סיליקון חדשות.', actions: 'הדרכת צוות על מניעת חיכוך במשיכת גפיים.' },
+            q2: { kpi1: 93, kpi1Sub: 'שינויי תנוחה מתוזמנים 30°', kpi2: 100, kpi2Sub: 'מניעת היפותרמיה ברחצה', kpi3: 82, kpi3Sub: 'קימה לכורסה פעמיים ביום', kpi4: 96, kpi4Sub: 'העשרה קלורית וחלבון', findings: 'ירידה של 40% בהיארעות תפרחת IAD.', actions: 'הקפדה על החלפה מידית של מוצרי ספיגה.' },
+            q3: { kpi1: 95, kpi1Sub: 'מניעת פצעי לחץ ו-IAD', kpi2: 100, kpi2Sub: 'בטיחות רחצה והיפותרמיה', kpi3: 85, kpi3Sub: 'ניוד והושבה מתוזמנת', kpi4: 97, kpi4Sub: 'העשרה חלבונית ו-IDDSI', findings: 'עמידה של 95% במדד העור ו-100% בבטיחות רחצה.', actions: 'המשך מעקב רב-מקצועי שבועי עם הדיאטנית והפיזיותרפיסט.' },
+            q4: { kpi1: 97, kpi1Sub: 'שלמות עור מקסימלית', kpi2: 100, kpi2Sub: 'אפס זיהומים צולבים ברחצה', kpi3: 88, kpi3Sub: 'הושבה ממושכת ויציבה', kpi4: 98, kpi4Sub: 'ריפוי פצעים מואץ', findings: 'סגירה מוצלחת של פצעי לחץ קיימים ללא פצעים חדשים.', actions: 'שימור פרוטוקול חבישות מתקדם.' },
+            semi_annual: { kpi1: 93, kpi1Sub: 'ממוצע חצי שנתי משוקלל', kpi2: 99, kpi2Sub: 'בטיחות רחצה גבוהה', kpi3: 82, kpi3Sub: 'ניוד הדרגתי במורכבים', kpi4: 95, kpi4Sub: 'העשרה תזונתית יציבה', findings: 'שיפור עקבי בהגנה על שלמות העור.', actions: 'תגבור מנופי הרמה במחלקה.' },
+            annual: { kpi1: 95, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 100, kpi2Sub: 'אפס כוויות ונפילות ברחצה', kpi3: 86, kpi3Sub: 'השגת יעדי הניוד השנתיים', kpi4: 97, kpi4Sub: 'שיקום תזונתי מוכח', findings: 'עמידה מלאה ביעדי האיכות לסיעוד מורכב.', actions: 'המשך בקרה רבעונית שוטפת.' }
+        }
+    },
+    vent: {
+        title: 'מחלקת סיעוד מונשמים',
+        sub: 'דגשי איכות: מניעת דלקת ריאות מונשמים (VAP Bundle), בטיחות קנולות ופיום קנה, מניעת לחץ',
+        periods: {
+            q1: { kpi1: 95, kpi1Sub: 'חבישות ספוגיות ייעודיות לטרכאו', kpi2: 100, kpi2Sub: 'רחצה ללא מים וסבון pH 5.5', kpi3: 88, kpi3Sub: 'סנכרון פיזיו נשימתית וסיעוד', kpi4: 97, kpi4Sub: 'הרמת מראשות 30-45° למניעת שאיפה', findings: 'הטמעת חבישות טרכאוסטומיה ספוגיות ומניעת לחץ מקנולה.', actions: 'ריענון נהלי סקשן סטרילי.' },
+            q2: { kpi1: 97, kpi1Sub: 'שלמות עור צוואר וגב', kpi2: 100, kpi2Sub: 'הגנה על מעגלי הנשמה ברחצה', kpi3: 90, kpi3Sub: 'ניקוז תנוחתי מסונכרן', kpi4: 98, kpi4Sub: 'הזנה אנטרלית רציפה בטוחה', findings: 'אפס אירועי VAP ברבעון השני.', actions: 'שמירה על ניטור לחץ בלונית הקנולה מידי משמרת.' },
+            q3: { kpi1: 98, kpi1Sub: 'שלמות עור סביב טרכאוסטומיה', kpi2: 100, kpi2Sub: 'בטיחות רחצה במיטה', kpi3: 92, kpi3Sub: 'שינויי תנוחה וניקוז ריאתי', kpi4: 99, kpi4Sub: 'הזנה אנטרלית בטוחה (PEG)', findings: 'הישג מצוין: 98% שלמות עור ו-99% בטיחות הזנה.', actions: 'המשך תרגול מעברי מיטה-כורסה עם מנוף מונשמים.' },
+            q4: { kpi1: 99, kpi1Sub: 'אפס פצעי לחץ באזורי קנולה', kpi2: 100, kpi2Sub: 'רחצה מבוקרת וסטרילית', kpi3: 94, kpi3Sub: 'גמילה הדרגתית והושבה', kpi4: 99, kpi4Sub: 'הזנה מיטבית ללא רפלוקס', findings: 'שמירה על תוצאות קליניות מעולות.', actions: 'ריענון כשירות שנתית לצוות המונשמים.' },
+            semi_annual: { kpi1: 96, kpi1Sub: 'ממוצע חצי שנתי', kpi2: 100, kpi2Sub: 'בטיחות רחצה מלאה', kpi3: 89, kpi3Sub: 'פיזיותרפיה נשימתית שוטפת', kpi4: 98, kpi4Sub: 'הזנה אנטרלית בטוחה', findings: 'מחצית ראשונה יציבה ללא אירועי בטיחות חריגים.', actions: 'המשך הקפדה על מנח מראשות מוגבה.' },
+            annual: { kpi1: 98, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 100, kpi2Sub: 'אפס כוויות/נפילות', kpi3: 93, kpi3Sub: 'ניוד מונשמים מתקדם', kpi4: 99, kpi4Sub: 'בטיחות הזנה עילאית', findings: 'מחלקה מובילה בבטיחות הנשמה ומניעת פצעי לחץ.', actions: 'שימור פרוטוקול VAP Bundle כמודל מוסדי.' }
+        }
+    },
+    rehab: {
+        title: 'מחלקת שיקום גריאטרי',
+        sub: 'דגשי איכות: שיפור עצמאות תפקודית (FIM), מניעת נפילות פעילה, תרגול מעברים וחזרה לקהילה',
+        periods: {
+            q1: { kpi1: 92, kpi1Sub: 'שרוולי הגנה במעברים וניוד', kpi2: 88, kpi2Sub: 'הדרכת מקלחת בטוחה עם אביזרים', kpi3: 85, kpi3Sub: 'סנכרון תרגילי הליכה יומיים', kpi4: 90, kpi4Sub: 'גמילה מהסמכה והדרכת בליעה', findings: 'קליטת משתקמים חדשים וקביעת מטרות FIM אישיות.', actions: 'הגברת הפיקוח על נעילת נעליים סגורות מונעות החלקה.' },
+            q2: { kpi1: 94, kpi1Sub: 'מניעת קרעי עור במעברים', kpi2: 90, kpi2Sub: 'עצמאות גוברת ברחצה מונחית', kpi3: 88, kpi3Sub: 'הגדלת מרחקי הליכה במסדרון', kpi4: 92, kpi4Sub: 'התקדמות למרקם מזון רך', findings: 'שיפור במדד FIM מוטורי אצל 82% מהמשתקמים.', actions: 'שיתוף המשפחות בהדרכות מעברים לקראת שחרור.' },
+            q3: { kpi1: 96, kpi1Sub: 'מניעת פציעות עור בפעילות', kpi2: 92, kpi2Sub: 'עצמאות ברחצה בליווי', kpi3: 90, kpi3Sub: 'השגת יעדי ניוד ומרחק הליכה', kpi4: 94, kpi4Sub: 'התקדמות מרקמי מזון לרגיל', findings: 'עמידה של 96% במניעת פציעות עור ו-90% ביעדי ניוד.', actions: 'המשך תרגול הליכה יומיומי עם מקל / הליכון.' },
+            q4: { kpi1: 97, kpi1Sub: 'עור שלם ותפקוד מיטבי', kpi2: 94, kpi2Sub: 'רחצה עצמאית בטוחה', kpi3: 93, kpi3Sub: 'שחרור מוצלח לקהילה', kpi4: 96, kpi4Sub: 'מרקם מזון רגיל ללא הגבלה', findings: 'אחוזי שחרור גבוהים לעצמאות בקהילה.', actions: 'סיכום FIM שנתי ומשובי מטופלים.' },
+            semi_annual: { kpi1: 93, kpi1Sub: 'ממוצע חצי שנתי', kpi2: 89, kpi2Sub: 'התקדמות ברחצה בטוחה', kpi3: 87, kpi3Sub: 'שיפור הליכה מצטבר', kpi4: 91, kpi4Sub: 'התקדמות מרקמים הדרגתית', findings: 'מגמת שיקום חיובית במחצית הראשונה.', actions: 'המשך תיאום שבועי בין סיעוד לפיזיותרפיה.' },
+            annual: { kpi1: 95, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 92, kpi2Sub: 'עצמאות בטוחה במקלחת', kpi3: 90, kpi3Sub: 'השגת כלל יעדי הניוד', kpi4: 94, kpi4Sub: 'גמילה מלאה מהסמכת נוזלים', findings: 'תוצאות שיקום מרשימות מעל ממוצע ארצי.', actions: 'הרחבת פרוטוקול מניעת נפילות משקם.' }
+        }
+    },
+    chronic_nursing: {
+        title: 'מחלקת גריאטריה כרונית סיעודית',
+        sub: 'דגשי איכות: שימור איכות חיים ותפקוד, מניעת פצעי לחץ ו-IAD במרותקים, מניעת קונטרקטורות וסרקופניה',
+        periods: {
+            q1: { kpi1: 92, kpi1Sub: 'פרוטוקול עור מקיף והחלפות תכופות', kpi2: 98, kpi2Sub: 'כלל 3 הדקות לליחוח ואפס כוויות', kpi3: 86, kpi3Sub: 'מניעת משיכת גפיים וקרעי עור', kpi4: 91, kpi4Sub: 'מניעת התייבשות ואספירציה שקטה', findings: 'תחילת יישום משטחי החלקה ומעבר למנופי עמידה והרמה.', actions: 'הדרכת צוות מטפלים על שימון עור יומיומי.' },
+            q2: { kpi1: 94, kpi1Sub: 'שינויי תנוחה מתוזמנים', kpi2: 100, kpi2Sub: 'בטיחות רחצה מלאה בישיבה', kpi3: 89, kpi3Sub: 'סנכרון שעות הושבה עם סיעוד', kpi4: 93, kpi4Sub: 'האכלה סבלנית במנח 90 מעלות', findings: 'שיפור מורגש בשלמות העור ואיכות השינה של הדיירים.', actions: 'הקפדה על שתייה מרובה למניעת התייבשות ו-UTI.' },
+            q3: { kpi1: 96, kpi1Sub: 'מניעת פצעי לחץ ו-IAD במרותקים', kpi2: 100, kpi2Sub: 'בטיחות ברחצה ושימון מונע', kpi3: 91, kpi3Sub: 'שינויי תנוחה ומנופי הרמה', kpi4: 95, kpi4Sub: 'האכלה סבלנית ומרקמי IDDSI', findings: 'עמידה של 96% במניעת פצעים ו-100% ברחצה בטוחה.', actions: 'המשך בקרה יומית של אחות אחראית על תיעוד שינויי תנוחה.' },
+            q4: { kpi1: 97, kpi1Sub: 'שימור רקמות עור בריאות', kpi2: 100, kpi2Sub: 'רחצה נעימה וחמה ללא כוויות', kpi3: 93, kpi3Sub: 'הושבה יומית בכורסאות נוחות', kpi4: 97, kpi4Sub: 'הזנה מותאמת ללא קשיי בליעה', findings: 'שימור איכות חיים מקסימלית במחלקה.', actions: 'תכנון פרויקט פעילות פנאי וניוד קבוצתי לשנה הבאה.' },
+            semi_annual: { kpi1: 93, kpi1Sub: 'ממוצע חצי שנתי', kpi2: 99, kpi2Sub: 'בטיחות רחצה גבוהה', kpi3: 88, kpi3Sub: 'שיפור הדרגתי בניוד', kpi4: 92, kpi4Sub: 'הזנה בטוחה ויציבה', findings: 'מגמה חיובית עקבית במרותקים.', actions: 'שימור נוהל החלפות מסודר.' },
+            annual: { kpi1: 96, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 100, kpi2Sub: 'אפס כוויות/נפילות ברחצה', kpi3: 91, kpi3Sub: 'עמידה מלאה ביעד הניוד', kpi4: 95, kpi4Sub: 'סנכרון תזונתי שנתי מוצלח', findings: 'איכות טיפול גבוהה לאורך כל השנה.', actions: 'הוקרת צוות המטפלים על עמידה ביעדים.' }
+        }
+    },
+    psychogeriatric: {
+        title: 'מחלקת תשושי נפש (דמנציה ואלצהיימר)',
+        sub: 'דגשי איכות: מניעת שוטטות ונפילות ללא קשירות (Restraint-Free), גישות לא-תרופתיות לאי-שקט, בטיחות רחצה סבלנית',
+        periods: {
+            q1: { kpi1: 94, kpi1Sub: 'חיישני תנועה, סביבה מרופדת ונעימה', kpi2: 98, kpi2Sub: 'גישה סבלנית, מוזיקה ומים חמימים', kpi3: 88, kpi3Sub: 'הפחתת סדציה לפי קריטריוני Beers', kpi4: 90, kpi4Sub: 'עידוד הידרציה שוטפת למניעת דליריום', findings: 'הטמעת שגרת יום רגועה ומוזיקה מרגיעה בזמני שקיעה (Sundowning).', actions: 'הדרכת צוות על גישת ולידציה ושיחה מקרבת בדמנציה.' },
+            q2: { kpi1: 96, kpi1Sub: 'סביבה מוגנת ללא מעצורים', kpi2: 100, kpi2Sub: 'רחצה הדרגתית ללא מאבק', kpi3: 90, kpi3Sub: 'הפחתת תרופות נוגדות פסיכוזה', kpi4: 92, kpi4Sub: 'מזון אצבעות Finger Foods מועשר', findings: 'ירידה של 50% באירועי אי-שקט בזמן רחצה.', actions: 'המשך מתן נוזלים תכוף במהלך פעילויות פנאי.' },
+            q3: { kpi1: 98, kpi1Sub: 'בטיחות סביבתית ללא קשירות', kpi2: 100, kpi2Sub: 'רחצה מרגיעה ללא כפייה', kpi3: 92, kpi3Sub: 'ניהול אי-שקט (BPSD) לא-תרופתי', kpi4: 94, kpi4Sub: 'אכילה עצמאית ו-Finger Foods', findings: '98% חופש תנועה ללא קשירות ו-100% רחצה בטוחה.', actions: 'תגבור מגע אמפתי ופעילות תעסוקתית מותאמת.' },
+            q4: { kpi1: 99, kpi1Sub: 'אפס נפילות עם פגיעה', kpi2: 100, kpi2Sub: 'רחצה חווייתית וסבלנית', kpi3: 94, kpi3Sub: 'איזון התנהגותי מיטבי', kpi4: 96, kpi4Sub: 'שמירה על משקל יציב', findings: 'שמירה על סביבה מותאמת ומכבדת לכל דייר.', actions: 'שימור מעמד המחלקה כמרכז מצוינות בטיפול בדמנציה.' },
+            semi_annual: { kpi1: 95, kpi1Sub: 'ממוצע חצי שנתי', kpi2: 99, kpi2Sub: 'רחצה סבלנית מבוקרת', kpi3: 89, kpi3Sub: 'גישות לא-תרופתיות', kpi4: 91, kpi4Sub: 'שמירה על תזונה נאותה', findings: 'התקדמות מצוינת במניעת הגבלות פיזיות.', actions: 'המשך הדרכות שוטפות לצוות.' },
+            annual: { kpi1: 98, kpi1Sub: 'ממוצע שנתי מצטבר', kpi2: 100, kpi2Sub: 'אפס כוויות/נפילות ברחצה', kpi3: 92, kpi3Sub: 'השגת יעדי BPSD', kpi4: 95, kpi4Sub: 'אכילה עצמאית ומשקל תקין', findings: 'הצלחה מוכחת במודל טיפול מותאם אישית בדמנציה.', actions: 'המשך שימוש בערכת ההדרכה הרגשית.' }
+        }
+    }
+};
+
+function getInterprofStore() {
+    const raw = localStorage.getItem('interprof_goals_store_v2');
+    if (raw) {
+        try {
+            return JSON.parse(raw);
+        } catch(e) {}
+    }
+    return JSON.parse(JSON.stringify(DEFAULT_INTERPROF_STORE));
+}
+
+function saveInterprofStore(store) {
+    localStorage.setItem('interprof_goals_store_v2', JSON.stringify(store));
+}
+
+function renderDomainTrendCard(title, kpiKey, baseColor, deptPeriods, currentPeriodKey) {
+    const periodKeys = ['q1', 'q2', 'q3', 'q4', 'annual'];
+    const curVal = (deptPeriods[currentPeriodKey] && deptPeriods[currentPeriodKey][kpiKey]) !== undefined ? deptPeriods[currentPeriodKey][kpiKey] : 90;
+    
+    const barsHtml = periodKeys.map(pk => {
+        const pObj = INTERPROF_PERIOD_LIST.find(p => p.key === pk) || { short: pk };
+        const val = (deptPeriods[pk] && deptPeriods[pk][kpiKey]) !== undefined ? deptPeriods[pk][kpiKey] : 0;
+        const isCurrent = pk === currentPeriodKey;
+        const barColor = val >= 95 ? '#10b981' : (val >= 90 ? '#0284c7' : '#f59e0b');
+        return `
+            <div onclick="filterInterprofPeriod('${pk}')" style="flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; cursor:pointer;" title="${pObj.short}: ${val}% (לחץ למעבר לתקופה זו)">
+                <span style="font-size:10.5px; font-weight:800; color:${isCurrent ? '#2563eb' : 'var(--text-secondary, #64748b)'};">${val}%</span>
+                <div style="width:100%; max-width:28px; height:60px; background:#f1f5f9; border-radius:4px; display:flex; align-items:flex-end; overflow:hidden; border:${isCurrent ? '2px solid #2563eb' : '1px solid #e2e8f0'}; box-shadow:${isCurrent ? '0 0 8px rgba(37,99,235,0.35)' : 'none'};">
+                    <div style="width:100%; height:${val}%; background:${barColor}; border-radius:2px 2px 0 0; transition:height 0.3s;"></div>
+                </div>
+                <span style="font-size:10.5px; font-weight:${isCurrent ? '900' : '600'}; color:${isCurrent ? '#2563eb' : 'var(--text-secondary, #64748b)'};">${pObj.short}</span>
+            </div>
+        `;
+    }).join('');
+
+    return `
+        <div style="background:var(--bg-color, #f8fafc); border:1px solid var(--border-color, #e2e8f0); border-radius:10px; padding:12px 14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong style="font-size:12.5px; color:var(--text-primary);">${title}</strong>
+                <span style="background:${curVal>=95 ? '#dcfce7' : '#e0f2fe'}; color:${curVal>=95 ? '#15803d' : '#0369a1'}; font-weight:900; font-size:11.5px; padding:2px 8px; border-radius:6px;">${curVal}%</span>
+            </div>
+            <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:6px; height:84px; padding:4px 0;">
+                ${barsHtml}
+            </div>
+        </div>
+    `;
+}
 
 function renderInterprofessionalDashboard() {
     const contentArea = document.getElementById('content-area');
     if (!contentArea) return;
 
-    const deptInfoMap = {
-        all: {
-            title: '${curDept.title}',
-            sub: '${curDept.sub}',
-            kpi1: { label: 'מניעת פצעים ותפרחת IAD', val: '94% עמידה', sub: 'פרוטוקול 3 שלבים וליחוח מותאם' },
-            kpi2: { label: 'בטיחות ברחצה יומית', val: '100% תקין', sub: 'אפס כוויות ונפילות במקלחת' },
-            kpi3: { label: 'סנכרון ניוד ומעברים', val: '88% יישום', sub: 'קימה לכורסה וסולמות תמיכה' },
-            kpi4: { label: 'התאמת מרקמים (IDDSI) ותזונה', val: '96% סנכרון', sub: 'אומדן קלינאית ודיאטנית תוך 48 שעות' }
-        },
-        complex: {
-            title: 'יעדים וממשקים: מחלקת סיעוד מורכב',
-            sub: 'דגשי איכות: מניעת פצעי לחץ וקרעי עור, שלמות צנתרים, איזון כאב ורצף טיפול',
-            kpi1: { label: 'מניעת פצעי לחץ ו-IAD', val: '95% עמידה', sub: 'מזרנים דינמיים ושינויי תנוחה 30°' },
-            kpi2: { label: 'בטיחות רחצה והיפותרמיה', val: '100% תקין', sub: 'הגנה אטומה על צנתרים ופצעים' },
-            kpi3: { label: 'ניוד והושבה מתוזמנת', val: '85% יישום', sub: 'התאמת כריות ישיבה מונעות לחץ' },
-            kpi4: { label: 'העשרה חלבונית ו-IDDSI', val: '97% עמידה', sub: 'תוספי חלבון 1.5 גר/קג לריפוי פצעים' }
-        },
-        vent: {
-            title: 'יעדים וממשקים: מחלקת סיעוד מונשמים',
-            sub: 'דגשי איכות: מניעת דלקת ריאות מונשמים (VAP Bundle), בטיחות קנולות ופיום קנה, מניעת לחץ',
-            kpi1: { label: 'שלמות עור סביב טרכאוסטומיה', val: '98% תקין', sub: 'חבישות ספוגיות ייעודיות לטרכאו' },
-            kpi2: { label: 'בטיחות רחצה במיטה', val: '100% עמידה', sub: 'רחצה ללא מים וסבון pH 5.5' },
-            kpi3: { label: 'שינויי תנוחה וניקוז ריאתי', val: '92% יישום', sub: 'סנכרון פיזיו נשימתית וסיעוד' },
-            kpi4: { label: 'הזנה אנטרלית בטוחה (PEG)', val: '99% תקין', sub: 'הרמת מראשות 30-45° למניעת שאיפה' }
-        },
-        rehab: {
-            title: 'יעדים וממשקים: מחלקת שיקום גריאטרי',
-            sub: 'דגשי איכות: שיפור עצמאות תפקודית (FIM), מניעת נפילות פעילה, תרגול מעברים וחזרה לקהילה',
-            kpi1: { label: 'מניעת פציעות עור בפעילות', val: '96% תקין', sub: 'שרוולי הגנה במעברים וניוד' },
-            kpi2: { label: 'עצמאות ברחצה בליווי', val: '92% עמידה', sub: 'הדרכת מקלחת בטוחה עם אביזרי עזר' },
-            kpi3: { label: 'השגת יעדי ניוד ומרחק הליכה', val: '90% יישום', sub: 'סנכרון תרגילי הליכה יומיים במשמרת' },
-            kpi4: { label: 'התקדמות מרקמי מזון לרגיל', val: '94% סנכרון', sub: 'גמילה מהסמכה והדרכת בליעה' }
-        },
-        chronic_nursing: {
-            title: 'יעדים וממשקים: מחלקת גריאטריה כרונית סיעודית',
-            sub: 'דגשי איכות: שימור איכות חיים ותפקוד, מניעת פצעי לחץ ו-IAD במרותקים, מניעת קונטרקטורות וסרקופניה',
-            kpi1: { label: 'מניעת פצעי לחץ ו-IAD במרותקים', val: '96% עמידה', sub: 'פרוטוקול עור מקיף והחלפות תכופות' },
-            kpi2: { label: 'בטיחות ברחצה ושימון מונע', val: '100% תקין', sub: 'כלל 3 הדקות לליחוח ואפס כוויות' },
-            kpi3: { label: 'שינויי תנוחה ומנופי הרמה', val: '91% יישום', sub: 'מניעת משיכת גפיים וקרעי עור' },
-            kpi4: { label: 'האכלה סבלנית ומרקמי IDDSI', val: '95% סנכרון', sub: 'מניעת התייבשות ואספירציה שקטה' }
-        },
-        psychogeriatric: {
-            title: 'יעדים וממשקים: מחלקת תשושי נפש (דמנציה ואלצהיימר)',
-            sub: 'דגשי איכות: מניעת שוטטות ונפילות ללא קשירות (Restraint-Free), גישות לא-תרופתיות לאי-שקט, בטיחות רחצה סבלנית',
-            kpi1: { label: 'בטיחות סביבתית ללא קשירות', val: '98% חופש תנועה', sub: 'חיישני תנועה, סביבה מרופדת ונעימה' },
-            kpi2: { label: 'רחצה מרגיעה ללא כפייה', val: '100% תקין', sub: 'גישה סבלנית, מוזיקה ומים חמימים' },
-            kpi3: { label: 'ניהול אי-שקט (BPSD) לא-תרופתי', val: '92% יישום', sub: 'הפחתת סדציה לפי קריטריוני Beers' },
-            kpi4: { label: 'אכילה עצמאית ו-Finger Foods', val: '94% עמידה', sub: 'עידוד הידרציה שוטפת למניעת דליריום' }
-        }
-    };
-    const curDept = deptInfoMap[activeInterprofDept] || deptInfoMap.all;
-
+    const store = getInterprofStore();
+    const curDept = store[activeInterprofDept] || store.all || DEFAULT_INTERPROF_STORE.all;
+    const deptPeriods = curDept.periods || DEFAULT_INTERPROF_STORE.all.periods;
+    const curPeriodData = deptPeriods[activeInterprofPeriod] || deptPeriods.q3 || { kpi1: 95, kpi1Sub: '', kpi2: 100, kpi2Sub: '', kpi3: 88, kpi3Sub: '', kpi4: 96, kpi4Sub: '', findings: '', actions: '' };
+    const curPeriodObj = INTERPROF_PERIOD_LIST.find(p => p.key === activeInterprofPeriod) || INTERPROF_PERIOD_LIST[2];
 
     contentArea.innerHTML = `
         <div class="fade-in space-y-6">
             <!-- Header Bar -->
-            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04);">
+            <div style="display:flex; justify-content:space-between; align-items:center; background:var(--surface); padding:14px 20px; border-radius:14px; border:1px solid var(--border-color); box-shadow:0 2px 6px rgba(0,0,0,0.04); flex-wrap:wrap; gap:10px;">
                 <button class="btn" onclick="navigate('dashboard')" style="background:var(--primary-color); color:white; font-weight:bold; font-size:13px; display:inline-flex; align-items:center; gap:8px; padding:8px 16px; border-radius:8px; cursor:pointer;">
                     <span>➜</span> חזרה לדשבורד הראשי
                 </button>
@@ -3320,13 +3405,18 @@ function renderInterprofessionalDashboard() {
                     </h2>
                     <span style="font-size:12px; color:var(--text-secondary);">ניהול איכות, סנכרון ממשקים ובטיחות הטיפול ברמה המחלקתית (ללא פרטי מטופלים מזוהים)</span>
                 </div>
-                <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
-                    <span>🖨️</span> הדפס סיכום A4
-                </button>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="openEditInterprofModal()" class="btn" style="background:linear-gradient(135deg, #1e40af, #2563eb); color:white; font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 8px rgba(37,99,235,0.25);">
+                        <span>✏️</span> עריכת יעדים וממצאים לתקופה
+                    </button>
+                    <button onclick="window.print()" class="btn" style="background:transparent; border:1px solid var(--border-color); color:var(--text-primary); font-size:12px; padding:8px 14px; border-radius:8px; display:inline-flex; align-items:center; gap:6px;">
+                        <span>🖨️</span> הדפס סיכום A4
+                    </button>
+                </div>
             </div>
 
             <!-- Ethical Standard Notice -->
-            <div style="background:rgba(2, 132, 199, 0.08); border-right:4px solid #0284c7; padding:12px 16px; border-radius:0 10px 10px 0; font-size:12.5px; color:var(--text-primary); display:flex; align-items:center; justify-content:space-between;">
+            <div style="background:rgba(2, 132, 199, 0.08); border-right:4px solid #0284c7; padding:12px 16px; border-radius:0 10px 10px 0; font-size:12.5px; color:var(--text-primary); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
                 <div style="display:flex; align-items:center; gap:8px;">
                     <span style="font-size:16px;">🛡️</span>
                     <span><strong>תקן אתיקה והגנת הפרטיות:</strong> דשבורד זה מנהל יעדי איכות, נהלים וממשקי עבודה מחלקתיים. תוכניות טיפול פרטניות מנוהלות אך ורק בתוך הגיליון הרפואי הממוחשב (EHR).</span>
@@ -3334,48 +3424,116 @@ function renderInterprofessionalDashboard() {
                 <span class="badge" style="background:#0284c7; color:white; font-size:10.5px; padding:3px 8px; border-radius:6px;">ISO / MOH Accredited</span>
             </div>
 
-            <!-- Department Filter & Overview Cards -->
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-                <div style="display:flex; gap:8px;">
-                    <button onclick="filterInterprofDept('all')" class="btn" style="${activeInterprofDept==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">כלל המחלקות</button>
-                    <button onclick="filterInterprofDept('complex')" class="btn" style="${activeInterprofDept==='complex' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מורכב</button>
-                    <button onclick="filterInterprofDept('vent')" class="btn" style="${activeInterprofDept==='vent' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מונשמים</button>
-                    <button onclick="filterInterprofDept('rehab')" class="btn" style="${activeInterprofDept==='rehab' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">שיקום גריאטרי</button>
-                    <button onclick="filterInterprofDept('chronic_nursing')" class="btn" style="${activeInterprofDept==='chronic_nursing' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">גריאטריה כרונית סיעודית</button>
-                    <button onclick="filterInterprofDept('psychogeriatric')" class="btn" style="${activeInterprofDept==='psychogeriatric' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">תשושי נפש</button>
+            <!-- Department Filter & Time Period Bar -->
+            <div style="background:var(--surface); border:1px solid var(--border-color); border-radius:12px; padding:14px 18px; display:flex; flex-direction:column; gap:12px;">
+                <!-- Row 1: Departments -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span style="font-size:12.5px; font-weight:800; color:var(--text-primary); margin-left:4px;">מרקם מחלקתי:</span>
+                        <button onclick="filterInterprofDept('all')" class="btn" style="${activeInterprofDept==='all' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">כלל המחלקות</button>
+                        <button onclick="filterInterprofDept('complex')" class="btn" style="${activeInterprofDept==='complex' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מורכב</button>
+                        <button onclick="filterInterprofDept('vent')" class="btn" style="${activeInterprofDept==='vent' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">סיעוד מונשמים</button>
+                        <button onclick="filterInterprofDept('rehab')" class="btn" style="${activeInterprofDept==='rehab' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">שיקום גריאטרי</button>
+                        <button onclick="filterInterprofDept('chronic_nursing')" class="btn" style="${activeInterprofDept==='chronic_nursing' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">גריאטריה כרונית סיעודית</button>
+                        <button onclick="filterInterprofDept('psychogeriatric')" class="btn" style="${activeInterprofDept==='psychogeriatric' ? 'background:var(--primary-color); color:white;' : 'background:var(--surface); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:12px; padding:6px 13px; border-radius:8px; font-weight:700;">תשושי נפש</button>
+                    </div>
                 </div>
-                <div style="font-size:12px; color:var(--text-secondary);">תקופת יעד: <strong>רבעון נוכחי 2026</strong></div>
+
+                <!-- Row 2: Periods (Quarterly / Semi-Annual / Annual) -->
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; padding-top:10px; border-top:1px dashed var(--border-color);">
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span style="font-size:12.5px; font-weight:800; color:#1e40af; margin-left:4px;">⏱️ תקופת זמן מוגדרת:</span>
+                        ${INTERPROF_PERIOD_LIST.map(p => `
+                            <button onclick="filterInterprofPeriod('${p.key}')" class="btn" style="${activeInterprofPeriod===p.key ? 'background:#2563eb; color:white; box-shadow:0 2px 6px rgba(37,99,235,0.35);' : 'background:var(--bg-color); color:var(--text-primary); border:1px solid var(--border-color);'} font-size:11.5px; padding:5px 12px; border-radius:7px; font-weight:700;">
+                                ${p.label}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div style="font-size:12px; color:var(--text-secondary);">
+                        מוצגת תקופה: <strong style="color:var(--primary-color);">${curPeriodObj.label}</strong> (${curDept.title})
+                    </div>
+                </div>
             </div>
 
-            <!-- KPI Metric Counters -->
+            <!-- KPI Metric Counters for Current Period -->
             <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px;">
                 <div class="interprof-card" style="border-top:4px solid #059669;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi1.label}</div>
-                    <div style="font-size:24px; font-weight:800; color:#059669; margin:4px 0;">${curDept.kpi1.val}</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi1.sub}</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">שלמות העור ו-IAD (${curPeriodObj.short})</div>
+                    <div style="font-size:24px; font-weight:800; color:#059669; margin:4px 0;">${curPeriodData.kpi1}% עמידה</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curPeriodData.kpi1Sub || 'פרוטוקול 3 שלבים וליחוח'}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #0284c7;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi2.label}</div>
-                    <div style="font-size:24px; font-weight:800; color:#0284c7; margin:4px 0;">${curDept.kpi2.val}</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi2.sub}</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">בטיחות רחצה יומית (${curPeriodObj.short})</div>
+                    <div style="font-size:24px; font-weight:800; color:#0284c7; margin:4px 0;">${curPeriodData.kpi2}% תקין</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curPeriodData.kpi2Sub || 'אפס כוויות ונפילות במקלחת'}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #d97706;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi3.label}</div>
-                    <div style="font-size:24px; font-weight:800; color:#d97706; margin:4px 0;">${curDept.kpi3.val}</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi3.sub}</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">סנכרון ניוד ומעברים (${curPeriodObj.short})</div>
+                    <div style="font-size:24px; font-weight:800; color:#d97706; margin:4px 0;">${curPeriodData.kpi3}% יישום</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curPeriodData.kpi3Sub || 'קימה לכורסה וסולמות תמיכה'}</div>
                 </div>
                 <div class="interprof-card" style="border-top:4px solid #7c3aed;">
-                    <div style="font-size:11.5px; color:var(--text-secondary);">${curDept.kpi4.label}</div>
-                    <div style="font-size:24px; font-weight:800; color:#7c3aed; margin:4px 0;">${curDept.kpi4.val}</div>
-                    <div style="font-size:11px; color:var(--text-secondary);">${curDept.kpi4.sub}</div>
+                    <div style="font-size:11.5px; color:var(--text-secondary);">מרקמי מזון ותזונה (${curPeriodObj.short})</div>
+                    <div style="font-size:24px; font-weight:800; color:#7c3aed; margin:4px 0;">${curPeriodData.kpi4}% סנכרון</div>
+                    <div style="font-size:11px; color:var(--text-secondary);">${curPeriodData.kpi4Sub || 'אומדן קלינאית ודיאטנית תוך 48 שעות'}</div>
+                </div>
+            </div>
+
+            <!-- Graphical Changes & Trend Chart Over Time (רבעוני / חצי שנתי / שנתי) -->
+            <div class="interprof-card" style="padding:22px; background:var(--surface); border:1px solid var(--border-color); border-radius:14px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span style="font-size:22px;">📊</span>
+                        <div>
+                            <h3 style="margin:0; font-size:15px; font-weight:800; color:var(--text-primary);">הצגת שינויים ומגמות איכות באופן גרפי (רבעוני / חצי שנתי / שנתי)</h3>
+                            <span style="font-size:12px; color:var(--text-secondary);">ניתוח השוואתי של עמידה ביעדי הבקרה לאורך תקופות הזמן במחלקה (${curDept.title})</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:6px;">
+                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#10b981;"></span><span style="font-size:11px; color:var(--text-secondary);">95%+ יעד מצטיין</span>
+                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#0284c7; margin-right:6px;"></span><span style="font-size:11px; color:var(--text-secondary);">90-94% עמידה תקינה</span>
+                        <span style="display:inline-block; width:10px; height:10px; border-radius:50%; background:#f59e0b; margin-right:6px;"></span><span style="font-size:11px; color:var(--text-secondary);">&lt;90% טעון שיפור</span>
+                    </div>
+                </div>
+
+                <!-- 4 Comparative Domain Cards -->
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px;">
+                    ${renderDomainTrendCard('1. מניעת פצעי לחץ ו-IAD', 'kpi1', '#10b981', deptPeriods, activeInterprofPeriod)}
+                    ${renderDomainTrendCard('2. בטיחות רחצה יומית', 'kpi2', '#0284c7', deptPeriods, activeInterprofPeriod)}
+                    ${renderDomainTrendCard('3. ניוד ומעברים מסונכרנים', 'kpi3', '#d97706', deptPeriods, activeInterprofPeriod)}
+                    ${renderDomainTrendCard('4. מרקמי בליעה (IDDSI) ותזונה', 'kpi4', '#8b5cf6', deptPeriods, activeInterprofPeriod)}
+                </div>
+
+                <!-- Periodic Findings Summary Box -->
+                <div style="margin-top:16px; background:rgba(37,99,235,0.05); border:1px solid rgba(37,99,235,0.2); border-radius:10px; padding:14px 16px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; flex-wrap:wrap; gap:8px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
+                            <span style="font-size:16px;">📝</span>
+                            <strong style="font-size:13px; color:#1e40af;">ממצאי בקרה מסכמים לתקופה הנבחרת (${curPeriodObj.label}):</strong>
+                        </div>
+                        <button onclick="openEditInterprofModal()" class="btn" style="background:#2563eb; color:#fff; font-size:11.5px; padding:4px 10px; border-radius:6px; cursor:pointer;">
+                            ✏️ ערוך ממצאים לתקופה זו
+                        </button>
+                    </div>
+                    <div style="font-size:12.5px; color:var(--text-primary); line-height:1.5;">
+                        ${escapeHtml(curPeriodData.findings || 'לא הוזנו עדיין ממצאי בקרה לתקופה זו.')}
+                    </div>
+                    ${curPeriodData.actions ? `
+                        <div style="font-size:12px; color:#475569; margin-top:6px; padding-top:6px; border-top:1px dashed rgba(37,99,235,0.2);">
+                            <strong style="color:#0f172a;">🎯 תוכנית פעולה וסנכרון ממשקי:</strong> ${escapeHtml(curPeriodData.actions)}
+                        </div>
+                    ` : ''}
                 </div>
             </div>
 
             <!-- Interprofessional Quality Targets List -->
             <div class="interprof-card" style="padding:22px;">
-                <h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin-top:0; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
-                    <span>📋</span> יעדי איכות מחלקתיים וממשקים רב-מקצועיים מוגדרים
-                </h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                    <h3 style="font-size:15px; font-weight:700; color:var(--text-primary); margin:0; display:flex; align-items:center; gap:8px;">
+                        <span>📋</span> יעדי איכות מחלקתיים וממשקים רב-מקצועיים מוגדרים (${curPeriodObj.label})
+                    </h3>
+                    <span style="font-size:12px; color:var(--text-secondary);">${curDept.sub}</span>
+                </div>
 
                 <div style="display:flex; flex-direction:column; gap:16px;">
                     <!-- Target 1 -->
@@ -3387,7 +3545,7 @@ function renderInterprofessionalDashboard() {
                                     יישום פרוטוקול שלמות העור: שימוש בסבוני pH 5.5 ללא שטיפה, מריחת אמוליינט תוך 3 דקות, חבישות סיליקון ותרסיס מגן Cavilon.
                                 </div>
                             </div>
-                            <span class="badge" style="background:#dcfce7; color:#15803d; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">95% עמידה ביעד</span>
+                            <span class="badge" style="background:${curPeriodData.kpi1>=95 ? '#dcfce7' : '#e0f2fe'}; color:${curPeriodData.kpi1>=95 ? '#15803d' : '#0369a1'}; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">${curPeriodData.kpi1}% עמידה ביעד</span>
                         </div>
                         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
                             <span class="role-badge role-nurse">סיעוד: אומדן עור ושינויי תנוחה</span>
@@ -3406,7 +3564,7 @@ function renderInterprofessionalDashboard() {
                                     בדיקת טמפרטורת מים (37-40°C), רחצה בישיבה בלבד בכסא מקלחת נעול, כיסוי למניעת היפותרמיה, הגנה אטומה על צנתרים ופצעים.
                                 </div>
                             </div>
-                            <span class="badge" style="background:#e0f2fe; color:#0369a1; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">100% תקין במדדי הבקרה</span>
+                            <span class="badge" style="background:${curPeriodData.kpi2>=95 ? '#dcfce7' : '#e0f2fe'}; color:${curPeriodData.kpi2>=95 ? '#15803d' : '#0369a1'}; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">${curPeriodData.kpi2}% תקין במדדי הבקרה</span>
                         </div>
                         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
                             <span class="role-badge role-caregiver">מטפלים: בדיקת מים וליווי צמוד</span>
@@ -3424,7 +3582,7 @@ function renderInterprofessionalDashboard() {
                                     הגדרת רמת סיוע ברורה לכל מטופל (מטפל יחיד / 2 מטפלים / מנוף הרמה), קימה מתוזמנת לכורסה במשמרות בוקר וערב.
                                 </div>
                             </div>
-                            <span class="badge" style="background:#fef3c7; color:#b45309; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">88% יישום (יעד 90%)</span>
+                            <span class="badge" style="background:${curPeriodData.kpi3>=90 ? '#dcfce7' : '#fef3c7'}; color:${curPeriodData.kpi3>=90 ? '#15803d' : '#b45309'}; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">${curPeriodData.kpi3}% יישום (יעד 90%)</span>
                         </div>
                         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
                             <span class="role-badge role-pt">פיזיותרפיה: קביעת רמת ניידות</span>
@@ -3442,7 +3600,7 @@ function renderInterprofessionalDashboard() {
                                     ביצוע אומדן בליעה ותזונה תוך 48 שעות, התאמת צמיגות נוזלים (נקטר/דבש/פודינג), הדרכת אכילה בישיבה זקופה 90 מעלות.
                                 </div>
                             </div>
-                            <span class="badge" style="background:#fae8ff; color:#86198f; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">96% סנכרון תקין</span>
+                            <span class="badge" style="background:${curPeriodData.kpi4>=95 ? '#dcfce7' : '#fae8ff'}; color:${curPeriodData.kpi4>=95 ? '#15803d' : '#86198f'}; font-weight:bold; font-size:12px; padding:4px 8px; border-radius:6px;">${curPeriodData.kpi4}% סנכרון תקין</span>
                         </div>
                         <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:10px;">
                             <span class="role-badge role-st">קלינאות: מבדק בליעה וקביעת IDDSI</span>
@@ -3852,8 +4010,131 @@ function renderInterprofessionalDashboard() {
     `;
 }
 
+function openEditInterprofModal() {
+    const store = getInterprofStore();
+    const deptData = store[activeInterprofDept] || store.all || DEFAULT_INTERPROF_STORE.all;
+    const deptPeriods = deptData.periods || DEFAULT_INTERPROF_STORE.all.periods;
+    const periodData = deptPeriods[activeInterprofPeriod] || deptPeriods.q3 || { kpi1: 95, kpi1Sub: '', kpi2: 100, kpi2Sub: '', kpi3: 88, kpi3Sub: '', kpi4: 96, kpi4Sub: '', findings: '', actions: '' };
+    
+    let modal = document.getElementById('interprof_edit_modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'interprof_edit_modal';
+        document.body.appendChild(modal);
+    }
+    modal.style.cssText = 'position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.75); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:1rem; box-sizing:border-box;';
+    
+    const periodLabel = (INTERPROF_PERIOD_LIST.find(p => p.key === activeInterprofPeriod) || {}).label || activeInterprofPeriod;
+    
+    modal.innerHTML = `
+        <div style="background:var(--surface, #ffffff); width:100%; max-width:650px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:1px solid var(--border-color, #e2e8f0); overflow:hidden; display:flex; flex-direction:column; max-height:90vh; direction:rtl; text-align:right;">
+            <div style="padding:16px 20px; background:linear-gradient(135deg, #1e3a8a, #2563eb); color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                    <span style="font-size:20px;">✏️</span>
+                    <div>
+                        <h3 style="margin:0; font-size:16px; font-weight:800; color:#fff;">עריכת יעדים וממצאים תקופתיים</h3>
+                        <div style="font-size:12px; color:#bfdbfe;">${deptData.title} | ${periodLabel}</div>
+                    </div>
+                </div>
+                <button type="button" onclick="closeEditInterprofModal()" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:16px; width:30px; height:30px; border-radius:50%; cursor:pointer;">✖</button>
+            </div>
+            
+            <div style="padding:20px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:14px; font-size:13px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                    <div style="background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:10px;">
+                        <label style="font-weight:700; color:#15803d; display:block; margin-bottom:4px;">1. שלמות העור ו-IAD (יעד %)</label>
+                        <input id="inp_edit_kpi1" type="number" min="0" max="100" value="${periodData.kpi1}" style="width:100%; padding:6px 10px; border:1px solid #86efac; border-radius:6px; font-weight:800; font-size:15px; box-sizing:border-box;">
+                        <input id="inp_edit_kpi1_sub" type="text" value="${escapeHtml(periodData.kpi1Sub || '')}" placeholder="דגש קליני / תיאור" style="width:100%; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; margin-top:4px; font-size:11.5px; box-sizing:border-box;">
+                    </div>
+                    
+                    <div style="background:#e0f2fe; border:1px solid #7dd3fc; border-radius:8px; padding:10px;">
+                        <label style="font-weight:700; color:#0369a1; display:block; margin-bottom:4px;">2. בטיחות רחצה יומית (יעד %)</label>
+                        <input id="inp_edit_kpi2" type="number" min="0" max="100" value="${periodData.kpi2}" style="width:100%; padding:6px 10px; border:1px solid #7dd3fc; border-radius:6px; font-weight:800; font-size:15px; box-sizing:border-box;">
+                        <input id="inp_edit_kpi2_sub" type="text" value="${escapeHtml(periodData.kpi2Sub || '')}" placeholder="דגש קליני / תיאור" style="width:100%; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; margin-top:4px; font-size:11.5px; box-sizing:border-box;">
+                    </div>
+
+                    <div style="background:#fef3c7; border:1px solid #fcd34d; border-radius:8px; padding:10px;">
+                        <label style="font-weight:700; color:#b45309; display:block; margin-bottom:4px;">3. ניוד ומעברים (יעד %)</label>
+                        <input id="inp_edit_kpi3" type="number" min="0" max="100" value="${periodData.kpi3}" style="width:100%; padding:6px 10px; border:1px solid #fcd34d; border-radius:6px; font-weight:800; font-size:15px; box-sizing:border-box;">
+                        <input id="inp_edit_kpi3_sub" type="text" value="${escapeHtml(periodData.kpi3Sub || '')}" placeholder="דגש קליני / תיאור" style="width:100%; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; margin-top:4px; font-size:11.5px; box-sizing:border-box;">
+                    </div>
+
+                    <div style="background:#fae8ff; border:1px solid #f0abfc; border-radius:8px; padding:10px;">
+                        <label style="font-weight:700; color:#86198f; display:block; margin-bottom:4px;">4. מרקמי מזון IDDSI (יעד %)</label>
+                        <input id="inp_edit_kpi4" type="number" min="0" max="100" value="${periodData.kpi4}" style="width:100%; padding:6px 10px; border:1px solid #f0abfc; border-radius:6px; font-weight:800; font-size:15px; box-sizing:border-box;">
+                        <input id="inp_edit_kpi4_sub" type="text" value="${escapeHtml(periodData.kpi4Sub || '')}" placeholder="דגש קליני / תיאור" style="width:100%; padding:4px 8px; border:1px solid #cbd5e1; border-radius:6px; margin-top:4px; font-size:11.5px; box-sizing:border-box;">
+                    </div>
+                </div>
+
+                <div>
+                    <label style="font-weight:700; color:var(--text-primary, #0f172a); display:block; margin-bottom:4px;">📋 סיכום ממצאי הבקרה התקופתיים לתקופה זו:</label>
+                    <textarea id="inp_edit_findings" rows="3" style="width:100%; padding:8px 10px; border:1px solid var(--border-color, #cbd5e1); border-radius:8px; font-size:12.5px; font-family:inherit; resize:vertical; box-sizing:border-box;">${escapeHtml(periodData.findings || '')}</textarea>
+                </div>
+
+                <div>
+                    <label style="font-weight:700; color:var(--text-primary, #0f172a); display:block; margin-bottom:4px;">🎯 תוכנית פעולה ופתרונות ממשקיים:</label>
+                    <textarea id="inp_edit_actions" rows="2" style="width:100%; padding:8px 10px; border:1px solid var(--border-color, #cbd5e1); border-radius:8px; font-size:12.5px; font-family:inherit; resize:vertical; box-sizing:border-box;">${escapeHtml(periodData.actions || '')}</textarea>
+                </div>
+            </div>
+
+            <div style="padding:14px 20px; background:var(--bg-color, #f8fafc); border-top:1px solid var(--border-color, #e2e8f0); display:flex; justify-content:space-between; align-items:center;">
+                <button type="button" onclick="resetInterprofDeptToDefault()" style="background:transparent; border:1px solid #cbd5e1; color:#64748b; padding:6px 12px; border-radius:6px; font-size:12px; cursor:pointer;">איפוס לברירת מחדל</button>
+                <div style="display:flex; gap:8px;">
+                    <button type="button" onclick="closeEditInterprofModal()" style="background:#e2e8f0; color:#334155; border:none; padding:7px 14px; border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer;">ביטול</button>
+                    <button type="button" onclick="saveInterprofModalData()" style="background:#2563eb; color:#fff; border:none; padding:7px 18px; border-radius:8px; font-size:12.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 8px rgba(37,99,235,0.4);">שמור שינויים ✓</button>
+                </div>
+            </div>
+        </div>
+    `;
+    modal.style.display = 'flex';
+}
+
+function closeEditInterprofModal() {
+    const modal = document.getElementById('interprof_edit_modal');
+    if (modal) modal.style.display = 'none';
+}
+
+function saveInterprofModalData() {
+    const store = getInterprofStore();
+    if (!store[activeInterprofDept]) store[activeInterprofDept] = JSON.parse(JSON.stringify(DEFAULT_INTERPROF_STORE[activeInterprofDept] || DEFAULT_INTERPROF_STORE.all));
+    if (!store[activeInterprofDept].periods) store[activeInterprofDept].periods = {};
+    if (!store[activeInterprofDept].periods[activeInterprofPeriod]) store[activeInterprofDept].periods[activeInterprofPeriod] = {};
+
+    const target = store[activeInterprofDept].periods[activeInterprofPeriod];
+    target.kpi1 = Math.min(100, Math.max(0, parseInt(document.getElementById('inp_edit_kpi1').value) || 0));
+    target.kpi1Sub = document.getElementById('inp_edit_kpi1_sub').value.trim();
+    target.kpi2 = Math.min(100, Math.max(0, parseInt(document.getElementById('inp_edit_kpi2').value) || 0));
+    target.kpi2Sub = document.getElementById('inp_edit_kpi2_sub').value.trim();
+    target.kpi3 = Math.min(100, Math.max(0, parseInt(document.getElementById('inp_edit_kpi3').value) || 0));
+    target.kpi3Sub = document.getElementById('inp_edit_kpi3_sub').value.trim();
+    target.kpi4 = Math.min(100, Math.max(0, parseInt(document.getElementById('inp_edit_kpi4').value) || 0));
+    target.kpi4Sub = document.getElementById('inp_edit_kpi4_sub').value.trim();
+    target.findings = document.getElementById('inp_edit_findings').value.trim();
+    target.actions = document.getElementById('inp_edit_actions').value.trim();
+
+    saveInterprofStore(store);
+    closeEditInterprofModal();
+    renderInterprofessionalDashboard();
+    showToast('יעדי המחלקה וממצאי הבקרה עודכנו ונשמרו בהצלחה!', 'success');
+}
+
+function resetInterprofDeptToDefault() {
+    if (!confirm('האם לאפס את היעדים והממצאים של מחלקה זו לברירת המחדל?')) return;
+    const store = getInterprofStore();
+    store[activeInterprofDept] = JSON.parse(JSON.stringify(DEFAULT_INTERPROF_STORE[activeInterprofDept] || DEFAULT_INTERPROF_STORE.all));
+    saveInterprofStore(store);
+    closeEditInterprofModal();
+    renderInterprofessionalDashboard();
+    showToast('הנתונים אופסו לברירת המחדל המקורית.', 'info');
+}
+
 function filterInterprofDept(dept) {
     activeInterprofDept = dept;
+    renderInterprofessionalDashboard();
+}
+
+function filterInterprofPeriod(period) {
+    activeInterprofPeriod = period;
     renderInterprofessionalDashboard();
 }
 

@@ -1389,7 +1389,7 @@
                     {
                         id: "m_2_6",
                         code: "2.6",
-                        title: "סרטון: מצגת למניעת זיהומים צולבים (בעברית)",
+                        title: "מניעת זיהומים צולבים בבית חולים גריאטרי מצגת מתכללת לדוגמה ממר\"ג בית הדר",
                         type: "drive_video",
                         url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link",
                         desc: "הדרכה מקיפה לצוות רפואי, אחיות ומקצועות הבריאות למניעת זיהומים צולבים."
@@ -1441,7 +1441,7 @@
                 checklist: [
                     { text: "היגיינת ידיים וציפורניים (30 דק')", url: "https://www.youtube.com/watch?v=RY5wXbPCY-o" },
                     { text: "ניקוי וחיטוי ידיים – 5 רגעים (30 דק')", url: "https://www.youtube.com/watch?v=LjHnCvv48hA" },
-                    { text: "מניעה ודיווח על אירועי דקירה ממחטים (30 דק')", url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link" },
+                    { text: "מניעת זיהומים צולבים בבית חולים גריאטרי מצגת מתכללת לדוגמה ממר\"ג בית הדר (30 דק')", url: "https://drive.google.com/file/d/1Vq5LIi42UsMAUdfFhQ3elY9l9g1rDaCI/view?usp=drive_link" },
                     { text: "כללי בידוד וניקיון חדרי בידוד (30 דק')", url: "https://drive.google.com/file/d/10HeB9Z5rq4LZwX3IIDRU1kqmalr7FTbF/view?usp=drivesdk" },
                     { text: "שימוש באמצעי מיגון אישיים PPE (30 דק')", url: "https://www.youtube.com/watch?v=sOR40jML8IA" },
                     { text: "לומדת משרד הבריאות למניעת זיהומים (30 דק')", url: "https://www.gov.il/files/health/moh-files/Infection-prevention/story.html" },
@@ -1555,16 +1555,18 @@
                     {
                         id: "m_4_3",
                         code: "4.3",
-                        title: "מצגת: תרבות ארגונית של ניהול סיכונים ובטיחות המטופל",
-                        type: "drive_video",
-                        url: "https://drive.google.com/file/d/1KzPdV6zfYjrZ7Arzy-Pp51wJ6OvwM0sP/view?usp=sharing",
-                        desc: "זיהוי גורמי סיכון, תחקור לומד ודיווח על אירועים חריגים."
+                        title: "מצגת: בטיחות הטיפול ותרבות ארגונית של ניהול סיכונים",
+                        type: "local_doc",
+                        url: "patient_safety_presentation.pdf",
+                        downloadUrl: "patient_safety_presentation.pdf",
+                        downloadName: "מצגת בטיחות הטיפול.pdf",
+                        desc: "מצגת הדרכה קלינית מקיפה ומעמיקה (25 עמודים) בנושא בטיחות הטיפול, מניעת אירועים חריגים, תרבות בטיחות מוסדית, זיהוי כשלים ותחקור לומד."
                     }
                 ],
                 checklist: [
                     { text: "לומדת משרד הבריאות לבטיחות הטיפול (שעה)", url: "https://www.health.gov.il/Subjects/MedicalAndHealthProfessions/022021lomda_treatment_safety/story_html5.aspx" },
                     { text: "נוהל מניעת נפילות מטופלים ואומדן סיכון לנפילה (שעה)", url: "https://me.health.gov.il/older-adult/specialist-advice/fall-prevention/how-to-prevent-falls/tips/" },
-                    { text: "זיהוי ודיווח על אירוע חריג ו'כמעט אירוע' (30 דק')", url: "https://drive.google.com/file/d/1KzPdV6zfYjrZ7Arzy-Pp51wJ6OvwM0sP/view?usp=sharing" }
+                    { text: "מצגת: בטיחות הטיפול ותרבות ארגונית של ניהול סיכונים (שעה)", url: "patient_safety_presentation.pdf" }
                 ]
             },
             {
@@ -1917,7 +1919,7 @@
     </script>
 
     <script>
-        const STORAGE_TOPICS_KEY = "onboarding_kit_topics_v65";
+        const STORAGE_TOPICS_KEY = "onboarding_kit_topics_v66";
         const STORAGE_PROGRESS_KEY = "onboarding_kit_progress_v9";
         const STORAGE_DEPTS_KEY = "onboarding_kit_departments_v9";
 
@@ -2591,10 +2593,10 @@
                             </a>
                         </div>
                     `;
-                } else if (m.type === "local_doc" || /\.html$/i.test(m.url || "")) {
+                } else if (m.type === "local_doc" || /\.html$/i.test(m.url || "") || /\.pdf$/i.test(m.url || "")) {
                     embedVisual = `
-                        <div class="media-embed-box">
-                            <iframe src="${escapeHtml(m.url)}" title="${escapeHtml(m.title)}" loading="lazy"></iframe>
+                        <div class="media-embed-box" style="height:500px; max-height:500px; background:#1e293b; border-radius:10px; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
+                            <iframe src="${escapeHtml(m.url)}#toolbar=1&navpanes=0&scrollbar=1" style="width:100%; height:100%; border:none;" title="${escapeHtml(m.title)}" loading="lazy"></iframe>
                         </div>
                     `;
                 } else {
