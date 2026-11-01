@@ -2225,7 +2225,49 @@ function getStoredFilledFormsCount() {
     return (filledFormsDb && Array.isArray(filledFormsDb)) ? filledFormsDb.length : 0;
 }
 
+function isSuperAdminUser() {
+    if (sessionStorage.getItem('super_admin_unlocked') === 'true') return true;
+    if (!currentUser) return false;
+    const u = (currentUser.username || '').toLowerCase();
+    const r = (currentUser.role || '');
+    return u === 'admin' || currentUser.isSuperAdmin === true || r.includes('מנהל על') || r.includes('מנהל ראשי');
+}
+
+function verifySuperAdminPermission(actionName = 'פעולה זו') {
+    if (isSuperAdminUser()) return true;
+    
+    const pwd = prompt(🔒 גישה מוגבלת למנהל על בלבד!\n\nלביצוע "", נא להזין את סיסמת מנהל העל:);
+    if (pwd && pwd.trim().toLowerCase() === 'admin') {
+        sessionStorage.setItem('super_admin_unlocked', 'true');
+        showToast('אימות סיסמת מנהל על הצליח ✓', 'success');
+        return true;
+    } else {
+        if (pwd !== null) {
+            showToast('סיסמת מנהל על שגויה! הפעולה נחסמה.', 'error');
+        }
+        return false;
+    }
+}
+
+function promptSuperAdminUnlock() {
+    const pwd = prompt('🔑 הזן סיסמת מנהל על (admin) לשחרור מרכז ניהול הנתונים והאיפוס:');
+    if (pwd && pwd.trim().toLowerCase() === 'admin') {
+        sessionStorage.setItem('super_admin_unlocked', 'true');
+        showToast('מרכז ניהול נתונים ואיפוס מערכת שוחרר בהצלחה למנהל על! 🔓', 'success');
+        if (typeof navigate === 'function') navigate('settings');
+    } else if (pwd !== null) {
+        showToast('סיסמת מנהל על שגויה!', 'error');
+    }
+}
+
+function lockSuperAdminPanel() {
+    sessionStorage.removeItem('super_admin_unlocked');
+    showToast('מרכז ניהול הנתונים ננעל מחדש 🔒', 'info');
+    if (typeof navigate === 'function') navigate('settings');
+}
+
 function resetAuditForms() {
+    if (!verifySuperAdminPermission('איפוס דשבורד בקרות ראשי')) return;
     const count = getStoredFilledFormsCount();
     const msg = count > 0 
         ? `האם אתה בטוח שברצונך לאפס ולמחוק את כל ${count} בקרות האיכות שהוגשו במערכת?\n\nפעולה זו תנקה את לוח הדשבורד הראשי, את טבלת הבקרות האחרונות ואת הגרפים ל-0.`
@@ -2241,6 +2283,7 @@ function resetAuditForms() {
 }
 
 function loadDemoAuditData() {
+    if (!verifySuperAdminPermission('טעינת בקרות הדגמה')) return;
     const count = getStoredFilledFormsCount();
     if (count > 0) {
         if (!confirm(`קיימות כעת ${count} בקרות במערכת. טעינת נתוני הדגמה תחליף או תוסיף עליהן 6 בקרות איכות מוכנות.\n\nהאם להמשיך?`)) return;
@@ -2372,6 +2415,7 @@ function loadDemoAuditData() {
 }
 
 function resetInterprofGoals() {
+    if (!verifySuperAdminPermission('איפוס יעדי איכות מחלקתיים')) return;
     if (!confirm('האם לאפס את כל יעדי האיכות והממצאים המחלקתיים (לשונית 7) לברירת המחדל המוסדית המקורית?')) return;
     localStorage.removeItem('interprof_goals_store_v2');
     showToast('יעדי האיכות המחלקתיים (לשונית 7) אופסו לברירת המחדל.', 'success');
@@ -2379,6 +2423,7 @@ function resetInterprofGoals() {
 }
 
 function resetShiftLeaderData() {
+    if (!verifySuperAdminPermission('איפוס הכשרת אחראית משמרת')) return;
     if (!confirm('האם לאפס את כל נתוני החניכים והסימולציות בהכשרת אחראית משמרת וסוכן תרופות (לשונית 6)?')) return;
     localStorage.removeItem('shift_leader_trainees_data');
     localStorage.removeItem('shift_leader_active_id');
@@ -2422,6 +2467,7 @@ function exportSystemBackup() {
 }
 
 function factoryResetSystem() {
+    if (!verifySuperAdminPermission('איפוס מלא למצב מפעל')) return;
     const confirmation1 = confirm('⚠️ אזהרת איפוס מלא (Factory Reset):\n\nפעולה זו תמחק את כל בקרות האיכות, יעדי המחלקות, נתוני החניכים והמשובים השמורים במחשב זה.\n\nהאם אתה בטוח שברצונך להמשיך?');
     if (!confirmation1) return;
 
@@ -2461,22 +2507,30 @@ function renderSettings() {
 
             <!-- ============================================================== -->
             <!-- כרטיס ניהול נתונים ואיפוס מערכת (Data Management & Reset) -->
+            <!-- גישה מוגבלת באופן בלעדי למנהל על (Super Admin Only) -->
             <!-- ============================================================== -->
+            ${isSuperAdminUser() ? 
             <div class="card" style="margin-bottom: 24px; border-top: 4px solid #2563eb; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:15px;">
                     <div style="display:flex; align-items:center; gap:10px;">
                         <span style="font-size:28px;">🎛️</span>
                         <div>
-                            <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
+                                <span class="badge" style="background:#dbeafe; color:#1e40af; font-size:11px; padding:2px 8px; border-radius:6px; font-weight:bold;">מורשה: מנהל על 👑</span>
+                            </div>
                             <p style="color:var(--text-secondary); margin:4px 0 0; font-size:12.5px;">
-                                כלי שליטה מוגנים למנהל: איפוס נתוני בקרות, שחזור ברירות מחדל, טעינת בקרות דמו מוכנות להדרכות והורדת גיבוי.
+                                כלי שליטה מוגנים למנהל על: איפוס נתוני בקרות, שחזור ברירות מחדל, טעינת בקרות דמו מוכנות להדרכות והורדת גיבוי.
                             </p>
                         </div>
                     </div>
                     <div style="display:flex; gap:8px; align-items:center;">
-                        <span class="badge" style="background:${filledCount > 0 ? '#e0f2fe' : '#f1f5f9'}; color:${filledCount > 0 ? '#0369a1' : '#64748b'}; font-weight:700; font-size:12px; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
-                            סה"כ בקרות במערכת: <strong style="font-size:14px; color:${filledCount > 0 ? '#1e40af' : '#0f172a'};">${filledCount}</strong>
+                        <span class="badge" style="background:\; color:\; font-weight:700; font-size:12px; padding:6px 12px; border-radius:8px; border:1px solid #cbd5e1;">
+                            סה"כ בקרות במערכת: <strong style="font-size:14px; color:\;">\</strong>
                         </span>
+                        <button onclick="lockSuperAdminPanel()" class="btn" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; font-size:11.5px; padding:5px 10px; border-radius:6px; font-weight:bold; cursor:pointer;" title="נעל את פאנל האיפוס למניעת פעולות בשוגג">
+                            🔒 נעל פאנל
+                        </button>
                     </div>
                 </div>
 
@@ -2573,6 +2627,29 @@ function renderSettings() {
                     </div>
                 </div>
             </div>
+             : 
+            <div class="card" style="margin-bottom: 24px; border-top: 4px solid #64748b; background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%); padding: 22px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+                    <div style="display:flex; align-items:center; gap:14px;">
+                        <div style="font-size:32px; background:#f1f5f9; width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; border:1px solid #cbd5e1;">🔒</div>
+                        <div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <h3 style="margin:0; font-size:16.5px; font-weight:800; color:var(--text-primary);">מרכז ניהול נתונים, איפוס מערכת ובקרות הדגמה</h3>
+                                <span class="badge" style="background:#fee2e2; color:#b91c1c; font-size:11px; padding:2px 8px; border-radius:6px; font-weight:bold;">גישה מוגנת - מנהל על בלבד 🔒</span>
+                            </div>
+                            <p style="color:var(--text-secondary); margin:4px 0 0; font-size:12.5px;">
+                                פעולות איפוס נתוני בקרות, שחזור ברירות מחדל וטעינת נתוני הדגמה מוגבלות באופן בלעדי למנהל על (Super Admin).
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <button onclick="promptSuperAdminUnlock()" class="btn" style="background:#1e40af; color:#fff; font-weight:700; font-size:12.5px; padding:8px 18px; border-radius:8px; display:inline-flex; align-items:center; gap:6px; cursor:pointer; box-shadow:0 2px 6px rgba(30,64,175,0.25);">
+                            <span>🔑</span> שחרור נעילה באמצעות סיסמת על
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
 
             <!-- Existing System Configuration Cards -->
             <div class="card" style="margin-top: 20px;">
