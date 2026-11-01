@@ -1445,6 +1445,8 @@ function navigate(viewName) {
             if (typeof renderManagerPortalView === 'function') renderManagerPortalView();
         } else if (viewName === 'agent') {
             contentArea.innerHTML = renderAgent();
+        } else if (viewName === 'commercial-demo' || viewName === 'demo-proposal') {
+            if (typeof renderCommercialDemoView === 'function') renderCommercialDemoView();
         } else if (viewName === 'settings') {
             contentArea.innerHTML = renderSettings();
         } else {
@@ -5825,4 +5827,1144 @@ function renderManagerPortalView() {
         </div>
         <iframe src="https://organizational-nurse-management-wor.vercel.app/" style="width:100%; height:calc(100vh - 175px); min-height:650px; border:none; border-radius:12px; background:white; box-shadow:0 4px 15px rgba(0,0,0,0.06);" title="פורטל מעקב ובקרה למנהל"></iframe>
     `;
+}
+
+
+// ==============================================================
+// COMMERCIAL DEMO, VIDEO SHOWCASE, LEAD CAPTURE & PROPOSAL MODULE
+// ==============================================================
+
+let activeDemoSubTab = 'showcase'; // 'showcase' | 'interactive_demo' | 'pricing_proposal' | 'lead_form' | 'roi_calc'
+
+function switchDemoSubTab(tab) {
+    activeDemoSubTab = tab;
+    renderCommercialDemoView();
+}
+
+function renderCommercialDemoView() {
+    const contentArea = document.getElementById('content-area');
+    if (!contentArea) return;
+
+    contentArea.innerHTML = `
+        <div class="fade-in space-y-6" id="commercial-demo-root">
+            <!-- Top Hero Banner -->
+            <div style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%); color: #ffffff; padding: 26px 30px; border-radius: 16px; box-shadow: 0 10px 25px rgba(30, 58, 138, 0.25); position: relative; overflow: hidden;">
+                <div style="position: absolute; top: -40px; left: -40px; width: 180px; height: 180px; background: rgba(59, 130, 246, 0.2); border-radius: 50%; filter: blur(30px); pointer-events: none;"></div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; position: relative; z-index: 1;">
+                    <div style="max-width: 780px;">
+                        <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; color: #93c5fd; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.2);">
+                            <span>🌟</span> פלטפורמת הדגמה מוסדית, סרטון דמו והצעה עסקית 2026
+                        </div>
+                        <h1 style="margin: 0 0 10px; font-size: 24px; font-weight: 900; line-height: 1.3; color: #ffffff;">
+                            הפורטל הארגוני לניהול איכות, בטיחות והדרכה בסיעוד גריאטרי
+                        </h1>
+                        <p style="margin: 0; font-size: 14px; color: #dbeafe; line-height: 1.6;">
+                            פתרון B2B הוליסטי מוכח לעמידה מלאה בדרישות מודל הבקרה האחודה של משרד הבריאות, צמצום זיהומים ופצעי לחץ, ודיגיטציה מלאה של מערך הכשרת העובדים.
+                        </p>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
+                        <button onclick="switchDemoSubTab('lead_form')" class="btn" style="background: #10b981; color: white; font-weight: 800; font-size: 13.5px; padding: 10px 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(16,185,129,0.35); border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                            <span>📅</span> תאם הדגמה חיה למוסד
+                        </button>
+                        <button onclick="openPrintableProposalModal()" class="btn" style="background: rgba(255,255,255,0.15); color: white; font-weight: 700; font-size: 12.5px; padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3); cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>📄</span> הדפס הצעת מחיר A4
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Sub-Tabs -->
+            <div style="display: flex; gap: 8px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px; overflow-x: auto; scrollbar-width: thin;">
+                <button onclick="switchDemoSubTab('showcase')" class="btn" style="${activeDemoSubTab === 'showcase' ? 'background: #2563eb; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(37,99,235,0.3);' : 'background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600;'} font-size: 13px; padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <span>🎥</span> סרטון דמו וסיור מודרך
+                </button>
+                <button onclick="switchDemoSubTab('interactive_demo')" class="btn" style="${activeDemoSubTab === 'interactive_demo' ? 'background: #2563eb; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(37,99,235,0.3);' : 'background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600;'} font-size: 13px; padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <span>⚡</span> התנסות חיה בבקרה ודשבורד
+                </button>
+                <button onclick="switchDemoSubTab('pricing_proposal')" class="btn" style="${activeDemoSubTab === 'pricing_proposal' ? 'background: #2563eb; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(37,99,235,0.3);' : 'background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600;'} font-size: 13px; padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <span>💼</span> הצעה עסקית ושעות מומחית
+                </button>
+                <button onclick="switchDemoSubTab('roi_calc')" class="btn" style="${activeDemoSubTab === 'roi_calc' ? 'background: #2563eb; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(37,99,235,0.3);' : 'background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600;'} font-size: 13px; padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <span>📈</span> מחשבון החזר השקעה (ROI)
+                </button>
+                <button onclick="switchDemoSubTab('lead_form')" class="btn" style="${activeDemoSubTab === 'lead_form' ? 'background: #10b981; color: #fff; font-weight: 800; box-shadow: 0 2px 8px rgba(16,185,129,0.3);' : 'background: var(--surface); color: var(--text-primary); border: 1px solid var(--border-color); font-weight: 600;'} font-size: 13px; padding: 8px 16px; border-radius: 10px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+                    <span>📝</span> איסוף נתונים ותיאום הדגמה
+                </button>
+            </div>
+
+            <!-- Content Area By Sub-Tab -->
+            ${renderCurrentDemoSubTabContent()}
+        </div>
+    `;
+}
+
+function renderCurrentDemoSubTabContent() {
+    switch (activeDemoSubTab) {
+        case 'showcase': return renderDemoVideoShowcase();
+        case 'interactive_demo': return renderInteractiveDemoTester();
+        case 'pricing_proposal': return renderCommercialPricingProposal();
+        case 'roi_calc': return renderInteractiveRoiCalculator();
+        case 'lead_form': return renderLeadCapturePlatform();
+        default: return renderDemoVideoShowcase();
+    }
+}
+
+// ==============================================================
+// 1. VIDEO DEMO & TOUR SHOWCASE
+// ==============================================================
+
+let currentDemoVideoSource = 'intro_video.mp4';
+let currentDemoVideoTitle = 'פרק 1: היכרות עם פורטל האיכות ומודל משרד הבריאות 2026';
+
+function setDemoVideo(src, title) {
+    currentDemoVideoSource = src;
+    currentDemoVideoTitle = title;
+    const player = document.getElementById('main-demo-video-player');
+    const titleEl = document.getElementById('main-demo-video-title');
+    if (player) {
+        player.src = src;
+        player.load();
+        player.play().catch(e => console.log('Autoplay prevented:', e));
+    }
+    if (titleEl) {
+        titleEl.innerText = title;
+    }
+}
+
+function renderDemoVideoShowcase() {
+    return `
+        <div class="space-y-6">
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start;" class="demo-grid-responsive">
+                
+                <!-- Main Video Player -->
+                <div class="card" style="padding: 20px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--surface);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <h3 id="main-demo-video-title" style="margin: 0; font-size: 16px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                            <span>🎬</span> ${currentDemoVideoTitle}
+                        </h3>
+                        <span class="badge" style="background: #2563eb; color: white; font-size: 11px; padding: 3px 8px; border-radius: 6px;">HD 1080p</span>
+                    </div>
+
+                    <div style="border-radius: 12px; overflow: hidden; background: #000; box-shadow: 0 4px 20px rgba(0,0,0,0.25); position: relative; padding-top: 56.25%;">
+                        <video id="main-demo-video-player" controls style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;" poster="maya-profile.jpeg">
+                            <source src="${currentDemoVideoSource}" type="video/mp4">
+                            הדפדפן שלך אינו תומך בניגון וידאו HTML5.
+                        </video>
+                    </div>
+
+                    <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 12.5px; color: var(--text-secondary);">
+                        <div>💡 צפו בהדגמה מקיפה של תהליכי הבקרה, שגרות ה-MDT ודשבורד המנהל.</div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="navigate('forms')" class="btn" style="background: var(--bg-color); border: 1px solid var(--border-color); font-size: 12px; padding: 6px 12px; border-radius: 6px;">
+                                מעבר לכלי הבקרה ➜
+                            </button>
+                            <button onclick="switchDemoSubTab('interactive_demo')" class="btn" style="background: #2563eb; color: white; font-size: 12px; padding: 6px 14px; border-radius: 6px;">
+                                נסה סימולציה חיה ⚡
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Chapters Playlist -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <h3 style="margin: 0 0 4px; font-size: 15px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                        <span>📑</span> פרקי ההדרכה והדמו
+                    </h3>
+
+                    <!-- Chapter 1 -->
+                    <div onclick="setDemoVideo('intro_video.mp4', 'פרק 1: היכרות עם פורטל האיכות ומודל משרד הבריאות 2026')" style="background: var(--surface); border: 1px solid ${currentDemoVideoSource === 'intro_video.mp4' ? '#2563eb' : 'var(--border-color)'}; padding: 12px 14px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='${currentDemoVideoSource === 'intro_video.mp4' ? '#2563eb' : 'var(--border-color)'}'">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <strong style="font-size: 13px; color: var(--text-primary);">1. סקירת הפורטל ומודל 2026</strong>
+                            <span style="font-size: 11px; background: #e0f2fe; color: #0369a1; padding: 1px 6px; border-radius: 4px; font-weight: bold;">01:30</span>
+                        </div>
+                        <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">
+                            ארכיטקטורת 15 הלשוניות, חיבור לחוזר משרד הבריאות ודשבורד המנהל המרכזי.
+                        </div>
+                    </div>
+
+                    <!-- Chapter 2 -->
+                    <div onclick="setDemoVideo('aspiration_prevention_video.mp4', 'פרק 2: מניעת סיכונים קליניים ופרוטוקול אספירציות')" style="background: var(--surface); border: 1px solid ${currentDemoVideoSource === 'aspiration_prevention_video.mp4' ? '#2563eb' : 'var(--border-color)'}; padding: 12px 14px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='${currentDemoVideoSource === 'aspiration_prevention_video.mp4' ? '#2563eb' : 'var(--border-color)'}'">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <strong style="font-size: 13px; color: var(--text-primary);">2. מניעת אספירציות ובטיחות האכלה</strong>
+                            <span style="font-size: 11px; background: #dcfce7; color: #166534; padding: 1px 6px; border-radius: 4px; font-weight: bold;">02:15</span>
+                        </div>
+                        <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">
+                            הדרכה קלינית מובנית (Claymation), תרגול הצוות ונהלי האכלה בטוחה.
+                        </div>
+                    </div>
+
+                    <!-- Chapter 3 -->
+                    <div onclick="setDemoVideo('emotional_distress_elderly.mp4', 'פרק 3: חוסן הצוות ומצוקה רגשית באשפוז גריאטרי')" style="background: var(--surface); border: 1px solid ${currentDemoVideoSource === 'emotional_distress_elderly.mp4' ? '#2563eb' : 'var(--border-color)'}; padding: 12px 14px; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#2563eb'" onmouseout="this.style.borderColor='${currentDemoVideoSource === 'emotional_distress_elderly.mp4' ? '#2563eb' : 'var(--border-color)'}'">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                            <strong style="font-size: 13px; color: var(--text-primary);">3. התמודדות עם מצוקה רגשית</strong>
+                            <span style="font-size: 11px; background: #fef3c7; color: #92400e; padding: 1px 6px; border-radius: 4px; font-weight: bold;">03:40</span>
+                        </div>
+                        <div style="font-size: 11.5px; color: var(--text-secondary); line-height: 1.4;">
+                            כלים למניעת שחיקה בקרב אחיות ומטפלים, סרטון מונפש מלא מתוך לומדה 5.
+                        </div>
+                    </div>
+
+                    <!-- Quick Action Card -->
+                    <div style="background: linear-gradient(135deg, #1e40af, #2563eb); color: white; padding: 16px; border-radius: 12px; text-align: center; margin-top: 4px;">
+                        <h4 style="margin: 0 0 6px; font-size: 14px; font-weight: 800; color: #fff;">מעוניינים בהדגמה מותאמת אישית?</h4>
+                        <p style="margin: 0 0 12px; font-size: 12px; color: #bfdbfe;">נציג את המערכת על גבי נתוני הפיילוט של המוסד שלכם.</p>
+                        <button onclick="switchDemoSubTab('lead_form')" class="btn" style="background: #ffffff; color: #1e40af; font-weight: 800; font-size: 12.5px; padding: 8px 14px; border-radius: 8px; width: 100%; border: none; cursor: pointer;">
+                            תיאום פגישת הדגמה ללא התחייבות ➜
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Key Features 3-Column Highlights -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                <div class="card" style="padding: 18px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--surface);">
+                    <div style="font-size: 28px; margin-bottom: 8px;">🛡️</div>
+                    <h4 style="margin: 0 0 6px; font-size: 15px; font-weight: 800; color: var(--text-primary);">100% מוכנות לביקורת משרד הבריאות</h4>
+                    <p style="margin: 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;">
+                        שאלונים וכלי בקרה מעודכנים לפי מודל הבקרה האחודה 2026. סגירת מעגלי טיפול ו-CAPA אוטומטית המבטיחה עמידה בכל סטנדרט.
+                    </p>
+                </div>
+                <div class="card" style="padding: 18px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--surface);">
+                    <div style="font-size: 28px; margin-bottom: 8px;">🎓</div>
+                    <h4 style="margin: 0 0 6px; font-size: 15px; font-weight: 800; color: var(--text-primary);">ערכת הכשרה מוסדית 62 שעות</h4>
+                    <p style="margin: 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;">
+                        מסלול קליטה מובנה של 10 הדרכות חובה, סרטונים, מבדקי ידע, חתימות דיגיטליות ותיוק אוטומטי של נספח א' בתיק עובד במשאבי אנוש.
+                    </p>
+                </div>
+                <div class="card" style="padding: 18px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--surface);">
+                    <div style="font-size: 28px; margin-bottom: 8px;">📊</div>
+                    <h4 style="margin: 0 0 6px; font-size: 15px; font-weight: 800; color: var(--text-primary);">דשבורד מנהל וסנכרון ענן</h4>
+                    <p style="margin: 0; font-size: 12.5px; color: var(--text-secondary); line-height: 1.5;">
+                        מגמות איכות שבועיות, ניתוח חריגים, שגרת MDT רב-מקצועית, ייצוא דוחות לאקסל וסנכרון מאובטח לענן בית החולים.
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// ==============================================================
+// 2. INTERACTIVE DEMO TESTER (LIVE AUDIT & CAPA SIMULATOR)
+// ==============================================================
+
+let demoAuditAnswers = { q1: 1, q2: 1, q3: 1, q4: 1 };
+
+function setDemoAuditAnswer(qKey, val) {
+    demoAuditAnswers[qKey] = val;
+    renderCommercialDemoView();
+}
+
+function calculateDemoScore() {
+    const total = 4;
+    const answered = Object.values(demoAuditAnswers).filter(v => v === 1).length;
+    return Math.round((answered / total) * 100);
+}
+
+function renderInteractiveDemoTester() {
+    const score = calculateDemoScore();
+    const isPassing = score >= 80;
+    const scoreColor = isPassing ? '#10b981' : '#ef4444';
+
+    return `
+        <div class="space-y-6">
+            <div class="card" style="padding: 24px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--surface);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;">
+                    <div>
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #e0f2fe; color: #0369a1; font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;">
+                            ⚡ סימולטור אינטראקטיבי
+                        </div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 900; color: var(--text-primary);">
+                            התנסו בביצוע בקרת איכות בזמן אמת (5 דקות בלבד)
+                        </h3>
+                        <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">
+                            נסו לסמן תשובות "לא תקין" וראו כיצד המערכת מחשבת ציון בזמן אמת ומייצרת תוכנית תיקון ליקויים (CAPA) אוטומטית!
+                        </p>
+                    </div>
+
+                    <!-- Live Score Badge -->
+                    <div style="background: ${isPassing ? '#ecfdf5' : '#fef2f2'}; border: 2px solid ${scoreColor}; border-radius: 14px; padding: 12px 20px; text-align: center; min-width: 140px;">
+                        <div style="font-size: 11px; font-weight: 700; color: ${scoreColor};">ציון בקרה מחושב</div>
+                        <div style="font-size: 32px; font-weight: 900; color: ${scoreColor}; line-height: 1.1;">${score}%</div>
+                        <div style="font-size: 11px; font-weight: bold; color: ${scoreColor}; margin-top: 2px;">
+                            ${isPassing ? 'תקין ועומד בסטנדרט ✓' : 'נדרשת תוכנית CAPA ⚠️'}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Simulation Checklist Questions -->
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 20px;">
+                    
+                    <!-- Q1 -->
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="font-size: 13.5px; color: var(--text-primary); display: block;">1. עגלת החייאה וערכת מנשם:</strong>
+                            <span style="font-size: 12px; color: var(--text-secondary);">בלון חמצן מלא (מעל 100 אטמוספרות), מפתח ברז בלון קיים, ערכת אינטובציה בתוקף.</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="setDemoAuditAnswer('q1', 1)" class="btn" style="background: ${demoAuditAnswers.q1 === 1 ? '#10b981' : '#e2e8f0'}; color: ${demoAuditAnswers.q1 === 1 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                תקין ✓
+                            </button>
+                            <button onclick="setDemoAuditAnswer('q1', 0)" class="btn" style="background: ${demoAuditAnswers.q1 === 0 ? '#ef4444' : '#e2e8f0'}; color: ${demoAuditAnswers.q1 === 0 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                ליקוי ✗
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="font-size: 13.5px; color: var(--text-primary); display: block;">2. היגיינת ידיים וסביבת טיפול (Infection Prevention):</strong>
+                            <span style="font-size: 12px; color: var(--text-secondary);">אלכוג'ל בכניסה לכל חדר, חיטוי משטחים בתמיסה מאושרת, הפרדת כביסה מזוהמת.</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="setDemoAuditAnswer('q2', 1)" class="btn" style="background: ${demoAuditAnswers.q2 === 1 ? '#10b981' : '#e2e8f0'}; color: ${demoAuditAnswers.q2 === 1 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                תקין ✓
+                            </button>
+                            <button onclick="setDemoAuditAnswer('q2', 0)" class="btn" style="background: ${demoAuditAnswers.q2 === 0 ? '#ef4444' : '#e2e8f0'}; color: ${demoAuditAnswers.q2 === 0 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                ליקוי ✗
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="font-size: 13.5px; color: var(--text-primary); display: block;">3. בטיחות בטיפול תרופתי וסמים מסוכנים:</strong>
+                            <span style="font-size: 12px; color: var(--text-secondary);">ארון סמים נעול בכפולת מנעולים, ספר סמים מאוזן, רישום כפול על תרופות High Alert.</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="setDemoAuditAnswer('q3', 1)" class="btn" style="background: ${demoAuditAnswers.q3 === 1 ? '#10b981' : '#e2e8f0'}; color: ${demoAuditAnswers.q3 === 1 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                תקין ✓
+                            </button>
+                            <button onclick="setDemoAuditAnswer('q3', 0)" class="btn" style="background: ${demoAuditAnswers.q3 === 0 ? '#ef4444' : '#e2e8f0'}; color: ${demoAuditAnswers.q3 === 0 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                ליקוי ✗
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong style="font-size: 13.5px; color: var(--text-primary); display: block;">4. שלמות עור ומניעת פצעי לחץ (Braden Scale):</strong>
+                            <span style="font-size: 12px; color: var(--text-secondary);">אומדן בריידן עודכן תוך 24 שעות, תוכנית שינויי תנוחה מתועדת, מזרן מפחית לחץ תקין.</span>
+                        </div>
+                        <div style="display: flex; gap: 8px;">
+                            <button onclick="setDemoAuditAnswer('q4', 1)" class="btn" style="background: ${demoAuditAnswers.q4 === 1 ? '#10b981' : '#e2e8f0'}; color: ${demoAuditAnswers.q4 === 1 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                תקין ✓
+                            </button>
+                            <button onclick="setDemoAuditAnswer('q4', 0)" class="btn" style="background: ${demoAuditAnswers.q4 === 0 ? '#ef4444' : '#e2e8f0'}; color: ${demoAuditAnswers.q4 === 0 ? '#fff' : '#475569'}; font-weight: 700; font-size: 12px; padding: 6px 14px; border-radius: 6px; cursor: pointer;">
+                                ליקוי ✗
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Auto-Generated CAPA Box when score < 80 -->
+                ${!isPassing ? `
+                    <div style="margin-top: 20px; background: #fff1f2; border: 1px solid #fecdd3; border-radius: 12px; padding: 18px; animation: fadeIn 0.4s ease-in-out;">
+                        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                            <span style="font-size: 20px;">🚨</span>
+                            <strong style="font-size: 14.5px; color: #9f1239;">תוכנית תיקון ליקויים אוטומטית (Automated CAPA Triggered):</strong>
+                        </div>
+                        <p style="font-size: 12.5px; color: #881337; margin: 0 0 10px; line-height: 1.5;">
+                            המערכת זיהתה ציון בקרה הנמוך מסף היעד (80%). נוצרה משימת סגירת מעגל טיפולית מיידית הכוללת תאריך יעד, אחראי ביצוע (אחות אחראית מחלקה) ודיווח אוטומטי לדשבורד ההנהלה.
+                        </p>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <span class="badge" style="background: #e11d48; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">סטטוס: CAPA פתוח</span>
+                            <span class="badge" style="background: #fecdd3; color: #9f1239; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">יעד לתיקון: תוך 7 ימי עבודה</span>
+                            <span class="badge" style="background: #fecdd3; color: #9f1239; padding: 4px 10px; border-radius: 6px; font-size: 11.5px;">אחראית: אחות אחראית מחלקה</span>
+                        </div>
+                    </div>
+                ` : `
+                    <div style="margin-top: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 24px;">🏆</span>
+                        <div style="font-size: 13px; color: #166534;">
+                            <strong>ציון מצטיין!</strong> המחלקה עומדת במלוא דרישות משרד הבריאות. הנתונים מתועדים ישירות בדשבורד המנהל ומסונכרנים לענן המוסדי.
+                        </div>
+                    </div>
+                `}
+
+                <div style="margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                    <div style="font-size: 12px; color: var(--text-secondary);">
+                        רוצים לבחון את 5 כלי הבקרה המלאים של הפורטל?
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="navigate('forms')" class="btn" style="background: #2563eb; color: white; font-weight: 700; font-size: 12.5px; padding: 7px 16px; border-radius: 8px; cursor: pointer;">
+                            פתח מודול בקרות מלא (14) ➜
+                        </button>
+                        <button onclick="navigate('dashboard')" class="btn" style="background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 12.5px; padding: 7px 14px; border-radius: 8px; cursor: pointer;">
+                            צפה בדשבורד ראשי 📊
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+// ==============================================================
+// 3. COMMERCIAL PRICING PROPOSAL & EXPERT IMPLEMENTATION HOURS
+// ==============================================================
+
+function renderCommercialPricingProposal() {
+    return `
+        <div class="space-y-6">
+            
+            <!-- Lead Banner with Expert Profile -->
+            <div class="card" style="padding: 22px 26px; border-radius: 14px; border: 1px solid #93c5fd; background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <img src="maya-profile.jpeg" alt="מאיה שקולניק גזית" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #2563eb; box-shadow: 0 4px 10px rgba(37,99,235,0.2);">
+                        <div>
+                            <div style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.5px;">
+                                מומחית ההטמעה המובילה
+                            </div>
+                            <h3 style="margin: 2px 0 4px; font-size: 18px; font-weight: 900; color: var(--text-primary);">
+                                מאיה שקולניק גזית (R.N, BA, M.H.A)
+                            </h3>
+                            <div style="font-size: 12.5px; color: var(--text-secondary);">
+                                מומחית מדיניות וניהול סיעוד, מנהלת איכות, בטיחות והדרכה במערכת הבריאות הגריאטרית.
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 8px;">
+                        <button onclick="openPrintableProposalModal()" class="btn" style="background: #1e40af; color: white; font-weight: 700; font-size: 12.5px; padding: 8px 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>🖨️</span> הפק הצעת מחיר רשמית A4
+                        </button>
+                        <button onclick="switchDemoSubTab('lead_form')" class="btn" style="background: #10b981; color: white; font-weight: 700; font-size: 12.5px; padding: 8px 16px; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px;">
+                            <span>💬</span> צור קשר להצעה מותאמת
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Grid: 3 Tiers with Expert Hours Highlighted -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 18px;">
+                
+                <!-- Tier 1: Pilot Package -->
+                <div class="card" style="border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface); position: relative;">
+                    <div>
+                        <div style="font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase;">מחלקה בודדת / התנסות</div>
+                        <h4 style="margin: 6px 0 10px; font-size: 19px; font-weight: 900; color: var(--text-primary);">חבילת פיילוט מחלקתי</h4>
+                        <p style="margin: 0 0 16px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                            מתאימה למחלקה ראשונה במוסד (עד 40 מיטות) המעוניינת להוכיח הצלחה ושיפור מדדים תוך 60 יום.
+                        </p>
+
+                        <!-- Expert Hours Badge -->
+                        <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 10px; padding: 12px; margin-bottom: 18px;">
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; color: #1e293b; font-size: 13.5px;">
+                                <span>⏱️</span> 15 שעות הטמעה של מומחית (כלול במחיר!)
+                            </div>
+                            <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 11.5px; color: #475569; line-height: 1.55;">
+                                <li><strong>4 שעות:</strong> מיפוי צרכים מחלקתי והתאמת שאלונים.</li>
+                                <li><strong>6 שעות:</strong> הדרכה פרונטלית מרוכזת לאחות אחראית וסגנית.</li>
+                                <li><strong>5 שעות:</strong> ליווי בקרות ראשונות והפקת דוח CAPA ראשון.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Included Features -->
+                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 8px;">
+                            <div>✓ רישוי שנתי מלא ל-15 מודולי הפורטל למחלקה</div>
+                            <div>✓ 5 כלי בקרה דיגיטליים ודשבורד מחלקתי</div>
+                            <div>✓ ערכת קליטה 62 שעות עם חתימות דיגיטליות</div>
+                            <div>✓ תמיכה שוטפת בוואטסאפ ובמייל</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">12,000 ₪</div>
+                        <div style="display: flex; align-items: baseline; gap: 6px;">
+                            <span style="font-size: 28px; font-weight: 900; color: var(--text-primary);">8,500 ₪</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה (כולל שעות מומחית)</span>
+                        </div>
+                        <button onclick="requestSpecificQuote('חבילת פיילוט מחלקתי (8,500 ₪)')" class="btn" style="width: 100%; margin-top: 12px; background: #e2e8f0; color: #1e293b; font-weight: 800; font-size: 13px; padding: 9px; border-radius: 8px; border: none; cursor: pointer;">
+                            בחר בחבילה זו ➜
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 2: Gold Enterprise (Recommended) -->
+                <div class="card" style="border: 2px solid #2563eb; border-radius: 14px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface); position: relative; box-shadow: 0 8px 25px rgba(37,99,235,0.15);">
+                    <div style="position: absolute; top: -12px; right: 20px; background: #2563eb; color: white; font-size: 11px; font-weight: 800; padding: 3px 12px; border-radius: 20px;">
+                        ★ הנבחרת ע"י 85% מהמוסדות
+                    </div>
+
+                    <div>
+                        <div style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase;">מוסד רפואי מלא (עד 6 מחלקות)</div>
+                        <h4 style="margin: 6px 0 10px; font-size: 19px; font-weight: 900; color: var(--text-primary);">חבילת זהב מוסדית (Enterprise)</h4>
+                        <p style="margin: 0 0 16px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                            פתרון מקיף לכלל המוסד (עד 250 מיטות) המבטיח עמידה מלאה בדרישות חוזר משרד הבריאות 2026.
+                        </p>
+
+                        <!-- Expert Hours Badge -->
+                        <div style="background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 10px; padding: 12px; margin-bottom: 18px;">
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; color: #1e40af; font-size: 13.5px;">
+                                <span>⏱️</span> 35 שעות הטמעה של מומחית (כלול במחיר!)
+                            </div>
+                            <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 11.5px; color: #1e3a8a; line-height: 1.55;">
+                                <li><strong>8 שעות:</strong> ישיבת התנעה עם הנהלה, סנכרון ענן וגיבוש מדיניות.</li>
+                                <li><strong>12 שעות:</strong> 3 סדנאות הדרכה (הנהלת סיעוד, אחראיות, סוכני תרופות).</li>
+                                <li><strong>10 שעות:</strong> סימולציית ביקורת פתע מוסדית (Mock Audit 2026).</li>
+                                <li><strong>5 שעות:</strong> ישיבת סיכום הנהלה, ניתוח מגמות ודוח פעולות מתקנות.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Included Features -->
+                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 8px;">
+                            <div>✓ רישוי שנתי מוסדי מלא ללא הגבלת משתמשים (עד 6 מחלקות)</div>
+                            <div>✓ אינטגרציה וסנכרון מאובטח לענן בית החולים</div>
+                            <div>✓ מודול CDSS גריאטרי, מרקמי IDDSI וניהול פצעים</div>
+                            <div>✓ הפקת דוחות CAPA חודשיים רשמיים למשרד הבריאות</div>
+                            <div>✓ תמיכת פרימיום ומוקד מומחית ייעודי</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">34,000 ₪</div>
+                        <div style="display: flex; align-items: baseline; gap: 6px;">
+                            <span style="font-size: 30px; font-weight: 900; color: #2563eb;">24,500 ₪</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה (כולל 35 שעות מומחית!)</span>
+                        </div>
+                        <button onclick="requestSpecificQuote('חבילת זהב מוסדית מורחבת (24,500 ₪)')" class="btn" style="width: 100%; margin-top: 12px; background: #2563eb; color: #fff; font-weight: 800; font-size: 13px; padding: 10px; border-radius: 8px; border: none; cursor: pointer; box-shadow: 0 4px 10px rgba(37,99,235,0.25);">
+                            הזמן חבילה זו כעת ➜
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tier 3: Multi-Center Platinum -->
+                <div class="card" style="border: 1px solid var(--border-color); border-radius: 14px; padding: 22px; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface); position: relative;">
+                    <div>
+                        <div style="font-size: 11px; font-weight: 800; color: #7c3aed; text-transform: uppercase;">רשת מוסדות / רב-מרכזי</div>
+                        <h4 style="margin: 6px 0 10px; font-size: 19px; font-weight: 900; color: var(--text-primary);">חבילת פלטינום רשתית</h4>
+                        <p style="margin: 0 0 16px; font-size: 12px; color: var(--text-secondary); line-height: 1.5;">
+                            מתאימה לרשתות בתי אבות ומרכזים רפואיים מרובי קמפוסים הזקוקים לסטנדרטיזציה אחידה.
+                        </p>
+
+                        <!-- Expert Hours Badge -->
+                        <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 10px; padding: 12px; margin-bottom: 18px;">
+                            <div style="display: flex; align-items: center; gap: 6px; font-weight: 800; color: #6b21a8; font-size: 13.5px;">
+                                <span>⏱️</span> 70 שעות הטמעה של מומחית (כלול במחיר!)
+                            </div>
+                            <ul style="margin: 8px 0 0 16px; padding: 0; font-size: 11.5px; color: #581c87; line-height: 1.55;">
+                                <li><strong>בניית מתודולוגיה רשתית אחידה</strong> לכלל המוסדות.</li>
+                                <li><strong>הכשרת ממוני איכות רשתיים</strong> והסמכת נאמנים.</li>
+                                <li><strong>סימולציות ביקורת פתע</strong> בכל אחד ממוסדות הרשת.</li>
+                                <li><strong>ליווי ישיר בישיבות דירקטוריון והנהלה ראשית.</strong></li>
+                            </ul>
+                        </div>
+
+                        <!-- Included Features -->
+                        <div style="font-size: 12.5px; color: var(--text-primary); display: flex; flex-direction: column; gap: 8px;">
+                            <div>✓ רישוי רשתי מלא ללא הגבלת מוסדות, מחלקות ומיטות</div>
+                            <div>✓ דשבורד רשתי להנהלה הראשית (Executive HQ Dashboard)</div>
+                            <div>✓ אינטגרציית API מותאמת אישית לתיק הרפואי (EHR)</div>
+                            <div>✓ שירות VIP וזמינות ישירה של המומחית</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+                        <div style="font-size: 12px; color: var(--text-secondary); text-decoration: line-through;">65,000 ₪</div>
+                        <div style="display: flex; align-items: baseline; gap: 6px;">
+                            <span style="font-size: 28px; font-weight: 900; color: #7c3aed;">48,000 ₪</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">/ לשנה לרשת</span>
+                        </div>
+                        <button onclick="requestSpecificQuote('חבילת פלטינום רשתית מותאמת (48,000 ₪)')" class="btn" style="width: 100%; margin-top: 12px; background: #e2e8f0; color: #1e293b; font-weight: 800; font-size: 13px; padding: 9px; border-radius: 8px; border: none; cursor: pointer;">
+                            צור קשר לרשת ➜
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Detailed Implementation Deliverables Table -->
+            <div class="card" style="padding: 22px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--surface);">
+                <h4 style="margin: 0 0 14px; font-size: 16px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 8px;">
+                    <span>📋</span> מה כוללות שעות ההטמעה של המומחית? (פירוט תכולת עבודה מחייבת)
+                </h4>
+                
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 12.5px; text-align: right;">
+                        <thead>
+                            <tr style="background: var(--bg-color); border-bottom: 2px solid var(--border-color);">
+                                <th style="padding: 10px 12px;">שלב בתהליך</th>
+                                <th style="padding: 10px 12px;">פעילויות ותוצרים של המומחית</th>
+                                <th style="padding: 10px 12px;">שעות מומחית (חבילת זהב)</th>
+                                <th style="padding: 10px 12px;">ערך למוסד</th>
+                            </tr>
+                        </thead>
+                        <tbody style="divide-y: 1px solid var(--border-color);">
+                            <tr>
+                                <td style="padding: 10px 12px; font-weight: 700; color: #2563eb;">1. מיפוי והתנעה</td>
+                                <td style="padding: 10px 12px;">ישיבת הנהלה, הגדרת הרשאות משתמשים, בדיקת סנכרון ענן, התאמת שאלונים למוסד</td>
+                                <td style="padding: 10px 12px; font-weight: bold;">8 שעות</td>
+                                <td style="padding: 10px 12px; color: var(--text-secondary);">התחלה חלקה ללא בזבוז זמן צוות</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 12px; font-weight: 700; color: #059669;">2. סדנאות הדרכה</td>
+                                <td style="padding: 10px 12px;">הדרכת אחיות אחראיות, תרגול סוכני תרופות, הדרכת נאמני פצע והטמעת ערכת 62 שעות</td>
+                                <td style="padding: 10px 12px; font-weight: bold;">12 שעות</td>
+                                <td style="padding: 10px 12px; color: var(--text-secondary);">צוות מוסמך, אחראי ובטוח בטיפול</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 12px; font-weight: 700; color: #d97706;">3. סימולציית ביקורת</td>
+                                <td style="padding: 10px 12px;">ביצוע ביקורת פתע מוסדית מלאה (Mock Audit) בסטנדרט משרד הבריאות לשנת 2026</td>
+                                <td style="padding: 10px 12px; font-weight: bold;">10 שעות</td>
+                                <td style="padding: 10px 12px; color: var(--text-secondary);">איתור וסגירת פערים לפני ביקורת האמת</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 10px 12px; font-weight: 700; color: #7c3aed;">4. סיכום ותוכנית שיפור</td>
+                                <td style="padding: 10px 12px;">הפקת דו"ח פערים מקיף להנהלה, הגדרת יעדים רבעוניים בדשבורד ונוהל שגרת MDT</td>
+                                <td style="padding: 10px 12px; font-weight: bold;">5 שעות</td>
+                                <td style="padding: 10px 12px; color: var(--text-secondary);">מדיניות איכות בת קיימא ומוכחות מלאה</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    `;
+}
+
+// ==============================================================
+// 4. INTERACTIVE ROI CALCULATOR
+// ==============================================================
+
+let roiBedCount = 120;
+
+function updateRoiBeds(val) {
+    roiBedCount = parseInt(val) || 120;
+    renderCommercialDemoView();
+}
+
+function renderInteractiveRoiCalculator() {
+    // Financial and Operational Assumptions:
+    // Average 1 bed generates ~0.8 audit/documentation hours per month manually.
+    // Digital portal saves ~0.5 hours per bed/month = ~60 hours for 120 beds.
+    // RN hourly cost approx 80 NIS.
+    const monthlyNurseHoursSaved = Math.round(roiBedCount * 0.5);
+    const monthlyFinancialSaving = monthlyNurseHoursSaved * 80;
+    const annualLaborSaving = monthlyFinancialSaving * 12;
+    
+    // Penalties, compliance issues & excessive hospitalization avoided:
+    const annualAuditRiskAvoided = Math.round(roiBedCount * 450); 
+    const totalAnnualBenefit = annualLaborSaving + annualAuditRiskAvoided;
+    const packageCost = 24500;
+    const netProfit = totalAnnualBenefit - packageCost;
+    const roiPercentage = Math.round((netProfit / packageCost) * 100);
+
+    return `
+        <div class="space-y-6">
+            <div class="card" style="padding: 24px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--surface);">
+                <div style="margin-bottom: 20px;">
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: #ecfdf5; color: #047857; font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;">
+                        📈 מחשבון כדאיות כלכלית ותשואה
+                    </div>
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 900; color: var(--text-primary);">
+                        כמה כסף, שעות אחות וליקויים יחסוך הפורטל למוסד שלכם?
+                    </h3>
+                    <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">
+                        הזיזו את הסליידר לפי מספר המיטות במוסד וראו את תחזית התשואה (ROI) המיידית בשנה הראשונה:
+                    </p>
+                </div>
+
+                <!-- Slider Control -->
+                <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; margin-bottom: 24px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-weight: 700; font-size: 14px; color: var(--text-primary);">מספר מיטות אשפוז במוסד:</span>
+                        <span style="font-size: 22px; font-weight: 900; color: #2563eb;">${roiBedCount} מיטות</span>
+                    </div>
+                    <input type="range" min="30" max="450" step="10" value="${roiBedCount}" oninput="updateRoiBeds(this.value)" style="width: 100%; cursor: pointer;">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
+                        <span>מחלקה קטנה (30)</span>
+                        <span>מוסד ממוצע (120)</span>
+                        <span>מרכז גריאטרי גדול (450)</span>
+                    </div>
+                </div>
+
+                <!-- 4 Metrics KPI Grid -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px;">
+                    
+                    <div style="background: #f0fdf4; border: 1px solid #86efac; border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: 700; color: #166534;">חיסכון שנתי בשעות אחות</div>
+                        <div style="font-size: 26px; font-weight: 900; color: #15803d; margin: 4px 0;">${monthlyNurseHoursSaved * 12} שעות</div>
+                        <div style="font-size: 11px; color: #166534;">כ-${monthlyNurseHoursSaved} שעות פקידותיות בחודש</div>
+                    </div>
+
+                    <div style="background: #eff6ff; border: 1px solid #93c5fd; border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: 700; color: #1e40af;">חיסכון ישיר בשכר עבודה</div>
+                        <div style="font-size: 26px; font-weight: 900; color: #1d4ed8; margin: 4px 0;">₪${annualLaborSaving.toLocaleString('he-IL')}</div>
+                        <div style="font-size: 11px; color: #1e40af;">זמן צוות שמופנה לטיפול ישיר</div>
+                    </div>
+
+                    <div style="background: #fefce8; border: 1px solid #fde047; border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: 700; color: #854d0e;">מניעת ליקויים וקנסות</div>
+                        <div style="font-size: 26px; font-weight: 900; color: #a16207; margin: 4px 0;">₪${annualAuditRiskAvoided.toLocaleString('he-IL')}</div>
+                        <div style="font-size: 11px; color: #854d0e;">שמירה על רישוי ותקציבים מלאים</div>
+                    </div>
+
+                    <div style="background: #faf5ff; border: 1px solid #d8b4fe; border-radius: 10px; padding: 16px; text-align: center;">
+                        <div style="font-size: 12px; font-weight: 700; color: #6b21a8;">יחס החזר השקעה (ROI)</div>
+                        <div style="font-size: 28px; font-weight: 900; color: #7e22ce; margin: 4px 0;">+${roiPercentage}%</div>
+                        <div style="font-size: 11px; color: #6b21a8;">תשואה פי ${(totalAnnualBenefit / packageCost).toFixed(1)} על ההשקעה!</div>
+                    </div>
+
+                </div>
+
+                <!-- Summary CTA Banner -->
+                <div style="background: linear-gradient(135deg, #1e3a8a, #2563eb); color: white; padding: 18px 22px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div>
+                        <strong style="font-size: 15px; display: block;">רווח כספי ותפעולי נטו מוערך: ₪${netProfit.toLocaleString('he-IL')} בשנה</strong>
+                        <span style="font-size: 12px; color: #bfdbfe;">ההשקעה במערכת מחזירה את עצמה במלואה כבר ברבעון הראשון ליישום!</span>
+                    </div>
+                    <button onclick="switchDemoSubTab('lead_form')" class="btn" style="background: #10b981; color: white; font-weight: 800; font-size: 13px; padding: 9px 18px; border-radius: 8px; border: none; cursor: pointer;">
+                        רוצה לקבל דוח ROI מפורט למוסד ➜
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+// ==============================================================
+// 5. LEAD CAPTURE & INSTITUTIONAL DATA COLLECTION PLATFORM
+// ==============================================================
+
+function getStoredLeads() {
+    try {
+        const raw = localStorage.getItem('institutional_demo_leads');
+        if (raw) return JSON.parse(raw);
+    } catch(e) {}
+    return [];
+}
+
+function submitInstitutionalLead(event) {
+    if (event) event.preventDefault();
+
+    const instName = (document.getElementById('lead_inst_name').value || '').trim();
+    const instType = document.getElementById('lead_inst_type').value;
+    const contactName = (document.getElementById('lead_contact_name').value || '').trim();
+    const contactRole = (document.getElementById('lead_contact_role').value || '').trim();
+    const phone = (document.getElementById('lead_phone').value || '').trim();
+    const email = (document.getElementById('lead_email').value || '').trim();
+    const beds = (document.getElementById('lead_beds').value || '').trim();
+    const demoDate = document.getElementById('lead_demo_date').value || 'בהקדם האפשרי';
+    const notes = (document.getElementById('lead_notes').value || '').trim();
+
+    // Collect checked challenges
+    const challenges = [];
+    document.querySelectorAll('.lead-challenge-cb:checked').forEach(cb => challenges.push(cb.value));
+
+    if (!instName || !contactName || !phone) {
+        showToast('נא למלא את שם המוסד, שם איש הקשר ומספר הטלפון', 'warning');
+        return;
+    }
+
+    const newLead = {
+        id: 'LEAD-' + Date.now(),
+        date: new Date().toLocaleDateString('he-IL') + ' ' + new Date().toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit' }),
+        instName,
+        instType,
+        contactName,
+        contactRole,
+        phone,
+        email,
+        beds,
+        demoDate,
+        challenges,
+        notes,
+        status: 'חדש - ממתין לתיאום'
+    };
+
+    const leads = getStoredLeads();
+    leads.unshift(newLead);
+    localStorage.setItem('institutional_demo_leads', JSON.stringify(leads));
+
+    // Construct WhatsApp message URL to expert
+    const waText = encodeURIComponent(
+        `שלום מאיה, שמי ${contactName} (${contactRole}) ממוסד "${instName}" (${instType}, ${beds} מיטות).\n` +
+        `נשמח לתאם הדגמה חיה של הפורטל הארגוני והצעת מחיר מותאמת.\n` +
+        `תאריך מועדף: ${demoDate}\n` +
+        `אתגרים מרכזיים: ${challenges.join(', ')}\n` +
+        `טלפון לחזרה: ${phone} | אימייל: ${email}`
+    );
+    const waUrl = `https://wa.me/972500000000?text=${waText}`;
+
+    showToast(`תודה ${contactName}! פרטי המוסד "${instName}" נקלטו בהצלחה. מספר פנייה: ${newLead.id}`, 'success');
+
+    // Show confirmation modal with direct WhatsApp trigger
+    let confirmModal = document.getElementById('lead_confirm_modal');
+    if (!confirmModal) {
+        confirmModal = document.createElement('div');
+        confirmModal.id = 'lead_confirm_modal';
+        document.body.appendChild(confirmModal);
+    }
+    confirmModal.style.cssText = 'position:fixed; inset:0; z-index:999999; background:rgba(15,23,42,0.8); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:1rem; box-sizing:border-box;';
+    confirmModal.innerHTML = `
+        <div style="background:var(--surface, #ffffff); width:100%; max-width:520px; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.3); border:1px solid var(--border-color); overflow:hidden; direction:rtl; text-align:right;">
+            <div style="padding:20px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; text-align:center;">
+                <div style="font-size:36px; margin-bottom:6px;">🎉</div>
+                <h3 style="margin:0; font-size:18px; font-weight:900; color:#fff;">הבקשה להדגמה נרשמה בהצלחה!</h3>
+                <div style="font-size:12px; color:#dcfce7; margin-top:4px;">סימוכין: <strong>${newLead.id}</strong></div>
+            </div>
+            
+            <div style="padding:22px; font-size:13px; color:var(--text-primary); line-height:1.6;">
+                <p style="margin:0 0 14px;">
+                    שלום <strong>${escapeHtml(contactName)}</strong>, קיבלנו את בקשתכם לתיאום הדגמה עבור <strong>${escapeHtml(instName)}</strong>.
+                </p>
+                <div style="background:var(--bg-color); border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:16px; font-size:12px;">
+                    <div>מוסד: <strong>${escapeHtml(instName)}</strong> (${escapeHtml(instType)})</div>
+                    <div>איש קשר: <strong>${escapeHtml(contactName)}</strong> (${escapeHtml(contactRole)})</div>
+                    <div>טלפון: <strong>${escapeHtml(phone)}</strong> | אימייל: <strong>${escapeHtml(email || 'לא צוין')}</strong></div>
+                </div>
+                <p style="margin:0 0 18px; color:var(--text-secondary); font-size:12px;">
+                    מאיה שקולניק גזית או נציג הדרכה בכיר יחזרו אליכם תוך 24 שעות לתיאום מועד ההדגמה. תוכלו גם לשלוח הודעת וואטסאפ ישירה כעת:
+                </p>
+                
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                    <a href="${waUrl}" target="_blank" class="btn" style="background:#25d366; color:#fff; text-align:center; padding:10px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
+                        <span>💬</span> פתח צ'אט ישיר בוואטסאפ של המומחית
+                    </a>
+                    <button type="button" onclick="document.getElementById('lead_confirm_modal').style.display='none'; renderCommercialDemoView();" class="btn" style="background:var(--bg-color); border:1px solid var(--border-color); color:var(--text-primary); padding:9px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">
+                        סגור וחזור לדמו
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    confirmModal.style.display = 'flex';
+}
+
+function exportLeadsToCsv() {
+    const leads = getStoredLeads();
+    if (!leads.length) {
+        showToast('אין פניות שנשמרו עדיין במערכת', 'info');
+        return;
+    }
+
+    let csv = '\uFEFFמזהה,תאריך פנייה,שם המוסד,סוג מוסד,איש קשר,תפקיד,טלפון,אימייל,מיטות,תאריך הדגמה מבוקש,אתגרים,הערות\n';
+    leads.forEach(l => {
+        csv += `"${l.id}","${l.date}","${l.instName}","${l.instType}","${l.contactName}","${l.contactRole}","${l.phone}","${l.email}","${l.beds}","${l.demoDate}","${(l.challenges||[]).join('; ')}","${(l.notes||'').replace(/"/g, '""')}"\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', `leads_export_${new Date().toISOString().slice(0,10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    showToast(`יוצאו ${leads.length} פניות לקובץ CSV בהצלחה!`, 'success');
+}
+
+function requestSpecificQuote(pkgTitle) {
+    switchDemoSubTab('lead_form');
+    setTimeout(() => {
+        const notesEl = document.getElementById('lead_notes');
+        if (notesEl) {
+            notesEl.value = `מעוניין לקבל הצעת מחיר רשמית עבור: ${pkgTitle}`;
+            notesEl.focus();
+        }
+    }, 150);
+}
+
+function renderLeadCapturePlatform() {
+    const leads = getStoredLeads();
+
+    return `
+        <div class="space-y-6">
+            <div style="display: grid; grid-template-columns: 3fr 2fr; gap: 20px; align-items: start;" class="demo-grid-responsive">
+                
+                <!-- Lead Form Container -->
+                <div class="card" style="padding: 24px; border-radius: 14px; border: 1px solid var(--border-color); background: var(--surface);">
+                    <div style="margin-bottom: 18px;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background: #dcfce7; color: #166534; font-size: 11.5px; font-weight: 800; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;">
+                            📝 פלטפורמת איסוף נתונים ולידים
+                        </div>
+                        <h3 style="margin: 0; font-size: 18px; font-weight: 900; color: var(--text-primary);">
+                            טופס פנייה מוסדי ותיאום הדגמה חיה (Live Demo)
+                        </h3>
+                        <p style="margin: 4px 0 0; font-size: 12.5px; color: var(--text-secondary);">
+                            מלאו את פרטי המוסד ונציג מומחה יציג עבורכם הדגמה חיה ומותאמת של הפורטל ב-Zoom או בביקור פרונטלי במוסדכם:
+                        </p>
+                    </div>
+
+                    <form onsubmit="submitInstitutionalLead(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    שם המוסד הרפואי / בית האבות: *
+                                </label>
+                                <input id="lead_inst_name" type="text" required placeholder="למשל: מרכז רפואי גריאטרי נווה אור" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    סוג המוסד:
+                                </label>
+                                <select id="lead_inst_type" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                                    <option value="בית חולים גריאטרי שיקומי">בית חולים גריאטרי שיקומי</option>
+                                    <option value="בית אבות ומחלקה סיעודית">בית אבות ומחלקה סיעודית</option>
+                                    <option value="רשת דיור מוגן">רשת דיור מוגן</option>
+                                    <option value="מרכז סיעוד מורכב / מונשמים">מרכז סיעוד מורכב / מונשמים</option>
+                                    <option value="מחלקה פנימית / כללית בבית חולים">מחלקה פנימית / כללית בבית חולים</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    שם איש הקשר: *
+                                </label>
+                                <input id="lead_contact_name" type="text" required placeholder="שם מלא" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    תפקיד בארגון:
+                                </label>
+                                <input id="lead_contact_role" type="text" placeholder="למשל: מנהלת סיעוד / מנהל איכות" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    מספר טלפון / נייד: *
+                                </label>
+                                <input id="lead_phone" type="tel" required placeholder="050-0000000" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box; direction: ltr; text-align: right;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    כתובת דוא"ל:
+                                </label>
+                                <input id="lead_email" type="email" placeholder="name@hospital.org.il" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box; direction: ltr; text-align: right;">
+                            </div>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    מספר מיטות אשפוז משוער:
+                                </label>
+                                <input id="lead_beds" type="number" placeholder="למשל: 120" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                            </div>
+                            <div>
+                                <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                    מועד מבוקש לביצוע הדגמה:
+                                </label>
+                                <input id="lead_demo_date" type="text" placeholder="למשל: יום שלישי הקרוב, 10:00" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 13px; box-sizing: border-box;">
+                            </div>
+                        </div>
+
+                        <!-- Checkbox Challenges -->
+                        <div style="margin-bottom: 14px;">
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px;">
+                                מהם האתגרים הדחופים ביותר במוסדכם כרגע? (סמנו מה שרלוונטי):
+                            </label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 12px;">
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="checkbox" class="lead-challenge-cb" value="היערכות לביקורת משרד הבריאות" checked>
+                                    <span>היערכות לביקורת משרד הבריאות 2026</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="checkbox" class="lead-challenge-cb" value="עומס הכשרת עובדים חדשים" checked>
+                                    <span>עומס קליטה והכשרת אחיות (62 שעות)</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="checkbox" class="lead-challenge-cb" value="ביטול טפסי נייר ומעבר לדיגיטל">
+                                    <span>ביטול ניירת וטפסי קלסרים ידניים</span>
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                                    <input type="checkbox" class="lead-challenge-cb" value="מניעת זיהומים ופצעי לחץ">
+                                    <span>צמצום זיהומים צולבים ופצעי לחץ</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label style="display: block; font-size: 12px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px;">
+                                הערות נוספות או בקשות מיוחדות להדגמה:
+                            </label>
+                            <textarea id="lead_notes" rows="2" placeholder="ציינו דגשים מיוחדים, מספר מחלקות בפיילוט וכד'..." style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-primary); font-size: 12.5px; box-sizing: border-box; resize: vertical;"></textarea>
+                        </div>
+
+                        <div style="margin-top: 18px; display: flex; justify-content: flex-end; gap: 10px;">
+                            <button type="submit" class="btn" style="background: #10b981; color: white; font-weight: 800; font-size: 14px; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.3);">
+                                <span>🚀</span> שלח בקשה ותאם הדגמה
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Admin Lead Log & Export Panel -->
+                <div class="space-y-4">
+                    <div class="card" style="padding: 18px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--surface);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h4 style="margin: 0; font-size: 14px; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                                <span>📂</span> פניות שהצטברו במערכת (${leads.length})
+                            </h4>
+                            <button onclick="exportLeadsToCsv()" class="btn" style="background: transparent; border: 1px solid var(--border-color); font-size: 11px; padding: 4px 8px; border-radius: 6px; cursor: pointer;">
+                                ייצוא לאקסל 📊
+                            </button>
+                        </div>
+
+                        ${leads.length === 0 ? `
+                            <div style="padding: 20px; text-align: center; color: var(--text-secondary); font-size: 12px; background: var(--bg-color); border-radius: 8px;">
+                                טרם נרשמו פניות. פניות שיוגשו בטופס יישמרו כאן אוטומטית.
+                            </div>
+                        ` : `
+                            <div style="display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto;">
+                                ${leads.map(l => `
+                                    <div style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; font-size: 11.5px;">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+                                            <strong style="color: var(--text-primary); font-size: 12px;">${escapeHtml(l.instName)}</strong>
+                                            <span style="color: var(--text-secondary); font-size: 10px;">${l.date}</span>
+                                        </div>
+                                        <div style="color: var(--primary-color); font-weight: 600;">${escapeHtml(l.contactName)} (${escapeHtml(l.contactRole || 'נציג')})</div>
+                                        <div style="color: var(--text-secondary); margin-top: 2px;">📞 ${escapeHtml(l.phone)} | 🛏️ ${escapeHtml(l.beds || '—')} מיטות</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+
+                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; font-size: 12px; color: #334155;">
+                        <strong style="display: block; margin-bottom: 6px; color: #0f172a;">🔒 פרטיות ואבטחת מידע:</strong>
+                        הנתונים הנאספים משמשים אך ורק לצורך תיאום הדגמה מקצועית ויצירת הצעת מחיר. הפלטפורמה אינה חושפת נתונים רפואיים מזהים (No PHI).
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    `;
+}
+
+// ==============================================================
+// 6. OFFICIAL PRINTABLE PROPOSAL MODAL (A4 PRINT OPTIMIZED)
+// ==============================================================
+
+function openPrintableProposalModal() {
+    let modal = document.getElementById('printable_proposal_modal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'printable_proposal_modal';
+        document.body.appendChild(modal);
+    }
+    modal.style.cssText = 'position:fixed; inset:0; z-index:999999; background:rgba(15,23,42,0.85); display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:1rem; box-sizing:border-box;';
+
+    const nowStr = new Date().toLocaleDateString('he-IL');
+
+    modal.innerHTML = `
+        <div style="background:#ffffff; width:100%; max-width:850px; border-radius:14px; box-shadow:0 12px 35px rgba(0,0,0,0.35); overflow:hidden; direction:rtl; text-align:right; max-height:92vh; display:flex; flex-direction:column;">
+            
+            <!-- Header bar for screen view -->
+            <div style="padding:14px 20px; background:#1e3a8a; color:#fff; display:flex; justify-content:space-between; align-items:center;">
+                <div style="font-weight:800; font-size:14px;">📄 תצוגה מקדימה: הצעת מחיר מוסדית רשמית (A4)</div>
+                <div style="display:flex; gap:8px;">
+                    <button onclick="window.print()" class="btn" style="background:#10b981; color:#fff; border:none; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                        🖨️ הדפס מסמך זה / שמור כ-PDF
+                    </button>
+                    <button onclick="document.getElementById('printable_proposal_modal').style.display='none'" style="background:rgba(255,255,255,0.2); border:none; color:#fff; font-size:16px; width:28px; height:28px; border-radius:50%; cursor:pointer;">✖</button>
+                </div>
+            </div>
+
+            <!-- Printable A4 Document Body -->
+            <div id="proposal-printable-content" style="padding:30px; overflow-y:auto; flex:1; font-family:'Heebo', sans-serif; color:#1e293b; line-height:1.6; font-size:13px; background:#ffffff;">
+                
+                <!-- Document Header -->
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #1e3a8a; padding-bottom:14px; margin-bottom:20px;">
+                    <div>
+                        <h2 style="margin:0; font-size:22px; font-weight:900; color:#1e3a8a;">הפורטל הארגוני לניהול איכות ובטיחות בסיעוד</h2>
+                        <div style="font-size:12px; color:#64748b; margin-top:2px;">מומחיות במדיניות, איכות, בטיחות והדרכה גריאטרית | מודל הבקרה האחודה 2026</div>
+                    </div>
+                    <div style="text-align:left; font-size:11.5px; color:#475569;">
+                        <div><strong>תאריך:</strong> ${nowStr}</div>
+                        <div><strong>מספר הצעה:</strong> PROPOSAL-2026-HQ</div>
+                        <div><strong>תוקף הצעה:</strong> 30 יום</div>
+                    </div>
+                </div>
+
+                <!-- Recipient Info -->
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px; margin-bottom:20px; display:flex; justify-content:space-between;">
+                    <div>
+                        <div><strong>לכבוד:</strong> הנהלת המוסד הרפואי / מנהלת הסיעוד</div>
+                        <div><strong>הנדון:</strong> הצעת מחיר רשמית להטמעת הפורטל הארגוני וליווי מומחית סיעוד ואיכות</div>
+                    </div>
+                    <div style="text-align:left;">
+                        <div><strong>יועצת מובילה:</strong> מאיה שקולניק גזית (R.N, BA, M.H.A)</div>
+                        <div><strong>התמחות:</strong> מומחית מדיניות וניהול סיעוד</div>
+                    </div>
+                </div>
+
+                <!-- Scope of Work Summary -->
+                <h4 style="margin:0 0 8px; font-size:14px; font-weight:800; color:#1e3a8a;">1. תכולת הפתרון הארגוני (15 מודולים ייעודיים)</h4>
+                <p style="margin:0 0 14px; font-size:12px; color:#475569;">
+                    המערכת כוללת רישוי מלא לכלל המחלקות: 5 כלי בקרה דיגיטליים (עגלת החייאה, זיהומים, פצעים, תרופות, רחצה), תוכנית הכשרה מוסדית 62 שעות עם חתימות דיגיטליות, דשבורד מנהל עם ניתוח מגמות ו-CAPA, סנכרון ענן מאובטח, ומערכת CDSS גריאטרית.
+                </p>
+
+                <!-- Pricing & Expert Hours Table -->
+                <h4 style="margin:16px 0 8px; font-size:14px; font-weight:800; color:#1e3a8a;">2. מפרט מסלולים ושעות הטמעה של מומחית הכלולות במחיר</h4>
+                <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:18px;">
+                    <thead>
+                        <tr style="background:#1e3a8a; color:#ffffff;">
+                            <th style="padding:8px 10px; text-align:right;">מסלול שירות</th>
+                            <th style="padding:8px 10px; text-align:right;">היקף רישוי</th>
+                            <th style="padding:8px 10px; text-align:right;">שעות הטמעה וליווי מומחית (כלול במחיר)</th>
+                            <th style="padding:8px 10px; text-align:left;">עלות שנתית כוללת</th>
+                        </tr>
+                    </thead>
+                    <tbody style="border:1px solid #cbd5e1;">
+                        <tr style="border-bottom:1px solid #e2e8f0;">
+                            <td style="padding:8px 10px; font-weight:700;">פיילוט מחלקתי</td>
+                            <td style="padding:8px 10px;">מחלקה אחת (עד 40 מיטות)</td>
+                            <td style="padding:8px 10px;"><strong>15 שעות מומחית:</strong> מיפוי, הדרכת אחות אחראית וסגנית, ליווי בקרות ראשונות</td>
+                            <td style="padding:8px 10px; text-align:left; font-weight:bold;">8,500 ₪</td>
+                        </tr>
+                        <tr style="border-bottom:1px solid #e2e8f0; background:#f0f9ff;">
+                            <td style="padding:8px 10px; font-weight:700; color:#1e40af;">זהב מוסדית (מומלצת)</td>
+                            <td style="padding:8px 10px;">כלל המוסד (עד 6 מחלקות / 250 מיטות)</td>
+                            <td style="padding:8px 10px;"><strong>35 שעות מומחית:</strong> התנעה עם הנהלה, 3 סדנאות הדרכה, סימולציית ביקורת פתע מוסדית מלאה ודוח פערים</td>
+                            <td style="padding:8px 10px; text-align:left; font-weight:bold; color:#1e40af;">24,500 ₪</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:8px 10px; font-weight:700;">פלטינום רשתית</td>
+                            <td style="padding:8px 10px;">רשת מוסדות ללא הגבלה</td>
+                            <td style="padding:8px 10px;"><strong>70 שעות מומחית:</strong> מתודולוגיה רשתית, סימולציות ביקורת בכל מוסד, ליווי הנהלה ראשית</td>
+                            <td style="padding:8px 10px; text-align:left; font-weight:bold;">48,000 ₪</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Terms & Signatures -->
+                <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px 16px; margin-bottom:24px; font-size:11.5px; color:#475569;">
+                    <strong>תנאים מסחריים:</strong> המחירים אינם כוללים מע"מ כחוק. התשלום יבוצע ב-3 תשלומים שווים (עם חתימת ההסכם, לאחר ישיבת ההתנעה, ועם סיום שעות ההטמעה). תמיכה טכנית ועדכוני רגולציה של משרד הבריאות כלולים לכל אורך שנת הרישוי.
+                </div>
+
+                <!-- Signature Section -->
+                <div style="display:flex; justify-content:space-between; margin-top:30px; padding-top:20px; border-top:1px dashed #cbd5e1;">
+                    <div style="text-align:center; min-width:200px;">
+                        <div style="font-weight:bold; color:#1e3a8a;">מאיה שקולניק גזית</div>
+                        <div style="font-size:11px; color:#64748b;">R.N, BA, M.H.A<br>מומחית מדיניות וניהול סיעוד</div>
+                        <div style="margin-top:25px; border-bottom:1px solid #94a3b8; width:160px; margin-left:auto; margin-right:auto;"></div>
+                        <div style="font-size:10.5px; color:#94a3b8; margin-top:4px;">חתימת היועצת</div>
+                    </div>
+
+                    <div style="text-align:center; min-width:200px;">
+                        <div style="font-weight:bold; color:#1e293b;">אישור הנהלת המוסד</div>
+                        <div style="font-size:11px; color:#64748b;">שם המאשר / תפקיד</div>
+                        <div style="margin-top:25px; border-bottom:1px solid #94a3b8; width:160px; margin-left:auto; margin-right:auto;"></div>
+                        <div style="font-size:10.5px; color:#94a3b8; margin-top:4px;">חתימה וחותמת המוסד</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    `;
+    modal.style.display = 'flex';
 }
